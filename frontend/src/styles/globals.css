@@ -1,0 +1,310 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── CSS Variables ──────────────────────────────────────────────────────────── */
+:root {
+  --void: #03050a;
+  --deep-space: #080c14;
+  --neural-blue: #00d4ff;
+  --neural-violet: #7b2fff;
+  --neural-pink: #ff2fbb;
+  --neural-green: #00ff88;
+  --star-white: #e8f0ff;
+  --dim-star: #8899cc;
+  --glass: rgba(0, 212, 255, 0.05);
+  --glass-border: rgba(0, 212, 255, 0.15);
+}
+
+/* ── Base Styles ────────────────────────────────────────────────────────────── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--void);
+  color: var(--star-white);
+  font-family: "Syne", sans-serif;
+  overflow-x: hidden;
+  cursor: auto;
+}
+
+/* ── Custom Cursor ──────────────────────────────────────────────────────────── */
+.cursor {
+  width: 12px;
+  height: 12px;
+  background: var(--neural-blue);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 99999;
+  transition: transform 0.1s ease;
+  mix-blend-mode: difference;
+}
+
+.cursor-ring {
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid var(--neural-blue);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 99998;
+  transition: all 0.15s ease;
+  mix-blend-mode: difference;
+}
+
+/* ── Scrollbar ──────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--void);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--neural-blue);
+  border-radius: 2px;
+}
+
+/* ── Glass Card ─────────────────────────────────────────────────────────────── */
+.glass-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* ── Gradient Text ──────────────────────────────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, var(--neural-blue), var(--neural-violet), var(--neural-pink));
+  background-size: 400% 400%;
+  animation: gradient 6s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Neural Glow ────────────────────────────────────────────────────────────── */
+.neural-glow {
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.2), 0 0 60px rgba(0, 212, 255, 0.05);
+}
+
+.neural-glow-hover {
+  transition: box-shadow 0.3s ease;
+}
+.neural-glow-hover:hover {
+  box-shadow: 0 0 30px rgba(0, 212, 255, 0.4), 0 0 80px rgba(123, 47, 255, 0.2);
+}
+
+/* ── Section Base ───────────────────────────────────────────────────────────── */
+section {
+  position: relative;
+}
+
+/* ── Noise Texture Overlay ──────────────────────────────────────────────────── */
+.noise::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Scanline Effect ────────────────────────────────────────────────────────── */
+.scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 212, 255, 0.015) 2px,
+    rgba(0, 212, 255, 0.015) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Animations ─────────────────────────────────────────────────────────────── */
+@keyframes gradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(120px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(120px) rotate(-360deg); }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+@keyframes data-flow {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-100px); opacity: 0; }
+}
+
+/* ── Blob Background ────────────────────────────────────────────────────────── */
+.blob {
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  animation: blob-morph 12s ease-in-out infinite;
+  filter: blur(60px);
+}
+
+@keyframes blob-morph {
+  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  25% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+  50% { border-radius: 50% 50% 30% 70% / 40% 60% 60% 30%; }
+  75% { border-radius: 40% 70% 60% 30% / 60% 40% 50% 50%; }
+}
+
+/* ── Tag Pills ──────────────────────────────────────────────────────────────── */
+.tag-pill {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.7rem;
+  padding: 2px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border);
+  background: rgba(0, 212, 255, 0.08);
+  color: var(--neural-blue);
+  letter-spacing: 0.05em;
+  transition: all 0.2s ease;
+}
+.tag-pill:hover {
+  background: rgba(0, 212, 255, 0.18);
+  border-color: var(--neural-blue);
+}
+
+/* ── Nav Link ───────────────────────────────────────────────────────────────── */
+.nav-link {
+  position: relative;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--dim-star);
+  transition: color 0.3s ease;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--neural-blue);
+  transition: width 0.3s ease;
+}
+.nav-link:hover {
+  color: var(--neural-blue);
+}
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* ── Input Focus ────────────────────────────────────────────────────────────── */
+.ai-input {
+  background: rgba(0, 212, 255, 0.04);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  color: var(--star-white);
+  font-family: "Syne", sans-serif;
+  transition: all 0.3s ease;
+  outline: none;
+}
+.ai-input:focus {
+  border-color: var(--neural-blue);
+  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+}
+.ai-input::placeholder {
+  color: var(--dim-star);
+}
+
+/* ── AI Button ──────────────────────────────────────────────────────────────── */
+.ai-btn {
+  background: linear-gradient(135deg, var(--neural-blue), var(--neural-violet));
+  color: white;
+  font-family: "Orbitron", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.ai-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.ai-btn:hover::before {
+  opacity: 1;
+}
+.ai-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 40px rgba(0, 212, 255, 0.3);
+}
+.ai-btn:active {
+  transform: translateY(0);
+}
+.ai-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── Chat Bubbles ───────────────────────────────────────────────────────────── */
+.chat-bubble-user {
+  background: linear-gradient(135deg, rgba(123, 47, 255, 0.3), rgba(0, 212, 255, 0.2));
+  border: 1px solid rgba(123, 47, 255, 0.3);
+  border-radius: 18px 18px 4px 18px;
+}
+
+.chat-bubble-ai {
+  background: rgba(0, 212, 255, 0.06);
+  border: 1px solid rgba(0, 212, 255, 0.15);
+  border-radius: 18px 18px 18px 4px;
+}
+
+/* ── Skill Bar ──────────────────────────────────────────────────────────────── */
+.skill-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--neural-blue), var(--neural-violet));
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.4);
+  transition: width 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* ── Mobile Cursor off ──────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  body {
+    cursor: auto;
+  }
+  .cursor, .cursor-ring {
+    display: none;
+  }
+}
