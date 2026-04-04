@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react";
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
@@ -43,6 +44,22 @@ function Portfolio() {
 }
 
 export default function App() {
+// Charger le thème depuis MongoDB
+useEffect(() => {
+  fetch("https://web-production-cba0c.up.railway.app/api/content/theme")
+    .then(r => r.json())
+    .then(theme => {
+      if (!theme) return;
+      const root = document.documentElement;
+      if (theme.neuralBlue) root.style.setProperty("--neural-blue", theme.neuralBlue);
+      if (theme.neuralViolet) root.style.setProperty("--neural-violet", theme.neuralViolet);
+      if (theme.neuralPink) root.style.setProperty("--neural-pink", theme.neuralPink);
+      if (theme.neuralGreen) root.style.setProperty("--neural-green", theme.neuralGreen);
+      if (theme.starWhite) root.style.setProperty("--star-white", theme.starWhite);
+      if (theme.void) root.style.setProperty("--void", theme.void);
+    }).catch(() => {});
+}, []);
+
   return (
     <Routes>
       <Route path="/" element={<Portfolio/>}/>

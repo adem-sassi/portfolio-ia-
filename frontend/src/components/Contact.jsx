@@ -58,8 +58,7 @@ export default function Contact() {
 
   return (
     <section id="contact" className="relative py-32 px-6">
-      <div className="blob absolute w-[400px] h-[400px] opacity-8 pointer-events-none"
-        style={{ background: "var(--neural-blue)", top: "10%", right: "-10%", animationDelay: "-6s" }}/>
+      
 
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center gap-4 mb-4">

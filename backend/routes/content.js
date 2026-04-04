@@ -25,3 +25,11 @@ router.get("/:section", async (req, res) => {
 });
 
 export default router;
+
+// GET /api/content/theme
+router.get("/theme", async (req, res) => {
+  try {
+    const doc = await Content.findOne({ section: "theme" });
+    res.json(doc ? doc.data : {});
+  } catch { res.status(500).json({ error: "Erreur" }); }
+});
