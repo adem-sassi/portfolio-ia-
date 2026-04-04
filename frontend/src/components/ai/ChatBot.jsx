@@ -297,7 +297,7 @@ export default function ChatBot() {
     setMessages(newMessages);
     setLoading(true);
     try {
-      const res = await fetch("/api/ai/chat", {
+      const res = await fetch("https://web-production-cba0c.up.railway.app/api/ai/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: newMessages.map(m => ({ role: m.role, content: m.content })) }),

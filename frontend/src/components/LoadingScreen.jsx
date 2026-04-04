@@ -69,9 +69,9 @@ export default function LoadingScreen({ onDone }) {
 
       {/* Logo */}
       <div className="font-display text-3xl font-black mb-2">
-        <span className="gradient-text">AI</span>
+        <span className="gradient-text">ADEM</span>
         <span className="text-star-white">.</span>
-        <span className="gradient-text">PORTFOLIO</span>
+        <span className="gradient-text">SASSI</span>
       </div>
 
       {/* Phase text */}

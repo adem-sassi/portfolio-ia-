@@ -27,7 +27,7 @@ export default function TextAnalyzer() {
     setResult(null);
 
     try {
-      const res = await fetch("/api/ai/analyze-text", {
+      const res = await fetch("https://web-production-cba0c.up.railway.app/api/ai/analyze-text", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text }),

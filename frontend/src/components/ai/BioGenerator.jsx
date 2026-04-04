@@ -22,7 +22,7 @@ export default function BioGenerator() {
     setLoading(true);
     setBio("");
     try {
-      const res = await fetch("/api/ai/generate-bio", {
+      const res = await fetch("https://web-production-cba0c.up.railway.app/api/ai/generate-bio", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, skills: selectedSkills, interests: selectedInterests, style }),

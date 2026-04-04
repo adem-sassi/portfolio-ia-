@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Lock, Eye, EyeOff, Loader2, ShieldCheck } from "lucide-react";
 
+const API_URL = "https://web-production-cba0c.up.railway.app";
 export default function AdminLogin({ onLogin }) {
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
@@ -8,14 +9,13 @@ export default function AdminLogin({ onLogin }) {
   const [error, setError] = useState("");
   const [attempts, setAttempts] = useState(0);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     if (!password || loading) return;
     setLoading(true);
     setError("");
 
     try {
-      const res = await fetch("/api/admin/login", {
+      const res = await fetch(`${API_URL}/api/admin/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ password }),
@@ -60,7 +60,7 @@ export default function AdminLogin({ onLogin }) {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="glass-card rounded-3xl p-8 border border-neural-blue/20">
+        <div className="glass-card rounded-3xl p-8 border border-neural-blue/20">
           <div className="mb-6">
             <label className="font-mono text-xs text-dim-star tracking-widest mb-3 block">
               MOT DE PASSE ADMIN
@@ -100,7 +100,8 @@ export default function AdminLogin({ onLogin }) {
           )}
 
           <button
-            type="submit"
+            type="button"
+            onClick={handleSubmit}
             disabled={!password || loading}
             className="ai-btn w-full py-4 rounded-xl flex items-center justify-center gap-2"
           >
@@ -114,7 +115,7 @@ export default function AdminLogin({ onLogin }) {
           <p className="text-center text-dim-star text-xs font-mono mt-4 tracking-wide">
             Session valide 8 heures
           </p>
-        </form>
+        </div>
 
         {/* Back link */}
         <div className="text-center mt-6">

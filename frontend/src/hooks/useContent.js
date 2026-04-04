@@ -5,7 +5,7 @@ export function useContent() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/content?t=" + Date.now())
+    fetch("https://web-production-cba0c.up.railway.app/api/content?t=" + Date.now())
       .then(r => r.json())
       .then(data => { setContent(data); setLoading(false); })
       .catch(() => setLoading(false));

@@ -43,7 +43,7 @@ export default function AdminDashboard({ token, onLogout }) {
 
   const loadContent = () => {
     setLoading(true); setError("");
-    fetch("/api/admin/content", { headers })
+    fetch("https://web-production-cba0c.up.railway.app/api/admin/content", { headers })
       .then(r => r.json())
       .then(data => { setContent(data); setLoading(false); })
       .catch(e => { setError("Erreur: " + e.message); setLoading(false); });

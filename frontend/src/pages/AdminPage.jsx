@@ -3,6 +3,7 @@ import AdminLogin from "../components/admin/AdminLogin";
 import AdminDashboard from "../components/admin/AdminDashboard";
 import { Loader2 } from "lucide-react";
 
+const API_URL = "https://web-production-cba0c.up.railway.app";
 export default function AdminPage() {
   const [token, setToken] = useState(null);
   const [checking, setChecking] = useState(true);
@@ -15,7 +16,7 @@ export default function AdminPage() {
       return;
     }
 
-    fetch("/api/admin/verify", {
+    fetch(`${API_URL}/api/admin/verify`, {
       headers: { Authorization: `Bearer ${savedToken}` },
     })
       .then((r) => {

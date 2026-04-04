@@ -14,7 +14,7 @@ export default function Hero() {
 
   // Fetch direct sans cache
   useEffect(() => {
-    fetch("/api/content/hero?t=" + Date.now())
+    fetch("https://web-production-cba0c.up.railway.app/api/content/hero?t=" + Date.now())
       .then(r => r.json())
       .then(data => setHero(data))
       .catch(() => {});
@@ -118,7 +118,7 @@ export default function Hero() {
       </div>
 
       <a href="#about"
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-dim-star hover:text-neural-blue transition-colors"
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-2 text-dim-star hover:text-neural-blue transition-colors"
         style={{ opacity: mounted ? 1 : 0, transition: "opacity 0.8s ease 1s" }}>
         <span className="text-xs tracking-widest font-mono">SCROLL</span>
         <ChevronDown size={18} className="animate-bounce"/>

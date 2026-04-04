@@ -30,7 +30,7 @@ export default function CVUpload({ token }) {
       });
 
       // Envoyer en JSON
-      const res = await fetch("/api/admin/upload-cv", {
+      const res = await fetch("https://web-production-cba0c.up.railway.app/api/admin/upload-cv", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,7 +58,7 @@ export default function CVUpload({ token }) {
 
   const deleteCV = async () => {
     try {
-      await fetch("/api/admin/delete-cv", { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
+      await fetch("https://web-production-cba0c.up.railway.app/api/admin/delete-cv", { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
       setCvName(""); localStorage.removeItem("cv_filename");
       setStatus("idle"); setMessage("CV supprimé.");
     } catch { setMessage("Erreur suppression."); }

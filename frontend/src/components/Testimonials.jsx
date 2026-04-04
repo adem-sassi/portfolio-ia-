@@ -1,3 +1,4 @@
+const API_URL = "https://web-production-cba0c.up.railway.app";
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 
@@ -15,7 +16,7 @@ export default function Testimonials() {
 
   // Fetch direct — indépendant du cache
   useEffect(() => {
-    fetch("/api/content/testimonials")
+    fetch(`${API_URL}/api/content/testimonials`)
       .then(r => r.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) setTestimonials(data);

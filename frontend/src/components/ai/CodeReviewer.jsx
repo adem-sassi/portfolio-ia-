@@ -60,7 +60,7 @@ export default function CodeReviewer() {
     setError("");
     setResult(null);
     try {
-      const res = await fetch("/api/ai/review-code", {
+      const res = await fetch("https://web-production-cba0c.up.railway.app/api/ai/review-code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code, language }),

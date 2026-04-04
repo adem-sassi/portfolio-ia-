@@ -22,7 +22,7 @@ export default function AIQuiz() {
     setSelected(null);
     setShowResult(false);
     try {
-      const res = await fetch("/api/ai/quiz", {
+      const res = await fetch("https://web-production-cba0c.up.railway.app/api/ai/quiz", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ topic, difficulty }),
