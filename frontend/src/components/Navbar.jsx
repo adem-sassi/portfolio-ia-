@@ -4,15 +4,13 @@ import { Menu, X } from "lucide-react";
 const NAV_ITEMS = [
   { label: "À propos", href: "#about" },
   { label: "Skills", href: "#skills" },
-  { label: lang === "fr" ? "IA Lab" : "AI Lab", href: "#ai-features" },
-  { label: lang === "fr" ? "Projets" : "Projects", href: "#projects" },
+  { label: "IA Lab", href: "#ai-features" },
+  { label: "Projets", href: "#projects" },
   { label: "Contact", href: "#contact" },
   { label: "Blog", href: "/blog" },
 ];
 
-import { useLang } from "../context/LangContext";
 export default function Navbar() {
-  const { lang, setLang } = useLang();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -52,15 +50,9 @@ export default function Navbar() {
         </ul>
 
         {/* CTA */}
-        <div className="hidden md:flex items-center gap-2">
-          <button onClick={() => setLang(lang === "fr" ? "en" : "fr")}
-            className="border border-neural-blue/30 px-3 py-1.5 rounded-lg text-xs font-mono text-neural-blue hover:bg-neural-blue/10 transition-all">
-            {lang === "fr" ? "EN" : "FR"}
-          </button>
-          <a href="#contact" className="ai-btn px-5 py-2 rounded-full text-xs">
-            Me contacter
-          </a>
-        </div>
+        <a href="#contact" className="hidden md:block ai-btn px-5 py-2 rounded-full text-xs">
+          Me contacter
+        </a>
 
         {/* Mobile Menu Toggle */}
         <button
