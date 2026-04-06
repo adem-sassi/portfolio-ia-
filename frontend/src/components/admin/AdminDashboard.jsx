@@ -346,12 +346,7 @@ export default function AdminDashboard({ token, onLogout }) {
           </span>
         </div>
       </Section>
-      {/* SECURITY */}
-<Section title="Sécurité & Visiteurs" icon={Shield}>
-  <SecurityDashboard token={token}/>
-</Section>
-
-{/* BLOG */}
+      {/* BLOG */}
 <Section title="Blog & Articles" icon={BookOpen}>
   <BlogEditor token={token}/>
 </Section>
