@@ -33,6 +33,7 @@ app.use(mongoSanitize());
 app.use("/api/ai", aiRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/content", contentRoutes);
+app.use("/api/blog", blogRoutes);
 
 app.get("/api/health", (req, res) => {
   res.json({ status: "OK", ai: "Groq", db: "MongoDB", admin: "enabled" });
