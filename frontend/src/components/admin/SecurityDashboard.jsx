@@ -20,7 +20,9 @@ export default function SecurityDashboard({ token }) {
       ]);
       setData(v);
       setLogs(l);
-    } catch {}
+    } catch(e) {
+      console.error(e);
+    }
     setLoading(false);
   };
 
@@ -33,29 +35,32 @@ export default function SecurityDashboard({ token }) {
     load();
   };
 
-  if (loading) return <div className="text-center py-8"><RefreshCw size={20} className="animate-spin text-neural-blue mx-auto"/></div>;
+  if (loading) return (
+    <div className="text-center py-8">
+      <RefreshCw size={20} className="animate-spin text-neural-blue mx-auto"/>
+    </div>
+  );
 
   return (
     <div className="space-y-4">
-      {/* Stats */}
       <div className="grid grid-cols-3 gap-3">
-        {[
-          { icon: Users, label: "Total visiteurs", value: data?.total || 0, color: "#00D4FF" },
-          { icon: Eye, label: "Aujourd'hui", value: data?.today || 0, color: "#00FF88" },
-          { icon: AlertTriangle, label: "IPs bloquées", value: logs?.blocked?.length || 0, color: "#FF2FBB" },
-        ].map((stat, i) => {
-          const Icon = stat.icon;
-          return (
-            <div key={i} className="glass-card rounded-xl p-3 border border-white/5 text-center">
-              <Icon size={14} style={{ color: stat.color }} className="mx-auto mb-1"/>
-              <p className="font-display text-xl font-black" style={{ color: stat.color }}>{stat.value}</p>
-              <p className="text-dim-star text-xs font-mono">{stat.label}</p>
-            </div>
-          );
-        })}
+        <div className="glass-card rounded-xl p-3 border border-white/5 text-center">
+          <Users size={14} style={{ color: "#00D4FF" }} className="mx-auto mb-1"/>
+          <p className="font-display text-xl font-black" style={{ color: "#00D4FF" }}>{data?.total || 0}</p>
+          <p className="text-dim-star text-xs font-mono">Total visiteurs</p>
+        </div>
+        <div className="glass-card rounded-xl p-3 border border-white/5 text-center">
+          <Eye size={14} style={{ color: "#00FF88" }} className="mx-auto mb-1"/>
+          <p className="font-display text-xl font-black" style={{ color: "#00FF88" }}>{data?.today || 0}</p>
+          <p className="text-dim-star text-xs font-mono">Aujourd'hui</p>
+        </div>
+        <div className="glass-card rounded-xl p-3 border border-white/5 text-center">
+          <AlertTriangle size={14} style={{ color: "#FF2FBB" }} className="mx-auto mb-1"/>
+          <p className="font-display text-xl font-black" style={{ color: "#FF2FBB" }}>{logs?.blocked?.length || 0}</p>
+          <p className="text-dim-star text-xs font-mono">IPs bloquées</p>
+        </div>
       </div>
 
-      {/* Tabs */}
       <div className="flex gap-2">
         {["visitors", "companies", "logs"].map(t => (
           <button key={t} onClick={() => setTab(t)}
@@ -73,29 +78,29 @@ export default function SecurityDashboard({ token }) {
         </button>
       </div>
 
-      {/* Visiteurs */}
       {tab === "visitors" && (
         <div className="space-y-2 max-h-80 overflow-y-auto">
+          {!data?.visitors?.length && (
+            <p className="text-dim-star text-xs font-mono text-center py-4">Aucun visiteur pour l'instant</p>
+          )}
           {data?.visitors?.map((v, i) => (
             <div key={i} className="flex items-center gap-3 p-3 glass-card rounded-xl border border-white/5">
               <Globe size={14} className="text-neural-blue flex-shrink-0"/>
               <div className="flex-1 min-w-0">
                 <p className="text-xs text-star-white font-mono truncate">{v.page}</p>
-                <p className="text-xs text-dim-star">{v.city}, {v.country} — {v.ip}</p>
+                <p className="text-xs text-dim-star">{v.city}, {v.country}</p>
               </div>
-              <div className="flex items-center gap-1 text-xs text-dim-star font-mono flex-shrink-0">
-                <Clock size={10}/>
+              <p className="text-xs text-dim-star font-mono flex-shrink-0">
                 {new Date(v.createdAt).toLocaleDateString('fr-FR')}
-              </div>
+              </p>
             </div>
           ))}
         </div>
       )}
 
-      {/* Entreprises */}
       {tab === "companies" && (
         <div className="space-y-2 max-h-80 overflow-y-auto">
-          {data?.companies?.length === 0 && (
+          {!data?.companies?.length && (
             <p className="text-dim-star text-xs font-mono text-center py-4">Pas encore de données entreprises</p>
           )}
           {data?.companies?.map((c, i) => (
@@ -113,7 +118,6 @@ export default function SecurityDashboard({ token }) {
         </div>
       )}
 
-      {/* Logs connexions */}
       {tab === "logs" && (
         <div className="space-y-2 max-h-80 overflow-y-auto">
           {logs?.blocked?.length > 0 && (
@@ -122,13 +126,15 @@ export default function SecurityDashboard({ token }) {
               {logs.blocked.map((b, i) => (
                 <div key={i} className="flex items-center justify-between">
                   <span className="text-xs text-dim-star font-mono">{b.ip}</span>
-                  <button onClick={() => unblock(b.ip)}
-                    className="flex items-center gap-1 text-xs text-neural-blue hover:opacity-80">
+                  <button onClick={() => unblock(b.ip)} className="flex items-center gap-1 text-xs text-neural-blue hover:opacity-80">
                     <Ban size={10}/> Débloquer
                   </button>
                 </div>
               ))}
             </div>
+          )}
+          {!logs?.logs?.length && (
+            <p className="text-dim-star text-xs font-mono text-center py-4">Aucun log de connexion</p>
           )}
           {logs?.logs?.map((l, i) => (
             <div key={i} className="flex items-center gap-3 p-3 glass-card rounded-xl border border-white/5">
