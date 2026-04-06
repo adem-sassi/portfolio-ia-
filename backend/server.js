@@ -10,6 +10,7 @@ import { connectDB } from "./db/connect.js";
 import aiRoutes from "./routes/ai.js";
 import adminRoutes from "./routes/admin.js";
 import contentRoutes from "./routes/content.js";
+import blogRoutes from "./routes/blog.js";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
