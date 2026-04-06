@@ -67,6 +67,23 @@ export default function Hero() {
           <Sparkles size={12} className="animate-pulse"/>
         </div>
 
+        
+        {/* Photo */}
+        <div className="flex justify-center mb-8 mt-4">
+          <div className="relative">
+            <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-2 border-neural-blue/40"
+              style={{ boxShadow: "0 0 25px rgba(0,212,255,0.25)" }}>
+              <img
+                src="/photo.jpg"
+                alt="Adem SASSI"
+                className="w-full h-full object-cover object-top"
+              />
+            </div>
+            <div className="absolute bottom-1 right-1 w-5 h-5 rounded-full bg-neural-green border-2 border-void"
+              style={{ boxShadow: "0 0 8px rgba(0,255,136,0.6)" }}/>
+          </div>
+        </div>
+
         <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-black leading-none mb-6"
           style={fadeIn(0.2)}>
           <span className="block text-star-white mb-2">Bonjour, je suis</span>
