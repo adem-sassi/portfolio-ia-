@@ -1,5 +1,5 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
+    { "source": "/((?!sitemap.xml|manifest.json|robots.txt|.*\\..*).+)", "destination": "/" }
   ]
 }
