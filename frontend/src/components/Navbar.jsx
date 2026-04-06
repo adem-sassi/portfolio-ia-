@@ -28,10 +28,10 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         {/* Logo */}
         <a href="#" className="flex items-center gap-2 group">
-          <div className="relative w-8 h-8">
-            <div className="absolute inset-0 bg-neural-blue/20 rounded rotate-45 group-hover:rotate-90 transition-transform duration-500" />
-            <div className="absolute inset-1.5 bg-neural-blue rounded-sm rotate-12 group-hover:rotate-45 transition-transform duration-500" />
-          </div>
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center font-display font-black text-sm"
+              style={{ background: "linear-gradient(135deg, #00D4FF20, #7B2FFF20)", border: "1px solid #00D4FF40", color: "#00D4FF" }}>
+              AS
+            </div>
           <span className="font-display text-sm font-bold tracking-widest text-star-white">
             ADEM<span className="text-neural-blue">.</span>SASSI
           </span>
