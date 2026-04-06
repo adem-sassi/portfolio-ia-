@@ -10,7 +10,9 @@ const NAV_ITEMS = [
   { label: "Blog", href: "/blog" },
 ];
 
+import { useLang } from "../context/LangContext";
 export default function Navbar() {
+  const { lang, setLang } = useLang();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 

@@ -1,6 +1,7 @@
 import { Analytics } from "@vercel/analytics/react";
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
+import { LangProvider } from "./context/LangContext";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
@@ -23,9 +24,7 @@ import ArticlePage from "./pages/ArticlePage";
 
 function Portfolio() {
   const [loaded, setLoaded] = useState(false);
-
   if (!loaded) return <LoadingScreen onDone={() => setLoaded(true)}/>;
-
   return (
     <>
       <ScrollProgress/>
@@ -48,15 +47,17 @@ function Portfolio() {
 }
 
 export default function App() {
-
   return (
-    <Routes>
-      <Route path="/" element={<Portfolio/>}/>
-      <Route path="/admin" element={<AdminPage/>}/>
-      <Route path="/mentions-legales" element={<MentionsLegales/>}/>
-      <Route path="/blog" element={<BlogPage/>}/>
-      <Route path="/blog/:slug" element={<ArticlePage/>}/>
-      <Route path="*" element={<NotFound/>}/>
-    </Routes>
+    <LangProvider>
+      <Routes>
+        <Route path="/" element={<Portfolio/>}/>
+        <Route path="/admin" element={<AdminPage/>}/>
+        <Route path="/mentions-legales" element={<MentionsLegales/>}/>
+        <Route path="/blog" element={<BlogPage/>}/>
+        <Route path="/blog/:slug" element={<ArticlePage/>}/>
+        <Route path="*" element={<NotFound/>}/>
+      </Routes>
+      <Analytics/>
+    </LangProvider>
   );
 }
