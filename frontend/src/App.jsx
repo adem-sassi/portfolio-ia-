@@ -3,7 +3,6 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import { LangProvider } from "./context/LangContext";
-import ErrorBoundary from "./components/ErrorBoundary";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
@@ -51,7 +50,6 @@ function Portfolio() {
 
 export default function App() {
   return (
-    <ErrorBoundary>
       <LangProvider>
         <Routes>
           <Route path="/" element={<Portfolio/>}/>
@@ -64,6 +62,5 @@ export default function App() {
         <Analytics/>
         <SpeedInsights/>
       </LangProvider>
-    </ErrorBoundary>
   );
 }
