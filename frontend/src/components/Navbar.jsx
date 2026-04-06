@@ -7,6 +7,7 @@ const NAV_ITEMS = [
   { label: "IA Lab", href: "#ai-features" },
   { label: "Projets", href: "#projects" },
   { label: "Contact", href: "#contact" },
+  { label: "Blog", href: "/blog" },
 ];
 
 export default function Navbar() {
