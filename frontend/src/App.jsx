@@ -21,6 +21,7 @@ import MentionsLegales from "./pages/MentionsLegales";
 import NotFound from "./pages/NotFound";
 import ErrorBoundary from "./components/ErrorBoundary";
 import ServerError from "./pages/ServerError";
+import { useServerStatus } from "./hooks/useServerStatus";
 import BlogPage from "./pages/BlogPage";
 import ArticlePage from "./pages/ArticlePage";
 
