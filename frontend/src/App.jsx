@@ -19,6 +19,7 @@ import FloatingActions from "./components/FloatingActions";
 import AdminPage from "./pages/AdminPage";
 import MentionsLegales from "./pages/MentionsLegales";
 import NotFound from "./pages/NotFound";
+import ServerError from "./pages/ServerError";
 import BlogPage from "./pages/BlogPage";
 import ArticlePage from "./pages/ArticlePage";
 
@@ -57,6 +58,7 @@ export default function App() {
         <Route path="/blog" element={<BlogPage/>}/>
         <Route path="/blog/:slug" element={<ArticlePage/>}/>
         <Route path="*" element={<NotFound/>}/>
+        <Route path="/500" element={<ServerError/>}/>
       </Routes>
       <Analytics/>
     </LangProvider>
