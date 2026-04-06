@@ -5,6 +5,7 @@ import TechEditor from "./TechEditor";
 import ImageUpload from "./ImageUpload";
 import CVUpload from "./CVUpload";
 import BlogEditor from "./BlogEditor";
+import SecurityDashboard from "./SecurityDashboard";
 
 function Section({ title, icon: Icon, children, defaultOpen = false }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -345,7 +346,12 @@ export default function AdminDashboard({ token, onLogout }) {
           </span>
         </div>
       </Section>
-      {/* BLOG */}
+      {/* SECURITY */}
+<Section title="Sécurité & Visiteurs" icon={Shield}>
+  <SecurityDashboard token={token}/>
+</Section>
+
+{/* BLOG */}
 <Section title="Blog & Articles" icon={BookOpen}>
   <BlogEditor token={token}/>
 </Section>

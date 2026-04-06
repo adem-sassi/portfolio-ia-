@@ -1,5 +1,5 @@
 import { Analytics } from "@vercel/analytics/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { LangProvider } from "./context/LangContext";
 import Navbar from "./components/Navbar";
@@ -47,6 +47,32 @@ function Portfolio() {
 }
 
 export default function App() {
+  // Tracker les visiteurs
+  useEffect(() => {
+    const start = Date.now();
+    fetch("https://web-production-cba0c.up.railway.app/api/security/track", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        page: window.location.pathname,
+        referrer: document.referrer,
+        duration: 0
+      })
+    }).catch(() => {});
+
+    return () => {
+      fetch("https://web-production-cba0c.up.railway.app/api/security/track", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          page: window.location.pathname,
+          referrer: document.referrer,
+          duration: Math.round((Date.now() - start) / 1000)
+        })
+      }).catch(() => {});
+    };
+  }, []);
+
   return (
     <LangProvider>
       <Routes>

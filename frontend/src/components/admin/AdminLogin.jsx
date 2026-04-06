@@ -8,6 +8,8 @@ export default function AdminLogin({ onLogin }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [attempts, setAttempts] = useState(0);
+  const [step, setStep] = useState("password"); // password | 2fa
+  const [code2fa, setCode2fa] = useState("");
 
   const handleSubmit = async () => {
     if (!password || loading) return;
@@ -27,14 +29,44 @@ export default function AdminLogin({ onLogin }) {
         setError(data.error || "Mot de passe incorrect");
         setPassword("");
       } else {
-        localStorage.setItem("admin_token", data.token);
-        onLogin(data.token);
+        // Envoyer le code 2FA
+        await fetch(`${API_URL}/api/security/2fa/send`, { method: "POST" });
+        setStep("2fa");
+        setError("");
       }
     } catch {
       setError("Erreur de connexion au serveur");
     } finally {
       setLoading(false);
     }
+  };
+
+  const verify2fa = async () => {
+    if (!code2fa || loading) return;
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch(`${API_URL}/api/security/2fa/verify`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: code2fa }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Code incorrect");
+      } else {
+        // Re-login pour obtenir le token
+        const loginRes = await fetch(`${API_URL}/api/admin/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password }),
+        });
+        const loginData = await loginRes.json();
+        localStorage.setItem("admin_token", loginData.token);
+        onLogin(loginData.token);
+      }
+    } catch { setError("Erreur de connexion"); }
+    finally { setLoading(false); }
   };
 
   return (

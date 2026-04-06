@@ -4,6 +4,7 @@ import { writeFileSync, unlinkSync, existsSync, mkdirSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import Content from "../models/Content.js";
+import LoginLog from "../models/LoginLog.js";
 import { authMiddleware } from "../middleware/auth.js";
 
 const router = express.Router();
@@ -15,14 +16,45 @@ const CV_PATH = join(PUBLIC_DIR, "cv.pdf");
 router.post("/login", async (req, res) => {
   try {
     const { password } = req.body;
+    const ip = req.headers["x-forwarded-for"]?.split(",")[0] || req.socket.remoteAddress;
+    const userAgent = req.headers["user-agent"] || "";
+
+    // Vérifier si IP bloquée
+    const blocked = await LoginLog.findOne({ ip, blockedUntil: { $gt: new Date() } });
+    if (blocked) {
+      const remaining = Math.ceil((blocked.blockedUntil - new Date()) / 60000);
+      return res.status(429).json({ error: `IP bloquée pour ${remaining} minutes` });
+    }
+
     if (!password) return res.status(400).json({ error: "Mot de passe requis" });
+    
     if (password !== process.env.ADMIN_PASSWORD) {
       await new Promise(r => setTimeout(r, 1000));
-      return res.status(401).json({ error: "Mot de passe incorrect" });
+      
+      // Compter les tentatives échouées
+      const recentFails = await LoginLog.countDocuments({
+        ip, success: false,
+        createdAt: { $gte: new Date(Date.now() - 15 * 60 * 1000) }
+      });
+
+      const log = new LoginLog({ ip, success: false, userAgent });
+      
+      // Bloquer après 5 tentatives échouées
+      if (recentFails >= 4) {
+        log.blockedUntil = new Date(Date.now() + 30 * 60 * 1000);
+        await log.save();
+        return res.status(429).json({ error: "Trop de tentatives — IP bloquée 30 minutes" });
+      }
+      
+      await log.save();
+      return res.status(401).json({ error: `Mot de passe incorrect (${recentFails + 1}/5)` });
     }
+
+    // Succès
+    await LoginLog.create({ ip, success: true, userAgent });
     const token = jwt.sign({ role: "admin" }, process.env.JWT_SECRET, { expiresIn: "8h" });
     res.json({ success: true, token, expiresIn: "8h" });
-  } catch { res.status(500).json({ error: "Erreur serveur" }); }
+  } catch (e) { res.status(500).json({ error: "Erreur serveur" }); }
 });
 
 // ── GET /api/admin/verify ─────────────────────────────────────────────────────

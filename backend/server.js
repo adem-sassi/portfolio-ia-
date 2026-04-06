@@ -11,6 +11,7 @@ import aiRoutes from "./routes/ai.js";
 import adminRoutes from "./routes/admin.js";
 import contentRoutes from "./routes/content.js";
 import blogRoutes from "./routes/blog.js";
+import securityRoutes from "./routes/security.js";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -35,6 +36,7 @@ app.use("/api/ai", aiRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/content", contentRoutes);
 app.use("/api/blog", blogRoutes);
+app.use("/api/security", securityRoutes);
 
 app.get("/api/health", (req, res) => {
   res.json({ status: "OK", ai: "Groq", db: "MongoDB", admin: "enabled" });
