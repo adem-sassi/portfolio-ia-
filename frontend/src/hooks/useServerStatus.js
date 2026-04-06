@@ -6,7 +6,7 @@ export function useServerStatus() {
   const [serverDown, setServerDown] = useState(false);
 
   useEffect(() => {
-    fetch(`${API_URL}/api/health`)
+    fetch(`${API_URL}/api/content`)
       .then(r => { if (!r.ok) setServerDown(true); })
       .catch(() => setServerDown(true));
   }, []);
