@@ -17,6 +17,7 @@ import SpotlightEffect from "./components/SpotlightEffect";
 import FloatingActions from "./components/FloatingActions";
 import AdminPage from "./pages/AdminPage";
 import MentionsLegales from "./pages/MentionsLegales";
+import NotFound from "./pages/NotFound";
 
 function Portfolio() {
   const [loaded, setLoaded] = useState(false);
@@ -51,6 +52,7 @@ export default function App() {
       <Route path="/" element={<Portfolio/>}/>
       <Route path="/admin" element={<AdminPage/>}/>
       <Route path="/mentions-legales" element={<MentionsLegales/>}/>
+      <Route path="*" element={<NotFound/>}/>
     </Routes>
   );
 }

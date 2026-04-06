@@ -48,6 +48,19 @@ export default function Contact() {
       setStatus("success");
       setForm({ name: "", email: "", subject: "", message: "" });
       setTimeout(() => setStatus("idle"), 5000);
+      
+      // Notification push
+      try {
+        await fetch("https://ntfy.sh/ademsassi-portfolio-contact", {
+          method: "POST",
+          body: `Nouveau message de ${form.name} — ${form.subject}`,
+          headers: {
+            "Title": "📬 Nouveau message portfolio",
+            "Priority": "high",
+            "Tags": "email"
+          }
+        });
+      } catch {}
     } catch (err) {
       console.error("EmailJS error:", err);
       setStatus("error");
