@@ -96,10 +96,6 @@ export default function About() {
                   </div>
                   <span className="text-dim-star text-xs font-mono">{lang.level}</span>
                 </div>
-                <div className="w-full bg-white/5 rounded-full h-1.5">
-                  <div className="h-1.5 rounded-full transition-all duration-1000"
-                    style={{ width: lang.percent + "%", background: "linear-gradient(90deg, var(--neural-blue), var(--neural-violet))" }}/>
-                </div>
               </div>
             ))}
           </div>
