@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { ChevronDown, Sparkles } from "lucide-react";
+import { useLang } from "../context/LangContext";
 import AnimatedCounter from "./AnimatedCounter";
 
 const TYPING_STRINGS = ["Étudiant Master 1 IA","Développeur Full-Stack","Machine Learning Engineer","Développeur IoT","NLP Enthusiast"];
 
 export default function Hero() {
+  const { lang } = useLang();
   const [hero, setHero] = useState(null);
   const [currentText, setCurrentText] = useState("");
   const [stringIndex, setStringIndex] = useState(0);
