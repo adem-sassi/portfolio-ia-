@@ -22,7 +22,7 @@ export default function Footer() {
           © {new Date().getFullYear()} Adem SASSI — Tous droits réservés
         </p>
         <p className="text-dim-star text-xs font-mono text-center">
-          Étudiant Master 1 IA · École Hexagone · Puteaux
+          Étudiant Master 1 IA · École Hexagone · Versailles
         </p>
         <p className="text-dim-star text-xs font-mono">
           Disponible pour un <span className="text-neural-blue">contrat d'apprentissage</span>
