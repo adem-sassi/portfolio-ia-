@@ -1,0 +1,18 @@
+{
+  "name": "Adem SASSI — Portfolio IA",
+  "short_name": "Adem SASSI",
+  "description": "Portfolio de Adem SASSI — Développeur IA & Full-Stack",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#020408",
+  "theme_color": "#00D4FF",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/as-favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
