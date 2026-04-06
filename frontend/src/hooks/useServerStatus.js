@@ -7,19 +7,18 @@ export function useServerStatus() {
     const controller = new AbortController();
     const timeout = setTimeout(() => {
       controller.abort();
-      setServerDown(true);
-    }, 5000);
+    }, 8000);
 
     fetch("https://web-production-cba0c.up.railway.app/api/content", {
       signal: controller.signal
     })
       .then(r => {
         clearTimeout(timeout);
-        if (!r.ok) setServerDown(true);
+        if (r.status >= 500) setServerDown(true);
       })
-      .catch(() => {
+      .catch((e) => {
         clearTimeout(timeout);
-        setServerDown(true);
+        if (e.name !== 'AbortError') setServerDown(true);
       });
   }, []);
 
