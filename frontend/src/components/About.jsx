@@ -52,6 +52,24 @@ export default function About() {
   return (
     <section id="about" className="relative py-32 px-6">
       <div className="max-w-6xl mx-auto">
+        
+        {/* Photo */}
+        <div className="flex justify-center mb-12">
+          <div className="relative">
+            <div className="w-48 h-48 md:w-56 md:h-56 rounded-2xl overflow-hidden border-2 border-neural-blue/30"
+              style={{ boxShadow: "0 0 30px rgba(0,212,255,0.2)" }}>
+              <img 
+                src="/photo.jpg" 
+                alt="Adem SASSI" 
+                className="w-full h-full object-cover object-top"
+              />
+            </div>
+            <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-lg bg-neural-blue/20 border border-neural-blue/40 flex items-center justify-center">
+              <div className="w-2 h-2 rounded-full bg-neural-green animate-pulse"/>
+            </div>
+          </div>
+        </div>
+
         <div className="flex items-center gap-4 mb-4">
           <div className="h-px flex-1 max-w-[60px] bg-neural-blue/40"/>
           <span className="font-mono text-xs text-neural-blue tracking-widest">01 / À PROPOS</span>
