@@ -19,7 +19,7 @@ export default function Footer() {
       </div>
       <div className="border-t border-white/5 mt-4 pt-4 flex flex-col md:flex-row items-center justify-between gap-2">
         <p className="text-dim-star text-xs font-mono">
-          © {new Date().getFullYear()} Adem SASSI — Tous droits réservés
+          © {new Date().getFullYear()} Adem SASSI — Tous droits réservés · <a href="/mentions-legales" className="hover:text-neural-blue transition-colors">Mentions légales</a>
         </p>
         <p className="text-dim-star text-xs font-mono text-center">
           Étudiant Master 1 IA · École Hexagone · Versailles
