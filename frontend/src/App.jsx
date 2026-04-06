@@ -51,7 +51,8 @@ function Portfolio() {
 
 export default function App() {
   const serverDown = useServerStatus();
-  if (serverDown) return <ServerError />;
+  const isAdmin = window.location.pathname.startsWith("/admin");
+  if (serverDown && !isAdmin) return <ServerError />;
   return (
     <ErrorBoundary>
       <LangProvider>
