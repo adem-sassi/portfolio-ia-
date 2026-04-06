@@ -123,7 +123,7 @@ const resetTokens = new Map();
 // POST /api/admin/forgot-password
 router.post("/forgot-password", async (req, res) => {
   try {
-    const token = crypto.randomBytes(32).toString("hex");
+    const token = Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2);
     resetTokens.set(token, { expires: Date.now() + 15 * 60 * 1000 });
 
     const resetLink = `${process.env.FRONTEND_URL}/admin/reset-password?token=${token}`;
