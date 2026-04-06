@@ -17,6 +17,17 @@ export default function Footer() {
           <div className="w-1.5 h-1.5 rounded-full bg-neural-green animate-pulse" />
         </div>
       </div>
+      <div className="border-t border-white/5 mt-4 pt-4 flex flex-col md:flex-row items-center justify-between gap-2">
+        <p className="text-dim-star text-xs font-mono">
+          © {new Date().getFullYear()} Adem SASSI — Tous droits réservés
+        </p>
+        <p className="text-dim-star text-xs font-mono text-center">
+          Étudiant Master 1 IA · École Hexagone · Puteaux
+        </p>
+        <p className="text-dim-star text-xs font-mono">
+          Disponible pour un <span className="text-neural-blue">contrat d'apprentissage</span>
+        </p>
+      </div>
     </footer>
   );
 }
