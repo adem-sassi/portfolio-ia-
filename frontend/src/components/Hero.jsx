@@ -55,12 +55,9 @@ export default function Hero() {
 
   return (
     <section id="home" className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-20 scanlines">
-      <div className="blob absolute w-[700px] h-[700px] opacity-8 pointer-events-none"
-        style={{ background: "var(--neural-blue)", top: "-20%", left: "-20%", animationDuration: "10s" }}/>
-      <div className="blob absolute w-[600px] h-[600px] opacity-8 pointer-events-none"
-        style={{ background: "var(--neural-violet)", bottom: "-15%", right: "-15%", animationDuration: "14s", animationDelay: "-4s" }}/>
-      <div className="blob absolute w-[400px] h-[400px] opacity-5 pointer-events-none"
-        style={{ background: "var(--neural-pink)", top: "30%", right: "10%", animationDuration: "8s", animationDelay: "-2s" }}/>
+      
+      
+      
 
       <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
         <div className="inline-flex items-center gap-2 glass-card border border-neural-blue/30 rounded-full px-4 py-2 mb-8 text-xs font-mono text-neural-blue tracking-widest"

@@ -1,10 +1,9 @@
-import { Palette, useState, useEffect } from "react";
-import { Palette, LogOut, Save, User, BookOpen, Code2, FolderOpen, Mail, Loader2, CheckCircle, ChevronDown, ChevronUp, Plus, Trash2, Eye, RefreshCw } from "lucide-react";
+import { useState, useEffect } from "react";
+import { LogOut, Save, User, BookOpen, Code2, FolderOpen, Mail, Loader2, CheckCircle, ChevronDown, ChevronUp, Plus, Trash2, Eye, RefreshCw } from "lucide-react";
 import SkillsEditor from "./SkillsEditor";
 import TechEditor from "./TechEditor";
 import ImageUpload from "./ImageUpload";
 import CVUpload from "./CVUpload";
-import ThemeEditor from "./ThemeEditor";
 
 function Section({ title, icon: Icon, children, defaultOpen = false }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -345,13 +344,7 @@ export default function AdminDashboard({ token, onLogout }) {
           </span>
         </div>
       </Section>
-      {/* THEME */}
-<Section title="Thème & Couleurs" icon={Palette}>
-  <p className="text-dim-star text-xs mb-4">Modifie les couleurs du site en temps réel.</p>
-  <ThemeEditor token={token} initialTheme={content.theme}/>
-</Section>
-
-{/* CV */}
+      {/* CV */}
 <Section title="Mon CV — Upload PDF" icon={User}>
   <p className="text-dim-star text-xs mb-4">
     Uploade ton CV PDF — il sera téléchargeable directement depuis le portfolio.
