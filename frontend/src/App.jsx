@@ -2,7 +2,6 @@ import { Analytics } from "@vercel/analytics/react";
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import { LangProvider } from "./context/LangContext";
-import { useServerStatus } from "./hooks/useServerStatus";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
@@ -21,7 +20,6 @@ import FloatingActions from "./components/FloatingActions";
 import AdminPage from "./pages/AdminPage";
 import MentionsLegales from "./pages/MentionsLegales";
 import NotFound from "./pages/NotFound";
-import ServerError from "./pages/ServerError";
 import BlogPage from "./pages/BlogPage";
 import ArticlePage from "./pages/ArticlePage";
 
@@ -50,8 +48,6 @@ function Portfolio() {
 }
 
 export default function App() {
-  const serverDown = useServerStatus();
-  if (serverDown) return <ServerError />;
   return (
     <ErrorBoundary>
       <LangProvider>
@@ -61,7 +57,6 @@ export default function App() {
           <Route path="/mentions-legales" element={<MentionsLegales/>}/>
           <Route path="/blog" element={<BlogPage/>}/>
           <Route path="/blog/:slug" element={<ArticlePage/>}/>
-          <Route path="/500" element={<ServerError/>}/>
           <Route path="*" element={<NotFound/>}/>
         </Routes>
         <Analytics/>
