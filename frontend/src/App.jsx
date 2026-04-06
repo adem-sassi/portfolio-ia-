@@ -23,6 +23,7 @@ import MentionsLegales from "./pages/MentionsLegales";
 import NotFound from "./pages/NotFound";
 import BlogPage from "./pages/BlogPage";
 import ArticlePage from "./pages/ArticlePage";
+import ResetPassword from "./pages/ResetPassword";
 
 function Portfolio() {
   const [loaded, setLoaded] = useState(false);

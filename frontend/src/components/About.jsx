@@ -79,6 +79,33 @@ export default function About() {
           </div>
         </div>
       </div>
+    
+      {/* Langues */}
+      {data.languages && (
+        <div className="mt-12">
+          <h3 className="font-display text-lg font-bold text-star-white mb-4 flex items-center gap-2">
+            <span className="text-neural-blue">🌍</span> Langues
+          </h3>
+          <div className="space-y-3">
+            {data.languages.map((lang, i) => (
+              <div key={i} className="glass-card rounded-xl p-4 border border-white/5">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xl">{lang.flag}</span>
+                    <span className="text-star-white font-mono text-sm font-bold">{lang.name}</span>
+                  </div>
+                  <span className="text-dim-star text-xs font-mono">{lang.level}</span>
+                </div>
+                <div className="w-full bg-white/5 rounded-full h-1.5">
+                  <div className="h-1.5 rounded-full transition-all duration-1000"
+                    style={{ width: lang.percent + "%", background: "linear-gradient(90deg, var(--neural-blue), var(--neural-violet))" }}/>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
     </section>
   );
 }

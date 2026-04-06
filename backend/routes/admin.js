@@ -116,4 +116,67 @@ router.delete("/delete-cv", authMiddleware, (req, res) => {
   }
 });
 
+
+// Tokens reset en mémoire
+const resetTokens = new Map();
+
+// POST /api/admin/forgot-password
+router.post("/forgot-password", async (req, res) => {
+  try {
+    const token = crypto.randomBytes(32).toString("hex");
+    resetTokens.set(token, { expires: Date.now() + 15 * 60 * 1000 });
+
+    const resetLink = `${process.env.FRONTEND_URL}/admin/reset-password?token=${token}`;
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    await transporter.sendMail({
+      from: `"Portfolio IA" <${process.env.EMAIL_USER}>`,
+      to: process.env.EMAIL_USER,
+      subject: "🔐 Réinitialisation mot de passe admin",
+      html: `
+        <div style="font-family: monospace; background: #020408; color: #F0F4FF; padding: 30px; border-radius: 12px;">
+          <h2 style="color: #00D4FF;">Réinitialisation mot de passe</h2>
+          <p>Clique sur le lien ci-dessous pour réinitialiser ton mot de passe admin :</p>
+          <a href="${resetLink}" style="display: inline-block; background: linear-gradient(135deg, #00D4FF, #7B2FFF); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; margin: 20px 0;">
+            Réinitialiser le mot de passe
+          </a>
+          <p style="color: #888; font-size: 12px;">Ce lien expire dans 15 minutes.</p>
+        </div>
+      `,
+    });
+
+    res.json({ success: true, message: "Email envoyé !" });
+  } catch (e) {
+    res.status(500).json({ error: "Erreur envoi email: " + e.message });
+  }
+});
+
+// POST /api/admin/reset-password
+router.post("/reset-password", async (req, res) => {
+  try {
+    const { token, newPassword } = req.body;
+    const stored = resetTokens.get(token);
+
+    if (!stored) return res.status(400).json({ error: "Token invalide" });
+    if (Date.now() > stored.expires) {
+      resetTokens.delete(token);
+      return res.status(400).json({ error: "Token expiré" });
+    }
+
+    process.env.ADMIN_PASSWORD = newPassword;
+    resetTokens.delete(token);
+
+    res.json({ success: true, message: "Mot de passe changé !" });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 export default router;

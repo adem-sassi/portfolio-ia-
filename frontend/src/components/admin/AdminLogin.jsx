@@ -81,6 +81,14 @@ export default function AdminLogin({ onLogin }) {
             {loading ? <><Loader2 size={15} className="animate-spin" /> Vérification...</> : <><Lock size={15} /> Accéder au panneau admin</>}
           </button>
           <p className="text-center text-dim-star text-xs font-mono mt-4 tracking-wide">Session valide 8 heures</p>
+          <button onClick={async () => {
+            const res = await fetch(`${API_URL}/api/admin/forgot-password`, { method: "POST" });
+            const data = await res.json();
+            if (data.success) alert("Email envoyé à sassiadem7@gmail.com !");
+            else alert("Erreur: " + data.error);
+          }} className="w-full text-center text-dim-star hover:text-neural-blue text-xs font-mono mt-2 transition-colors">
+            Mot de passe oublié ?
+          </button>
         </div>
         <div className="text-center mt-6">
           <a href="/" className="text-dim-star hover:text-neural-blue transition-colors text-sm font-mono">← Retour au portfolio</a>
