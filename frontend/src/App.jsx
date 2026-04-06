@@ -18,6 +18,8 @@ import FloatingActions from "./components/FloatingActions";
 import AdminPage from "./pages/AdminPage";
 import MentionsLegales from "./pages/MentionsLegales";
 import NotFound from "./pages/NotFound";
+import BlogPage from "./pages/BlogPage";
+import ArticlePage from "./pages/ArticlePage";
 
 function Portfolio() {
   const [loaded, setLoaded] = useState(false);
@@ -52,6 +54,8 @@ export default function App() {
       <Route path="/" element={<Portfolio/>}/>
       <Route path="/admin" element={<AdminPage/>}/>
       <Route path="/mentions-legales" element={<MentionsLegales/>}/>
+      <Route path="/blog" element={<BlogPage/>}/>
+      <Route path="/blog/:slug" element={<ArticlePage/>}/>
       <Route path="*" element={<NotFound/>}/>
     </Routes>
   );

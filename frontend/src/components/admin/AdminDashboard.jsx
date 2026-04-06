@@ -4,6 +4,7 @@ import SkillsEditor from "./SkillsEditor";
 import TechEditor from "./TechEditor";
 import ImageUpload from "./ImageUpload";
 import CVUpload from "./CVUpload";
+import BlogEditor from "./BlogEditor";
 
 function Section({ title, icon: Icon, children, defaultOpen = false }) {
   const [open, setOpen] = useState(defaultOpen);
@@ -344,7 +345,12 @@ export default function AdminDashboard({ token, onLogout }) {
           </span>
         </div>
       </Section>
-      {/* CV */}
+      {/* BLOG */}
+<Section title="Blog & Articles" icon={BookOpen}>
+  <BlogEditor token={token}/>
+</Section>
+
+{/* CV */}
 <Section title="Mon CV — Upload PDF" icon={User}>
   <p className="text-dim-star text-xs mb-4">
     Uploade ton CV PDF — il sera téléchargeable directement depuis le portfolio.
