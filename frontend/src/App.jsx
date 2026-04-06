@@ -19,6 +19,7 @@ import FloatingActions from "./components/FloatingActions";
 import AdminPage from "./pages/AdminPage";
 import MentionsLegales from "./pages/MentionsLegales";
 import NotFound from "./pages/NotFound";
+import ErrorBoundary from "./components/ErrorBoundary";
 import ServerError from "./pages/ServerError";
 import BlogPage from "./pages/BlogPage";
 import ArticlePage from "./pages/ArticlePage";
@@ -50,6 +51,7 @@ function Portfolio() {
 export default function App() {
 
   return (
+    <ErrorBoundary>
     <LangProvider>
       <Routes>
         <Route path="/" element={<Portfolio/>}/>
@@ -62,5 +64,6 @@ export default function App() {
       </Routes>
       <Analytics/>
     </LangProvider>
+    </ErrorBoundary>
   );
 }
