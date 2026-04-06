@@ -3,7 +3,6 @@ import LoginLog from "../models/LoginLog.js";
 import Visitor from "../models/Visitor.js";
 import { authMiddleware } from "../middleware/auth.js";
 import crypto from "crypto";
-import nodemailer from "nodemailer";
 
 const router = express.Router();
 
