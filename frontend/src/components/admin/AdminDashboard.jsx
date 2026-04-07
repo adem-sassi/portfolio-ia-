@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
-import { LogOut, Save, User, BookOpen, Code2, FolderOpen, Mail, Loader2, CheckCircle, ChevronDown, ChevronUp, Plus, Trash2, Eye, RefreshCw } from "lucide-react";
+import { LogOut, Save, User, BookOpen, Code2, FolderOpen, Mail, Loader2, CheckCircle, ChevronDown, ChevronUp, Plus, Trash2, Eye, RefreshCw, History, Clock } from "lucide-react";
 import SkillsEditor from "./SkillsEditor";
 import TechEditor from "./TechEditor";
 import ImageUpload from "./ImageUpload";
 import CVUpload from "./CVUpload";
 import BlogEditor from "./BlogEditor";
-import ChangeLogViewer from "./ChangeLogViewer";
 import SecurityDashboard from "./SecurityDashboard";
 
 function Section({ title, icon: Icon, children, defaultOpen = false }) {
@@ -31,6 +30,52 @@ function Field({ label, children }) {
     <div className="mb-4">
       <label className="font-mono text-xs text-dim-star tracking-widest mb-2 block uppercase">{label}</label>
       {children}
+    </div>
+  );
+}
+
+
+function ChangeLog({ token }) {
+  const [logs, setLogs] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const load = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("https://web-production-cba0c.up.railway.app/api/admin/changelog", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (Array.isArray(data)) setLogs(data);
+    } catch {}
+    setLoading(false);
+  };
+
+  useEffect(() => { load(); }, []);
+
+  return (
+    <div>
+      <button onClick={load} className="flex items-center gap-2 text-xs font-mono text-dim-star mb-3 hover:text-neural-blue transition-colors">
+        <RefreshCw size={12} className={loading ? "animate-spin" : ""}/>
+        Rafraîchir
+      </button>
+      {logs.length === 0 ? (
+        <p className="text-dim-star text-xs font-mono">Aucune modification enregistrée</p>
+      ) : (
+        <div className="space-y-2 max-h-60 overflow-y-auto">
+          {logs.map((log, i) => (
+            <div key={i} className="p-3 glass-card rounded-xl border border-white/5">
+              <div className="flex items-center justify-between">
+                <p className="text-star-white text-xs font-mono">{log.details}</p>
+                <div className="flex items-center gap-1 text-dim-star text-xs font-mono">
+                  <Clock size={10}/>
+                  {new Date(log.createdAt).toLocaleString("fr-FR")}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -349,7 +394,7 @@ export default function AdminDashboard({ token, onLogout }) {
       </Section>
       {/* CHANGELOG */}
 <Section title="Historique des modifications" icon={History}>
-  <ChangeLogViewer token={token}/>
+  <ChangeLog token={token}/>
 </Section>
 
 {/* BLOG */}
