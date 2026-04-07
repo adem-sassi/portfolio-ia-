@@ -5,6 +5,7 @@ import TechEditor from "./TechEditor";
 import ImageUpload from "./ImageUpload";
 import CVUpload from "./CVUpload";
 import BlogEditor from "./BlogEditor";
+import ChangeLogViewer from "./ChangeLogViewer";
 import SecurityDashboard from "./SecurityDashboard";
 
 function Section({ title, icon: Icon, children, defaultOpen = false }) {
@@ -346,7 +347,12 @@ export default function AdminDashboard({ token, onLogout }) {
           </span>
         </div>
       </Section>
-      {/* BLOG */}
+      {/* CHANGELOG */}
+<Section title="Historique des modifications" icon={History}>
+  <ChangeLogViewer token={token}/>
+</Section>
+
+{/* BLOG */}
 <Section title="Blog & Articles" icon={BookOpen}>
   <BlogEditor token={token}/>
 </Section>

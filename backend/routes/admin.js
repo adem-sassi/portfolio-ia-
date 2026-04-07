@@ -7,6 +7,7 @@ import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import Content from "../models/Content.js";
 import LoginLog from "../models/LoginLog.js";
+import ChangeLog from "../models/ChangeLog.js";
 import { authMiddleware } from "../middleware/auth.js";
 
 const router = express.Router();
@@ -175,5 +176,14 @@ router.post("/reset-password", async (req, res) => {
   }
 });
 
+
+
+// GET /api/admin/changelog
+router.get("/changelog", authMiddleware, async (req, res) => {
+  try {
+    const logs = await ChangeLog.find().sort({ createdAt: -1 }).limit(50);
+    res.json(logs);
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
 
 export default router;
