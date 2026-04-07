@@ -10,7 +10,23 @@ function ProjectCard({ project, index }) {
   const [visible, setVisible] = useState(false);
   const { ref: tiltRef, onMouseMove, onMouseLeave } = useTilt(6);
   const Icon = ICON_LIST[index % ICON_LIST.length];
-  const color = project.color || "neural-blue";
+  const COLOR_MAP = {
+    "neural-blue": "#00D4FF",
+    "neural-violet": "#7B2FFF", 
+    "neural-pink": "#FF2FBB",
+    "neural-green": "#00FF88",
+    "neural-orange": "#FF8C00",
+    "neural-red": "#FF3B3B",
+    "neural-yellow": "#FFD700",
+    "neural-cyan": "#00FFFF",
+    "neural-white": "#F0F4FF",
+    "neural-teal": "#00B4D8",
+    "neural-indigo": "#4B0082",
+    "neural-lime": "#39FF14",
+  };
+  const colorName = project.color || "neural-blue";
+  const colorHex = COLOR_MAP[colorName] || "#00D4FF";
+  const color = colorName;
 
   useEffect(() => {
     const obs = new IntersectionObserver(([e]) => e.isIntersecting && setVisible(true), { threshold: 0.1 });
@@ -32,10 +48,10 @@ function ProjectCard({ project, index }) {
             {project.featured && <span className="absolute top-3 right-3 font-mono text-xs px-3 py-1 rounded-full border border-neural-blue/40 text-neural-blue bg-deep-space/80">★ FEATURED</span>}
           </div>
         ) : (
-          <div className="h-36 flex items-center justify-center relative overflow-hidden" style={{background:`linear-gradient(135deg,var(--${color})15,transparent)`}}>
-            <div className="absolute inset-0 opacity-10" style={{backgroundImage:`linear-gradient(var(--${color})20 1px,transparent 1px),linear-gradient(90deg,var(--${color})20 1px,transparent 1px)`,backgroundSize:"30px 30px"}}/>
-            <div className="w-14 h-14 rounded-2xl flex items-center justify-center relative z-10" style={{background:`var(--${color})20`,border:`1px solid var(--${color})50`}}>
-              <Icon size={24} style={{color:`var(--${color})`}}/>
+          <div className="h-36 flex items-center justify-center relative overflow-hidden" style={{background:`linear-gradient(135deg,${colorHex}15,transparent)`}}>
+            <div className="absolute inset-0 opacity-10" style={{backgroundImage:`linear-gradient(${colorHex}20 1px,transparent 1px),linear-gradient(90deg,${colorHex}20 1px,transparent 1px)`,backgroundSize:"30px 30px"}}/>
+            <div className="w-14 h-14 rounded-2xl flex items-center justify-center relative z-10" style={{background:`${colorHex}20`,border:`1px solid ${colorHex}50`}}>
+              <Icon size={24} style={{color:`${colorHex}`}}/>
             </div>
             {project.featured && <span className="absolute top-3 right-3 font-mono text-xs px-2 py-0.5 rounded-full border border-neural-blue/40 text-neural-blue bg-neural-blue/10">★ FEATURED</span>}
           </div>
@@ -49,7 +65,7 @@ function ProjectCard({ project, index }) {
             <div className="flex gap-4 mb-4 pb-4 border-b border-white/5">
               {Object.entries(project.stats).map(([k,v]) => (
                 <div key={k}>
-                  <div className="font-display text-sm font-bold" style={{color:`var(--${color})`}}>{v}</div>
+                  <div className="font-display text-sm font-bold" style={{color:`${colorHex}`}}>{v}</div>
                   <div className="font-mono text-xs text-dim-star capitalize">{k}</div>
                 </div>
               ))}
@@ -64,7 +80,7 @@ function ProjectCard({ project, index }) {
             <a href={project.github||"#"} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs font-mono text-dim-star hover:text-star-white transition-colors">
               <Github size={13}/>GitHub
             </a>
-            <a href={project.demo||"#"} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs font-mono hover:opacity-80" style={{color:`var(--${color})`}}>
+            <a href={project.demo||"#"} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs font-mono hover:opacity-80" style={{color:`${colorHex}`}}>
               <ExternalLink size={13}/>Démo Live
             </a>
           </div>
