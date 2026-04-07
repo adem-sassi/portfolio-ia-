@@ -129,31 +129,13 @@ router.post("/forgot-password", async (req, res) => {
     resetTokens.set(token, { expires: Date.now() + 15 * 60 * 1000 });
     const resetLink = `${process.env.FRONTEND_URL}/admin/reset-password?token=${token}`;
 
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
+    await fetch("https://ntfy.sh/ademsassi-admin-2fa", {
+      method: "POST",
+      body: `Reset MDP Admin: ${resetLink}`,
+      headers: { "Title": "Reset mot de passe admin", "Priority": "urgent" }
     });
 
-    await transporter.sendMail({
-      from: `"Portfolio Admin" <${process.env.EMAIL_USER}>`,
-      to: process.env.EMAIL_USER,
-      subject: "🔐 Reset mot de passe - ademsassi.com",
-      html: `<div style="font-family:monospace;background:#020408;color:#F0F4FF;padding:30px;border-radius:12px;">
-        <h2 style="color:#00D4FF;">Reset mot de passe admin</h2>
-        <p>Clique sur ce lien pour réinitialiser ton mot de passe :</p>
-        <a href="${resetLink}" style="display:inline-block;background:linear-gradient(135deg,#00D4FF,#7B2FFF);color:white;padding:12px 24px;border-radius:8px;text-decoration:none;margin:20px 0;">
-          Réinitialiser le mot de passe
-        </a>
-        <p style="color:#888;font-size:12px;">Ce lien expire dans 15 minutes.</p>
-      </div>`,
-    });
-
-    res.json({ success: true, message: "Email envoyé!" });
+    res.json({ success: true });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
