@@ -120,25 +120,41 @@ router.delete("/delete-cv", authMiddleware, (req, res) => {
 
 
 // Tokens reset en mémoire
-const resetTokens = new Map();
+import Content from "../models/Content.js";
+// Tokens stockés dans MongoDB
+async function saveResetToken(token) {
+  await Content.findOneAndUpdate(
+    { section: "reset_token" },
+    { section: "reset_token", data: { token, expires: Date.now() + 15 * 60 * 1000 } },
+    { upsert: true }
+  );
+}
+async function getResetToken() {
+  const doc = await Content.findOne({ section: "reset_token" });
+  return doc ? doc.data : null;
+}
+async function deleteResetToken() {
+  await Content.deleteOne({ section: "reset_token" });
+}
 
 // POST /api/admin/forgot-password
 router.post("/forgot-password", async (req, res) => {
   try {
-    const token = Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2);
-    resetTokens.set(token, { expires: Date.now() + 15 * 60 * 1000 });
+    const token = jwt.sign({ reset: true }, process.env.JWT_SECRET, { expiresIn: "15m" });
     const resetLink = `${process.env.FRONTEND_URL}/admin/reset-password?token=${token}`;
 
     const resend = new Resend(process.env.RESEND_API_KEY);
-    
     await resend.emails.send({
       from: "Portfolio Admin <onboarding@resend.dev>",
       to: process.env.EMAIL_USER,
       subject: "Reset mot de passe - ademsassi.com",
-      html: `<div>
-        <h2>Reset mot de passe admin</h2>
-        <a href="${resetLink}">Clique ici pour réinitialiser</a>
-        <p>Ce lien expire dans 15 minutes.</p>
+      html: `<div style="font-family:sans-serif;padding:20px;">
+        <h2 style="color:#00D4FF;">Reset mot de passe admin</h2>
+        <p>Clique sur ce lien pour réinitialiser ton mot de passe :</p>
+        <a href="${resetLink}" style="background:#7B2FFF;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;display:inline-block;margin:16px 0;">
+          Réinitialiser le mot de passe
+        </a>
+        <p style="color:#888;font-size:12px;">Ce lien expire dans 15 minutes.</p>
       </div>`,
     });
 
@@ -152,21 +168,13 @@ router.post("/forgot-password", async (req, res) => {
 router.post("/reset-password", async (req, res) => {
   try {
     const { token, newPassword } = req.body;
-    const stored = resetTokens.get(token);
-
-    if (!stored) return res.status(400).json({ error: "Token invalide" });
-    if (Date.now() > stored.expires) {
-      resetTokens.delete(token);
-      return res.status(400).json({ error: "Token expiré" });
-    }
-
+    jwt.verify(token, process.env.JWT_SECRET);
     process.env.ADMIN_PASSWORD = newPassword;
-    resetTokens.delete(token);
-
-    res.json({ success: true, message: "Mot de passe changé !" });
+    res.json({ success: true, message: "Mot de passe changé!" });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    res.status(400).json({ error: "Token invalide ou expiré" });
   }
 });
+
 
 export default router;
