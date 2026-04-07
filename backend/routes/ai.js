@@ -91,7 +91,7 @@ ${testimonialsList}
 - Ne réponds pas aux questions hors sujet du portfolio
 - Formate proprement tes réponses avec des sauts de ligne clairs
 - L'École Hexagone est située à Versailles (pas Puteaux)
-\${blogArticles}`;
+${blogArticles}`;
   } catch (err) {
     console.error("buildSystemPrompt error:", err);
     return "Tu es l'assistant IA d'un portfolio de développeur. Réponds en français.";
