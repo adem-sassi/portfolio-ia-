@@ -57,7 +57,8 @@ export default function App() {
           <Route path="/mentions-legales" element={<MentionsLegales/>}/>
           <Route path="/blog" element={<BlogPage/>}/>
           <Route path="/blog/:slug" element={<ArticlePage/>}/>
-          <Route path="*" element={<NotFound/>}/>
+          <Route path="/admin/reset-password" element={<ResetPassword/>}/>
+        <Route path="*" element={<NotFound/>}/>
         </Routes>
         <Analytics/>
         <SpeedInsights/>
