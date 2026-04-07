@@ -4,7 +4,6 @@ import ChatBot from "./ai/ChatBot";
 import TextAnalyzer from "./ai/TextAnalyzer";
 import CodeReviewer from "./ai/CodeReviewer";
 import BioGenerator from "./ai/BioGenerator";
-import MLLab from "./ai/MLLab";
 import AIQuiz from "./ai/AIQuiz";
 
 const TABS = [
@@ -92,9 +91,6 @@ export default function AIFeatures() {
             </div>
           </div>
         </div>
-      </div>
-    <div className="max-w-6xl mx-auto px-6 mt-12">
-        <MLLab/>
       </div>
     </section>
   );
