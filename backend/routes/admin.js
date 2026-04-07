@@ -129,13 +129,32 @@ router.post("/forgot-password", async (req, res) => {
     resetTokens.set(token, { expires: Date.now() + 15 * 60 * 1000 });
     const resetLink = `${process.env.FRONTEND_URL}/admin/reset-password?token=${token}`;
 
-    await fetch("https://ntfy.sh/ademsassi-admin-2fa", {
-      method: "POST",
-      body: `Reset MDP Admin: ${resetLink}`,
-      headers: { "Title": "Reset mot de passe admin", "Priority": "urgent" }
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+      connectionTimeout: 5000,
+      greetingTimeout: 5000,
+      socketTimeout: 5000,
     });
 
-    res.json({ success: true });
+    await transporter.sendMail({
+      from: `"Portfolio Admin" <${process.env.EMAIL_USER}>`,
+      to: process.env.EMAIL_USER,
+      subject: "Reset mot de passe - ademsassi.com",
+      html: `<div>
+        <h2>Reset mot de passe admin</h2>
+        <p>Clique sur ce lien :</p>
+        <a href="${resetLink}">Réinitialiser le mot de passe</a>
+        <p>Ce lien expire dans 15 minutes.</p>
+      </div>`,
+    });
+
+    res.json({ success: true, message: "Email envoyé!" });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
