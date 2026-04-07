@@ -9,6 +9,7 @@ const ArticleSchema = new mongoose.Schema({
   published: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
+  views: { type: Number, default: 0 },
 });
 
 export default mongoose.model("Article", ArticleSchema);

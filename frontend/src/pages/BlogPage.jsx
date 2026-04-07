@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Calendar, Tag, ArrowRight, BookOpen, Search, Clock, FileText } from "lucide-react";
+import { Calendar, Tag, ArrowRight, BookOpen, Search, Clock, FileText, Eye } from "lucide-react";
 
 const API_URL = "https://web-production-cba0c.up.railway.app";
 
@@ -169,6 +169,10 @@ export default function BlogPage() {
                       <div className="flex items-center gap-1 text-dim-star text-xs font-mono">
                         <Clock size={12}/>
                         {readingTime(article.content)} min de lecture
+                      </div>
+                      <div className="flex items-center gap-1 text-dim-star text-xs font-mono">
+                        <Eye size={12}/>
+                        {article.views || 0} vue{article.views !== 1 ? "s" : ""}
                       </div>
                       {article.tags?.map(tag => (
                         <span key={tag} className="flex items-center gap-1 text-xs font-mono px-2 py-0.5 rounded-full"

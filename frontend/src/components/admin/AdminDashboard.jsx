@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { LogOut, Save, User, BookOpen, Code2, FolderOpen, Mail, Loader2, CheckCircle, ChevronDown, ChevronUp, Plus, Trash2, Eye, RefreshCw, History, Clock } from "lucide-react";
+import { LogOut, Save, User, BookOpen, Code2, FolderOpen, Mail, Loader2, CheckCircle, ChevronDown, ChevronUp, Plus, Trash2, Eye, RefreshCw, History, Clock, BarChart2 } from "lucide-react";
 import SkillsEditor from "./SkillsEditor";
 import TechEditor from "./TechEditor";
 import ImageUpload from "./ImageUpload";
@@ -34,6 +34,74 @@ function Field({ label, children }) {
   );
 }
 
+
+
+function VisitChart({ token }) {
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("https://web-production-cba0c.up.railway.app/api/security/visitors", {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(r => r.json())
+    .then(data => { setStats(data); setLoading(false); })
+    .catch(() => setLoading(false));
+  }, []);
+
+  if (loading) return <div className="text-center py-4"><Loader2 size={16} className="animate-spin text-neural-blue mx-auto"/></div>;
+  if (!stats) return <p className="text-dim-star text-xs font-mono">Données non disponibles</p>;
+
+  const visitors = stats.visitors || [];
+  
+  // Grouper par jour
+  const last7days = Array.from({length: 7}, (_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() - (6 - i));
+    const dateStr = d.toLocaleDateString("fr-FR", { weekday: "short", day: "numeric" });
+    const count = visitors.filter(v => {
+      const vDate = new Date(v.createdAt);
+      return vDate.toDateString() === d.toDateString();
+    }).length;
+    return { date: dateStr, count };
+  });
+
+  const maxCount = Math.max(...last7days.map(d => d.count), 1);
+
+  return (
+    <div>
+      <div className="grid grid-cols-3 gap-3 mb-6">
+        <div className="glass-card rounded-xl p-3 border border-white/5 text-center">
+          <p className="font-display text-2xl font-black text-neural-blue">{stats.total || 0}</p>
+          <p className="text-dim-star text-xs font-mono">Total visites</p>
+        </div>
+        <div className="glass-card rounded-xl p-3 border border-white/5 text-center">
+          <p className="font-display text-2xl font-black text-neural-green">{stats.today || 0}</p>
+          <p className="text-dim-star text-xs font-mono">Aujourd'hui</p>
+        </div>
+        <div className="glass-card rounded-xl p-3 border border-white/5 text-center">
+          <p className="font-display text-2xl font-black text-neural-violet">{stats.companies?.length || 0}</p>
+          <p className="text-dim-star text-xs font-mono">Entreprises</p>
+        </div>
+      </div>
+
+      <p className="text-dim-star text-xs font-mono mb-3">7 DERNIERS JOURS</p>
+      <div className="flex items-end gap-2 h-24">
+        {last7days.map((d, i) => (
+          <div key={i} className="flex-1 flex flex-col items-center gap-1">
+            <div className="w-full rounded-t-sm transition-all duration-500"
+              style={{
+                height: `${Math.max((d.count / maxCount) * 80, 4)}px`,
+                background: d.count > 0 ? "linear-gradient(to top, #00D4FF, #7B2FFF)" : "rgba(255,255,255,0.05)"
+              }}/>
+            <p className="text-dim-star text-xs font-mono" style={{ fontSize: "9px" }}>{d.date}</p>
+            {d.count > 0 && <p className="text-neural-blue text-xs font-bold" style={{ fontSize: "9px" }}>{d.count}</p>}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function ChangeLog({ token }) {
   const [logs, setLogs] = useState([]);
@@ -392,7 +460,12 @@ export default function AdminDashboard({ token, onLogout }) {
           </span>
         </div>
       </Section>
-      {/* CHANGELOG */}
+      {/* VISITS CHART */}
+<Section title="Graphique des visites" icon={BarChart2}>
+  <VisitChart token={token}/>
+</Section>
+
+{/* CHANGELOG */}
 <Section title="Historique des modifications" icon={History}>
   <ChangeLog token={token}/>
 </Section>

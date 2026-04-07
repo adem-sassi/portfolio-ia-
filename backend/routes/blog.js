@@ -15,7 +15,11 @@ router.get("/", async (req, res) => {
 // GET un article par slug
 router.get("/:slug", async (req, res) => {
   try {
-    const article = await Article.findOne({ slug: req.params.slug, published: true });
+    const article = await Article.findOneAndUpdate(
+      { slug: req.params.slug, published: true },
+      { $inc: { views: 1 } },
+      { new: true }
+    );
     if (!article) return res.status(404).json({ error: "Article introuvable" });
     res.json(article);
   } catch { res.status(500).json({ error: "Erreur serveur" }); }
