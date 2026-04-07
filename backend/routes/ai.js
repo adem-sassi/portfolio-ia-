@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import Groq from "groq-sdk";
 import Content from "../models/Content.js";
+import Article from "../models/Article.js";
 
 const router = express.Router();
 const MODEL = "llama-3.3-70b-versatile";
@@ -14,7 +15,6 @@ async function buildSystemPrompt() {
   // Articles blog
   let blogArticles = "";
   try {
-    const { default: Article } = await import("../models/Article.js");
     const articles = await Article.find({ published: true });
     if (articles.length > 0) {
       blogArticles = "\n\nARTICLES DU BLOG D'ADEM:\n" + articles.map(a =>
