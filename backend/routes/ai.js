@@ -10,6 +10,19 @@ const getClient = () => new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 // ── Génère le system prompt depuis MongoDB ────────────────────────────────────
 async function buildSystemPrompt() {
+
+  // Articles blog
+  let blogArticles = "";
+  try {
+    const { default: Article } = await import("../models/Article.js");
+    const articles = await Article.find({ published: true });
+    if (articles.length > 0) {
+      blogArticles = "\n\nARTICLES DU BLOG D'ADEM:\n" + articles.map(a =>
+        `- "${a.title}": ${a.excerpt} [Tags: ${(a.tags||[]).join(", ")}]`
+      ).join("\n");
+    }
+  } catch(e) {}
+
   try {
     const sections = await Content.find({});
     const data = {};
@@ -76,7 +89,9 @@ ${testimonialsList}
 - Si on te demande une info qui n'est pas dans ce profil, dis poliment que tu ne sais pas
 - Pour toute opportunité professionnelle, invite à contacter via ${contact.email || "l'email"}
 - Ne réponds pas aux questions hors sujet du portfolio
-- Formate proprement tes réponses avec des sauts de ligne clairs`;
+- Formate proprement tes réponses avec des sauts de ligne clairs
+- L'École Hexagone est située à Versailles (pas Puteaux)
+\${blogArticles}`;
   } catch (err) {
     console.error("buildSystemPrompt error:", err);
     return "Tu es l'assistant IA d'un portfolio de développeur. Réponds en français.";
