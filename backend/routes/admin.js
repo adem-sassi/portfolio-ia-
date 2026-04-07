@@ -120,7 +120,6 @@ router.delete("/delete-cv", authMiddleware, (req, res) => {
 
 
 // Tokens reset en mémoire
-import Content from "../models/Content.js";
 // Tokens stockés dans MongoDB
 async function saveResetToken(token) {
   await Content.findOneAndUpdate(
