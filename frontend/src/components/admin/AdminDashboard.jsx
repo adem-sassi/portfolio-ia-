@@ -238,6 +238,65 @@ export default function AdminDashboard({ token, onLogout }) {
                   }
                 </div>
               ))}
+
+              {/* Tags */}
+              <div>
+                <label className="text-dim-star text-xs font-mono mb-2 block">TAGS</label>
+                <div className="flex flex-wrap gap-2 mb-2">
+                  {(proj.tags||[]).map((tag,ti)=>(
+                    <span key={ti} className="flex items-center gap-1 text-xs font-mono px-2 py-1 rounded-full"
+                      style={{background:"rgba(0,212,255,0.1)",border:"1px solid rgba(0,212,255,0.2)",color:"var(--neural-blue)"}}>
+                      {tag}
+                      <button onClick={()=>{const ps=JSON.parse(JSON.stringify(data.projects||[]));ps[i].tags=ps[i].tags.filter((_,j)=>j!==ti);setData(prev=>({...prev,projects:ps}));}} className="ml-1 hover:opacity-70"><Trash2 size={10}/></button>
+                    </span>
+                  ))}
+                </div>
+                <div className="flex gap-2">
+                  <input id={`tag-${i}`} placeholder="Ajouter un tag (Enter)..." className="ai-input flex-1 px-3 py-1.5 rounded-lg text-xs"
+                    onKeyDown={e=>{if(e.key==="Enter"&&e.target.value.trim()){const ps=JSON.parse(JSON.stringify(data.projects||[]));if(!ps[i].tags)ps[i].tags=[];ps[i].tags.push(e.target.value.trim());setData(prev=>({...prev,projects:ps}));e.target.value="";}}}/>
+                </div>
+              </div>
+
+              {/* Stats */}
+              <div>
+                <label className="text-dim-star text-xs font-mono mb-2 block">STATS (valeur / label)</label>
+                <div className="space-y-2">
+                  {Object.entries(proj.stats||{}).map(([key,val],si)=>(
+                    <div key={si} className="flex items-center gap-2">
+                      <input value={val||""} onChange={e=>{const ps=JSON.parse(JSON.stringify(data.projects||[]));ps[i].stats={...ps[i].stats,[key]:e.target.value};setData(prev=>({...prev,projects:ps}));}}
+                        className="ai-input flex-1 px-3 py-1.5 rounded-lg text-xs" placeholder="Valeur"/>
+                      <input value={key||""} onChange={e=>{const ps=JSON.parse(JSON.stringify(data.projects||[]));const ns={};Object.entries(ps[i].stats||{}).forEach(([k,v])=>{ns[k===key?e.target.value:k]=v;});ps[i].stats=ns;setData(prev=>({...prev,projects:ps}));}}
+                        className="ai-input w-24 px-3 py-1.5 rounded-lg text-xs" placeholder="Label"/>
+                      <button onClick={()=>{const ps=JSON.parse(JSON.stringify(data.projects||[]));const ns={};Object.entries(ps[i].stats||{}).forEach(([k,v])=>{if(k!==key)ns[k]=v;});ps[i].stats=ns;setData(prev=>({...prev,projects:ps}));}}
+                        className="text-neural-pink hover:opacity-70"><Trash2 size={12}/></button>
+                    </div>
+                  ))}
+                  <button onClick={()=>{const ps=JSON.parse(JSON.stringify(data.projects||[]));if(!ps[i].stats)ps[i].stats={};ps[i].stats[`stat${Object.keys(ps[i].stats||{}).length+1}`]="";setData(prev=>({...prev,projects:ps}));}}
+                    className="flex items-center gap-1 text-xs font-mono text-neural-blue hover:opacity-80"><Plus size={12}/>Ajouter stat</button>
+                </div>
+              </div>
+
+              {/* Couleur + Featured */}
+              <div className="flex items-center gap-6">
+                <div>
+                  <label className="text-dim-star text-xs font-mono mb-2 block">COULEUR</label>
+                  <div className="flex gap-2">
+                    {["neural-blue","neural-violet","neural-pink","neural-green"].map(c=>(
+                      <button key={c} onClick={()=>{const ps=JSON.parse(JSON.stringify(data.projects||[]));ps[i].color=c;setData(prev=>({...prev,projects:ps}));}}
+                        className="w-7 h-7 rounded-lg border-2 transition-all"
+                        style={{background:`var(--${c})`,borderColor:proj.color===c?"white":"transparent",opacity:proj.color===c?1:0.4}}/>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <label className="text-dim-star text-xs font-mono mb-2 block">FEATURED</label>
+                  <button onClick={()=>{const ps=JSON.parse(JSON.stringify(data.projects||[]));ps[i].featured=!ps[i].featured;setData(prev=>({...prev,projects:ps}));}}
+                    className="relative w-12 h-6 rounded-full transition-all"
+                    style={{background:proj.featured?"var(--neural-blue)":"rgba(255,255,255,0.1)"}}>
+                    <div className="absolute top-1 w-4 h-4 rounded-full bg-white transition-all" style={{left:proj.featured?"26px":"4px"}}/>
+                  </button>
+                </div>
+              </div>
             </div>
           ))}
           <button onClick={()=>{const ps=[...(data.projects||[]),{id:Date.now(),title:"Nouveau projet",desc:"",tags:[],color:"neural-blue",github:"",demo:"",featured:false}];setData(prev=>({...prev,projects:ps}));}}
