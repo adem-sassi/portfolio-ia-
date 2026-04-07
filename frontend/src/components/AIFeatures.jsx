@@ -93,6 +93,9 @@ export default function AIFeatures() {
           </div>
         </div>
       </div>
+    <div className="max-w-6xl mx-auto px-6 mt-12">
+        <MLLab/>
+      </div>
     </section>
   );
 }
