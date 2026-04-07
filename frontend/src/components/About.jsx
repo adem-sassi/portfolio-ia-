@@ -38,6 +38,7 @@ function TimelineItem({ item, index }) {
 
 export default function About() {
   const { content, loading } = useContent();
+  const data = content?.about || {};
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
 
