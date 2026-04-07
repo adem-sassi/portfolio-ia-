@@ -1,5 +1,5 @@
 import express from "express";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { writeFileSync, unlinkSync, existsSync, mkdirSync } from "fs";
