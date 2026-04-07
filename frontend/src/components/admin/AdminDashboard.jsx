@@ -1,104 +1,83 @@
 import { useState, useEffect } from "react";
-import { LogOut, Save, User, BookOpen, Code2, FolderOpen, Mail, Loader2, CheckCircle, ChevronDown, ChevronUp, Plus, Trash2, Eye, RefreshCw, History, Clock, BarChart2 } from "lucide-react";
+import { LogOut, Save, User, BookOpen, Code2, FolderOpen, Mail, Loader2, CheckCircle, ChevronDown, ChevronUp, Plus, Trash2, Eye, RefreshCw, History, Clock, BarChart2, Home, Settings, FileText, Shield, Upload, Cpu } from "lucide-react";
 import SkillsEditor from "./SkillsEditor";
 import TechEditor from "./TechEditor";
-import ImageUpload from "./ImageUpload";
 import CVUpload from "./CVUpload";
 import BlogEditor from "./BlogEditor";
 import SecurityDashboard from "./SecurityDashboard";
 
-function Section({ title, icon: Icon, children, defaultOpen = false }) {
-  const [open, setOpen] = useState(defaultOpen);
-  return (
-    <div className="glass-card rounded-2xl border border-white/5 overflow-hidden mb-4">
-      <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between px-6 py-4 hover:bg-white/5 transition-colors">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{background:"rgba(0,212,255,0.1)",border:"1px solid rgba(0,212,255,0.3)"}}>
-            <Icon size={15} className="text-neural-blue"/>
-          </div>
-          <span className="font-display text-sm font-bold text-star-white tracking-wide">{title}</span>
-        </div>
-        {open ? <ChevronUp size={16} className="text-dim-star"/> : <ChevronDown size={16} className="text-dim-star"/>}
-      </button>
-      {open && <div className="px-6 pb-6 border-t border-white/5 pt-4">{children}</div>}
-    </div>
-  );
-}
-
-function Field({ label, children }) {
-  return (
-    <div className="mb-4">
-      <label className="font-mono text-xs text-dim-star tracking-widest mb-2 block uppercase">{label}</label>
-      {children}
-    </div>
-  );
-}
-
-
+const API_URL = "https://web-production-cba0c.up.railway.app";
 
 function VisitChart({ token }) {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://web-production-cba0c.up.railway.app/api/security/visitors", {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-    .then(r => r.json())
-    .then(data => { setStats(data); setLoading(false); })
-    .catch(() => setLoading(false));
+    fetch(`${API_URL}/api/security/visitors`, { headers: { Authorization: `Bearer ${token}` } })
+      .then(r => r.json())
+      .then(data => { setStats(data); setLoading(false); })
+      .catch(() => setLoading(false));
   }, []);
 
-  if (loading) return <div className="text-center py-4"><Loader2 size={16} className="animate-spin text-neural-blue mx-auto"/></div>;
-  if (!stats) return <p className="text-dim-star text-xs font-mono">Données non disponibles</p>;
+  if (loading) return <div className="flex justify-center py-8"><Loader2 size={20} className="animate-spin text-neural-blue"/></div>;
+  if (!stats) return <p className="text-dim-star text-sm">Données non disponibles</p>;
 
   const visitors = stats.visitors || [];
-  
-  // Grouper par jour
   const last7days = Array.from({length: 7}, (_, i) => {
     const d = new Date();
     d.setDate(d.getDate() - (6 - i));
-    const dateStr = d.toLocaleDateString("fr-FR", { weekday: "short", day: "numeric" });
-    const count = visitors.filter(v => {
-      const vDate = new Date(v.createdAt);
-      return vDate.toDateString() === d.toDateString();
-    }).length;
-    return { date: dateStr, count };
+    const count = visitors.filter(v => new Date(v.createdAt).toDateString() === d.toDateString()).length;
+    return { date: d.toLocaleDateString("fr-FR", { weekday: "short", day: "numeric" }), count };
   });
-
   const maxCount = Math.max(...last7days.map(d => d.count), 1);
 
   return (
-    <div>
-      <div className="grid grid-cols-3 gap-3 mb-6">
-        <div className="glass-card rounded-xl p-3 border border-white/5 text-center">
-          <p className="font-display text-2xl font-black text-neural-blue">{stats.total || 0}</p>
-          <p className="text-dim-star text-xs font-mono">Total visites</p>
-        </div>
-        <div className="glass-card rounded-xl p-3 border border-white/5 text-center">
-          <p className="font-display text-2xl font-black text-neural-green">{stats.today || 0}</p>
-          <p className="text-dim-star text-xs font-mono">Aujourd'hui</p>
-        </div>
-        <div className="glass-card rounded-xl p-3 border border-white/5 text-center">
-          <p className="font-display text-2xl font-black text-neural-violet">{stats.companies?.length || 0}</p>
-          <p className="text-dim-star text-xs font-mono">Entreprises</p>
-        </div>
-      </div>
-
-      <p className="text-dim-star text-xs font-mono mb-3">7 DERNIERS JOURS</p>
-      <div className="flex items-end gap-2 h-24">
-        {last7days.map((d, i) => (
-          <div key={i} className="flex-1 flex flex-col items-center gap-1">
-            <div className="w-full rounded-t-sm transition-all duration-500"
-              style={{
-                height: `${Math.max((d.count / maxCount) * 80, 4)}px`,
-                background: d.count > 0 ? "linear-gradient(to top, #00D4FF, #7B2FFF)" : "rgba(255,255,255,0.05)"
-              }}/>
-            <p className="text-dim-star text-xs font-mono" style={{ fontSize: "9px" }}>{d.date}</p>
-            {d.count > 0 && <p className="text-neural-blue text-xs font-bold" style={{ fontSize: "9px" }}>{d.count}</p>}
+    <div className="space-y-6">
+      <div className="grid grid-cols-3 gap-4">
+        {[
+          { label: "Total visites", value: stats.total || 0, color: "#00D4FF" },
+          { label: "Aujourd'hui", value: stats.today || 0, color: "#00FF88" },
+          { label: "Entreprises", value: stats.companies?.length || 0, color: "#7B2FFF" },
+        ].map((s, i) => (
+          <div key={i} className="glass-card rounded-2xl p-4 border border-white/5 text-center">
+            <p className="font-display text-3xl font-black mb-1" style={{ color: s.color }}>{s.value}</p>
+            <p className="text-dim-star text-xs font-mono">{s.label}</p>
           </div>
         ))}
       </div>
+
+      <div>
+        <p className="text-dim-star text-xs font-mono mb-4">VISITES — 7 DERNIERS JOURS</p>
+        <div className="flex items-end gap-2 h-32">
+          {last7days.map((d, i) => (
+            <div key={i} className="flex-1 flex flex-col items-center gap-2">
+              <p className="text-neural-blue text-xs font-bold" style={{ fontSize: "10px", minHeight: "14px" }}>{d.count > 0 ? d.count : ""}</p>
+              <div className="w-full rounded-t-lg transition-all duration-700"
+                style={{ height: `${Math.max((d.count / maxCount) * 96, 4)}px`, background: d.count > 0 ? "linear-gradient(to top, #00D4FF, #7B2FFF)" : "rgba(255,255,255,0.05)" }}/>
+              <p className="text-dim-star font-mono text-center" style={{ fontSize: "9px" }}>{d.date}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {stats.companies?.length > 0 && (
+        <div>
+          <p className="text-dim-star text-xs font-mono mb-3">ENTREPRISES RÉCENTES</p>
+          <div className="space-y-2">
+            {stats.companies.slice(0, 5).map((c, i) => (
+              <div key={i} className="flex items-center justify-between p-3 glass-card rounded-xl border border-white/5">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "rgba(0,212,255,0.1)", border: "1px solid rgba(0,212,255,0.2)" }}>
+                    <span className="text-xs font-bold text-neural-blue">{c._id?.charAt(0)}</span>
+                  </div>
+                  <p className="text-star-white text-sm font-mono truncate max-w-48">{c._id}</p>
+                </div>
+                <span className="text-dim-star text-xs font-mono">{c.count} visite{c.count > 1 ? "s" : ""}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -110,9 +89,7 @@ function ChangeLog({ token }) {
   const load = async () => {
     setLoading(true);
     try {
-      const res = await fetch("https://web-production-cba0c.up.railway.app/api/admin/changelog", {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await fetch(`${API_URL}/api/admin/changelog`, { headers: { Authorization: `Bearer ${token}` } });
       const data = await res.json();
       if (Array.isArray(data)) setLogs(data);
     } catch {}
@@ -122,24 +99,31 @@ function ChangeLog({ token }) {
   useEffect(() => { load(); }, []);
 
   return (
-    <div>
-      <button onClick={load} className="flex items-center gap-2 text-xs font-mono text-dim-star mb-3 hover:text-neural-blue transition-colors">
-        <RefreshCw size={12} className={loading ? "animate-spin" : ""}/>
-        Rafraîchir
-      </button>
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <p className="text-dim-star text-xs font-mono">{logs.length} ENTRÉES</p>
+        <button onClick={load} className="flex items-center gap-2 text-xs font-mono text-dim-star hover:text-neural-blue transition-colors">
+          <RefreshCw size={12} className={loading ? "animate-spin" : ""}/>
+          Rafraîchir
+        </button>
+      </div>
       {logs.length === 0 ? (
-        <p className="text-dim-star text-xs font-mono">Aucune modification enregistrée</p>
+        <div className="text-center py-8">
+          <History size={32} className="text-dim-star mx-auto mb-2 opacity-30"/>
+          <p className="text-dim-star text-sm font-mono">Aucune modification enregistrée</p>
+        </div>
       ) : (
-        <div className="space-y-2 max-h-60 overflow-y-auto">
+        <div className="space-y-2">
           {logs.map((log, i) => (
-            <div key={i} className="p-3 glass-card rounded-xl border border-white/5">
-              <div className="flex items-center justify-between">
-                <p className="text-star-white text-xs font-mono">{log.details}</p>
-                <div className="flex items-center gap-1 text-dim-star text-xs font-mono">
-                  <Clock size={10}/>
-                  {new Date(log.createdAt).toLocaleString("fr-FR")}
-                </div>
+            <div key={i} className="flex items-center gap-4 p-4 glass-card rounded-xl border border-white/5">
+              <div className="w-2 h-2 rounded-full bg-neural-blue flex-shrink-0"/>
+              <div className="flex-1 min-w-0">
+                <p className="text-star-white text-sm font-mono">{log.details}</p>
+                <p className="text-dim-star text-xs mt-1">{log.ip}</p>
               </div>
+              <p className="text-dim-star text-xs font-mono flex-shrink-0">
+                {new Date(log.createdAt).toLocaleDateString("fr-FR")} {new Date(log.createdAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
+              </p>
             </div>
           ))}
         </div>
@@ -148,349 +132,315 @@ function ChangeLog({ token }) {
   );
 }
 
+const NAV_ITEMS = [
+  { id: "dashboard", label: "Dashboard", icon: BarChart2, group: "overview" },
+  { id: "hero", label: "Hero", icon: Home, group: "content" },
+  { id: "about", label: "À Propos", icon: User, group: "content" },
+  { id: "skills", label: "Compétences", icon: Cpu, group: "content" },
+  { id: "techs", label: "Technologies", icon: Code2, group: "content" },
+  { id: "projects", label: "Projets", icon: FolderOpen, group: "content" },
+  { id: "testimonials", label: "Témoignages", icon: User, group: "content" },
+  { id: "contact", label: "Contact", icon: Mail, group: "content" },
+  { id: "blog", label: "Blog", icon: BookOpen, group: "tools" },
+  { id: "cv", label: "CV PDF", icon: Upload, group: "tools" },
+  { id: "security", label: "Sécurité", icon: Shield, group: "tools" },
+  { id: "changelog", label: "Historique", icon: History, group: "tools" },
+];
+
 export default function AdminDashboard({ token, onLogout }) {
+  const [activeSection, setActiveSection] = useState("dashboard");
   const [content, setContent] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
-  const headers = { "Content-Type": "application/json", Authorization: `Bearer ${token}` };
-
-  const loadContent = () => {
-    setLoading(true); setError("");
-    fetch("https://web-production-cba0c.up.railway.app/api/admin/content", { headers })
+  useEffect(() => {
+    fetch(`${API_URL}/api/admin/content`, { headers: { Authorization: `Bearer ${token}` } })
       .then(r => r.json())
       .then(data => { setContent(data); setLoading(false); })
-      .catch(e => { setError("Erreur: " + e.message); setLoading(false); });
-  };
+      .catch(() => setLoading(false));
+  }, []);
 
-  useEffect(() => { loadContent(); }, []);
-
-  const saveAll = async () => {
-    setSaving(true); setError("");
+  const save = async (section, data) => {
+    setSaving(true);
     try {
-      for (const [section, data] of Object.entries(content)) {
-        const res = await fetch(`https://web-production-cba0c.up.railway.app/api/admin/content/${section}`, { method: "PUT", headers, body: JSON.stringify(data) });
-        if (!res.ok) throw new Error(`Erreur section ${section}`);
-      }
-      setSaved(true);
-      setTimeout(() => setSaved(false), 3000);
-    } catch (e) { setError(e.message); }
-    finally { setSaving(false); }
-  };
-
-  const update = (path, value) => {
-    try {
-      const keys = path.split(".");
-      setContent(prev => {
-        if (!prev) return prev;
-        const next = JSON.parse(JSON.stringify(prev));
-        let obj = next;
-        for (let i = 0; i < keys.length - 1; i++) { if (!obj[keys[i]]) obj[keys[i]] = {}; obj = obj[keys[i]]; }
-        obj[keys[keys.length - 1]] = value;
-        return next;
+      await fetch(`${API_URL}/api/admin/content/${section}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify(data),
       });
-    } catch (e) { console.error("Update error:", e); }
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    } catch {}
+    setSaving(false);
   };
 
-  const logout = () => { localStorage.removeItem("admin_token"); onLogout(); };
+  const update = (section, field, value) => {
+    setContent(prev => ({ ...prev, [section]: { ...prev[section], [field]: value } }));
+  };
+
+  const groups = [
+    { id: "overview", label: "VUE D'ENSEMBLE" },
+    { id: "content", label: "CONTENU" },
+    { id: "tools", label: "OUTILS" },
+  ];
 
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="text-center"><Loader2 size={32} className="text-neural-blue animate-spin mx-auto mb-4"/>
-      <p className="text-dim-star font-mono text-sm">Chargement depuis MongoDB...</p></div>
+    <div className="min-h-screen flex items-center justify-center" style={{ background: "var(--void)" }}>
+      <Loader2 size={32} className="animate-spin text-neural-blue"/>
     </div>
   );
 
-  if (!content) return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="text-center"><p className="text-neural-pink mb-4">{error}</p>
-      <button onClick={loadContent} className="ai-btn px-6 py-3 rounded-xl">Réessayer</button></div>
-    </div>
-  );
+  const renderContent = () => {
+    if (!content) return null;
+
+    switch (activeSection) {
+      case "dashboard":
+        return (
+          <div className="space-y-8">
+            <div>
+              <h2 className="font-display text-2xl font-black text-star-white mb-2">Tableau de bord</h2>
+              <p className="text-dim-star text-sm font-mono">Vue d'ensemble de votre portfolio</p>
+            </div>
+            <VisitChart token={token}/>
+          </div>
+        );
+
+      case "hero":
+        return (
+          <div className="space-y-6">
+            <div>
+              <h2 className="font-display text-2xl font-black text-star-white mb-2">Hero — Présentation</h2>
+              <p className="text-dim-star text-sm font-mono">La première section visible sur le portfolio</p>
+            </div>
+            <div className="space-y-4">
+              {[
+                { field: "name", label: "Nom complet" },
+                { field: "title", label: "Titre" },
+                { field: "description", label: "Description", multiline: true },
+              ].map(({ field, label, multiline }) => (
+                <div key={field}>
+                  <label className="text-dim-star text-xs font-mono tracking-widest mb-2 block">{label.toUpperCase()}</label>
+                  {multiline ? (
+                    <textarea value={content.hero?.[field] || ""} onChange={e => update("hero", field, e.target.value)}
+                      className="ai-input w-full px-4 py-3 rounded-xl text-sm resize-none h-24"/>
+                  ) : (
+                    <input value={content.hero?.[field] || ""} onChange={e => update("hero", field, e.target.value)}
+                      className="ai-input w-full px-4 py-3 rounded-xl text-sm"/>
+                  )}
+                </div>
+              ))}
+              <button onClick={() => save("hero", content.hero)}
+                className="ai-btn px-6 py-3 rounded-xl flex items-center gap-2 text-sm">
+                {saving ? <Loader2 size={14} className="animate-spin"/> : saved ? <CheckCircle size={14}/> : <Save size={14}/>}
+                {saved ? "Sauvegardé !" : "Sauvegarder"}
+              </button>
+            </div>
+          </div>
+        );
+
+      case "about":
+        return (
+          <div className="space-y-6">
+            <div>
+              <h2 className="font-display text-2xl font-black text-star-white mb-2">À Propos</h2>
+              <p className="text-dim-star text-sm font-mono">Votre parcours et présentation</p>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <label className="text-dim-star text-xs font-mono tracking-widest mb-2 block">TITRE</label>
+                <input value={content.about?.title || ""} onChange={e => update("about", "title", e.target.value)}
+                  className="ai-input w-full px-4 py-3 rounded-xl text-sm"/>
+              </div>
+              {content.about?.paragraphs?.map((p, i) => (
+                <div key={i}>
+                  <label className="text-dim-star text-xs font-mono tracking-widest mb-2 block">PARAGRAPHE {i + 1}</label>
+                  <textarea value={p} onChange={e => {
+                    const paras = [...(content.about?.paragraphs || [])];
+                    paras[i] = e.target.value;
+                    update("about", "paragraphs", paras);
+                  }} className="ai-input w-full px-4 py-3 rounded-xl text-sm resize-none h-20"/>
+                </div>
+              ))}
+              <button onClick={() => save("about", content.about)}
+                className="ai-btn px-6 py-3 rounded-xl flex items-center gap-2 text-sm">
+                {saving ? <Loader2 size={14} className="animate-spin"/> : <Save size={14}/>}
+                Sauvegarder
+              </button>
+            </div>
+          </div>
+        );
+
+      case "skills":
+        return (
+          <div className="space-y-6">
+            <div>
+              <h2 className="font-display text-2xl font-black text-star-white mb-2">Compétences</h2>
+              <p className="text-dim-star text-sm font-mono">Gérez vos catégories et niveaux</p>
+            </div>
+            <SkillsEditor token={token} initialSkills={content.skills}/>
+          </div>
+        );
+
+      case "techs":
+        return (
+          <div className="space-y-6">
+            <div>
+              <h2 className="font-display text-2xl font-black text-star-white mb-2">Technologies</h2>
+              <p className="text-dim-star text-sm font-mono">Badges de technologies affichés sur le portfolio</p>
+            </div>
+            <TechEditor token={token} initialTechs={content.techs}/>
+          </div>
+        );
+
+      case "contact":
+        return (
+          <div className="space-y-6">
+            <div>
+              <h2 className="font-display text-2xl font-black text-star-white mb-2">Contact</h2>
+              <p className="text-dim-star text-sm font-mono">Coordonnées et réseaux sociaux</p>
+            </div>
+            <div className="space-y-4">
+              {[
+                { field: "email", label: "Email" },
+                { field: "github", label: "GitHub URL" },
+                { field: "linkedin", label: "LinkedIn URL" },
+                { field: "availabilityText", label: "Texte de disponibilité" },
+              ].map(({ field, label }) => (
+                <div key={field}>
+                  <label className="text-dim-star text-xs font-mono tracking-widest mb-2 block">{label.toUpperCase()}</label>
+                  <input value={content.contact?.[field] || ""} onChange={e => update("contact", field, e.target.value)}
+                    className="ai-input w-full px-4 py-3 rounded-xl text-sm"/>
+                </div>
+              ))}
+              <button onClick={() => save("contact", content.contact)}
+                className="ai-btn px-6 py-3 rounded-xl flex items-center gap-2 text-sm">
+                {saving ? <Loader2 size={14} className="animate-spin"/> : <Save size={14}/>}
+                Sauvegarder
+              </button>
+            </div>
+          </div>
+        );
+
+      case "blog":
+        return (
+          <div className="space-y-6">
+            <div>
+              <h2 className="font-display text-2xl font-black text-star-white mb-2">Blog & Articles</h2>
+              <p className="text-dim-star text-sm font-mono">Gérez vos articles publiés</p>
+            </div>
+            <BlogEditor token={token}/>
+          </div>
+        );
+
+      case "cv":
+        return (
+          <div className="space-y-6">
+            <div>
+              <h2 className="font-display text-2xl font-black text-star-white mb-2">CV PDF</h2>
+              <p className="text-dim-star text-sm font-mono">Uploadez votre CV en format PDF</p>
+            </div>
+            <CVUpload token={token}/>
+          </div>
+        );
+
+      case "security":
+        return (
+          <div className="space-y-6">
+            <div>
+              <h2 className="font-display text-2xl font-black text-star-white mb-2">Sécurité & Visiteurs</h2>
+              <p className="text-dim-star text-sm font-mono">Surveillance et protection du site</p>
+            </div>
+            <SecurityDashboard token={token}/>
+          </div>
+        );
+
+      case "changelog":
+        return (
+          <div className="space-y-6">
+            <div>
+              <h2 className="font-display text-2xl font-black text-star-white mb-2">Historique</h2>
+              <p className="text-dim-star text-sm font-mono">Toutes les modifications effectuées</p>
+            </div>
+            <ChangeLog token={token}/>
+          </div>
+        );
+
+      default:
+        return (
+          <div className="text-center py-20">
+            <p className="text-dim-star font-mono">Section en cours de développement</p>
+          </div>
+        );
+    }
+  };
 
   return (
-    <div className="min-h-screen px-4 py-6 max-w-4xl mx-auto">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-8 flex-wrap gap-3">
-        <div>
-          <h1 className="font-display text-2xl font-black gradient-text">ADMIN PANEL</h1>
-          <p className="text-dim-star text-xs font-mono mt-1">🍃 MongoDB — modifications en temps réel</p>
+    <div className="min-h-screen flex" style={{ background: "var(--void)" }}>
+
+      {/* Sidebar */}
+      <div className="w-64 flex-shrink-0 border-r border-white/5 flex flex-col"
+        style={{ background: "rgba(255,255,255,0.02)" }}>
+
+        {/* Logo */}
+        <div className="p-6 border-b border-white/5">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center font-display font-black text-sm"
+              style={{ background: "linear-gradient(135deg, #00D4FF20, #7B2FFF20)", border: "1px solid #00D4FF40", color: "#00D4FF" }}>
+              AS
+            </div>
+            <div>
+              <p className="font-display font-black text-star-white text-sm">Admin Panel</p>
+              <p className="text-dim-star text-xs font-mono">ademsassi.com</p>
+            </div>
+          </div>
         </div>
-        <div className="flex items-center gap-2 flex-wrap">
-          <button onClick={loadContent} className="flex items-center gap-2 px-3 py-2 glass-card border border-white/10 rounded-full text-xs font-mono text-dim-star hover:text-neural-blue transition-colors">
-            <RefreshCw size={12}/> Actualiser
-          </button>
-          <a href="/" target="_blank" className="flex items-center gap-2 px-4 py-2 glass-card border border-white/10 rounded-full text-xs font-mono text-dim-star hover:text-neural-blue transition-colors">
-            <Eye size={13}/> Voir le site
+
+        {/* Navigation */}
+        <nav className="flex-1 p-4 space-y-6 overflow-y-auto">
+          {groups.map(group => (
+            <div key={group.id}>
+              <p className="text-dim-star/50 text-xs font-mono tracking-widest mb-2 px-2">{group.label}</p>
+              <div className="space-y-1">
+                {NAV_ITEMS.filter(item => item.group === group.id).map(item => {
+                  const Icon = item.icon;
+                  const isActive = activeSection === item.id;
+                  return (
+                    <button key={item.id} onClick={() => setActiveSection(item.id)}
+                      className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-mono transition-all"
+                      style={{
+                        background: isActive ? "rgba(0,212,255,0.1)" : "transparent",
+                        border: `1px solid ${isActive ? "rgba(0,212,255,0.2)" : "transparent"}`,
+                        color: isActive ? "var(--neural-blue)" : "var(--dim-star)"
+                      }}>
+                      <Icon size={15}/>
+                      {item.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </nav>
+
+        {/* Bottom actions */}
+        <div className="p-4 border-t border-white/5 space-y-2">
+          <a href="/" target="_blank"
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-mono text-dim-star hover:text-neural-blue transition-colors">
+            <Eye size={15}/> Voir le site
           </a>
-          <button onClick={logout} className="flex items-center gap-2 px-4 py-2 glass-card border border-neural-pink/30 rounded-full text-xs font-mono text-neural-pink hover:bg-neural-pink/10 transition-colors">
-            <LogOut size={13}/> Déconnexion
+          <button onClick={onLogout}
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-mono text-dim-star hover:text-neural-pink transition-colors">
+            <LogOut size={15}/> Déconnexion
           </button>
         </div>
       </div>
 
-      {error && <div className="mb-4 px-4 py-3 rounded-xl bg-neural-pink/10 border border-neural-pink/30 text-neural-pink text-sm font-mono">⚠ {error}</div>}
-      {saved && (
-        <div className="mb-4 px-4 py-3 rounded-xl bg-neural-green/10 border border-neural-green/30 text-neural-green text-sm font-mono flex items-center gap-2">
-          <CheckCircle size={14}/> Sauvegardé ! Actualise le site pour voir les changements.
+      {/* Main content */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="max-w-4xl mx-auto p-8">
+          {renderContent()}
         </div>
-      )}
-
-      {/* HERO */}
-      <Section title="Hero — Présentation principale" icon={User} defaultOpen={true}>
-        <Field label="Ton nom complet">
-          <input type="text" value={content.hero?.name||""} onChange={e=>update("hero.name",e.target.value)}
-            className="ai-input w-full px-4 py-3 rounded-xl text-sm" placeholder="Prénom Nom"/>
-        </Field>
-        <Field label="Description courte">
-          <textarea value={content.hero?.description||""} onChange={e=>update("hero.description",e.target.value)}
-            className="ai-input w-full px-4 py-3 rounded-xl text-sm resize-none h-24"/>
-        </Field>
-        <Field label="Statistiques">
-          <div className="space-y-2">
-            {(content.hero?.stats||[]).map((stat,i)=>(
-              <div key={i} className="flex gap-3 items-center">
-                <input type="text" value={stat.value||""} onChange={e=>{const s=JSON.parse(JSON.stringify(content.hero.stats));s[i].value=e.target.value;update("hero.stats",s);}}
-                  className="ai-input w-20 px-3 py-2 rounded-lg text-sm font-mono" placeholder="5+"/>
-                <input type="text" value={stat.label||""} onChange={e=>{const s=JSON.parse(JSON.stringify(content.hero.stats));s[i].label=e.target.value;update("hero.stats",s);}}
-                  className="ai-input flex-1 px-3 py-2 rounded-lg text-sm" placeholder="Label"/>
-                <button onClick={()=>update("hero.stats",content.hero.stats.filter((_,idx)=>idx!==i))} className="text-neural-pink/50 hover:text-neural-pink"><Trash2 size={13}/></button>
-              </div>
-            ))}
-            <button onClick={()=>update("hero.stats",[...(content.hero?.stats||[]),{value:"",label:""}])}
-              className="flex items-center gap-1 text-xs font-mono text-neural-blue hover:opacity-80 mt-1"><Plus size={12}/> Ajouter</button>
-          </div>
-        </Field>
-      </Section>
-
-      {/* ABOUT */}
-      <Section title="À propos — Parcours & Timeline" icon={BookOpen}>
-        <Field label="Titre">
-          <input type="text" value={content.about?.title||""} onChange={e=>update("about.title",e.target.value)}
-            className="ai-input w-full px-4 py-3 rounded-xl text-sm"/>
-        </Field>
-        <Field label="Paragraphes">
-          {(content.about?.paragraphs||[]).map((p,i)=>(
-            <div key={i} className="flex gap-2 mb-2">
-              <textarea value={p} onChange={e=>{const a=[...(content.about?.paragraphs||[])];a[i]=e.target.value;update("about.paragraphs",a);}}
-                className="ai-input flex-1 px-3 py-2 rounded-xl text-sm resize-none h-20"/>
-              <button onClick={()=>update("about.paragraphs",content.about.paragraphs.filter((_,idx)=>idx!==i))}
-                className="text-neural-pink/50 hover:text-neural-pink self-start mt-2"><Trash2 size={13}/></button>
-            </div>
-          ))}
-          <button onClick={()=>update("about.paragraphs",[...(content.about?.paragraphs||[]),""])}
-            className="flex items-center gap-1 text-xs font-mono text-neural-blue hover:opacity-80"><Plus size={12}/> Ajouter un paragraphe</button>
-        </Field>
-        <Field label="Tags (séparés par virgule)">
-          <input type="text" value={(content.about?.tags||[]).join(", ")}
-            onChange={e=>update("about.tags",e.target.value.split(",").map(t=>t.trim()).filter(Boolean))}
-            className="ai-input w-full px-4 py-3 rounded-xl text-sm" placeholder="Deep Learning, NLP..."/>
-        </Field>
-        <Field label="Timeline">
-          <div className="space-y-3">
-            {(content.about?.timeline||[]).map((item,i)=>(
-              <div key={i} className="glass-card rounded-xl p-4 border border-white/5">
-                <div className="flex justify-between mb-2">
-                  <span className="font-mono text-xs text-neural-blue">Étape {i+1}</span>
-                  <button onClick={()=>update("about.timeline",content.about.timeline.filter((_,idx)=>idx!==i))}
-                    className="text-neural-pink/50 hover:text-neural-pink"><Trash2 size={12}/></button>
-                </div>
-                <div className="grid grid-cols-2 gap-2 mb-2">
-                  <input type="text" value={item.year||""} placeholder="2024–2025"
-                    onChange={e=>{const t=JSON.parse(JSON.stringify(content.about.timeline));t[i].year=e.target.value;update("about.timeline",t);}}
-                    className="ai-input px-3 py-2 rounded-lg text-xs font-mono"/>
-                  <input type="text" value={item.place||""} placeholder="École / Entreprise"
-                    onChange={e=>{const t=JSON.parse(JSON.stringify(content.about.timeline));t[i].place=e.target.value;update("about.timeline",t);}}
-                    className="ai-input px-3 py-2 rounded-lg text-xs"/>
-                </div>
-                <input type="text" value={item.title||""} placeholder="Titre"
-                  onChange={e=>{const t=JSON.parse(JSON.stringify(content.about.timeline));t[i].title=e.target.value;update("about.timeline",t);}}
-                  className="ai-input w-full px-3 py-2 rounded-lg text-sm mb-2"/>
-                <input type="text" value={item.desc||""} placeholder="Description..."
-                  onChange={e=>{const t=JSON.parse(JSON.stringify(content.about.timeline));t[i].desc=e.target.value;update("about.timeline",t);}}
-                  className="ai-input w-full px-3 py-2 rounded-lg text-xs"/>
-              </div>
-            ))}
-            <button onClick={()=>update("about.timeline",[...(content.about?.timeline||[]),{year:"",title:"",place:"",desc:""}])}
-              className="flex items-center gap-1 text-xs font-mono text-neural-blue hover:opacity-80"><Plus size={12}/> Ajouter une étape</button>
-          </div>
-        </Field>
-      </Section>
-
-      {/* SKILLS */}
-      <Section title="Compétences — Niveaux & Catégories" icon={Code2}>
-        <SkillsEditor skills={content.skills||[]} onChange={value=>update("skills",value)}/>
-      </Section>
-
-      {/* TECHNOLOGIES */}
-      <Section title="Technologies utilisées — Badges" icon={Code2}>
-        <p className="text-dim-star text-xs mb-4">Gère les badges de technologies visibles sur le site. Tu peux ajouter une icône (image) pour chaque technologie.</p>
-        <TechEditor
-          techs={content.techs||[]}
-          onChange={value=>update("techs",value)}
-        />
-      </Section>
-
-      {/* PROJETS */}
-      <Section title="Projets — Portfolio & Images" icon={FolderOpen}>
-        <div className="space-y-6">
-          {(content.projects||[]).map((project,i)=>(
-            <div key={i} className="glass-card rounded-xl border border-white/5 overflow-hidden">
-              {/* Project header */}
-              <div className="flex items-center justify-between px-4 py-3 border-b border-white/5">
-                <span className="font-mono text-xs text-neural-blue">Projet {i+1}</span>
-                <div className="flex items-center gap-2">
-                  <label className="flex items-center gap-1.5 text-xs font-mono text-dim-star cursor-pointer">
-                    <input type="checkbox" checked={project.featured||false}
-                      onChange={e=>{const p=JSON.parse(JSON.stringify(content.projects));p[i].featured=e.target.checked;update("projects",p);}}/>
-                    ★ Featured
-                  </label>
-                  <button onClick={()=>update("projects",content.projects.filter((_,idx)=>idx!==i))}
-                    className="text-neural-pink/50 hover:text-neural-pink"><Trash2 size={13}/></button>
-                </div>
-              </div>
-
-              <div className="p-4 space-y-3">
-                {/* Image Upload */}
-                <ImageUpload
-                  label="Image du projet (optionnel)"
-                  value={project.image||""}
-                  onChange={val=>{const p=JSON.parse(JSON.stringify(content.projects));p[i].image=val;update("projects",p);}}
-                  maxSizeKB={400}
-                />
-
-                <input type="text" value={project.title||""} placeholder="Titre du projet"
-                  onChange={e=>{const p=JSON.parse(JSON.stringify(content.projects));p[i].title=e.target.value;update("projects",p);}}
-                  className="ai-input w-full px-3 py-2 rounded-lg text-sm font-semibold"/>
-                <textarea value={project.desc||""} placeholder="Description..."
-                  onChange={e=>{const p=JSON.parse(JSON.stringify(content.projects));p[i].desc=e.target.value;update("projects",p);}}
-                  className="ai-input w-full px-3 py-2 rounded-lg text-sm resize-none h-16"/>
-                <div className="grid grid-cols-2 gap-2">
-                  <input type="text" value={project.github||""} placeholder="Lien GitHub"
-                    onChange={e=>{const p=JSON.parse(JSON.stringify(content.projects));p[i].github=e.target.value;update("projects",p);}}
-                    className="ai-input px-3 py-2 rounded-lg text-xs font-mono"/>
-                  <input type="text" value={project.demo||""} placeholder="Lien Démo"
-                    onChange={e=>{const p=JSON.parse(JSON.stringify(content.projects));p[i].demo=e.target.value;update("projects",p);}}
-                    className="ai-input px-3 py-2 rounded-lg text-xs font-mono"/>
-                </div>
-                <input type="text" value={(project.tags||[]).join(", ")} placeholder="Tags: PyTorch, NLP..."
-                  onChange={e=>{const p=JSON.parse(JSON.stringify(content.projects));p[i].tags=e.target.value.split(",").map(t=>t.trim()).filter(Boolean);update("projects",p);}}
-                  className="ai-input w-full px-3 py-2 rounded-lg text-xs font-mono"/>
-              </div>
-            </div>
-          ))}
-          <button onClick={()=>update("projects",[...(content.projects||[]),{id:Date.now(),title:"Nouveau Projet",desc:"",tags:[],color:"neural-blue",stats:{},github:"#",demo:"#",featured:false,image:""}])}
-            className="w-full flex items-center justify-center gap-2 py-3 glass-card border border-dashed border-neural-blue/30 rounded-xl text-sm font-mono text-neural-blue hover:border-neural-blue/60 hover:bg-neural-blue/5 transition-all">
-            <Plus size={14}/> Ajouter un projet
-          </button>
-        </div>
-      </Section>
-      {/* RECOMMANDATIONS */}
-<Section title="Recommandations — Témoignages" icon={User}>
-  <div className="space-y-4">
-    {(content.testimonials || []).map((t, i) => (
-      <div key={i} className="glass-card rounded-xl p-4 border border-white/5">
-        <div className="flex justify-between mb-3">
-          <span className="font-mono text-xs text-neural-blue">Témoignage {i + 1}</span>
-          <button onClick={() => update("testimonials", content.testimonials.filter((_, idx) => idx !== i))}
-            className="text-neural-pink/50 hover:text-neural-pink"><Trash2 size={13}/></button>
-        </div>
-        <div className="grid grid-cols-2 gap-2 mb-2">
-          <input type="text" value={t.name || ""} placeholder="Nom"
-            onChange={e => { const arr = JSON.parse(JSON.stringify(content.testimonials)); arr[i].name = e.target.value; update("testimonials", arr); }}
-            className="ai-input px-3 py-2 rounded-lg text-sm"/>
-          <input type="text" value={t.role || ""} placeholder="Poste / Entreprise"
-            onChange={e => { const arr = JSON.parse(JSON.stringify(content.testimonials)); arr[i].role = e.target.value; update("testimonials", arr); }}
-            className="ai-input px-3 py-2 rounded-lg text-sm"/>
-        </div>
-        <input type="text" value={t.avatar || ""} placeholder="Initiales ex: MD"
-          onChange={e => { const arr = JSON.parse(JSON.stringify(content.testimonials)); arr[i].avatar = e.target.value.slice(0,2).toUpperCase(); update("testimonials", arr); }}
-          className="ai-input w-full px-3 py-2 rounded-lg text-sm mb-2"/>
-        <textarea value={t.text || ""} placeholder="Témoignage..."
-          onChange={e => { const arr = JSON.parse(JSON.stringify(content.testimonials)); arr[i].text = e.target.value; update("testimonials", arr); }}
-          className="ai-input w-full px-3 py-2 rounded-lg text-sm resize-none h-20 mb-2"/>
-        <select value={t.color || "neural-blue"}
-          onChange={e => { const arr = JSON.parse(JSON.stringify(content.testimonials)); arr[i].color = e.target.value; update("testimonials", arr); }}
-          className="ai-input px-3 py-2 rounded-lg text-xs font-mono w-full">
-          <option value="neural-blue">Bleu</option>
-          <option value="neural-violet">Violet</option>
-          <option value="neural-pink">Rose</option>
-          <option value="neural-green">Vert</option>
-        </select>
-      </div>
-    ))}
-    <button onClick={() => update("testimonials", [...(content.testimonials || []), { id: Date.now(), name: "", role: "", text: "", avatar: "", color: "neural-blue" }])}
-      className="w-full flex items-center justify-center gap-2 py-3 glass-card border border-dashed border-neural-blue/30 rounded-xl text-sm font-mono text-neural-blue hover:border-neural-blue/60 transition-all">
-      <Plus size={14}/> Ajouter un témoignage
-    </button>
-  </div>
-</Section>
-
-      {/* CONTACT */}
-      <Section title="Contact — Coordonnées & Réseaux" icon={Mail}>
-        <div className="grid grid-cols-2 gap-3">
-          {[
-            {key:"contact.email",label:"Email",placeholder:"ton@email.com"},
-            {key:"contact.github",label:"GitHub URL",placeholder:"https://github.com/..."},
-            {key:"contact.linkedin",label:"LinkedIn URL",placeholder:"https://linkedin.com/in/..."},
-            {key:"contact.twitter",label:"Twitter/X URL",placeholder:"https://twitter.com/..."},
-          ].map(({key,label,placeholder})=>(
-            <Field key={key} label={label}>
-              <input type="text" value={key.split(".").reduce((o,k)=>o?.[k]??"",content)||""}
-                onChange={e=>update(key,e.target.value)}
-                className="ai-input w-full px-3 py-2 rounded-lg text-sm" placeholder={placeholder}/>
-            </Field>
-          ))}
-        </div>
-        <Field label="Texte de disponibilité">
-          <input type="text" value={content.contact?.availabilityText||""}
-            onChange={e=>update("contact.availabilityText",e.target.value)}
-            className="ai-input w-full px-4 py-3 rounded-xl text-sm"/>
-        </Field>
-        <div className="flex items-center gap-3">
-          <span className="font-mono text-xs text-dim-star">DISPONIBLE :</span>
-          <button onClick={()=>update("contact.available",!content.contact?.available)}
-            className={`w-12 h-6 rounded-full transition-colors relative ${content.contact?.available?"bg-neural-green/60":"bg-white/10"}`}>
-            <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-transform ${content.contact?.available?"translate-x-7":"translate-x-1"}`}/>
-          </button>
-          <span className={`text-xs font-mono ${content.contact?.available?"text-neural-green":"text-dim-star"}`}>
-            {content.contact?.available?"🟢 Disponible":"🔴 Indisponible"}
-          </span>
-        </div>
-      </Section>
-      {/* VISITS CHART */}
-<Section title="Graphique des visites" icon={BarChart2}>
-  <VisitChart token={token}/>
-</Section>
-
-{/* CHANGELOG */}
-<Section title="Historique des modifications" icon={History}>
-  <ChangeLog token={token}/>
-</Section>
-
-{/* BLOG */}
-<Section title="Blog & Articles" icon={BookOpen}>
-  <BlogEditor token={token}/>
-</Section>
-
-{/* CV */}
-<Section title="Mon CV — Upload PDF" icon={User}>
-  <p className="text-dim-star text-xs mb-4">
-    Uploade ton CV PDF — il sera téléchargeable directement depuis le portfolio.
-  </p>
-  <CVUpload token={token}/>
-</Section>
-
-      {/* SAVE */}
-      <div className="sticky bottom-6 flex justify-center mt-6">
-        <button onClick={saveAll} disabled={saving}
-          className="ai-btn px-10 py-4 rounded-full flex items-center gap-3 shadow-2xl">
-          {saving?<><Loader2 size={16} className="animate-spin"/>Sauvegarde dans MongoDB...</>
-          :saved?<><CheckCircle size={16}/>Sauvegardé ! Visible sur le site ✨</>
-          :<><Save size={16}/>Sauvegarder dans MongoDB</>}
-        </button>
       </div>
     </div>
   );
