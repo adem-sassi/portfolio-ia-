@@ -4,6 +4,7 @@ import ChatBot from "./ai/ChatBot";
 import TextAnalyzer from "./ai/TextAnalyzer";
 import CodeReviewer from "./ai/CodeReviewer";
 import BioGenerator from "./ai/BioGenerator";
+import MLLab from "./ai/MLLab";
 import AIQuiz from "./ai/AIQuiz";
 
 const TABS = [

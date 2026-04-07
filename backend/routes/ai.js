@@ -161,4 +161,111 @@ router.post("/quiz", async (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
+
+// ── ML: Analyse sentiment avancée ─────────────────────────────────────────
+router.post("/ml/sentiment", async (req, res) => {
+  try {
+    const { text } = req.body;
+    const completion = await groq.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
+      messages: [{
+        role: "user",
+        content: `Analyse le sentiment de ce texte et réponds UNIQUEMENT en JSON valide:
+{"sentiment": "positif|negatif|neutre", "score": 0.0-1.0, "emotions": ["joie", "colere", etc], "mots_cles": ["mot1", "mot2"], "explication": "courte explication"}
+Texte: "${text}"`
+      }],
+      max_tokens: 300,
+    });
+    const raw = completion.choices[0].message.content.trim();
+    const json = raw.replace(/\`\`\`json|\`\`\`/g, '').trim();
+    res.json(JSON.parse(json));
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// ── ML: Prédiction de données ──────────────────────────────────────────────
+router.post("/ml/predict", async (req, res) => {
+  try {
+    const { data, context } = req.body;
+    const completion = await groq.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
+      messages: [{
+        role: "user",
+        content: `Tu es un expert en analyse de données. Analyse ces données et prédit les prochaines valeurs.
+Réponds UNIQUEMENT en JSON valide:
+{"tendance": "hausse|baisse|stable", "predictions": [val1, val2, val3], "confiance": 0-100, "analyse": "explication", "facteurs": ["facteur1", "facteur2"]}
+Données: ${JSON.stringify(data)}
+Contexte: ${context || "données temporelles"}`
+      }],
+      max_tokens: 400,
+    });
+    const raw = completion.choices[0].message.content.trim();
+    const json = raw.replace(/\`\`\`json|\`\`\`/g, '').trim();
+    res.json(JSON.parse(json));
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// ── ML: Classification image ───────────────────────────────────────────────
+router.post("/ml/classify-image", async (req, res) => {
+  try {
+    const { imageBase64, mimeType } = req.body;
+    const completion = await groq.chat.completions.create({
+      model: "llama-3.2-11b-vision-preview",
+      messages: [{
+        role: "user",
+        content: [
+          { type: "image_url", image_url: { url: `data:${mimeType};base64,${imageBase64}` }},
+          { type: "text", text: `Analyse cette image et réponds UNIQUEMENT en JSON valide:
+{"objet_principal": "nom", "categorie": "catégorie", "confiance": 0-100, "description": "description détaillée", "tags": ["tag1", "tag2", "tag3"], "couleurs": ["couleur1", "couleur2"]}` }
+        ]
+      }],
+      max_tokens: 400,
+    });
+    const raw = completion.choices[0].message.content.trim();
+    const json = raw.replace(/\`\`\`json|\`\`\`/g, '').trim();
+    res.json(JSON.parse(json));
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// ── ML: Détection anomalies ────────────────────────────────────────────────
+router.post("/ml/anomalies", async (req, res) => {
+  try {
+    const { data } = req.body;
+    const completion = await groq.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
+      messages: [{
+        role: "user",
+        content: `Tu es un expert en détection d'anomalies. Analyse ces données et identifie les anomalies.
+Réponds UNIQUEMENT en JSON valide:
+{"anomalies": [{"index": 0, "valeur": 0, "raison": "explication"}], "statistiques": {"moyenne": 0, "ecart_type": 0, "min": 0, "max": 0}, "score_anomalie": 0-100, "recommandation": "conseil"}
+Données: ${JSON.stringify(data)}`
+      }],
+      max_tokens: 500,
+    });
+    const raw = completion.choices[0].message.content.trim();
+    const json = raw.replace(/\`\`\`json|\`\`\`/g, '').trim();
+    res.json(JSON.parse(json));
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// ── ML: Clustering de textes ───────────────────────────────────────────────
+router.post("/ml/cluster", async (req, res) => {
+  try {
+    const { texts } = req.body;
+    const completion = await groq.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
+      messages: [{
+        role: "user",
+        content: `Tu es un expert en NLP. Regroupe ces textes par thèmes similaires (clustering).
+Réponds UNIQUEMENT en JSON valide:
+{"clusters": [{"id": 0, "theme": "nom du thème", "textes": [0, 1], "mots_cles": ["mot1", "mot2"]}], "nb_clusters": 0, "analyse": "explication globale"}
+Textes: ${JSON.stringify(texts)}`
+      }],
+      max_tokens: 600,
+    });
+    const raw = completion.choices[0].message.content.trim();
+    const json = raw.replace(/\`\`\`json|\`\`\`/g, '').trim();
+    res.json(JSON.parse(json));
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
 export default router;
