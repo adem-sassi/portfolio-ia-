@@ -227,20 +227,20 @@ export default function AdminDashboard({ token, onLogout }) {
             <div key={i} className="glass-card rounded-2xl p-5 border border-white/5 space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-neural-blue text-xs font-mono">PROJET {i+1}</span>
-                <button onClick={()=>{const ps=data.projects.filter((_,j)=>j!==i);upd("projects","projects",ps);}} className="text-neural-pink hover:opacity-70"><Trash2 size={14}/></button>
+                <button onClick={()=>{const ps=data.projects.filter((_,j)=>j!==i);setData(prev=>({...prev,projects:ps}));}} className="text-neural-pink hover:opacity-70"><Trash2 size={14}/></button>
               </div>
               {["title","desc","github","demo"].map(field=>(
                 <div key={field}>
                   <label className="text-dim-star text-xs font-mono mb-1 block">{field.toUpperCase()}</label>
                   {field==="desc"
-                    ?<textarea value={proj[field]||""} onChange={e=>{const ps=[...data.projects];ps[i]={...ps[i],[field]:e.target.value};upd("projects","projects",ps);}} className="ai-input w-full px-3 py-2 rounded-lg text-sm resize-none h-16"/>
-                    :<input value={proj[field]||""} onChange={e=>{const ps=[...data.projects];ps[i]={...ps[i],[field]:e.target.value};upd("projects","projects",ps);}} className="ai-input w-full px-3 py-2 rounded-lg text-sm"/>
+                    ?<textarea value={proj[field]||""} onChange={e=>{const ps=[...data.projects];ps[i]={...ps[i],[field]:e.target.value};setData(prev=>({...prev,projects:ps}));}} className="ai-input w-full px-3 py-2 rounded-lg text-sm resize-none h-16"/>
+                    :<input value={proj[field]||""} onChange={e=>{const ps=[...data.projects];ps[i]={...ps[i],[field]:e.target.value};setData(prev=>({...prev,projects:ps}));}} className="ai-input w-full px-3 py-2 rounded-lg text-sm"/>
                   }
                 </div>
               ))}
             </div>
           ))}
-          <button onClick={()=>{const ps=[...(data.projects||[]),{id:Date.now(),title:"Nouveau projet",desc:"",tags:[],color:"neural-blue",github:"",demo:"",featured:false}];upd("projects","projects",ps);}}
+          <button onClick={()=>{const ps=[...(data.projects||[]),{id:Date.now(),title:"Nouveau projet",desc:"",tags:[],color:"neural-blue",github:"",demo:"",featured:false}];setData(prev=>({...prev,projects:ps}));}}
             className="glass-card border border-neural-blue/30 px-4 py-2 rounded-xl text-xs font-mono text-neural-blue flex items-center gap-2 hover:border-neural-blue/60 transition-colors">
             <Plus size={14}/> Ajouter un projet
           </button>
@@ -255,20 +255,20 @@ export default function AdminDashboard({ token, onLogout }) {
             <div key={i} className="glass-card rounded-2xl p-5 border border-white/5 space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-neural-violet text-xs font-mono">TÉMOIGNAGE {i+1}</span>
-                <button onClick={()=>{const ts=data.testimonials.filter((_,j)=>j!==i);upd("testimonials","testimonials",ts);}} className="text-neural-pink hover:opacity-70"><Trash2 size={14}/></button>
+                <button onClick={()=>{const ts=data.testimonials.filter((_,j)=>j!==i);setData(prev=>({...prev,testimonials:ts}));}} className="text-neural-pink hover:opacity-70"><Trash2 size={14}/></button>
               </div>
               {["name","role","text"].map(field=>(
                 <div key={field}>
                   <label className="text-dim-star text-xs font-mono mb-1 block">{field.toUpperCase()}</label>
                   {field==="text"
-                    ?<textarea value={t[field]||""} onChange={e=>{const ts=[...data.testimonials];ts[i]={...ts[i],[field]:e.target.value};upd("testimonials","testimonials",ts);}} className="ai-input w-full px-3 py-2 rounded-lg text-sm resize-none h-16"/>
-                    :<input value={t[field]||""} onChange={e=>{const ts=[...data.testimonials];ts[i]={...ts[i],[field]:e.target.value};upd("testimonials","testimonials",ts);}} className="ai-input w-full px-3 py-2 rounded-lg text-sm"/>
+                    ?<textarea value={t[field]||""} onChange={e=>{const ts=[...data.testimonials];ts[i]={...ts[i],[field]:e.target.value};setData(prev=>({...prev,testimonials:ts}));}} className="ai-input w-full px-3 py-2 rounded-lg text-sm resize-none h-16"/>
+                    :<input value={t[field]||""} onChange={e=>{const ts=[...data.testimonials];ts[i]={...ts[i],[field]:e.target.value};setData(prev=>({...prev,testimonials:ts}));}} className="ai-input w-full px-3 py-2 rounded-lg text-sm"/>
                   }
                 </div>
               ))}
             </div>
           ))}
-          <button onClick={()=>{const ts=[...(data.testimonials||[]),{id:Date.now(),name:"Nouveau",role:"",text:"",avatar:"N",color:"neural-blue"}];upd("testimonials","testimonials",ts);}}
+          <button onClick={()=>{const ts=[...(data.testimonials||[]),{id:Date.now(),name:"Nouveau",role:"",text:"",avatar:"N",color:"neural-blue"}];setData(prev=>({...prev,testimonials:ts}));}}
             className="glass-card border border-neural-violet/30 px-4 py-2 rounded-xl text-xs font-mono text-neural-violet flex items-center gap-2 hover:border-neural-violet/60 transition-colors">
             <Plus size={14}/> Ajouter un témoignage
           </button>
