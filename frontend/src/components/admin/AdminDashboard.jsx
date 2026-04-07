@@ -180,14 +180,16 @@ export default function AdminDashboard({ token, onLogout }) {
       case "skills": return (
         <div className="space-y-5">
           <h2 className="font-display text-2xl font-black text-star-white">Compétences</h2>
-          <SkillsEditor token={token}/>
+          <SkillsEditor skills={data.skills||[]} onChange={s=>upd("skills","skills",s)}/>
+          <SaveBtn section="skills" body={data.skills}/>
         </div>
       );
 
       case "techs": return (
         <div className="space-y-5">
           <h2 className="font-display text-2xl font-black text-star-white">Technologies</h2>
-          <TechEditor token={token}/>
+          <TechEditor techs={data.techs||[]} onChange={t=>upd("techs","techs",t)}/>
+          <SaveBtn section="techs" body={data.techs}/>
         </div>
       );
 
