@@ -86,8 +86,8 @@ export default function AdminLogin({ onLogin }) {
             const data = await res.json();
             if (data.success) alert("Email envoyé à sassiadem7@gmail.com !");
             else alert("Erreur: " + data.error);
-          }} className="w-full text-center text-dim-star hover:text-neural-blue text-xs font-mono mt-2 transition-colors">
-            Mot de passe oublié ?
+          }} style={{ cursor: "pointer", background: "none", border: "none", color: "var(--dim-star)", fontFamily: "monospace", fontSize: "12px", marginTop: "8px", width: "100%", textAlign: "center" }}>
+            Mot de passe oublié ? →
           </button>
         </div>
         <div className="text-center mt-6">
