@@ -182,23 +182,23 @@ export default function AdminDashboard({ token, onLogout }) {
             <div key={ci} className="glass-card rounded-2xl p-5 border border-white/5 space-y-3">
               <div className="flex items-center gap-2 mb-2">
                 <div className="w-2 h-2 rounded-full bg-neural-blue"/>
-                <input value={cat.category||""} onChange={e=>{const s=JSON.parse(JSON.stringify(data.skills||[]));s[ci].category=e.target.value;upd("skills","skills",s);}}
+                <input value={cat.category||""} onChange={e=>{const s=JSON.parse(JSON.stringify(data.skills||[]));s[ci].category=e.target.value;setData(prev => ({...prev, skills: s}));}}
                   className="ai-input flex-1 px-3 py-2 rounded-lg text-sm font-bold"/>
               </div>
               <div className="space-y-2">
                 {(cat.items||[]).map((item,si)=>(
                   <div key={si} className="flex items-center gap-2">
-                    <input value={item.name||""} onChange={e=>{const s=JSON.parse(JSON.stringify(data.skills||[]));s[ci].items[si].name=e.target.value;upd("skills","skills",s);}}
+                    <input value={item.name||""} onChange={e=>{const s=JSON.parse(JSON.stringify(data.skills||[]));s[ci].items[si].name=e.target.value;setData(prev => ({...prev, skills: s}));}}
                       className="ai-input flex-1 px-3 py-2 rounded-lg text-sm"/>
-                    <input type="number" min="0" max="100" value={item.level||0} onChange={e=>{const s=JSON.parse(JSON.stringify(data.skills||[]));s[ci].items[si].level=Number(e.target.value);upd("skills","skills",s);}}
+                    <input type="number" min="0" max="100" value={item.level||0} onChange={e=>{const s=JSON.parse(JSON.stringify(data.skills||[]));s[ci].items[si].level=Number(e.target.value);setData(prev => ({...prev, skills: s}));}}
                       className="ai-input w-16 px-2 py-2 rounded-lg text-sm text-center"/>
                     <span className="text-dim-star text-xs font-mono w-8">{item.level}%</span>
-                    <button onClick={()=>{const s=JSON.parse(JSON.stringify(data.skills||[]));s[ci].items=s[ci].items.filter((_,j)=>j!==si);upd("skills","skills",s);}}
+                    <button onClick={()=>{const s=JSON.parse(JSON.stringify(data.skills||[]));s[ci].items=s[ci].items.filter((_,j)=>j!==si);setData(prev => ({...prev, skills: s}));}}
                       className="text-neural-pink hover:opacity-70 flex-shrink-0"><Trash2 size={14}/></button>
                   </div>
                 ))}
               </div>
-              <button onClick={()=>{const s=JSON.parse(JSON.stringify(data.skills||[]));s[ci].items.push({name:"Nouvelle compétence",level:70});upd("skills","skills",s);}}
+              <button onClick={()=>{const s=JSON.parse(JSON.stringify(data.skills||[]));s[ci].items.push({name:"Nouvelle compétence",level:70});setData(prev => ({...prev, skills: s}));}}
                 className="flex items-center gap-1 text-xs font-mono text-neural-blue hover:opacity-80">
                 <Plus size={12}/>Ajouter une compétence
               </button>
@@ -216,7 +216,7 @@ export default function AdminDashboard({ token, onLogout }) {
               <div key={i} className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-mono"
                 style={{background:`${tech.bg}20`,border:`1px solid ${tech.bg}60`,color:tech.bg}}>
                 {tech.label}
-                <button onClick={()=>{const t=(data.techs||[]).filter((_,j)=>j!==i);upd("techs","techs",t);}} className="hover:opacity-70 ml-1"><Trash2 size={10}/></button>
+                <button onClick={()=>{const t=(data.techs||[]).filter((_,j)=>j!==i);setData(prev => ({...prev, techs: t}));}} className="hover:opacity-70 ml-1"><Trash2 size={10}/></button>
               </div>
             ))}
           </div>
@@ -226,7 +226,7 @@ export default function AdminDashboard({ token, onLogout }) {
               const inp=document.getElementById("newTechLabel");
               if(!inp||!inp.value.trim()) return;
               const t=[...(data.techs||[]),{label:inp.value.trim(),bg:"#00D4FF"}];
-              upd("techs","techs",t);
+              setData(prev => ({...prev, techs: t}));
               inp.value="";
             }} className="ai-btn px-4 py-2 rounded-lg text-sm flex items-center gap-2"><Plus size={14}/>Ajouter</button>
           </div>
