@@ -84,6 +84,8 @@ router.put("/content/:section", authMiddleware, async (req, res) => {
       { section, data: req.body },
       { upsert: true, new: true }
     );
+    const ip = req.headers["x-forwarded-for"]?.split(",")[0] || req.socket.remoteAddress;
+    await ChangeLog.create({ section, action: "update", details: `Section "${section}" modifiée`, ip }).catch(() => {});
     res.json({ success: true, message: `Section "${section}" mise à jour ✅` });
   } catch { res.status(500).json({ error: "Erreur mise à jour" }); }
 });
