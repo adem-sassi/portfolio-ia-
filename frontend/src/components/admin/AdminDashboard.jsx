@@ -128,9 +128,11 @@ export default function AdminDashboard({ token, onLogout }) {
   );
 
   const SaveBtn = ({section, body}) => (
-    <button onClick={()=>save(section,body)} className="ai-btn px-6 py-3 rounded-xl flex items-center gap-2 text-sm mt-2">
-      {saving?<Loader2 size={14} className="animate-spin"/>:saved?<CheckCircle size={14}/>:<Save size={14}/>}
-      {saved?"Sauvegardé !":"Sauvegarder"}
+    <button onClick={()=>save(section,body)} disabled={saving}
+      className="ai-btn px-6 py-3 rounded-xl flex items-center gap-2 text-sm mt-2"
+      style={{opacity: saving ? 0.7 : 1}}>
+      {saving ? <Loader2 size={14} className="animate-spin"/> : saved ? <CheckCircle size={14} className="text-neural-green"/> : <Save size={14}/>}
+      {saving ? "Sauvegarde..." : saved ? "✅ Sauvegardé !" : "Sauvegarder"}
     </button>
   );
 
