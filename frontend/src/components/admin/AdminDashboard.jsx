@@ -180,7 +180,7 @@ export default function AdminDashboard({ token, onLogout }) {
       case "skills": return (
         <div className="space-y-5">
           <h2 className="font-display text-2xl font-black text-star-white">Compétences</h2>
-          <SkillsEditor skills={data.skills||[]} onChange={s=>{upd("skills","skills",s);}}/>
+          {data.skills && <SkillsEditor skills={data.skills} onChange={s=>{upd("skills","skills",s);}}/> }
           <button onClick={()=>save("skills",data.skills)} className="ai-btn px-6 py-3 rounded-xl flex items-center gap-2 text-sm"><Save size={14}/>Sauvegarder</button>
         </div>
       );
@@ -188,7 +188,7 @@ export default function AdminDashboard({ token, onLogout }) {
       case "techs": return (
         <div className="space-y-5">
           <h2 className="font-display text-2xl font-black text-star-white">Technologies</h2>
-          <TechEditor techs={data.techs||[]} onChange={t=>{upd("techs","techs",t);}}/>
+          {data.techs && <TechEditor techs={data.techs} onChange={t=>{upd("techs","techs",t);}}/> }
           <button onClick={()=>save("techs",data.techs)} className="ai-btn px-6 py-3 rounded-xl flex items-center gap-2 text-sm"><Save size={14}/>Sauvegarder</button>
         </div>
       );
