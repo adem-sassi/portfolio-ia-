@@ -129,27 +129,15 @@ router.post("/forgot-password", async (req, res) => {
     resetTokens.set(token, { expires: Date.now() + 15 * 60 * 1000 });
     const resetLink = `${process.env.FRONTEND_URL}/admin/reset-password?token=${token}`;
 
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-      connectionTimeout: 5000,
-      greetingTimeout: 5000,
-      socketTimeout: 5000,
-    });
-
-    await transporter.sendMail({
-      from: `"Portfolio Admin" <${process.env.EMAIL_USER}>`,
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    
+    await resend.emails.send({
+      from: "Portfolio Admin <onboarding@resend.dev>",
       to: process.env.EMAIL_USER,
       subject: "Reset mot de passe - ademsassi.com",
       html: `<div>
         <h2>Reset mot de passe admin</h2>
-        <p>Clique sur ce lien :</p>
-        <a href="${resetLink}">Réinitialiser le mot de passe</a>
+        <a href="${resetLink}">Clique ici pour réinitialiser</a>
         <p>Ce lien expire dans 15 minutes.</p>
       </div>`,
     });
