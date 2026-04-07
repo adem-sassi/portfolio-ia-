@@ -63,8 +63,7 @@ export default function BlogPage() {
 
   return (
     <div className="min-h-screen py-32 px-6" style={{ background: "var(--void)" }}>
-      <div className="blob absolute w-96 h-96 opacity-8 pointer-events-none"
-        style={{ background: "var(--neural-blue)", top: "-5%", right: "-5%" }}/>
+      
 
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center gap-4 mb-4">
