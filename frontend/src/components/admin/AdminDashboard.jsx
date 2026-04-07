@@ -280,11 +280,25 @@ export default function AdminDashboard({ token, onLogout }) {
               <div className="flex items-center gap-6">
                 <div>
                   <label className="text-dim-star text-xs font-mono mb-2 block">COULEUR</label>
-                  <div className="flex gap-2">
-                    {["neural-blue","neural-violet","neural-pink","neural-green"].map(c=>(
-                      <button key={c} onClick={()=>{const ps=JSON.parse(JSON.stringify(data.projects||[]));ps[i].color=c;setData(prev=>({...prev,projects:ps}));}}
-                        className="w-7 h-7 rounded-lg border-2 transition-all"
-                        style={{background:`var(--${c})`,borderColor:proj.color===c?"white":"transparent",opacity:proj.color===c?1:0.4}}/>
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      {name:"neural-blue",hex:"#00D4FF"},
+                      {name:"neural-violet",hex:"#7B2FFF"},
+                      {name:"neural-pink",hex:"#FF2FBB"},
+                      {name:"neural-green",hex:"#00FF88"},
+                      {name:"neural-orange",hex:"#FF8C00"},
+                      {name:"neural-red",hex:"#FF3B3B"},
+                      {name:"neural-yellow",hex:"#FFD700"},
+                      {name:"neural-cyan",hex:"#00FFFF"},
+                      {name:"neural-white",hex:"#F0F4FF"},
+                      {name:"neural-teal",hex:"#00B4D8"},
+                      {name:"neural-indigo",hex:"#4B0082"},
+                      {name:"neural-lime",hex:"#39FF14"},
+                    ].map(({name,hex})=>(
+                      <button key={name} onClick={()=>{const ps=JSON.parse(JSON.stringify(data.projects||[]));ps[i].color=name;setData(prev=>({...prev,projects:ps}));}}
+                        title={name}
+                        className="w-7 h-7 rounded-lg border-2 transition-all hover:scale-110"
+                        style={{background:hex,borderColor:proj.color===name?"white":"transparent",opacity:proj.color===name?1:0.5}}/>
                     ))}
                   </div>
                 </div>
