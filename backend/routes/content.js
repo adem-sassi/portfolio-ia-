@@ -29,17 +29,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:section", async (req, res) => {
-  try {
-    const doc = await Content.findOne({ section: req.params.section });
-    if (!doc) return res.status(404).json({ error: "Section introuvable" });
-    res.json(doc.data);
-  } catch (err) {
-    res.status(500).json({ error: "Erreur serveur" });
-  }
-});
-
-
 // GET /api/content/cv — Télécharger le CV
 router.get("/cv", async (req, res) => {
   try {
@@ -67,6 +56,18 @@ router.get("/cv", async (req, res) => {
 export default router;
 
 // GET /api/content/theme
+router.get("/:section", async (req, res) => {
+  try {
+    const doc = await Content.findOne({ section: req.params.section });
+    if (!doc) return res.status(404).json({ error: "Section introuvable" });
+    res.json(doc.data);
+  } catch (err) {
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
+
+
+
 router.get("/theme", async (req, res) => {
   try {
     const doc = await Content.findOne({ section: "theme" });
