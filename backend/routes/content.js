@@ -45,10 +45,12 @@ router.get("/cv", async (req, res) => {
   try {
     const doc = await Content.findOne({ section: "cv" });
     if (!doc || !doc.data?.file) return res.status(404).json({ error: "CV non trouvé" });
-    const buffer = Buffer.from(doc.data.file, "base64");
+    const base64 = doc.data.file.includes(",") ? doc.data.file.split(",")[1] : doc.data.file;
+    const buffer = Buffer.from(base64, "base64");
     res.setHeader("Content-Type", "application/pdf");
-    res.setHeader("Content-Disposition", `attachment; filename="${doc.data.name || "cv.pdf"}"`);
-    res.send(buffer);
+    res.setHeader("Content-Disposition", `inline; filename="${doc.data.name || "cv.pdf"}"`);
+    res.setHeader("Content-Length", buffer.length);
+    res.end(buffer);
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
