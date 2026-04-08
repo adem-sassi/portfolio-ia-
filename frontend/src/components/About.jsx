@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { Brain, Code2, GraduationCap, BookOpen, Award } from "lucide-react";
-import TimelineD3 from "./TimelineD3";
 import { useContent } from "../hooks/useContent";
 
 const ICONS = [GraduationCap, BookOpen, Code2, Brain];
@@ -98,9 +97,6 @@ export default function About() {
           </div>
         </div>
       )}
-    <div className="max-w-6xl mx-auto px-6 mt-12">
-        <TimelineD3/>
-      </div>
     </section>
   );
 }
