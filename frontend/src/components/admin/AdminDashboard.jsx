@@ -95,6 +95,7 @@ const NAV = [
 
 export default function AdminDashboard({ token, onLogout }) {
   const [active, setActive] = useState("dashboard");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [data, setData] = useState(null);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -394,8 +395,26 @@ export default function AdminDashboard({ token, onLogout }) {
 
   return (
     <div className="min-h-screen flex" style={{background:"var(--void)"}}>
+      {/* Mobile header */}
+      <div className="md:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-3 border-b border-white/5" style={{background:"var(--void)"}}>
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center font-display font-black text-xs" style={{background:"linear-gradient(135deg,#00D4FF20,#7B2FFF20)",border:"1px solid #00D4FF40",color:"#00D4FF"}}>AS</div>
+          <span className="font-display font-black text-star-white text-sm">Admin</span>
+        </div>
+        <button onClick={()=>setSidebarOpen(!sidebarOpen)} className="text-dim-star hover:text-star-white p-2">
+          <div className="space-y-1.5">
+            <div className="w-5 h-0.5 bg-current"/>
+            <div className="w-5 h-0.5 bg-current"/>
+            <div className="w-5 h-0.5 bg-current"/>
+          </div>
+        </button>
+      </div>
+
+      {/* Overlay mobile */}
+      {sidebarOpen && <div className="md:hidden fixed inset-0 z-40 bg-black/60" onClick={()=>setSidebarOpen(false)}/>}
+
       {/* Sidebar */}
-      <div className="w-60 flex-shrink-0 border-r border-white/5 flex flex-col" style={{background:"rgba(255,255,255,0.02)"}}>
+      <div className={`fixed md:relative z-50 md:z-auto h-full md:h-auto w-60 flex-shrink-0 border-r border-white/5 flex flex-col transition-transform duration-300 ${sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`} style={{background:"rgba(2,4,8,0.98)"}}>
         <div className="p-5 border-b border-white/5">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl flex items-center justify-center font-display font-black text-sm" style={{background:"linear-gradient(135deg,#00D4FF20,#7B2FFF20)",border:"1px solid #00D4FF40",color:"#00D4FF"}}>AS</div>
@@ -413,7 +432,7 @@ export default function AdminDashboard({ token, onLogout }) {
               {NAV.filter(n=>n.group===group).map(item=>{
                 const Icon=item.icon; const isActive=active===item.id;
                 return (
-                  <button key={item.id} onClick={()=>setActive(item.id)}
+                  <button key={item.id} onClick={()=>{setActive(item.id);setSidebarOpen(false);}}
                     className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-mono transition-all mb-0.5"
                     style={{background:isActive?"rgba(0,212,255,0.1)":"transparent",border:`1px solid ${isActive?"rgba(0,212,255,0.2)":"transparent"}`,color:isActive?"var(--neural-blue)":"var(--dim-star)"}}>
                     <Icon size={14}/>{item.label}
@@ -435,7 +454,7 @@ export default function AdminDashboard({ token, onLogout }) {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto pt-14 md:pt-0">
         <div className="max-w-3xl mx-auto p-8">
           {renderSection()}
         </div>
