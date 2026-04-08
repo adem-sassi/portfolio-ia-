@@ -109,34 +109,31 @@ router.put("/content/:section", authMiddleware, async (req, res) => {
 });
 
 // ── POST /api/admin/upload-cv ─────────────────────────────────────────────────
-router.post("/upload-cv", authMiddleware, (req, res) => {
+router.post("/upload-cv", authMiddleware, async (req, res) => {
   try {
-    const { file } = req.body;
+    const { file, name } = req.body;
     if (!file) return res.status(400).json({ error: "Aucun fichier reçu" });
-
     const buffer = Buffer.from(file, "base64");
     if (buffer.length > 5 * 1024 * 1024) {
       return res.status(400).json({ error: "Fichier trop lourd — max 5MB" });
     }
-
-    if (!existsSync(PUBLIC_DIR)) mkdirSync(PUBLIC_DIR, { recursive: true });
-    writeFileSync(CV_PATH, buffer);
-    console.log(`✅ CV uploadé: ${buffer.length} bytes`);
-    res.json({ success: true, message: "CV uploadé avec succès !" });
+    // Stocker dans MongoDB
+    await Content.findOneAndUpdate(
+      { section: "cv" },
+      { section: "cv", data: { file: file, name: name || "cv.pdf", updatedAt: new Date() } },
+      { upsert: true }
+    );
+    res.json({ success: true, message: "CV uploadé!" });
   } catch (e) {
-    console.error("Upload error:", e.message);
     res.status(500).json({ error: e.message });
   }
 });
 
-// ── DELETE /api/admin/delete-cv ───────────────────────────────────────────────
-router.delete("/delete-cv", authMiddleware, (req, res) => {
+router.delete("/delete-cv", authMiddleware, async (req, res) => {
   try {
-    if (existsSync(CV_PATH)) unlinkSync(CV_PATH);
-    res.json({ success: true, message: "CV supprimé" });
-  } catch (e) {
-    res.status(500).json({ error: e.message });
-  }
+    await Content.deleteOne({ section: "cv" });
+    res.json({ success: true });
+  } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
 

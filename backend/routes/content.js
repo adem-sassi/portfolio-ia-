@@ -39,6 +39,19 @@ router.get("/:section", async (req, res) => {
   }
 });
 
+
+// GET /api/content/cv — Télécharger le CV
+router.get("/cv", async (req, res) => {
+  try {
+    const doc = await Content.findOne({ section: "cv" });
+    if (!doc || !doc.data?.file) return res.status(404).json({ error: "CV non trouvé" });
+    const buffer = Buffer.from(doc.data.file, "base64");
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", `attachment; filename="${doc.data.name || "cv.pdf"}"`);
+    res.send(buffer);
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
 export default router;
 
 // GET /api/content/theme

@@ -78,12 +78,12 @@ export default function CVUpload({ token }) {
             <p className="text-xs text-dim-star">CV actuel sur le portfolio</p>
           </div>
           <div className="flex gap-2">
-            <a href="/cv.pdf" target="_blank"
+            <a href="https://web-production-cba0c.up.railway.app/api/content/cv" target="_blank"
               className="w-8 h-8 flex items-center justify-center rounded-lg"
               style={{ background: "rgba(0,212,255,0.1)", border: "1px solid rgba(0,212,255,0.2)" }}>
               <Eye size={13} className="text-neural-blue"/>
             </a>
-            <a href="/cv.pdf" download
+            <a href="https://web-production-cba0c.up.railway.app/api/content/cv" download
               className="w-8 h-8 flex items-center justify-center rounded-lg"
               style={{ background: "rgba(0,212,255,0.1)", border: "1px solid rgba(0,212,255,0.2)" }}>
               <Download size={13} className="text-neural-blue"/>
