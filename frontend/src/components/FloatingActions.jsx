@@ -19,7 +19,7 @@ export default function FloatingActions() {
     >
       {/* Download CV */}
       <a
-        href="/cv.pdf"
+        href="https://web-production-cba0c.up.railway.app/api/content/cv"
         download
         className="group w-12 h-12 glass-card border border-neural-violet/40 rounded-full flex items-center justify-center neural-glow-hover transition-all hover:w-36"
         title="Télécharger CV"

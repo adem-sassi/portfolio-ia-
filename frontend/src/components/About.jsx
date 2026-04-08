@@ -70,7 +70,7 @@ export default function About() {
             <div className="flex flex-wrap gap-2 mt-8">
               {(about?.tags || []).map(t => <span key={t} className="tag-pill">{t}</span>)}
             </div>
-            <a href="/cv.pdf" download className="inline-flex items-center gap-2 mt-8 border border-neural-blue/40 text-neural-blue hover:bg-neural-blue/10 transition-colors px-6 py-3 rounded-full font-mono text-xs tracking-widest">
+            <a href="https://web-production-cba0c.up.railway.app/api/content/cv" download className="inline-flex items-center gap-2 mt-8 border border-neural-blue/40 text-neural-blue hover:bg-neural-blue/10 transition-colors px-6 py-3 rounded-full font-mono text-xs tracking-widest">
               <Award size={14}/>Télécharger mon CV
             </a>
           </div>
