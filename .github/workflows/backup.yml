@@ -1,0 +1,61 @@
+name: Backup MongoDB hebdomadaire
+
+on:
+  schedule:
+    - cron: '0 2 * * 0'  # Chaque dimanche à 2h du matin
+  workflow_dispatch:  # Permet de lancer manuellement
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    name: Backup MongoDB
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          
+      - name: Install dependencies
+        run: npm install mongoose dotenv
+        
+      - name: Run backup
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          EMAIL_USER: ${{ secrets.EMAIL_USER }}
+        run: |
+          node << 'JSEOF'
+          import mongoose from 'mongoose';
+          import { Resend } from 'resend';
+          
+          await mongoose.connect(process.env.MONGODB_URI);
+          const db = mongoose.connection.db;
+          const collections = await db.listCollections().toArray();
+          
+          const backup = {};
+          for (const col of collections) {
+            const data = await db.collection(col.name).find({}).toArray();
+            backup[col.name] = data;
+          }
+          
+          const resend = new Resend(process.env.RESEND_API_KEY);
+          await resend.emails.send({
+            from: "Portfolio Backup <onboarding@resend.dev>",
+            to: process.env.EMAIL_USER,
+            subject: `💾 Backup MongoDB — ${new Date().toLocaleDateString('fr-FR')}`,
+            html: `<div style="font-family:sans-serif;padding:20px;">
+              <h2>Backup hebdomadaire réussi ✅</h2>
+              <p>Collections sauvegardées : ${collections.map(c=>c.name).join(', ')}</p>
+              <p>Date : ${new Date().toLocaleString('fr-FR')}</p>
+            </div>`,
+            attachments: [{
+              filename: `backup-${new Date().toISOString().split('T')[0]}.json`,
+              content: Buffer.from(JSON.stringify(backup, null, 2)).toString('base64'),
+            }]
+          });
+          
+          console.log('✅ Backup envoyé par email!');
+          process.exit(0);
+          JSEOF

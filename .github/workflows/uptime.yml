@@ -1,0 +1,35 @@
+name: Monitoring Uptime
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'  # Toutes les 30 minutes
+  workflow_dispatch:
+
+jobs:
+  check-uptime:
+    runs-on: ubuntu-latest
+    name: Check site uptime
+    steps:
+      - name: Check frontend
+        id: frontend
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 https://ademsassi.com)
+          echo "status=$STATUS" >> $GITHUB_OUTPUT
+          echo "Frontend status: $STATUS"
+          
+      - name: Check API
+        id: api
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 https://web-production-cba0c.up.railway.app/api/content)
+          echo "status=$STATUS" >> $GITHUB_OUTPUT
+          echo "API status: $STATUS"
+          
+      - name: Alert si down
+        if: steps.frontend.outputs.status != '200' || steps.api.outputs.status != '200'
+        run: |
+          curl -X POST https://ntfy.sh/ademsassi-admin-2fa \
+            -H "Title: 🚨 SITE DOWN - ademsassi.com" \
+            -H "Priority: urgent" \
+            -H "Tags: warning" \
+            -d "Frontend: ${{ steps.frontend.outputs.status }} | API: ${{ steps.api.outputs.status }} | $(date)"
+          echo "🚨 Alerte envoyée!"

@@ -1,0 +1,82 @@
+name: Tests automatiques
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-frontend:
+    runs-on: ubuntu-latest
+    name: Test Frontend Build
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          
+      - name: Install dependencies
+        run: cd frontend && npm install
+        
+      - name: Build frontend
+        run: cd frontend && npm run build
+        
+      - name: Check build output
+        run: |
+          if [ -d "frontend/dist" ]; then
+            echo "✅ Build réussi!"
+            ls frontend/dist
+          else
+            echo "❌ Build échoué!"
+            exit 1
+          fi
+
+  test-backend:
+    runs-on: ubuntu-latest
+    name: Test Backend
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          
+      - name: Install dependencies
+        run: cd backend && npm install
+        
+      - name: Check syntax
+        run: |
+          cd backend
+          node --check server.js && echo "✅ server.js OK"
+          node --check routes/admin.js && echo "✅ admin.js OK"
+          node --check routes/ai.js && echo "✅ ai.js OK"
+          node --check routes/blog.js && echo "✅ blog.js OK"
+
+  test-site-live:
+    runs-on: ubuntu-latest
+    name: Test Site Live
+    needs: [test-frontend, test-backend]
+    steps:
+      - name: Check ademsassi.com is up
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://ademsassi.com)
+          if [ "$STATUS" = "200" ]; then
+            echo "✅ ademsassi.com répond 200 OK"
+          else
+            echo "❌ ademsassi.com répond $STATUS"
+            exit 1
+          fi
+          
+      - name: Check API is up
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://web-production-cba0c.up.railway.app/api/content)
+          if [ "$STATUS" = "200" ]; then
+            echo "✅ API répond 200 OK"
+          else
+            echo "❌ API répond $STATUS"
+            exit 1
+          fi
