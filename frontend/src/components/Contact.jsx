@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { useHaptic } from "../hooks/useHaptic";
 import { Send, Mail, Github, Linkedin, Twitter, CheckCircle, Loader2, MapPin, AlertCircle } from "lucide-react";
 import { useContent } from "../hooks/useContent";
 import emailjs from "@emailjs/browser";
@@ -9,6 +10,7 @@ const EMAILJS_TEMPLATE_ID = "template_urnc6kf";
 const EMAILJS_PUBLIC_KEY = "-1SHFu-v9iLk08V-_";
 
 export default function Contact() {
+  const { vibrate } = useHaptic();
   const { content } = useContent();
   const contact = content?.contact || {};
   const formRef = useRef(null);
@@ -27,6 +29,7 @@ export default function Contact() {
   const handleChange = (e) => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
 
   const handleSubmit = async (e) => {
+    vibrate([10, 50, 10]);
     e.preventDefault();
     setStatus("loading");
     setErrorMsg("");

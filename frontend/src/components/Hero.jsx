@@ -5,6 +5,7 @@ import AnimatedCounter from "./AnimatedCounter";
 const TYPING_STRINGS = ["Étudiant Master 1 IA","Développeur Full-Stack","Machine Learning Engineer","Développeur IoT","NLP Enthusiast"];
 
 export default function Hero() {
+  const { vibrate } = useHaptic();
   const [hero, setHero] = useState(null);
   const [currentText, setCurrentText] = useState("");
   const [stringIndex, setStringIndex] = useState(0);
@@ -106,7 +107,7 @@ export default function Hero() {
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20"
           style={fadeIn(0.6)}>
-          <a href="#projects" className="ai-btn px-8 py-4 rounded-full text-sm tracking-widest">
+          <a href="#projects" onClick={() => vibrate(15)} className="ai-btn px-8 py-4 rounded-full text-sm tracking-widest">
             Voir mes projets
           </a>
           <a href="#ai-features"
