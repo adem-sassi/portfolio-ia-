@@ -44,15 +44,25 @@ router.get("/:section", async (req, res) => {
 router.get("/cv", async (req, res) => {
   try {
     const doc = await Content.findOne({ section: "cv" });
-    if (!doc || !doc.data?.file) return res.status(404).json({ error: "CV non trouvé" });
-    const base64 = doc.data.file.includes(",") ? doc.data.file.split(",")[1] : doc.data.file;
-    const buffer = Buffer.from(base64, "base64");
-    res.setHeader("Content-Type", "application/pdf");
-    res.setHeader("Content-Disposition", `inline; filename="${doc.data.name || "cv.pdf"}"`);
-    res.setHeader("Content-Length", buffer.length);
-    res.end(buffer);
+    if (!doc || !doc.data) return res.status(404).json({ error: "CV non trouvé" });
+    
+    // Si URL Cloudinary
+    if (doc.data.url) return res.redirect(doc.data.url);
+    
+    // Si base64
+    if (doc.data.file) {
+      const base64 = doc.data.file.includes(",") ? doc.data.file.split(",")[1] : doc.data.file;
+      const buffer = Buffer.from(base64, "base64");
+      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader("Content-Disposition", `inline; filename="${doc.data.name || "cv.pdf"}"`);
+      res.setHeader("Content-Length", buffer.length);
+      return res.end(buffer);
+    }
+    
+    res.status(404).json({ error: "CV non trouvé" });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
+
 
 export default router;
 
