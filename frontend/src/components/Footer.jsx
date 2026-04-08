@@ -1,14 +1,14 @@
 export default function Footer() {
   const links = [
-    { label: "Terms", href: "/mentions-legales" },
-    { label: "Privacy", href: "/mentions-legales" },
-    { label: "Security", href: "/mentions-legales" },
-    { label: "Status", href: "#" },
-    { label: "Community", href: "#" },
-    { label: "Docs", href: "#" },
+    { label: "Terms", href: "/terms" },
+    { label: "Privacy", href: "/privacy" },
+    { label: "Security", href: "/security" },
+    { label: "Status", href: "/status" },
+    { label: "Community", href: "/community" },
+    { label: "Docs", href: "/docs" },
     { label: "Contact", href: "#contact" },
-    { label: "Manage cookies", href: "#" },
-    { label: "Do not share my personal information", href: "#" },
+    { label: "Manage cookies", href: "/cookies" },
+    { label: "Do not share my personal information", href: "/do-not-share" },
   ];
 
   return (

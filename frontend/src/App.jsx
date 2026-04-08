@@ -23,6 +23,7 @@ import NotFound from "./pages/NotFound";
 import BlogPage from "./pages/BlogPage";
 import ArticlePage from "./pages/ArticlePage";
 import ResetPassword from "./pages/ResetPassword";
+import { TermsPage, PrivacyPage, SecurityPage, StatusPage, CommunityPage, DocsPage, CookiesPage, DoNotSharePage } from "./pages/LegalPages";
 
 function Portfolio() {
   const [loaded, setLoaded] = useState(false);
@@ -58,6 +59,14 @@ export default function App() {
           <Route path="/blog" element={<BlogPage/>}/>
           <Route path="/blog/:slug" element={<ArticlePage/>}/>
           <Route path="/admin/reset-password" element={<ResetPassword/>}/>
+        <Route path="/terms" element={<TermsPage/>}/>
+        <Route path="/privacy" element={<PrivacyPage/>}/>
+        <Route path="/security" element={<SecurityPage/>}/>
+        <Route path="/status" element={<StatusPage/>}/>
+        <Route path="/community" element={<CommunityPage/>}/>
+        <Route path="/docs" element={<DocsPage/>}/>
+        <Route path="/cookies" element={<CookiesPage/>}/>
+        <Route path="/do-not-share" element={<DoNotSharePage/>}/>
         <Route path="*" element={<NotFound/>}/>
         </Routes>
         <Analytics/>
