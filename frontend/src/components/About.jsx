@@ -98,6 +98,9 @@ export default function About() {
           </div>
         </div>
       )}
+    <div className="max-w-6xl mx-auto px-6 mt-12">
+        <TimelineD3/>
+      </div>
     </section>
   );
 }
