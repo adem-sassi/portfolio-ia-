@@ -53,10 +53,28 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ error: `Mot de passe incorrect (${recentFails + 1}/5)` });
     }
 
-    // Succès
+    // Mot de passe correct → envoyer OTP 2FA
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const otpToken = jwt.sign({ otp, role: "admin" }, process.env.JWT_SECRET, { expiresIn: "10m" });
+    
+    // Envoyer OTP via Resend
+    try {
+      const resend = new Resend(process.env.RESEND_API_KEY);
+      await resend.emails.send({
+        from: "Portfolio Admin <onboarding@resend.dev>",
+        to: process.env.EMAIL_USER,
+        subject: "🔐 Code 2FA — Portfolio Admin",
+        html: `<div style="font-family:sans-serif;padding:20px;background:#020408;color:#F0F4FF;">
+          <h2 style="color:#00D4FF;">Code de vérification</h2>
+          <p>Votre code 2FA pour accéder au panneau admin :</p>
+          <div style="font-size:48px;font-weight:bold;color:#00D4FF;letter-spacing:8px;margin:20px 0;">${otp}</div>
+          <p style="color:#888;font-size:12px;">Ce code expire dans 10 minutes. IP: ${ip}</p>
+        </div>`,
+      });
+    } catch(e) { console.error("Email 2FA error:", e.message); }
+    
     await LoginLog.create({ ip, success: true, userAgent });
-    const token = jwt.sign({ role: "admin" }, process.env.JWT_SECRET, { expiresIn: "8h" });
-    res.json({ success: true, token, expiresIn: "8h" });
+    res.json({ success: true, requires2FA: true, otpToken });
   } catch (e) { res.status(500).json({ error: "Erreur serveur" }); }
 });
 
@@ -186,6 +204,24 @@ router.get("/changelog", authMiddleware, async (req, res) => {
     const logs = await ChangeLog.find().sort({ createdAt: -1 }).limit(50);
     res.json(logs);
   } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+
+// POST /api/admin/verify-2fa
+router.post("/verify-2fa", async (req, res) => {
+  try {
+    const { otpToken, otp } = req.body;
+    const decoded = jwt.verify(otpToken, process.env.JWT_SECRET);
+    
+    if (decoded.otp !== otp) {
+      return res.status(401).json({ error: "Code incorrect" });
+    }
+    
+    const token = jwt.sign({ role: "admin" }, process.env.JWT_SECRET, { expiresIn: "8h" });
+    res.json({ success: true, token, expiresIn: "8h" });
+  } catch(e) {
+    res.status(401).json({ error: "Code expiré ou invalide" });
+  }
 });
 
 export default router;

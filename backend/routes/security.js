@@ -1,4 +1,5 @@
 import express from "express";
+import { Resend } from "resend";
 import LoginLog from "../models/LoginLog.js";
 import Visitor from "../models/Visitor.js";
 import { authMiddleware } from "../middleware/auth.js";
@@ -27,6 +28,29 @@ router.post("/track", async (req, res) => {
     } catch {}
 
     await Visitor.create({ ip, userAgent, page, referrer, duration, country, city, company });
+    
+    // Alerte email pour première visite du jour depuis cette IP
+    if (page === "/" || page === "") {
+      try {
+        const todayVisits = await Visitor.countDocuments({ ip, createdAt: { $gte: new Date(new Date().setHours(0,0,0,0)) } });
+        if (todayVisits === 1) {
+          const resend = new Resend(process.env.RESEND_API_KEY);
+          await resend.emails.send({
+            from: "Portfolio Alert <onboarding@resend.dev>",
+            to: process.env.EMAIL_USER,
+            subject: "👀 Nouveau visiteur sur ademsassi.com",
+            html: `<div style="font-family:sans-serif;padding:20px;background:#020408;color:#F0F4FF;">
+              <h2 style="color:#00D4FF;">Nouveau visiteur !</h2>
+              <p><b>IP:</b> ${ip}</p>
+              <p><b>Pays:</b> ${country} — ${city}</p>
+              <p><b>Entreprise:</b> ${company}</p>
+              <p><b>Page:</b> ${page}</p>
+              <p><b>Date:</b> ${new Date().toLocaleString("fr-FR")}</p>
+            </div>`,
+          });
+        }
+      } catch(e) { console.error("Alert email error:", e.message); }
+    }
     res.json({ success: true });
   } catch (e) {
     res.status(500).json({ error: e.message });
