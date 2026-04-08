@@ -283,6 +283,22 @@ export default function ChatBot() {
   }]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const speak = (text) => {
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const clean = text.replace(/[#*`]/g, "").slice(0, 300);
+    const utterance = new SpeechSynthesisUtterance(clean);
+    utterance.lang = "fr-FR";
+    utterance.rate = 1.1;
+    utterance.pitch = 1;
+    const voices = window.speechSynthesis.getVoices();
+    const frVoice = voices.find(v => v.lang.startsWith("fr"));
+    if (frVoice) utterance.voice = frVoice;
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const [ttsEnabled, setTtsEnabled] = useState(false);
+
   const scrollRef = useRef(null);
 
   useEffect(() => {

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Brain, Code2, GraduationCap, BookOpen, Award } from "lucide-react";
+import TimelineD3 from "./TimelineD3";
 import { useContent } from "../hooks/useContent";
 
 const ICONS = [GraduationCap, BookOpen, Code2, Brain];
