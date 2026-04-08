@@ -1,3 +1,4 @@
+import { useHaptic } from "../hooks/useHaptic";
 import { useEffect, useState } from "react";
 import { ChevronDown, Sparkles } from "lucide-react";
 import AnimatedCounter from "./AnimatedCounter";
