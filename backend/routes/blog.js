@@ -9,7 +9,11 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const articles = await Article.find({ published: true }).sort({ createdAt: -1 });
-    res.json(articles);
+    const articlesWithCounts = await Promise.all(articles.map(async (a) => {
+      const commentsCount = await Comment.countDocuments({ articleSlug: a.slug, approved: true });
+      return { ...a.toObject(), commentsCount };
+    }));
+    res.json(articlesWithCounts);
   } catch { res.status(500).json({ error: "Erreur serveur" }); }
 });
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Calendar, Tag, ArrowRight, BookOpen, Search, Clock, FileText, Eye } from "lucide-react";
+import { Calendar, Tag, ArrowRight, BookOpen, Search, Clock, FileText, Eye, Heart, Flame, ThumbsUp, MessageCircle } from "lucide-react";
 
 const API_URL = "https://web-production-cba0c.up.railway.app";
 
@@ -172,6 +172,14 @@ export default function BlogPage() {
                       <div className="flex items-center gap-1 text-dim-star text-xs font-mono">
                         <Eye size={12}/>
                         {article.views || 0} vue{article.views !== 1 ? "s" : ""}
+                      </div>
+                      <div className="flex items-center gap-2 ml-auto">
+                        <span className="flex items-center gap-1 text-xs font-mono text-dim-star">
+                          🔥 {(article.reactions?.fire || 0) + (article.reactions?.heart || 0) + (article.reactions?.clap || 0) + (article.reactions?.think || 0)}
+                        </span>
+                        <span className="flex items-center gap-1 text-xs font-mono text-dim-star">
+                          <MessageCircle size={11}/> {article.commentsCount || 0}
+                        </span>
                       </div>
                       {article.tags?.map(tag => (
                         <span key={tag} className="flex items-center gap-1 text-xs font-mono px-2 py-0.5 rounded-full"
