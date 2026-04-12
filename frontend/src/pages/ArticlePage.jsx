@@ -238,6 +238,64 @@ export default function ArticlePage() {
       .catch(() => setLoading(false));
   }, [slug]);
 
+
+  // JSON-LD + Canonical pour SEO
+  useEffect(() => {
+    if (!article) return;
+    
+    // Canonical URL
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) { canonical = document.createElement('link'); canonical.rel = 'canonical'; document.head.appendChild(canonical); }
+    canonical.href = `https://ademsassi.com/blog/${article.slug}`;
+
+    // OG tags dynamiques
+    const setMeta = (prop, content, attr = "property") => {
+      let el = document.querySelector(`meta[${attr}="${prop}"]`);
+      if (!el) { el = document.createElement('meta'); el.setAttribute(attr, prop); document.head.appendChild(el); }
+      el.setAttribute('content', content);
+    };
+    setMeta("og:title", article.title);
+    setMeta("og:description", article.excerpt);
+    setMeta("og:url", `https://ademsassi.com/blog/${article.slug}`);
+    setMeta("og:type", "article");
+    setMeta("twitter:title", article.title, "name");
+    setMeta("twitter:description", article.excerpt, "name");
+
+    // JSON-LD Article
+    const existing = document.getElementById('article-jsonld');
+    if (existing) existing.remove();
+    const script = document.createElement('script');
+    script.id = 'article-jsonld';
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": article.title,
+      "description": article.excerpt,
+      "url": `https://ademsassi.com/blog/${article.slug}`,
+      "datePublished": article.createdAt,
+      "dateModified": article.updatedAt || article.createdAt,
+      "author": {
+        "@type": "Person",
+        "name": "Adem SASSI",
+        "url": "https://ademsassi.com"
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "Adem SASSI",
+        "url": "https://ademsassi.com"
+      },
+      "keywords": (article.tags || []).join(", "),
+      "wordCount": article.content?.split(/\s+/).length || 0,
+    });
+    document.head.appendChild(script);
+
+    return () => {
+      script.remove();
+      if (canonical) canonical.href = 'https://ademsassi.com';
+    };
+  }, [article]);
+
   useEffect(() => {
     const handleScroll = () => {
       const total = document.documentElement.scrollHeight - window.innerHeight;

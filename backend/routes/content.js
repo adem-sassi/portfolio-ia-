@@ -13,6 +13,7 @@ function setCache(key, data) {
 
 import express from "express";
 import Content from "../models/Content.js";
+import Article from "../models/Article.js";
 
 const router = express.Router();
 
@@ -52,6 +53,42 @@ router.get("/cv", async (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
+
+
+// GET /api/sitemap.xml — Sitemap dynamique
+router.get("/sitemap", async (req, res) => {
+  try {
+    const articles = await Article.find({ published: true }).select("slug updatedAt");
+    
+    const staticPages = [
+      { url: "https://ademsassi.com", priority: "1.0", freq: "weekly" },
+      { url: "https://ademsassi.com/blog", priority: "0.9", freq: "daily" },
+    ];
+
+    const articlePages = articles.map(a => ({
+      url: `https://ademsassi.com/blog/${a.slug}`,
+      priority: "0.8",
+      freq: "monthly",
+      lastmod: new Date(a.updatedAt || a.createdAt).toISOString().split("T")[0]
+    }));
+
+    const allPages = [...staticPages, ...articlePages];
+    
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${allPages.map(p => `  <url>
+    <loc>${p.url}</loc>
+    <changefreq>${p.freq}</changefreq>
+    <priority>${p.priority}</priority>
+    ${p.lastmod ? `<lastmod>${p.lastmod}</lastmod>` : ""}
+  </url>`).join("
+")}
+</urlset>`;
+
+    res.setHeader("Content-Type", "application/xml");
+    res.send(xml);
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
 
 export default router;
 

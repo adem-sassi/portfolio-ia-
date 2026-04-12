@@ -97,4 +97,25 @@ router.post("/:slug/like", async (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
+
+// DELETE /api/blog/comments/:id
+router.delete("/comments/:id", authMiddleware, async (req, res) => {
+  try {
+    await Comment.findByIdAndDelete(req.params.id);
+    res.json({ success: true });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+
+// Publier les articles planifiés automatiquement
+setInterval(async () => {
+  try {
+    const now = new Date();
+    await Article.updateMany(
+      { published: false, scheduledAt: { $lte: now }, scheduledAt: { $exists: true, $ne: null } },
+      { $set: { published: true } }
+    );
+  } catch {}
+}, 60 * 1000); // Vérifier chaque minute
+
 export default router;
