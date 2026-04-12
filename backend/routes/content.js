@@ -1,3 +1,9 @@
+import express from "express";
+import Content from "../models/Content.js";
+import Article from "../models/Article.js";
+
+const router = express.Router();
+
 const cache = new Map();
 const TTL = 5 * 60 * 1000;
 
@@ -11,50 +17,43 @@ function setCache(key, data) {
   cache.set(key, { data, time: Date.now() });
 }
 
-import express from "express";
-import Content from "../models/Content.js";
-import Article from "../models/Article.js";
-
-const router = express.Router();
-
+// GET /api/content
 router.get("/", async (req, res) => {
   try {
     const cached = getCache("content");
     if (cached) return res.json(cached);
+
     const sections = await Content.find({});
-    const content = {};
-    sections.forEach((s) => { content[s.section] = s.data; });
-    res.json(content);
-  } catch (err) {
-    res.status(500).json({ error: "Erreur lecture du contenu" });
-  }
+    const result = {};
+    sections.forEach(s => {
+      if (s.section !== "cv") result[s.section] = s.data;
+    });
+
+    setCache("content", result);
+    res.json(result);
+  } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-// GET /api/content/cv — Télécharger le CV
+// GET /api/content/cv
 router.get("/cv", async (req, res) => {
   try {
     const doc = await Content.findOne({ section: "cv" });
     if (!doc || !doc.data) return res.status(404).json({ error: "CV non trouvé" });
-    
-    // Si URL Cloudinary
+
     if (doc.data.url) return res.redirect(doc.data.url);
-    
-    // Si base64
+
     if (doc.data.file) {
       const base64 = doc.data.file.includes(",") ? doc.data.file.split(",")[1] : doc.data.file;
       const buffer = Buffer.from(base64, "base64");
       res.setHeader("Content-Type", "application/pdf");
-      res.setHeader("Content-Disposition", `inline; filename="${doc.data.name || "cv.pdf"}"`);
+      res.setHeader("Content-Disposition", "inline; filename=\"cv.pdf\"");
       res.setHeader("Content-Length", buffer.length);
       return res.end(buffer);
     }
-    
+
     res.status(404).json({ error: "CV non trouvé" });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
-
-
-
 
 // GET /api/content/sitemap
 router.get("/sitemap", async (req, res) => {
@@ -64,7 +63,7 @@ router.get("/sitemap", async (req, res) => {
       { url: "https://ademsassi.com", priority: "1.0", freq: "weekly" },
       { url: "https://ademsassi.com/blog", priority: "0.9", freq: "daily" },
     ];
-    articles.forEach(a => {
+    articles.forEach(function(a) {
       pages.push({
         url: "https://ademsassi.com/blog/" + a.slug,
         priority: "0.8",
@@ -72,7 +71,7 @@ router.get("/sitemap", async (req, res) => {
         lastmod: new Date(a.updatedAt || a.createdAt).toISOString().split("T")[0]
       });
     });
-    let xml = '<?xml version="1.0" encoding="UTF-8"?>';
+    var xml = '<?xml version="1.0" encoding="UTF-8"?>';
     xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
     pages.forEach(function(p) {
       xml += "<url>";
@@ -88,23 +87,13 @@ router.get("/sitemap", async (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-export default router;
-
-// GET /api/content/theme
+// GET /api/content/:section
 router.get("/:section", async (req, res) => {
   try {
     const doc = await Content.findOne({ section: req.params.section });
-    if (!doc) return res.status(404).json({ error: "Section introuvable" });
+    if (!doc) return res.status(404).json({ error: "Section non trouvée" });
     res.json(doc.data);
-  } catch (err) {
-    res.status(500).json({ error: "Erreur serveur" });
-  }
+  } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-
-
-router.get("/theme", async (req, res) => {
-  try {
-    const doc = await Content.findOne({ section: "theme" });
-    res.json(doc ? doc.data : {});
-  } catch { res.status(500).json({ error: "Erreur" }); }
+export default router;
