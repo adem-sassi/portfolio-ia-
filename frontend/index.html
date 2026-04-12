@@ -47,24 +47,62 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Adem SASSI",
-      "url": "https://ademsassi.com",
-      "email": "contact@ademsassi.com",
-      "image": "https://ademsassi.com/photo.jpg",
-      "jobTitle": "Étudiant Master 1 Intelligence Artificielle",
-      "alumniOf": {
-        "@type": "EducationalOrganization",
-        "name": "École Hexagone",
-        "address": "Versailles, France"
-      },
-      "knowsAbout": ["Intelligence Artificielle", "Machine Learning", "React.js", "Node.js", "IoT", "Python", "MongoDB"],
-      "sameAs": [
-        "https://github.com/ADEM-SASSI",
-        "https://linkedin.com/in/adem-sassi"
-      ],
-      "seekingWork": true,
-      "description": "Étudiant en Master 1 Intelligence Artificielle à l'École Hexagone de Versailles. Disponible en contrat d'apprentissage."
+      "@graph": [
+        {
+          "@type": "Person",
+          "name": "Adem SASSI",
+          "url": "https://ademsassi.com",
+          "email": "contact@ademsassi.com",
+          "image": "https://ademsassi.com/photo.jpg",
+          "jobTitle": "Étudiant Master 1 Intelligence Artificielle",
+          "alumniOf": {
+            "@type": "EducationalOrganization",
+            "name": "École Hexagone",
+            "address": "Versailles, France"
+          },
+          "knowsAbout": ["Intelligence Artificielle", "Machine Learning", "React.js", "Node.js", "IoT", "Python", "MongoDB"],
+          "sameAs": [
+            "https://github.com/ADEM-SASSI",
+            "https://linkedin.com/in/adem-sassi"
+          ]
+        },
+        {
+          "@type": "JobPosting",
+          "title": "Développeur IA & Full-Stack — Contrat d'apprentissage",
+          "description": "Adem SASSI, étudiant en Master 1 Intelligence Artificielle à l'École Hexagone de Versailles, recherche un contrat d'apprentissage en développement IA ou Full-Stack.",
+          "datePosted": "2026-01-01",
+          "validThrough": "2026-12-31",
+          "employmentType": "OTHER",
+          "hiringOrganization": {
+            "@type": "Organization",
+            "name": "École Hexagone",
+            "sameAs": "https://www.ecole-hexagone.com"
+          },
+          "jobLocation": {
+            "@type": "Place",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Versailles",
+              "addressRegion": "Île-de-France",
+              "addressCountry": "FR"
+            }
+          },
+          "applicantLocationRequirements": {
+            "@type": "Country",
+            "name": "France"
+          },
+          "jobLocationType": "TELECOMMUTE",
+          "baseSalary": {
+            "@type": "MonetaryAmount",
+            "currency": "EUR",
+            "value": {
+              "@type": "QuantitativeValue",
+              "value": "Selon grille alternance",
+              "unitText": "MONTH"
+            }
+          }
+        }
+      ]
     }
     </script>
   </head>
