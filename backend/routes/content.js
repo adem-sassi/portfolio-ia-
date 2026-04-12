@@ -110,4 +110,37 @@ router.get("/theme", async (req, res) => {
     const doc = await Content.findOne({ section: "theme" });
     res.json(doc ? doc.data : {});
   } catch { res.status(500).json({ error: "Erreur" }); }
+});// GET /api/content/sitemap
+router.get("/sitemap", async (req, res) => {
+  try {
+    const articles = await Article.find({ published: true }).select("slug updatedAt createdAt");
+    
+    const pages = [
+      { url: "https://ademsassi.com", priority: "1.0", freq: "weekly" },
+      { url: "https://ademsassi.com/blog", priority: "0.9", freq: "daily" },
+      ...articles.map(a => ({
+        url: "https://ademsassi.com/blog/" + a.slug,
+        priority: "0.8",
+        freq: "monthly",
+        lastmod: new Date(a.updatedAt || a.createdAt).toISOString().split("T")[0]
+      }))
+    ];
+
+    let xml = '<?xml version="1.0" encoding="UTF-8"?>';
+    xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+    pages.forEach(p => {
+      xml += "<url>";
+      xml += "<loc>" + p.url + "</loc>";
+      xml += "<changefreq>" + p.freq + "</changefreq>";
+      xml += "<priority>" + p.priority + "</priority>";
+      if (p.lastmod) xml += "<lastmod>" + p.lastmod + "</lastmod>";
+      xml += "</url>";
+    });
+    xml += "</urlset>";
+
+    res.setHeader("Content-Type", "application/xml");
+    res.send(xml);
+  } catch (e) { res.status(500).json({ error: e.message }); }
 });
+
+
