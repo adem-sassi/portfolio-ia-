@@ -29,6 +29,7 @@ export default function Contact() {
   const handleChange = (e) => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
 
   const handleSubmit = async (e) => {
+    if (honeypot) return; // Bot détecté
     vibrate([10, 50, 10]);
     e.preventDefault();
     setStatus("loading");

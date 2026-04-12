@@ -8,6 +8,7 @@ import Hero from "./components/Hero";
 import About from "./components/About";
 import Skills from "./components/Skills";
 import AIFeatures from "./components/AIFeatures";
+import Courses from "./components/Courses";
 import Projects from "./components/Projects";
 import Testimonials from "./components/Testimonials";
 import Contact from "./components/Contact";
@@ -40,6 +41,7 @@ function Portfolio() {
         <Skills/>
         <AIFeatures/>
         <Projects/>
+          <Courses/>
         <Testimonials/>
         <Contact/>
       </main>

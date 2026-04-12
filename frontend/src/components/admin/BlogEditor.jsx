@@ -4,6 +4,29 @@ import { Plus, Trash2, Edit, Eye, EyeOff, Loader2, Save } from "lucide-react";
 const API_URL = "https://web-production-cba0c.up.railway.app";
 
 export default function BlogEditor({ token }) {
+  
+  const suggestTags = async (title, excerpt) => {
+    if (!title) return;
+    try {
+      const res = await fetch("https://web-production-cba0c.up.railway.app/api/ai/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: [{
+            role: "user",
+            content: `Suggère 5 tags pertinents pour un article de blog avec ce titre: "${title}" et cet extrait: "${excerpt}". Réponds UNIQUEMENT avec les tags séparés par des virgules, sans explication. Exemple: React,JavaScript,Frontend,Web,Performance`
+          }]
+        })
+      });
+      const data = await res.json();
+      if (data.reply) {
+        const tags = data.reply.split(",").map(t => t.trim()).filter(Boolean).slice(0, 5);
+        return tags;
+      }
+    } catch {}
+    return [];
+  };
+
   const [articles, setArticles] = useState([]);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState({ title: "", excerpt: "", content: "", tags: "", published: false });

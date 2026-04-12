@@ -1,0 +1,49 @@
+name: Security Audit
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'  # Chaque lundi à 9h
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Audit frontend dependencies
+        run: |
+          cd frontend
+          npm install
+          npm audit --audit-level=high 2>&1 | tee /tmp/frontend-audit.txt
+          echo "Frontend audit done"
+
+      - name: Audit backend dependencies
+        run: |
+          cd backend
+          npm install
+          npm audit --audit-level=high 2>&1 | tee /tmp/backend-audit.txt
+          echo "Backend audit done"
+
+      - name: Check security headers
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://ademsassi.com)
+          HSTS=$(curl -sI https://ademsassi.com | grep -i "strict-transport")
+          echo "Status: $STATUS"
+          echo "HSTS: $HSTS"
+
+      - name: Alert si vulnérabilités critiques
+        run: |
+          if grep -q "critical" /tmp/frontend-audit.txt || grep -q "critical" /tmp/backend-audit.txt; then
+            curl -X POST https://ntfy.sh/ademsassi-admin-2fa \
+              -H "Title: 🚨 Vulnérabilité critique détectée" \
+              -H "Priority: urgent" \
+              -d "Des vulnérabilités critiques ont été détectées. Vérifiez npm audit!"
+          else
+            echo "✅ Aucune vulnérabilité critique"
+          fi
