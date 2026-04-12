@@ -10,6 +10,12 @@ const ArticleSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
   views: { type: Number, default: 0 },
+  reactions: {
+    fire: { type: Number, default: 0 },
+    heart: { type: Number, default: 0 },
+    clap: { type: Number, default: 0 },
+    think: { type: Number, default: 0 },
+  },
 });
 
 export default mongoose.model("Article", ArticleSchema);

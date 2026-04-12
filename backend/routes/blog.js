@@ -1,4 +1,5 @@
 import express from "express";
+import Comment from "../models/Comment.js";
 import Article from "../models/Article.js";
 import { authMiddleware } from "../middleware/auth.js";
 
@@ -57,6 +58,38 @@ router.delete("/:id", authMiddleware, async (req, res) => {
   try {
     await Article.findByIdAndDelete(req.params.id);
     res.json({ success: true });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+
+// GET /api/blog/:slug/comments
+router.get("/:slug/comments", async (req, res) => {
+  try {
+    const comments = await Comment.find({ articleSlug: req.params.slug, approved: true }).sort({ createdAt: -1 });
+    res.json(comments);
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// POST /api/blog/:slug/comments
+router.post("/:slug/comments", async (req, res) => {
+  try {
+    const { name, email, content } = req.body;
+    if (!name || !content) return res.status(400).json({ error: "Nom et commentaire requis" });
+    const comment = await Comment.create({ articleSlug: req.params.slug, name, email, content });
+    res.json(comment);
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// POST /api/blog/:slug/like
+router.post("/:slug/like", async (req, res) => {
+  try {
+    const { reaction } = req.body;
+    const article = await Article.findOneAndUpdate(
+      { slug: req.params.slug },
+      { $inc: { [`reactions.${reaction}`]: 1 } },
+      { new: true }
+    );
+    res.json({ reactions: article.reactions });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
