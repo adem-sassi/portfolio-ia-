@@ -18,6 +18,14 @@ router.get("/", async (req, res) => {
 });
 
 // GET un article par slug
+// GET /api/blog/all — admin (tous les articles, publiés ou non)
+router.get("/all", async (req, res) => {
+  try {
+    const articles = await Article.find({}).sort({ createdAt: -1 });
+    res.json(articles);
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
 router.get("/:slug", async (req, res) => {
   try {
     const article = await Article.findOneAndUpdate(
