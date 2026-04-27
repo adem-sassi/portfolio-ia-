@@ -247,7 +247,7 @@ router.post("/contact", async (req, res) => {
 
     // Email à Adem
     await resend.emails.send({
-      from: "Portfolio <onboarding@resend.dev>",
+      from: "Portfolio <contact@ademsassi.com>",
       to: ["sassiadem7@gmail.com"],
       subject: `📬 ${subject || "Nouveau message"} — de ${name}`,
       html: `
@@ -266,7 +266,7 @@ router.post("/contact", async (req, res) => {
 
     // Accusé de réception au visiteur
     await resend.emails.send({
-      from: "Adem SASSI <onboarding@resend.dev>",
+      from: "Adem SASSI <contact@ademsassi.com>",
       to: [email],
       subject: "✅ Message reçu — Adem SASSI",
       html: `
