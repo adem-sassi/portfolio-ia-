@@ -15,6 +15,7 @@ export default function Contact() {
   const contact = content?.contact || {};
   const formRef = useRef(null);
 
+  const [honeypot, setHoneypot] = useState("");
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [status, setStatus] = useState("idle"); // idle | loading | success | error
   const [errorMsg, setErrorMsg] = useState("");
