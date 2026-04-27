@@ -257,8 +257,7 @@ router.post("/contact", async (req, res) => {
           <p><strong style="color:#7B2FFF">Email:</strong> <a href="mailto:${email}" style="color:#00D4FF">${email}</a></p>
           <p><strong style="color:#7B2FFF">Sujet:</strong> ${subject || "—"}</p>
           <div style="background:#1a1a2e;padding:16px;border-radius:8px;margin-top:16px;border-left:3px solid #00D4FF">
-            <p style="margin:0">${message.replace(/
-/g, "<br>")}</p>
+            <p style="margin:0">${message.split("\n").join("<br>")}</p>
           </div>
         </div>
       `,
@@ -275,8 +274,7 @@ router.post("/contact", async (req, res) => {
           <h2 style="color:#00D4FF">Merci ${name} ! 👋</h2>
           <p style="color:#a0a8c0">J'ai bien reçu votre message et je vous répondrai dans les plus brefs délais.</p>
           <div style="background:#1a1a2e;padding:16px;border-radius:8px;margin:20px 0;border-left:3px solid #7B2FFF">
-            <p style="margin:0;color:#a0a8c0;font-size:14px"><strong style="color:#f0f4ff">Votre message :</strong><br><br>${message.replace(/
-/g, "<br>")}</p>
+            <p style="margin:0;color:#a0a8c0;font-size:14px"><strong style="color:#f0f4ff">Votre message :</strong><br><br>${message.split("\n").join("<br>")}</p>
           </div>
           <hr style="border-color:#1a1a2e;margin:24px 0">
           <div style="text-align:center">
