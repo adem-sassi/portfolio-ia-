@@ -228,21 +228,64 @@ router.post("/contact", async (req, res) => {
     const { name, email, subject, message } = req.body;
     if (!name || !email || !message) return res.status(400).json({ error: "Champs manquants" });
 
+    // Vérification format email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) return res.status(400).json({ error: "Email invalide" });
+
+    // Vérification existence email via API gratuite
+    try {
+      const domain = email.split("@")[1];
+      const dnsRes = await fetch(`https://dns.google/resolve?name=${domain}&type=MX`);
+      const dnsData = await dnsRes.json();
+      if (!dnsData.Answer || dnsData.Answer.length === 0) {
+        return res.status(400).json({ error: "Email invalide — domaine inexistant" });
+      }
+    } catch {}
+
     const { Resend } = await import("resend");
     const resend = new Resend(process.env.RESEND_API_KEY);
 
+    // Email à Adem
     await resend.emails.send({
       from: "Portfolio <onboarding@resend.dev>",
       to: ["sassiadem7@gmail.com"],
-      subject: subject || "Nouveau message depuis le portfolio",
+      subject: `📬 ${subject || "Nouveau message"} — de ${name}`,
       html: `
-        <h2>Nouveau message de ${name}</h2>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Sujet:</strong> ${subject}</p>
-        <p><strong>Message:</strong></p>
-        <p>${message.replace(/\n/g, "<br>")}</p>
+        <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:24px;background:#0a0a1a;color:#f0f4ff;border-radius:12px">
+          <h2 style="color:#00D4FF;margin-bottom:16px">📬 Nouveau message portfolio</h2>
+          <p><strong style="color:#7B2FFF">Nom:</strong> ${name}</p>
+          <p><strong style="color:#7B2FFF">Email:</strong> <a href="mailto:${email}" style="color:#00D4FF">${email}</a></p>
+          <p><strong style="color:#7B2FFF">Sujet:</strong> ${subject || "—"}</p>
+          <div style="background:#1a1a2e;padding:16px;border-radius:8px;margin-top:16px;border-left:3px solid #00D4FF">
+            <p style="margin:0">${message.replace(/
+/g, "<br>")}</p>
+          </div>
+        </div>
       `,
       reply_to: email,
+    });
+
+    // Accusé de réception au visiteur
+    await resend.emails.send({
+      from: "Adem SASSI <onboarding@resend.dev>",
+      to: [email],
+      subject: "✅ Message reçu — Adem SASSI",
+      html: `
+        <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:24px;background:#0a0a1a;color:#f0f4ff;border-radius:12px">
+          <h2 style="color:#00D4FF">Merci ${name} ! 👋</h2>
+          <p style="color:#a0a8c0">J'ai bien reçu votre message et je vous répondrai dans les plus brefs délais.</p>
+          <div style="background:#1a1a2e;padding:16px;border-radius:8px;margin:20px 0;border-left:3px solid #7B2FFF">
+            <p style="margin:0;color:#a0a8c0;font-size:14px"><strong style="color:#f0f4ff">Votre message :</strong><br><br>${message.replace(/
+/g, "<br>")}</p>
+          </div>
+          <hr style="border-color:#1a1a2e;margin:24px 0">
+          <div style="text-align:center">
+            <p style="color:#7B2FFF;font-weight:bold;font-size:18px">Adem SASSI</p>
+            <p style="color:#a0a8c0;font-size:13px">Master 1 IA — École Hexagone, Versailles</p>
+            <a href="https://ademsassi.com" style="color:#00D4FF;font-size:13px">ademsassi.com</a>
+          </div>
+        </div>
+      `,
     });
 
     res.json({ success: true });

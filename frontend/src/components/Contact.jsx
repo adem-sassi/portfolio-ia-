@@ -47,7 +47,8 @@ export default function Contact() {
           message: form.message,
         }),
       });
-      if (!res.ok) throw new Error("Erreur serveur");
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Erreur serveur");
 
       setStatus("success");
       setForm({ name: "", email: "", subject: "", message: "" });
@@ -68,7 +69,7 @@ export default function Contact() {
     } catch (err) {
       console.error("EmailJS error:", err);
       setStatus("error");
-      setErrorMsg("Erreur d'envoi. Réessayez ou contactez directement par email.");
+      setErrorMsg(err.message || "Erreur d'envoi. Réessayez ou contactez directement par email.");
       setTimeout(() => setStatus("idle"), 4000);
     }
   };
