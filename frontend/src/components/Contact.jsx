@@ -36,18 +36,17 @@ export default function Contact() {
     setErrorMsg("");
 
     try {
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        {
-          from_name: form.name,
-          from_email: form.email,
+      const res = await fetch("https://web-production-cba0c.up.railway.app/api/admin/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
           subject: form.subject,
           message: form.message,
-          to_email: contact.email || "sassiadem7@gmail.com",
-        },
-        EMAILJS_PUBLIC_KEY
-      );
+        }),
+      });
+      if (!res.ok) throw new Error("Erreur serveur");
 
       setStatus("success");
       setForm({ name: "", email: "", subject: "", message: "" });

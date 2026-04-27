@@ -221,4 +221,32 @@ router.post("/verify-2fa", async (req, res) => {
   }
 });
 
+
+// POST /api/admin/contact — formulaire contact public
+router.post("/contact", async (req, res) => {
+  try {
+    const { name, email, subject, message } = req.body;
+    if (!name || !email || !message) return res.status(400).json({ error: "Champs manquants" });
+
+    const { Resend } = await import("resend");
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
+    await resend.emails.send({
+      from: "Portfolio <onboarding@resend.dev>",
+      to: ["sassiadem7@gmail.com"],
+      subject: subject || "Nouveau message depuis le portfolio",
+      html: `
+        <h2>Nouveau message de ${name}</h2>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Sujet:</strong> ${subject}</p>
+        <p><strong>Message:</strong></p>
+        <p>${message.replace(/\n/g, "<br>")}</p>
+      `,
+      reply_to: email,
+    });
+
+    res.json({ success: true });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
 export default router;
