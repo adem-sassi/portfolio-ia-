@@ -29,7 +29,7 @@ export default function MLLab() {
           {TABS.map(tab => {
             const Icon = tab.icon;
             return (
-              <button key={tab.id} onClick={() => setActive(tab.id)}
+              <button aria-label="Action" key={tab.id} onClick={() => setActive(tab.id)}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono transition-all"
                 style={{
                   background: active === tab.id ? "rgba(123,47,255,0.2)" : "rgba(123,47,255,0.05)",

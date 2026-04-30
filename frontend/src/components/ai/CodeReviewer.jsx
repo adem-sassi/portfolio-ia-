@@ -81,7 +81,7 @@ export default function CodeReviewer() {
       <div className="flex items-center gap-3 flex-wrap">
         <span className="font-mono text-xs text-dim-star tracking-widest">LANGAGE :</span>
         {LANGUAGES.map((l) => (
-          <button
+          <button aria-label="Action"
             key={l}
             onClick={() => setLanguage(l)}
             className={`text-xs font-mono px-3 py-1.5 rounded-full border transition-all ${
@@ -104,7 +104,7 @@ export default function CodeReviewer() {
           placeholder="Collez votre code ici..."
           className="ai-input w-full px-4 py-3 rounded-xl text-sm font-mono resize-none h-36"
         />
-        <button
+        <button aria-label="Action"
           onClick={() => setCode(SAMPLE_CODE)}
           className="absolute top-8 right-3 text-xs font-mono text-dim-star hover:text-neural-blue transition-colors"
         >
@@ -113,7 +113,7 @@ export default function CodeReviewer() {
       </div>
 
       {/* Button */}
-      <button
+      <button aria-label="Action"
         onClick={review}
         disabled={!code.trim() || loading}
         className="ai-btn px-6 py-3 rounded-xl flex items-center gap-2"

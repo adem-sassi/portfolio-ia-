@@ -88,7 +88,7 @@ export default function CVUpload({ token }) {
               style={{ background: "rgba(0,212,255,0.1)", border: "1px solid rgba(0,212,255,0.2)" }}>
               <Download size={13} className="text-neural-blue"/>
             </a>
-            <button onClick={deleteCV}
+            <button aria-label="Action" onClick={deleteCV}
               className="w-8 h-8 flex items-center justify-center rounded-lg"
               style={{ background: "rgba(255,47,187,0.1)", border: "1px solid rgba(255,47,187,0.2)" }}>
               <Trash2 size={13} className="text-neural-pink"/>

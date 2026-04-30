@@ -35,7 +35,7 @@ export default function AnomalyDetector() {
     <div className="space-y-4">
       <div className="flex gap-2">
         {EXAMPLES.map((ex, i) => (
-          <button key={i} onClick={() => setDataStr(ex.data.join(", "))}
+          <button aria-label="Action" key={i} onClick={() => setDataStr(ex.data.join(", "))}
             className="text-xs font-mono px-3 py-1.5 rounded-full transition-all"
             style={{ background: "rgba(0,212,255,0.1)", border: "1px solid rgba(0,212,255,0.3)", color: "var(--neural-blue)" }}>
             {ex.label}
@@ -47,7 +47,7 @@ export default function AnomalyDetector() {
         placeholder="10, 12, 95, 11, 200..."
         className="ai-input w-full px-4 py-3 rounded-xl text-sm"/>
 
-      <button onClick={detect} disabled={loading}
+      <button aria-label="Action" onClick={detect} disabled={loading}
         className="ai-btn w-full py-3 rounded-xl flex items-center justify-center gap-2 text-sm">
         {loading ? <Loader2 size={14} className="animate-spin"/> : <AlertTriangle size={14}/>}
         {loading ? "Détection en cours..." : "Détecter les anomalies"}

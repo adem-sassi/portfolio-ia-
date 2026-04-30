@@ -69,7 +69,7 @@ function ArticleStats({ article, token }) {
                 </div>
                 <p className="text-dim-star text-xs">{c.content}</p>
               </div>
-              <button onClick={() => deleteComment(c._id)}
+              <button aria-label="Supprimer le commentaire" onClick={() => deleteComment(c._id)}
                 className="text-neural-pink hover:opacity-70 flex-shrink-0">
                 <Trash2 size={14}/>
               </button>
@@ -193,7 +193,7 @@ export default function BlogEditor({ token }) {
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       {/* Liste articles */}
       <div className="space-y-3">
-        <button onClick={newArticle}
+        <button aria-label="Nouvel article" onClick={newArticle}
           className="w-full ai-btn py-3 rounded-xl flex items-center justify-center gap-2 text-sm">
           <Plus size={14}/> Nouvel article
         </button>
@@ -204,7 +204,7 @@ export default function BlogEditor({ token }) {
             style={{ borderColor: editing === a._id ? "rgba(0,212,255,0.4)" : "rgba(255,255,255,0.05)" }}>
             <div className="flex items-start justify-between gap-2 mb-2">
               <p className="text-star-white text-sm font-bold line-clamp-2 flex-1">{a.title}</p>
-              <button onClick={e => { e.stopPropagation(); deleteArticle(a._id); }}
+              <button aria-label="Supprimer l'article" onClick={e => { e.stopPropagation(); deleteArticle(a._id); }}
                 className="text-neural-pink hover:opacity-70 flex-shrink-0">
                 <Trash2 size={12}/>
               </button>
@@ -235,7 +235,7 @@ export default function BlogEditor({ token }) {
           {/* Tabs */}
           <div className="flex gap-2">
             {["edit", "preview", "stats"].map(tab => (
-              <button key={tab} onClick={() => setActiveTab(tab)}
+              <button aria-label="Changer d'onglet" key={tab} onClick={() => setActiveTab(tab)}
                 className="px-4 py-2 rounded-lg text-xs font-mono transition-all"
                 style={{
                   background: activeTab === tab ? "rgba(0,212,255,0.15)" : "rgba(255,255,255,0.03)",
@@ -280,7 +280,7 @@ export default function BlogEditor({ token }) {
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <label className="text-dim-star text-xs font-mono">TAGS</label>
-                  <button onClick={suggestTags} disabled={suggestingTags || !form.title}
+                  <button aria-label="Suggérer des tags" onClick={suggestTags} disabled={suggestingTags || !form.title}
                     className="text-xs font-mono text-neural-violet hover:opacity-80 flex items-center gap-1">
                     {suggestingTags ? "⏳ Suggestion..." : "🤖 Suggérer avec IA"}
                   </button>
@@ -290,7 +290,7 @@ export default function BlogEditor({ token }) {
                     <span key={i} className="flex items-center gap-1 text-xs font-mono px-2 py-1 rounded-full"
                       style={{ background: "rgba(0,212,255,0.1)", border: "1px solid rgba(0,212,255,0.2)", color: "var(--neural-blue)" }}>
                       {tag}
-                      <button onClick={() => setForm(prev => ({ ...prev, tags: prev.tags.filter((_, j) => j !== i) }))}>
+                      <button aria-label="Précédent" onClick={() => setForm(prev => ({ ...prev, tags: prev.tags.filter((_, j) => j !== i) }))}>
                         <X size={10}/>
                       </button>
                     </span>
@@ -309,7 +309,7 @@ export default function BlogEditor({ token }) {
                 <p className="text-dim-star text-xs font-mono tracking-widest">PUBLICATION</p>
                 <div className="flex items-center gap-3">
                   <label className="text-dim-star text-xs font-mono">Statut</label>
-                  <button onClick={() => setForm(prev => ({ ...prev, published: !prev.published }))}
+                  <button aria-label="Précédent" onClick={() => setForm(prev => ({ ...prev, published: !prev.published }))}
                     className="relative w-12 h-6 rounded-full transition-all"
                     style={{ background: form.published ? "var(--neural-blue)" : "rgba(255,255,255,0.1)" }}>
                     <div className="absolute top-1 w-4 h-4 rounded-full bg-white transition-all"
@@ -330,7 +330,7 @@ export default function BlogEditor({ token }) {
                 </div>
               </div>
 
-              <button onClick={save}
+              <button aria-label="Enregistrer" onClick={save}
                 className="ai-btn w-full py-3 rounded-xl flex items-center justify-center gap-2 text-sm">
                 {saving ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"/> : saved ? <Check size={14}/> : <Save size={14}/>}
                 {saving ? "Sauvegarde..." : saved ? "✅ Sauvegardé !" : "Sauvegarder l'article"}

@@ -34,7 +34,7 @@ export default function ServerError() {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <button onClick={() => window.location.reload()}
+          <button aria-label="Rafraîchir" onClick={() => window.location.reload()}
             className="ai-btn px-8 py-4 rounded-full flex items-center gap-2 text-sm">
             <RefreshCw size={16}/> Réessayer
           </button>

@@ -57,7 +57,7 @@ export default function Reactions({ slug }) {
             const isVoted = voted[type];
             const pct = total > 0 ? Math.round((count / total) * 100) : 0;
             return (
-              <button key={type} onClick={() => react(type)} disabled={isVoted}
+              <button aria-label="Réagir" key={type} onClick={() => react(type)} disabled={isVoted}
                 className="flex flex-col items-center gap-2 p-4 rounded-2xl transition-all duration-300 group"
                 style={{
                   background: isVoted ? "rgba(0,212,255,0.08)" : "rgba(255,255,255,0.02)",

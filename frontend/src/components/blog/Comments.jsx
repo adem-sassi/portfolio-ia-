@@ -68,7 +68,7 @@ export default function Comments({ slug }) {
               <p className="text-neural-green text-sm">✅ Commentaire publié !</p>
             </div>
           )}
-          <button onClick={submit} disabled={!name.trim() || !text.trim() || loading}
+          <button aria-label="Envoyer" onClick={submit} disabled={!name.trim() || !text.trim() || loading}
             className="ai-btn px-6 py-3 rounded-xl flex items-center gap-2 text-sm">
             {loading ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"/> : <Send size={14}/>}
             {loading ? "Publication..." : "Publier le commentaire"}

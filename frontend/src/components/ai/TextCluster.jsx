@@ -45,7 +45,7 @@ export default function TextCluster() {
         {texts.map((t, i) => (
           <div key={i} className="flex items-center gap-2 p-2 glass-card rounded-lg border border-white/5">
             <p className="flex-1 text-sm text-dim-star truncate">{t}</p>
-            <button onClick={() => setTexts(texts.filter((_, j) => j !== i))}
+            <button aria-label="Retirer" onClick={() => setTexts(texts.filter((_, j) => j !== i))}
               className="text-neural-pink hover:opacity-80">
               <X size={12}/>
             </button>
@@ -58,13 +58,13 @@ export default function TextCluster() {
           onKeyDown={e => { if (e.key === "Enter" && newText.trim()) { setTexts([...texts, newText.trim()]); setNewText(""); }}}
           placeholder="Ajouter un texte..."
           className="ai-input flex-1 px-3 py-2 rounded-lg text-sm"/>
-        <button onClick={() => { if (newText.trim()) { setTexts([...texts, newText.trim()]); setNewText(""); }}}
+        <button aria-label="Action" onClick={() => { if (newText.trim()) { setTexts([...texts, newText.trim()]); setNewText(""); }}}
           className="glass-card border border-neural-blue/30 px-3 py-2 rounded-lg text-neural-blue hover:border-neural-blue/60 transition-colors">
           <Plus size={16}/>
         </button>
       </div>
 
-      <button onClick={cluster} disabled={loading || texts.length < 2}
+      <button aria-label="Action" onClick={cluster} disabled={loading || texts.length < 2}
         className="ai-btn w-full py-3 rounded-xl flex items-center justify-center gap-2 text-sm">
         {loading ? <Loader2 size={14} className="animate-spin"/> : <Layers size={14}/>}
         {loading ? "Clustering en cours..." : `Regrouper ${texts.length} textes`}

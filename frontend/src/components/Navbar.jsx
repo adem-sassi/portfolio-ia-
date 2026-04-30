@@ -55,7 +55,7 @@ export default function Navbar() {
         </a>
 
         {/* Mobile Menu Toggle */}
-        <button
+        <button aria-label="Action"
           className="md:hidden text-neural-blue"
           onClick={() => setMenuOpen(!menuOpen)}
         >

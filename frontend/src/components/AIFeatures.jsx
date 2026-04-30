@@ -47,7 +47,7 @@ export default function AIFeatures() {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
             return (
-              <button
+              <button aria-label="Action"
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-mono tracking-wide transition-all duration-300 ${

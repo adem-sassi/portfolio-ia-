@@ -31,7 +31,7 @@ export default function FloatingActions() {
       </a>
 
       {/* Back to top */}
-      <button
+      <button aria-label="Action"
         onClick={scrollTop}
         className="w-12 h-12 glass-card border border-neural-blue/40 rounded-full flex items-center justify-center neural-glow-hover transition-all hover:border-neural-blue/80"
         title="Retour en haut"

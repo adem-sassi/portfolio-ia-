@@ -23,7 +23,7 @@ export default function ChangeLogViewer({ token }) {
 
   return (
     <div>
-      <button onClick={load} className="flex items-center gap-2 text-xs font-mono text-dim-star mb-3">
+      <button aria-label="Rafraîchir" onClick={load} className="flex items-center gap-2 text-xs font-mono text-dim-star mb-3">
         <RefreshCw size={12} className={loading ? "animate-spin" : ""}/>
         Rafraîchir
       </button>

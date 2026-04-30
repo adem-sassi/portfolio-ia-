@@ -395,7 +395,7 @@ export default function ChatBot() {
           {SUGGESTIONS.map(s => {
             const Icon = s.icon;
             return (
-              <button key={s.text} onClick={() => send(s.text)}
+              <button aria-label="Action" key={s.text} onClick={() => send(s.text)}
                 className="flex items-center gap-2 px-3 py-2 rounded-xl text-left transition-all hover:scale-[1.02] active:scale-[0.98]"
                 style={{ background: "rgba(0,212,255,0.04)", border: "1px solid rgba(0,212,255,0.15)" }}>
                 <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0"
@@ -416,7 +416,7 @@ export default function ChatBot() {
           onKeyDown={e => e.key === "Enter" && send()}
           placeholder="Posez une question sur Adem SASSI..."
           className="ai-input flex-1 px-4 py-3 rounded-xl text-sm"/>
-        <button onClick={() => send()} disabled={!input.trim() || loading}
+        <button aria-label="Action" onClick={() => send()} disabled={!input.trim() || loading}
           className="ai-btn px-4 py-3 rounded-xl">
           {loading ? <Loader2 size={16} className="animate-spin"/> : <Send size={16}/>}
         </button>

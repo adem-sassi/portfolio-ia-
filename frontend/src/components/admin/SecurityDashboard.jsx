@@ -63,7 +63,7 @@ export default function SecurityDashboard({ token }) {
 
       <div className="flex gap-2">
         {["visitors", "companies", "logs"].map(t => (
-          <button key={t} onClick={() => setTab(t)}
+          <button aria-label="Changer d'onglet" key={t} onClick={() => setTab(t)}
             className="px-3 py-1.5 rounded-lg text-xs font-mono transition-all"
             style={{
               background: tab === t ? "rgba(0,212,255,0.2)" : "rgba(0,212,255,0.05)",
@@ -73,7 +73,7 @@ export default function SecurityDashboard({ token }) {
             {t === "visitors" ? "Visiteurs" : t === "companies" ? "Entreprises" : "Connexions"}
           </button>
         ))}
-        <button onClick={load} className="ml-auto p-1.5 glass-card border border-white/10 rounded-lg">
+        <button aria-label="Rafraîchir" onClick={load} className="ml-auto p-1.5 glass-card border border-white/10 rounded-lg">
           <RefreshCw size={12} className="text-dim-star"/>
         </button>
       </div>
@@ -126,7 +126,7 @@ export default function SecurityDashboard({ token }) {
               {logs.blocked.map((b, i) => (
                 <div key={i} className="flex items-center justify-between">
                   <span className="text-xs text-dim-star font-mono">{b.ip}</span>
-                  <button onClick={() => unblock(b.ip)} className="flex items-center gap-1 text-xs text-neural-blue hover:opacity-80">
+                  <button aria-label="Débloquer" onClick={() => unblock(b.ip)} className="flex items-center gap-1 text-xs text-neural-blue hover:opacity-80">
                     <Ban size={10}/> Débloquer
                   </button>
                 </div>

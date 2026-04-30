@@ -110,7 +110,7 @@ export default function AIQuiz() {
           ))}
         </div>
 
-        <button onClick={reset} className="ai-btn px-6 py-3 rounded-xl flex items-center gap-2">
+        <button aria-label="Action" onClick={reset} className="ai-btn px-6 py-3 rounded-xl flex items-center gap-2">
           <RotateCcw size={14} />
           Nouveau Quiz
         </button>
@@ -153,7 +153,7 @@ export default function AIQuiz() {
               else style = "border-white/5 text-white/30";
             }
             return (
-              <button
+              <button aria-label="Action"
                 key={i}
                 onClick={() => answer(i)}
                 className={`w-full text-left px-4 py-3 rounded-xl border transition-all text-sm font-mono flex items-center gap-3 ${style}`}
@@ -176,7 +176,7 @@ export default function AIQuiz() {
 
         {/* Next */}
         {selected !== null && (
-          <button onClick={next} className="ai-btn px-6 py-3 rounded-xl flex items-center gap-2 w-full justify-center">
+          <button aria-label="Suivant" onClick={next} className="ai-btn px-6 py-3 rounded-xl flex items-center gap-2 w-full justify-center">
             {current + 1 >= quiz.questions.length ? <Trophy size={14} /> : <ChevronRight size={14} />}
             {current + 1 >= quiz.questions.length ? "Voir les résultats" : "Question suivante"}
           </button>
@@ -191,7 +191,7 @@ export default function AIQuiz() {
         <label className="font-mono text-xs text-dim-star tracking-widest mb-2 block">SUJET DU QUIZ</label>
         <div className="flex flex-wrap gap-2">
           {TOPICS.map((t) => (
-            <button
+            <button aria-label="Action"
               key={t}
               onClick={() => setTopic(t)}
               className={`text-xs font-mono px-3 py-1.5 rounded-full border transition-all ${
@@ -208,7 +208,7 @@ export default function AIQuiz() {
         <label className="font-mono text-xs text-dim-star tracking-widest mb-2 block">DIFFICULTÉ</label>
         <div className="flex gap-2">
           {DIFFICULTIES.map((d) => (
-            <button
+            <button aria-label="Action"
               key={d}
               onClick={() => setDifficulty(d)}
               className={`text-xs font-mono px-4 py-2 rounded-full border transition-all capitalize ${
@@ -221,7 +221,7 @@ export default function AIQuiz() {
         </div>
       </div>
 
-      <button onClick={generate} disabled={loading} className="ai-btn px-6 py-3 rounded-xl flex items-center gap-2">
+      <button aria-label="Action" onClick={generate} disabled={loading} className="ai-btn px-6 py-3 rounded-xl flex items-center gap-2">
         {loading ? <Loader2 size={15} className="animate-spin" /> : <Trophy size={15} />}
         {loading ? "Génération du quiz..." : "Générer le Quiz IA"}
       </button>

@@ -86,18 +86,18 @@ export default function Testimonials() {
 
         {/* Navigation */}
         <div className="flex items-center justify-center gap-6 mt-8">
-          <button onClick={() => go(-1)}
+          <button aria-label="Précédent" onClick={() => go(-1)}
             className="w-10 h-10 glass-card rounded-full flex items-center justify-center text-dim-star hover:text-neural-blue border border-white/10 transition-all">
             <ChevronLeft size={16}/>
           </button>
           <div className="flex gap-2">
             {testimonials.map((_, i) => (
-              <button key={i} onClick={() => setCurrent(i)}
+              <button aria-label="Aller à ce slide" key={i} onClick={() => setCurrent(i)}
                 className="transition-all duration-300 rounded-full"
                 style={{ width: i===current?"24px":"8px", height:"8px", background: i===current?c:"rgba(255,255,255,0.2)" }}/>
             ))}
           </div>
-          <button onClick={() => go(1)}
+          <button aria-label="Suivant" onClick={() => go(1)}
             className="w-10 h-10 glass-card rounded-full flex items-center justify-center text-dim-star hover:text-neural-blue border border-white/10 transition-all">
             <ChevronRight size={16}/>
           </button>

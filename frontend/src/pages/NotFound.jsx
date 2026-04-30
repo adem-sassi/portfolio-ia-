@@ -38,7 +38,7 @@ export default function NotFound() {
             className="ai-btn px-8 py-4 rounded-full flex items-center gap-2 text-sm">
             <Home size={16}/> Retour à l'accueil
           </a>
-          <button onClick={() => window.history.back()}
+          <button aria-label="Action" onClick={() => window.history.back()}
             className="glass-card border border-neural-blue/30 px-8 py-4 rounded-full flex items-center gap-2 text-sm font-display text-neural-blue hover:text-star-white transition-colors">
             <ArrowLeft size={16}/> Page précédente
           </button>

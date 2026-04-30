@@ -33,11 +33,11 @@ export default function ImageUpload({ value, onChange, label = "Image", maxSizeK
         <div className="relative group">
           <img src={value} alt="preview" className="w-full h-40 object-cover rounded-xl border border-white/10"/>
           <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-xl flex items-center justify-center gap-3">
-            <button onClick={() => inputRef.current?.click()}
+            <button aria-label="Action" onClick={() => inputRef.current?.click()}
               className="flex items-center gap-1.5 px-3 py-2 bg-neural-blue/80 rounded-lg text-xs font-mono text-white">
               <Upload size={12}/> Changer
             </button>
-            <button onClick={handleRemove}
+            <button aria-label="Action" onClick={handleRemove}
               className="flex items-center gap-1.5 px-3 py-2 bg-neural-pink/80 rounded-lg text-xs font-mono text-white">
               <X size={12}/> Supprimer
             </button>

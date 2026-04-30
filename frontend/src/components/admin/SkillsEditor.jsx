@@ -56,7 +56,7 @@ export default function SkillsEditor({ skills, onChange }) {
               className="ai-input flex-1 px-3 py-2 rounded-lg text-sm font-bold text-neural-blue"
               placeholder="Nom de la catégorie"
             />
-            <button
+            <button aria-label="Action"
               onClick={() => deleteCategory(ci)}
               className="w-8 h-8 flex items-center justify-center rounded-lg bg-neural-pink/10 border border-neural-pink/30 text-neural-pink hover:bg-neural-pink/20 transition-colors"
             >
@@ -93,7 +93,7 @@ export default function SkillsEditor({ skills, onChange }) {
                 </div>
 
                 {/* Delete Skill */}
-                <button
+                <button aria-label="Action"
                   onClick={() => deleteSkill(ci, si)}
                   className="w-7 h-7 flex items-center justify-center rounded-lg text-neural-pink/50 hover:text-neural-pink hover:bg-neural-pink/10 transition-colors"
                 >
@@ -104,7 +104,7 @@ export default function SkillsEditor({ skills, onChange }) {
           </div>
 
           {/* Add Skill Button */}
-          <button
+          <button aria-label="Action"
             onClick={() => addSkill(ci)}
             className="flex items-center gap-2 mt-3 ml-2 text-xs font-mono text-neural-blue hover:opacity-80 transition-opacity"
           >
@@ -115,7 +115,7 @@ export default function SkillsEditor({ skills, onChange }) {
       ))}
 
       {/* Add Category Button */}
-      <button
+      <button aria-label="Action"
         onClick={addCategory}
         className="w-full flex items-center justify-center gap-2 py-3 glass-card border border-dashed border-neural-blue/30 rounded-xl text-sm font-mono text-neural-blue hover:border-neural-blue/60 hover:bg-neural-blue/5 transition-all"
       >

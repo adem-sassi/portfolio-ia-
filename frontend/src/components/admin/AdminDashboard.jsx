@@ -61,7 +61,7 @@ function ChangeLog({ token }) {
     <div className="space-y-3">
       <div className="flex justify-between items-center">
         <p className="text-dim-star text-xs font-mono">{logs.length} ENTRÉES</p>
-        <button onClick={load} className="flex items-center gap-2 text-xs text-dim-star hover:text-neural-blue font-mono">
+        <button aria-label="Rafraîchir" onClick={load} className="flex items-center gap-2 text-xs text-dim-star hover:text-neural-blue font-mono">
           <RefreshCw size={12} className={loading?"animate-spin":""}/>Rafraîchir
         </button>
       </div>
@@ -129,7 +129,7 @@ export default function AdminDashboard({ token, onLogout }) {
   );
 
   const SaveBtn = ({section, body}) => (
-    <button onClick={()=>save(section,body)} disabled={saving}
+    <button aria-label="Enregistrer" onClick={()=>save(section,body)} disabled={saving}
       className="ai-btn px-6 py-3 rounded-xl flex items-center gap-2 text-sm mt-2"
       style={{opacity: saving ? 0.7 : 1}}>
       {saving ? <Loader2 size={14} className="animate-spin"/> : saved ? <CheckCircle size={14} className="text-neural-green"/> : <Save size={14}/>}
@@ -198,18 +198,18 @@ export default function AdminDashboard({ token, onLogout }) {
                     <input type="number" min="0" max="100" value={item.level||0} onChange={e=>{const s=JSON.parse(JSON.stringify(data.skills||[]));s[ci].items[si].level=Number(e.target.value);setData(prev => ({...prev, skills: s}));}}
                       className="ai-input w-16 px-2 py-2 rounded-lg text-sm text-center"/>
                     <span className="text-dim-star text-xs font-mono w-8">{item.level}%</span>
-                    <button onClick={()=>{const s=JSON.parse(JSON.stringify(data.skills||[]));s[ci].items=s[ci].items.filter((_,j)=>j!==si);setData(prev => ({...prev, skills: s}));}}
+                    <button aria-label="Précédent" onClick={()=>{const s=JSON.parse(JSON.stringify(data.skills||[]));s[ci].items=s[ci].items.filter((_,j)=>j!==si);setData(prev => ({...prev, skills: s}));}}
                       className="text-neural-pink hover:opacity-70 flex-shrink-0"><Trash2 size={14}/></button>
                   </div>
                 ))}
               </div>
-              <button onClick={()=>{const s=JSON.parse(JSON.stringify(data.skills||[]));s[ci].items.push({name:"Nouvelle compétence",level:70});setData(prev => ({...prev, skills: s}));}}
+              <button aria-label="Précédent" onClick={()=>{const s=JSON.parse(JSON.stringify(data.skills||[]));s[ci].items.push({name:"Nouvelle compétence",level:70});setData(prev => ({...prev, skills: s}));}}
                 className="flex items-center gap-1 text-xs font-mono text-neural-blue hover:opacity-80">
                 <Plus size={12}/>Ajouter une compétence
               </button>
             </div>
           ))}
-          <button onClick={()=>save("skills",data.skills)} className="ai-btn px-6 py-3 rounded-xl flex items-center gap-2 text-sm"><Save size={14}/>Sauvegarder</button>
+          <button aria-label="Enregistrer" onClick={()=>save("skills",data.skills)} className="ai-btn px-6 py-3 rounded-xl flex items-center gap-2 text-sm"><Save size={14}/>Sauvegarder</button>
         </div>
       );
 
@@ -217,7 +217,7 @@ export default function AdminDashboard({ token, onLogout }) {
         <div className="space-y-5">
           <h2 className="font-display text-2xl font-black text-star-white">Technologies</h2>
           {data.techs && <TechEditor techs={data.techs} onChange={t=>{setData(prev=>({...prev,techs:t}));}}/>}
-          <button onClick={()=>save("techs",data.techs)} className="ai-btn px-6 py-3 rounded-xl flex items-center gap-2 text-sm"><Save size={14}/>Sauvegarder</button>
+          <button aria-label="Enregistrer" onClick={()=>save("techs",data.techs)} className="ai-btn px-6 py-3 rounded-xl flex items-center gap-2 text-sm"><Save size={14}/>Sauvegarder</button>
         </div>
       );
 
@@ -228,7 +228,7 @@ export default function AdminDashboard({ token, onLogout }) {
             <div key={i} className="glass-card rounded-2xl p-5 border border-white/5 space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-neural-blue text-xs font-mono">PROJET {i+1}</span>
-                <button onClick={()=>{const ps=data.projects.filter((_,j)=>j!==i);setData(prev=>({...prev,projects:ps}));}} className="text-neural-pink hover:opacity-70"><Trash2 size={14}/></button>
+                <button aria-label="Précédent" onClick={()=>{const ps=data.projects.filter((_,j)=>j!==i);setData(prev=>({...prev,projects:ps}));}} className="text-neural-pink hover:opacity-70"><Trash2 size={14}/></button>
               </div>
               {["title","desc","github","demo"].map(field=>(
                 <div key={field}>
@@ -248,7 +248,7 @@ export default function AdminDashboard({ token, onLogout }) {
                     <span key={ti} className="flex items-center gap-1 text-xs font-mono px-2 py-1 rounded-full"
                       style={{background:"rgba(0,212,255,0.1)",border:"1px solid rgba(0,212,255,0.2)",color:"var(--neural-blue)"}}>
                       {tag}
-                      <button onClick={()=>{const ps=JSON.parse(JSON.stringify(data.projects||[]));ps[i].tags=ps[i].tags.filter((_,j)=>j!==ti);setData(prev=>({...prev,projects:ps}));}} className="ml-1 hover:opacity-70"><Trash2 size={10}/></button>
+                      <button aria-label="Précédent" onClick={()=>{const ps=JSON.parse(JSON.stringify(data.projects||[]));ps[i].tags=ps[i].tags.filter((_,j)=>j!==ti);setData(prev=>({...prev,projects:ps}));}} className="ml-1 hover:opacity-70"><Trash2 size={10}/></button>
                     </span>
                   ))}
                 </div>
@@ -268,11 +268,11 @@ export default function AdminDashboard({ token, onLogout }) {
                         className="ai-input flex-1 px-3 py-1.5 rounded-lg text-xs" placeholder="Valeur"/>
                       <input value={key||""} onChange={e=>{const ps=JSON.parse(JSON.stringify(data.projects||[]));const ns={};Object.entries(ps[i].stats||{}).forEach(([k,v])=>{ns[k===key?e.target.value:k]=v;});ps[i].stats=ns;setData(prev=>({...prev,projects:ps}));}}
                         className="ai-input w-24 px-3 py-1.5 rounded-lg text-xs" placeholder="Label"/>
-                      <button onClick={()=>{const ps=JSON.parse(JSON.stringify(data.projects||[]));const ns={};Object.entries(ps[i].stats||{}).forEach(([k,v])=>{if(k!==key)ns[k]=v;});ps[i].stats=ns;setData(prev=>({...prev,projects:ps}));}}
+                      <button aria-label="Précédent" onClick={()=>{const ps=JSON.parse(JSON.stringify(data.projects||[]));const ns={};Object.entries(ps[i].stats||{}).forEach(([k,v])=>{if(k!==key)ns[k]=v;});ps[i].stats=ns;setData(prev=>({...prev,projects:ps}));}}
                         className="text-neural-pink hover:opacity-70"><Trash2 size={12}/></button>
                     </div>
                   ))}
-                  <button onClick={()=>{const ps=JSON.parse(JSON.stringify(data.projects||[]));if(!ps[i].stats)ps[i].stats={};ps[i].stats[`stat${Object.keys(ps[i].stats||{}).length+1}`]="";setData(prev=>({...prev,projects:ps}));}}
+                  <button aria-label="Précédent" onClick={()=>{const ps=JSON.parse(JSON.stringify(data.projects||[]));if(!ps[i].stats)ps[i].stats={};ps[i].stats[`stat${Object.keys(ps[i].stats||{}).length+1}`]="";setData(prev=>({...prev,projects:ps}));}}
                     className="flex items-center gap-1 text-xs font-mono text-neural-blue hover:opacity-80"><Plus size={12}/>Ajouter stat</button>
                 </div>
               </div>
@@ -296,7 +296,7 @@ export default function AdminDashboard({ token, onLogout }) {
                       {name:"neural-indigo",hex:"#4B0082"},
                       {name:"neural-lime",hex:"#39FF14"},
                     ].map(({name,hex})=>(
-                      <button key={name} onClick={()=>{const ps=JSON.parse(JSON.stringify(data.projects||[]));ps[i].color=name;setData(prev=>({...prev,projects:ps}));}}
+                      <button aria-label="Précédent" key={name} onClick={()=>{const ps=JSON.parse(JSON.stringify(data.projects||[]));ps[i].color=name;setData(prev=>({...prev,projects:ps}));}}
                         title={name}
                         className="w-7 h-7 rounded-lg border-2 transition-all hover:scale-110"
                         style={{background:hex,borderColor:proj.color===name?"white":"transparent",opacity:proj.color===name?1:0.5}}/>
@@ -305,7 +305,7 @@ export default function AdminDashboard({ token, onLogout }) {
                 </div>
                 <div>
                   <label className="text-dim-star text-xs font-mono mb-2 block">FEATURED</label>
-                  <button onClick={()=>{const ps=JSON.parse(JSON.stringify(data.projects||[]));ps[i].featured=!ps[i].featured;setData(prev=>({...prev,projects:ps}));}}
+                  <button aria-label="Précédent" onClick={()=>{const ps=JSON.parse(JSON.stringify(data.projects||[]));ps[i].featured=!ps[i].featured;setData(prev=>({...prev,projects:ps}));}}
                     className="relative w-12 h-6 rounded-full transition-all"
                     style={{background:proj.featured?"var(--neural-blue)":"rgba(255,255,255,0.1)"}}>
                     <div className="absolute top-1 w-4 h-4 rounded-full bg-white transition-all" style={{left:proj.featured?"26px":"4px"}}/>
@@ -314,7 +314,7 @@ export default function AdminDashboard({ token, onLogout }) {
               </div>
             </div>
           ))}
-          <button onClick={()=>{const ps=[...(data.projects||[]),{id:Date.now(),title:"Nouveau projet",desc:"",tags:[],color:"neural-blue",github:"",demo:"",featured:false}];setData(prev=>({...prev,projects:ps}));}}
+          <button aria-label="Précédent" onClick={()=>{const ps=[...(data.projects||[]),{id:Date.now(),title:"Nouveau projet",desc:"",tags:[],color:"neural-blue",github:"",demo:"",featured:false}];setData(prev=>({...prev,projects:ps}));}}
             className="glass-card border border-neural-blue/30 px-4 py-2 rounded-xl text-xs font-mono text-neural-blue flex items-center gap-2 hover:border-neural-blue/60 transition-colors">
             <Plus size={14}/> Ajouter un projet
           </button>
@@ -329,7 +329,7 @@ export default function AdminDashboard({ token, onLogout }) {
             <div key={i} className="glass-card rounded-2xl p-5 border border-white/5 space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-neural-violet text-xs font-mono">TÉMOIGNAGE {i+1}</span>
-                <button onClick={()=>{const ts=data.testimonials.filter((_,j)=>j!==i);setData(prev=>({...prev,testimonials:ts}));}} className="text-neural-pink hover:opacity-70"><Trash2 size={14}/></button>
+                <button aria-label="Précédent" onClick={()=>{const ts=data.testimonials.filter((_,j)=>j!==i);setData(prev=>({...prev,testimonials:ts}));}} className="text-neural-pink hover:opacity-70"><Trash2 size={14}/></button>
               </div>
               {["name","role","text"].map(field=>(
                 <div key={field}>
@@ -342,7 +342,7 @@ export default function AdminDashboard({ token, onLogout }) {
               ))}
             </div>
           ))}
-          <button onClick={()=>{const ts=[...(data.testimonials||[]),{id:Date.now(),name:"Nouveau",role:"",text:"",avatar:"N",color:"neural-blue"}];setData(prev=>({...prev,testimonials:ts}));}}
+          <button aria-label="Précédent" onClick={()=>{const ts=[...(data.testimonials||[]),{id:Date.now(),name:"Nouveau",role:"",text:"",avatar:"N",color:"neural-blue"}];setData(prev=>({...prev,testimonials:ts}));}}
             className="glass-card border border-neural-violet/30 px-4 py-2 rounded-xl text-xs font-mono text-neural-violet flex items-center gap-2 hover:border-neural-violet/60 transition-colors">
             <Plus size={14}/> Ajouter un témoignage
           </button>
@@ -401,7 +401,7 @@ export default function AdminDashboard({ token, onLogout }) {
           <div className="w-8 h-8 rounded-lg flex items-center justify-center font-display font-black text-xs" style={{background:"linear-gradient(135deg,#00D4FF20,#7B2FFF20)",border:"1px solid #00D4FF40",color:"#00D4FF"}}>AS</div>
           <span className="font-display font-black text-star-white text-sm">Admin</span>
         </div>
-        <button onClick={()=>setSidebarOpen(!sidebarOpen)} className="text-dim-star hover:text-star-white p-2">
+        <button aria-label="Action" onClick={()=>setSidebarOpen(!sidebarOpen)} className="text-dim-star hover:text-star-white p-2">
           <div className="space-y-1.5">
             <div className="w-5 h-0.5 bg-current"/>
             <div className="w-5 h-0.5 bg-current"/>
@@ -432,7 +432,7 @@ export default function AdminDashboard({ token, onLogout }) {
               {NAV.filter(n=>n.group===group).map(item=>{
                 const Icon=item.icon; const isActive=active===item.id;
                 return (
-                  <button key={item.id} onClick={()=>{setActive(item.id);setSidebarOpen(false);}}
+                  <button aria-label="Action" key={item.id} onClick={()=>{setActive(item.id);setSidebarOpen(false);}}
                     className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-mono transition-all mb-0.5"
                     style={{background:isActive?"rgba(0,212,255,0.1)":"transparent",border:`1px solid ${isActive?"rgba(0,212,255,0.2)":"transparent"}`,color:isActive?"var(--neural-blue)":"var(--dim-star)"}}>
                     <Icon size={14}/>{item.label}
@@ -447,7 +447,7 @@ export default function AdminDashboard({ token, onLogout }) {
           <a href="/" target="_blank" className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-mono text-dim-star hover:text-neural-blue transition-colors">
             <Eye size={14}/>Voir le site
           </a>
-          <button onClick={onLogout} className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-mono text-dim-star hover:text-neural-pink transition-colors">
+          <button aria-label="Action" onClick={onLogout} className="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-mono text-dim-star hover:text-neural-pink transition-colors">
             <LogOut size={14}/>Déconnexion
           </button>
         </div>

@@ -86,7 +86,7 @@ function Reactions({ slug }) {
       <p className="font-mono text-xs text-dim-star tracking-widest mb-4">RÉACTIONS</p>
       <div className="flex justify-center gap-4">
         {emojis.map(({ type, emoji, label }) => (
-          <button key={type} onClick={() => react(type)}
+          <button aria-label="Réagir" key={type} onClick={() => react(type)}
             className="flex flex-col items-center gap-1 p-3 rounded-xl transition-all hover:scale-110"
             style={{
               background: voted[type] ? "rgba(0,212,255,0.15)" : "rgba(255,255,255,0.03)",
@@ -152,7 +152,7 @@ function Comments({ slug }) {
           placeholder="Votre commentaire *"
           className="ai-input w-full px-4 py-3 rounded-xl text-sm resize-none h-24"/>
         {sent && <p className="text-neural-green text-xs font-mono">✅ Commentaire publié !</p>}
-        <button onClick={submit} disabled={!name.trim() || !content.trim() || loading}
+        <button aria-label="Envoyer" onClick={submit} disabled={!name.trim() || !content.trim() || loading}
           className="ai-btn px-6 py-3 rounded-xl flex items-center gap-2 text-sm">
           <Send size={14}/>
           {loading ? "Envoi..." : "Publier le commentaire"}

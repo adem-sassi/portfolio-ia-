@@ -63,7 +63,7 @@ export default function BioGenerator() {
         </label>
         <div className="flex flex-wrap gap-2">
           {SKILLS_OPTIONS.map((s) => (
-            <button
+            <button aria-label="Action"
               key={s}
               onClick={() => toggle(selectedSkills, setSelectedSkills, s)}
               className={`text-xs font-mono px-3 py-1.5 rounded-full border transition-all ${
@@ -83,7 +83,7 @@ export default function BioGenerator() {
         <label className="font-mono text-xs text-dim-star tracking-widest mb-2 block">CENTRES D'INTÉRÊT</label>
         <div className="flex flex-wrap gap-2">
           {INTERESTS_OPTIONS.map((s) => (
-            <button
+            <button aria-label="Action"
               key={s}
               onClick={() => toggle(selectedInterests, setSelectedInterests, s)}
               className={`text-xs font-mono px-3 py-1.5 rounded-full border transition-all ${
@@ -103,7 +103,7 @@ export default function BioGenerator() {
         <label className="font-mono text-xs text-dim-star tracking-widest mb-2 block">STYLE D'ÉCRITURE</label>
         <div className="flex flex-wrap gap-2">
           {STYLE_OPTIONS.map((s) => (
-            <button
+            <button aria-label="Action"
               key={s}
               onClick={() => setStyle(s)}
               className={`text-xs font-mono px-3 py-1.5 rounded-full border transition-all ${
@@ -119,7 +119,7 @@ export default function BioGenerator() {
       </div>
 
       {/* Generate Button */}
-      <button
+      <button aria-label="Action"
         onClick={generate}
         disabled={loading}
         className="ai-btn px-6 py-3 rounded-xl flex items-center gap-2"
@@ -136,7 +136,7 @@ export default function BioGenerator() {
               <User size={14} className="text-neural-blue" />
               <span className="font-mono text-xs text-dim-star tracking-widest">BIO GÉNÉRÉE PAR IA</span>
             </div>
-            <button
+            <button aria-label="Action"
               onClick={copy}
               className="flex items-center gap-1.5 text-xs font-mono text-dim-star hover:text-neural-blue transition-colors"
             >

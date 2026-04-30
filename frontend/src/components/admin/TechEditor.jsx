@@ -98,7 +98,7 @@ export default function TechEditor({ techs, onChange }) {
             </div>
 
             {/* Delete */}
-            <button
+            <button aria-label="Action"
               onClick={() => deleteTech(i)}
               className="w-7 h-7 flex items-center justify-center rounded-lg text-neural-pink/50 hover:text-neural-pink hover:bg-neural-pink/10 transition-colors"
             >
@@ -130,7 +130,7 @@ export default function TechEditor({ techs, onChange }) {
           className="ai-input flex-1 px-3 py-2 rounded-xl text-sm"
           placeholder="Nom de la technologie..."
         />
-        <button
+        <button aria-label="Action"
           onClick={() => addTech()}
           disabled={!newLabel.trim()}
           className="ai-btn px-4 py-2 rounded-xl flex items-center gap-1"
@@ -156,7 +156,7 @@ export default function TechEditor({ techs, onChange }) {
 
       {/* Quick add presets */}
       <div>
-        <button
+        <button aria-label="Action"
           onClick={() => setShowQuickAdd(!showQuickAdd)}
           className="font-mono text-xs text-neural-blue tracking-widest hover:opacity-80 transition-opacity"
         >
@@ -165,7 +165,7 @@ export default function TechEditor({ techs, onChange }) {
         {showQuickAdd && (
           <div className="flex flex-wrap gap-2 mt-3">
             {QUICK_ADD.filter(q => !(techs || []).find(t => t.label === q.label)).map(q => (
-              <button
+              <button aria-label="Action"
                 key={q.label}
                 onClick={() => addTech(q.label, q.bg)}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-white/10 text-xs font-mono text-dim-star hover:text-star-white hover:border-white/30 transition-all"

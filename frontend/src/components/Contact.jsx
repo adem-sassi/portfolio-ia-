@@ -194,7 +194,7 @@ export default function Contact() {
                 className="ai-input w-full px-4 py-3 rounded-xl text-sm resize-none h-36"/>
             </div>
 
-            <button type="submit" disabled={status === "loading" || status === "success"}
+            <button aria-label="Envoyer" type="submit" disabled={status === "loading" || status === "success"}
               className="ai-btn w-full py-4 rounded-xl flex items-center justify-center gap-2 text-sm">
               {status === "loading" ? (
                 <><Loader2 size={16} className="animate-spin"/>Envoi en cours...</>

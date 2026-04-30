@@ -57,7 +57,7 @@ export default function ImageClassifier() {
       </div>
 
       {image && (
-        <button onClick={classify} disabled={loading}
+        <button aria-label="Action" onClick={classify} disabled={loading}
           className="ai-btn w-full py-3 rounded-xl flex items-center justify-center gap-2 text-sm">
           {loading ? <Loader2 size={14} className="animate-spin"/> : <Upload size={14}/>}
           {loading ? "Classification en cours..." : "Classifier l'image"}

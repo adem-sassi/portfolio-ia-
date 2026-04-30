@@ -33,7 +33,7 @@ export default function SentimentAnalyzer() {
         <textarea value={text} onChange={e => setText(e.target.value)}
           placeholder="Entrez un texte à analyser..."
           className="ai-input w-full px-4 py-3 rounded-xl text-sm resize-none h-28" />
-        <button onClick={analyze} disabled={!text.trim() || loading}
+        <button aria-label="Action" onClick={analyze} disabled={!text.trim() || loading}
           className="absolute bottom-3 right-3 ai-btn px-4 py-2 rounded-lg flex items-center gap-2 text-xs">
           {loading ? <Loader2 size={12} className="animate-spin"/> : <Send size={12}/>}
           {loading ? "Analyse..." : "Analyser"}

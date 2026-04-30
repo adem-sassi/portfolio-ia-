@@ -87,11 +87,11 @@ export default function ThemeEditor({ token, initialTheme }) {
       </div>
 
       <div className="flex gap-3">
-        <button onClick={reset}
+        <button aria-label="Action" onClick={reset}
           className="flex items-center gap-2 px-4 py-2 glass-card border border-white/10 rounded-xl text-sm text-dim-star hover:text-star-white transition-colors">
           <RotateCcw size={14}/> Reset
         </button>
-        <button onClick={save} disabled={saving}
+        <button aria-label="Enregistrer" onClick={save} disabled={saving}
           className="flex-1 ai-btn py-3 rounded-xl flex items-center justify-center gap-2 text-sm">
           {saving ? <Loader2 size={14} className="animate-spin"/> : <Save size={14}/>}
           {saved ? "✅ Sauvegardé !" : "Sauvegarder le thème"}

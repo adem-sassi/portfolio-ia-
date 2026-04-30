@@ -112,7 +112,7 @@ export default function BlogPage() {
 
         {/* Filtres par tag */}
         <div className="flex flex-wrap gap-2 mb-8">
-          <button onClick={() => setActiveTag("")}
+          <button aria-label="Action" onClick={() => setActiveTag("")}
             className="text-xs font-mono px-3 py-1.5 rounded-full transition-all"
             style={{
               background: activeTag === "" ? "rgba(0,212,255,0.2)" : "rgba(0,212,255,0.05)",
@@ -122,7 +122,7 @@ export default function BlogPage() {
             Tous
           </button>
           {allTags.map(tag => (
-            <button key={tag} onClick={() => setActiveTag(activeTag === tag ? "" : tag)}
+            <button aria-label="Action" key={tag} onClick={() => setActiveTag(activeTag === tag ? "" : tag)}
               className="text-xs font-mono px-3 py-1.5 rounded-full transition-all"
               style={{
                 background: activeTag === tag ? "rgba(0,212,255,0.2)" : "rgba(0,212,255,0.05)",

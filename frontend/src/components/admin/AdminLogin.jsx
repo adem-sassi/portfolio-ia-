@@ -88,7 +88,7 @@ export default function AdminLogin({ onLogin }) {
           {resetSent ? (
             <div className="text-center py-4">
               <p className="text-neural-green font-mono text-sm">✅ Lien envoyé par email !</p>
-              <button onClick={() => setResetSent(false)} className="mt-4 text-neural-blue text-xs font-mono hover:underline">← Retour</button>
+              <button aria-label="Action" onClick={() => setResetSent(false)} className="mt-4 text-neural-blue text-xs font-mono hover:underline">← Retour</button>
             </div>
           ) : step === "password" ? (
             <>
@@ -101,18 +101,18 @@ export default function AdminLogin({ onLogin }) {
                     onKeyDown={e => e.key === "Enter" && handleLogin()}
                     placeholder="Entrez votre mot de passe..."
                     className="ai-input w-full pl-10 pr-12 py-4 rounded-xl text-sm"/>
-                  <button type="button" onClick={() => setShow(!show)}
+                  <button aria-label="Action" type="button" onClick={() => setShow(!show)}
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-dim-star hover:text-neural-blue transition-colors">
                     {show ? <EyeOff size={15}/> : <Eye size={15}/>}
                   </button>
                 </div>
               </div>
               {error && <div className="mb-4 px-4 py-3 rounded-xl bg-neural-pink/10 border border-neural-pink/30 text-neural-pink text-sm font-mono">⚠ {error}</div>}
-              <button type="button" onClick={handleLogin} disabled={!password || loading}
+              <button aria-label="Action" type="button" onClick={handleLogin} disabled={!password || loading}
                 className="ai-btn w-full py-4 rounded-xl flex items-center justify-center gap-2 mb-3">
                 {loading ? <><Loader2 size={15} className="animate-spin"/>Vérification...</> : <><Lock size={15}/>Accéder au panneau admin</>}
               </button>
-              <button type="button" onClick={handleForgot}
+              <button aria-label="Action" type="button" onClick={handleForgot}
                 className="w-full text-center text-dim-star hover:text-neural-blue text-xs font-mono py-2 transition-colors">
                 Mot de passe oublié ?
               </button>
@@ -128,11 +128,11 @@ export default function AdminLogin({ onLogin }) {
                 <p className="text-dim-star text-xs font-mono text-center mt-2">Code envoyé à votre email</p>
               </div>
               {error && <div className="mb-4 px-4 py-3 rounded-xl bg-neural-pink/10 border border-neural-pink/30 text-neural-pink text-sm font-mono">⚠ {error}</div>}
-              <button type="button" onClick={handleOTP} disabled={otp.length !== 6 || loading}
+              <button aria-label="Action" type="button" onClick={handleOTP} disabled={otp.length !== 6 || loading}
                 className="ai-btn w-full py-4 rounded-xl flex items-center justify-center gap-2 mb-3">
                 {loading ? <><Loader2 size={15} className="animate-spin"/>Vérification...</> : <><ShieldCheck size={15}/>Valider le code</>}
               </button>
-              <button type="button" onClick={() => { setStep("password"); setOtp(""); setError(""); }}
+              <button aria-label="Action" type="button" onClick={() => { setStep("password"); setOtp(""); setError(""); }}
                 className="w-full text-center text-dim-star hover:text-neural-blue text-xs font-mono py-2 transition-colors">
                 ← Retour
               </button>

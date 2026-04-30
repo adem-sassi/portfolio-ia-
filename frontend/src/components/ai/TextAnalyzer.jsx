@@ -66,7 +66,7 @@ export default function TextAnalyzer() {
         <p className="font-mono text-xs text-dim-star tracking-widest mb-2">EXEMPLES RAPIDES</p>
         <div className="flex flex-wrap gap-2">
           {EXAMPLES.map((ex, i) => (
-            <button
+            <button aria-label="Action"
               key={i}
               onClick={() => setText(ex)}
               className="text-xs font-mono px-3 py-1.5 rounded-full border border-neural-blue/20 text-dim-star hover:text-neural-blue hover:border-neural-blue/50 transition-colors"
@@ -78,7 +78,7 @@ export default function TextAnalyzer() {
       </div>
 
       {/* Analyze Button */}
-      <button
+      <button aria-label="Action"
         onClick={analyze}
         disabled={!text.trim() || loading}
         className="ai-btn px-6 py-3 rounded-xl flex items-center gap-2"

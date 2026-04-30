@@ -52,7 +52,7 @@ export default function ResetPassword() {
               className="ai-input w-full px-4 py-3 rounded-xl text-sm mb-4"
             />
             {error && <p className="text-neural-pink text-xs font-mono mb-4">⚠ {error}</p>}
-            <button onClick={handleReset} disabled={!password || loading}
+            <button aria-label="Action" onClick={handleReset} disabled={!password || loading}
               className="ai-btn w-full py-3 rounded-xl flex items-center justify-center gap-2">
               {loading ? <Loader2 size={15} className="animate-spin"/> : <Lock size={15}/>}
               Changer le mot de passe
