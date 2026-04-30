@@ -6,6 +6,7 @@ import { writeFileSync, unlinkSync, existsSync, mkdirSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import Content from "../models/Content.js";
+import { clearCache } from "../routes/content.js";
 import LoginLog from "../models/LoginLog.js";
 import ChangeLog from "../models/ChangeLog.js";
 import { authMiddleware } from "../middleware/auth.js";
@@ -104,6 +105,7 @@ router.put("/content/:section", authMiddleware, async (req, res) => {
     );
     const ip = req.headers["x-forwarded-for"]?.split(",")[0] || req.socket.remoteAddress;
     await ChangeLog.create({ section, action: "update", details: `Section "${section}" modifiée`, ip }).catch(() => {});
+    try { clearCache(section); } catch {}
     res.json({ success: true, message: `Section "${section}" mise à jour ✅` });
   } catch { res.status(500).json({ error: "Erreur mise à jour" }); }
 });

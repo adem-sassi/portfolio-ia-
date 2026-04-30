@@ -6,6 +6,7 @@ const router = express.Router();
 
 const cache = new Map();
 const TTL = 5 * 60 * 1000;
+export function clearCache(key) { if(key) cache.delete(key); else cache.clear(); }
 
 function getCache(key) {
   const c = cache.get(key);
