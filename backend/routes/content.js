@@ -5,7 +5,7 @@ import Article from "../models/Article.js";
 const router = express.Router();
 
 const cache = new Map();
-const TTL = 5 * 60 * 1000;
+const TTL = 30 * 1000; // 30 secondes
 export function clearCache(key) { if(key) cache.delete(key); else cache.clear(); }
 
 function getCache(key) {
