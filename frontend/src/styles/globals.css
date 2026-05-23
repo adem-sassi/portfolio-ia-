@@ -308,3 +308,30 @@ section {
     display: none;
   }
 }
+
+/* ── Markdown Styles ─────────────────────────────────────────────────────── */
+.prose h1 { font-size: 2rem; font-weight: 800; color: var(--star-white); margin: 2rem 0 1rem; }
+.prose h2 { font-size: 1.5rem; font-weight: 700; color: var(--star-white); margin: 1.8rem 0 0.8rem; border-bottom: 1px solid rgba(0,212,255,0.2); padding-bottom: 0.5rem; }
+.prose h3 { font-size: 1.2rem; font-weight: 600; color: var(--neural-blue); margin: 1.5rem 0 0.6rem; }
+.prose h4 { font-size: 1rem; font-weight: 600; color: var(--neural-violet); margin: 1.2rem 0 0.5rem; }
+.prose p { color: var(--dim-star); line-height: 1.8; margin-bottom: 1rem; }
+.prose strong { color: var(--star-white); font-weight: 700; }
+.prose em { color: var(--neural-blue); font-style: italic; }
+.prose ul { list-style: none; margin: 1rem 0; padding: 0; }
+.prose ul li { color: var(--dim-star); padding: 0.3rem 0 0.3rem 1.5rem; position: relative; line-height: 1.7; }
+.prose ul li::before { content: "→"; position: absolute; left: 0; color: var(--neural-blue); font-weight: bold; }
+.prose ol { counter-reset: list; margin: 1rem 0; padding: 0; }
+.prose ol li { color: var(--dim-star); padding: 0.3rem 0 0.3rem 2rem; position: relative; line-height: 1.7; list-style: none; }
+.prose ol li::before { counter-increment: list; content: counter(list) "."; position: absolute; left: 0; color: var(--neural-violet); font-weight: bold; }
+.prose blockquote { border-left: 3px solid var(--neural-violet); padding: 0.8rem 1.2rem; margin: 1.5rem 0; background: rgba(123,47,255,0.05); border-radius: 0 8px 8px 0; }
+.prose blockquote p { color: var(--dim-star); margin: 0; font-style: italic; }
+.prose code { background: rgba(0,212,255,0.1); color: var(--neural-blue); padding: 0.2rem 0.5rem; border-radius: 4px; font-family: monospace; font-size: 0.875rem; }
+.prose pre { background: #0d1117; border: 1px solid rgba(0,212,255,0.15); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; overflow-x: auto; }
+.prose pre code { background: none; color: #e6edf3; padding: 0; font-size: 0.85rem; line-height: 1.7; }
+.prose a { color: var(--neural-blue); text-decoration: underline; text-underline-offset: 3px; }
+.prose a:hover { color: var(--neural-violet); }
+.prose hr { border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 2rem 0; }
+.prose table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+.prose table th { background: rgba(0,212,255,0.1); color: var(--neural-blue); padding: 0.75rem 1rem; text-align: left; font-weight: 600; border-bottom: 1px solid rgba(0,212,255,0.2); }
+.prose table td { color: var(--dim-star); padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.prose table tr:hover td { background: rgba(255,255,255,0.02); }

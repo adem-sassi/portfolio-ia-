@@ -1,3 +1,11 @@
+import { marked } from "marked";
+
+// Configuration marked
+marked.setOptions({
+  breaks: true,
+  gfm: true,
+});
+
 import { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Clock, Eye, Calendar, Tag, Send, Heart, Flame, ThumbsUp, Brain } from "lucide-react";
@@ -367,7 +375,7 @@ export default function ArticlePage() {
 
         {/* Contenu */}
         <div className="prose prose-invert max-w-none mb-12"
-          dangerouslySetInnerHTML={{ __html: article.content?.replace(/\n/g, "<br/>") || "" }}/>
+          dangerouslySetInnerHTML={{ __html: marked(article.content || "") }}/>
 
         {/* Réactions */}
         <div className="mb-8">
