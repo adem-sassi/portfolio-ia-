@@ -16,9 +16,8 @@ export default function Skills() {
 
   const skills = content?.skills || [];
   const techs = content?.techs || [
-    { label: "Python", bg: "#3776AB" }, { label: "PyTorch", bg: "#EE4C2C" },
-    { label: "React", bg: "#61DAFB" }, { label: "Docker", bg: "#2496ED" },
-    { label: "AWS", bg: "#FF9900" }, { label: "Git", bg: "#F05032" },
+    { label: "Python", bg: "#3776AB" }, { label: "React", bg: "#61DAFB" },
+    { label: "Docker", bg: "#2496ED" }, { label: "Git", bg: "#F05032" },
   ];
 
   const colorMap = {
@@ -28,13 +27,29 @@ export default function Skills() {
     "neural-green":  { var: "var(--neural-green)",  hex: "#00FF88" },
   };
 
+  const icons = {
+    "langages": "⟨/⟩",
+    "frameworks": "◈",
+    "iot": "⬡",
+    "ia": "◎",
+    "devops": "∿",
+    "default": "◆",
+  };
+
+  const getCatIcon = (cat) => {
+    const key = cat.toLowerCase();
+    if (key.includes("lang")) return icons.langages;
+    if (key.includes("frame") || key.includes("web")) return icons.frameworks;
+    if (key.includes("iot") || key.includes("syst")) return icons.iot;
+    if (key.includes("ia") || key.includes("ml") || key.includes("data")) return icons.ia;
+    if (key.includes("dev") || key.includes("ops")) return icons.devops;
+    return icons.default;
+  };
+
   return (
     <section id="skills" className="relative py-32 px-6" ref={ref}>
-      {/* Blobs */}
       <div className="blob absolute w-[500px] h-[500px] opacity-5 pointer-events-none"
         style={{ background: "var(--neural-violet)", top: "10%", right: "-15%" }} />
-      <div className="blob absolute w-[300px] h-[300px] opacity-4 pointer-events-none"
-        style={{ background: "var(--neural-blue)", bottom: "20%", left: "-8%" }} />
 
       <div className="max-w-6xl mx-auto">
         {/* Header */}
@@ -53,58 +68,74 @@ export default function Skills() {
         <div className="grid md:grid-cols-3 gap-6 mb-24">
           {skills.map((cat, ci) => {
             const c = colorMap[cat.color] || colorMap["neural-blue"];
+            const icon = getCatIcon(cat.category);
             return (
               <div
                 key={ci}
-                className="relative rounded-2xl p-6 overflow-hidden group cursor-default"
+                className="relative rounded-2xl overflow-hidden group"
                 style={{
                   background: "rgba(255,255,255,0.02)",
-                  border: `1px solid rgba(255,255,255,0.06)`,
-                  backdropFilter: "blur(12px)",
+                  border: `1px solid ${c.hex}25`,
                   opacity: animate ? 1 : 0,
                   transform: animate ? "none" : "translateY(40px)",
                   transition: `opacity 0.7s ease ${ci * 0.15}s, transform 0.7s ease ${ci * 0.15}s`,
-                  boxShadow: `0 0 0 1px rgba(255,255,255,0.03) inset`,
                 }}
               >
-                {/* Glow top border */}
-                <div className="absolute top-0 left-6 right-6 h-px rounded-full"
-                  style={{ background: `linear-gradient(90deg, transparent, ${c.hex}80, transparent)` }} />
+                {/* Top glow bar */}
+                <div className="absolute top-0 left-0 right-0 h-[2px]"
+                  style={{ background: `linear-gradient(90deg, transparent, ${c.hex}, transparent)` }} />
 
-                {/* Glow corner */}
-                <div className="absolute top-0 right-0 w-32 h-32 opacity-0 group-hover:opacity-100 pointer-events-none rounded-2xl"
+                {/* Background glow */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none"
                   style={{
-                    background: `radial-gradient(circle at top right, ${c.hex}18, transparent 70%)`,
-                    transition: "opacity 0.4s ease"
+                    background: `radial-gradient(ellipse at 50% 0%, ${c.hex}12 0%, transparent 65%)`,
+                    transition: "opacity 0.5s ease"
                   }} />
 
-                {/* Category header */}
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-7 h-7 rounded-lg flex items-center justify-center"
-                    style={{ background: `${c.hex}18`, border: `1px solid ${c.hex}40` }}>
-                    <div className="w-2 h-2 rounded-full"
-                      style={{ background: c.var, boxShadow: `0 0 8px ${c.hex}` }} />
+                {/* Card header */}
+                <div className="relative px-6 pt-6 pb-4"
+                  style={{ borderBottom: `1px solid ${c.hex}15` }}>
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bold flex-shrink-0"
+                      style={{
+                        background: `${c.hex}15`,
+                        border: `1px solid ${c.hex}35`,
+                        color: c.hex,
+                        textShadow: `0 0 12px ${c.hex}`,
+                        fontFamily: "monospace"
+                      }}>
+                      {icon}
+                    </div>
+                    <div>
+                      <h3 className="font-mono text-xs tracking-widest uppercase font-bold"
+                        style={{ color: c.hex }}>
+                        {cat.category}
+                      </h3>
+                      <p className="text-xs mt-0.5" style={{ color: "#a8b8dc80" }}>
+                        {(cat.items || []).length} technologies
+                      </p>
+                    </div>
                   </div>
-                  <h3 className="font-mono text-xs tracking-widest uppercase"
-                    style={{ color: c.var }}>{cat.category}</h3>
                 </div>
 
-                {/* Skills list */}
-                <div className="space-y-1">
+                {/* Skills chips */}
+                <div className="relative px-6 py-5 flex flex-wrap gap-2">
                   {(cat.items || []).map((skill, si) => (
-                    <div
+                    <span
                       key={skill.name}
-                      className="flex items-center gap-3 px-3 py-2 rounded-xl group/item"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium"
                       style={{
+                        background: `${c.hex}10`,
+                        border: `1px solid ${c.hex}25`,
+                        color: "#E8F0FF",
                         opacity: animate ? 1 : 0,
-                        transition: `opacity 0.5s ease ${ci * 0.15 + si * 0.06}s`,
+                        transition: `opacity 0.4s ease ${ci * 0.15 + si * 0.05}s`,
                       }}
                     >
-                      <div className="w-1 h-1 rounded-full flex-shrink-0"
+                      <span className="w-1 h-1 rounded-full flex-shrink-0"
                         style={{ background: c.hex, boxShadow: `0 0 4px ${c.hex}` }} />
-                      <span className="text-sm font-medium"
-                        style={{ color: "#E8F0FF" }}>{skill.name}</span>
-                    </div>
+                      {skill.name}
+                    </span>
                   ))}
                 </div>
               </div>
@@ -113,46 +144,55 @@ export default function Skills() {
         </div>
 
         {/* Tech Badges */}
-        <div className="text-center">
-          <div className="flex items-center gap-4 justify-center mb-8">
-            <div className="h-px w-16" style={{ background: "linear-gradient(90deg, transparent, rgba(0,212,255,0.3))" }} />
-            <p className="font-mono text-xs tracking-widest" style={{ color: "#a8b8dc" }}>TECHNOLOGIES UTILISÉES</p>
-            <div className="h-px w-16" style={{ background: "linear-gradient(90deg, rgba(0,212,255,0.3), transparent)" }} />
+        <div>
+          <div className="flex items-center gap-4 justify-center mb-10">
+            <div className="h-px flex-1 max-w-[80px]"
+              style={{ background: "linear-gradient(90deg, transparent, rgba(0,212,255,0.4))" }} />
+            <span className="font-mono text-xs tracking-widest" style={{ color: "#a8b8dc" }}>
+              TECHNOLOGIES UTILISÉES
+            </span>
+            <div className="h-px flex-1 max-w-[80px]"
+              style={{ background: "linear-gradient(90deg, rgba(0,212,255,0.4), transparent)" }} />
           </div>
 
           <div className="flex flex-wrap justify-center gap-3">
             {techs.map((t, i) => (
               <div
                 key={i}
-                className="group relative flex items-center gap-2 px-4 py-2.5 rounded-xl cursor-default"
+                className="relative flex items-center gap-2.5 px-4 py-2.5 rounded-xl cursor-default overflow-hidden group"
                 style={{
                   background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.07)",
-                  backdropFilter: "blur(8px)",
-                  transition: "all 0.3s ease",
+                  border: "1px solid rgba(255,255,255,0.08)",
                   opacity: animate ? 1 : 0,
-                  animationDelay: `${i * 0.04}s`,
+                  transition: `opacity 0.4s ease ${i * 0.03}s, background 0.3s, border-color 0.3s, transform 0.3s, box-shadow 0.3s`,
                 }}
                 onMouseEnter={e => {
-                  e.currentTarget.style.background = `${t.bg}18`;
-                  e.currentTarget.style.borderColor = `${t.bg}60`;
-                  e.currentTarget.style.transform = "translateY(-2px)";
-                  e.currentTarget.style.boxShadow = `0 4px 20px ${t.bg}25`;
+                  e.currentTarget.style.background = `${t.bg}20`;
+                  e.currentTarget.style.borderColor = `${t.bg}70`;
+                  e.currentTarget.style.transform = "translateY(-3px) scale(1.03)";
+                  e.currentTarget.style.boxShadow = `0 8px 24px ${t.bg}30`;
                 }}
                 onMouseLeave={e => {
                   e.currentTarget.style.background = "rgba(255,255,255,0.03)";
-                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)";
+                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
                   e.currentTarget.style.transform = "none";
                   e.currentTarget.style.boxShadow = "none";
                 }}
               >
+                {/* Hover glow bg */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none"
+                  style={{
+                    background: `radial-gradient(circle at 50% 50%, ${t.bg}15, transparent 70%)`,
+                    transition: "opacity 0.3s"
+                  }} />
                 {t.icon ? (
-                  <img src={t.icon} alt={t.label} className="w-4 h-4 object-contain rounded" />
+                  <img src={t.icon} alt={t.label} className="w-4 h-4 object-contain rounded relative z-10" />
                 ) : (
-                  <div className="w-2 h-2 rounded-full flex-shrink-0"
-                    style={{ background: t.bg, boxShadow: `0 0 6px ${t.bg}` }} />
+                  <div className="w-2.5 h-2.5 rounded-full flex-shrink-0 relative z-10"
+                    style={{ background: t.bg, boxShadow: `0 0 8px ${t.bg}` }} />
                 )}
-                <span className="font-mono text-xs font-medium" style={{ color: "#E8F0FF" }}>{t.label}</span>
+                <span className="font-mono text-xs font-semibold relative z-10"
+                  style={{ color: "#E8F0FF" }}>{t.label}</span>
               </div>
             ))}
           </div>
