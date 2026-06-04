@@ -45,6 +45,8 @@ export default function Contact() {
           email: form.email,
           subject: form.subject,
           message: form.message,
+          honeypot: honeypot,
+          website: "",
         }),
       });
       const data = await res.json();
@@ -208,7 +210,17 @@ export default function Contact() {
             <p className="text-center text-dim-star text-xs font-mono">
               * Champs obligatoires — Réponse garantie sous 24h
             </p>
-          </form>
+            {/* Honeypot anti-spam — caché aux humains */}
+          <input 
+            type="text" 
+            name="website" 
+            value={honeypot}
+            onChange={e => setHoneypot(e.target.value)}
+            style={{ display: "none" }} 
+            tabIndex="-1"
+            autoComplete="off"
+          />
+        </form>
         </div>
       </div>
     </section>

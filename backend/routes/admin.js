@@ -1,4 +1,14 @@
 import express from "express";
+import rateLimit from "express-rate-limit";
+
+// Rate limiter contact — 3 messages max par heure par IP
+const contactLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 3,
+  message: { error: "Trop de messages envoyés. Réessayez dans 1 heure." },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 import { Resend } from "resend";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
@@ -223,10 +233,25 @@ router.post("/verify-2fa", async (req, res) => {
 
 
 // POST /api/admin/contact — formulaire contact public
-router.post("/contact", async (req, res) => {
+router.post("/contact", contactLimiter, async (req, res) => {
   try {
-    const { name, email, subject, message } = req.body;
+    const { name, email, subject, message, honeypot, website } = req.body;
+    
+    // Anti-spam : honeypot field (bots remplissent ce champ caché)
+    if (honeypot || website) return res.status(200).json({ success: true });
+    
+    // Validation basique
     if (!name || !email || !message) return res.status(400).json({ error: "Champs manquants" });
+    
+    // Longueur maximale
+    if (message.length > 2000) return res.status(400).json({ error: "Message trop long" });
+    if (name.length > 100) return res.status(400).json({ error: "Nom trop long" });
+    
+    // Détection spam — mots clés
+    const spamKeywords = ["casino", "viagra", "crypto", "bitcoin", "loan", "click here", "buy now", "free money", "winner", "congratulations", "http://", "https://"];
+    const messageLC = message.toLowerCase();
+    const isSpam = spamKeywords.some(kw => messageLC.includes(kw));
+    if (isSpam) return res.status(200).json({ success: true }); // Silently ignore
 
     // Vérification format email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
