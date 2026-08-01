@@ -51,7 +51,14 @@ function Portfolio() {
   );
 }
 
+import MaintenancePage from "./pages/MaintenancePage";
+
+// ⚠️ Mettre à false quand le backend est repayé
+const MAINTENANCE_MODE = true;
+
 export default function App() {
+  if (MAINTENANCE_MODE) return <MaintenancePage />;
+
   return (
       <LangProvider>
         <Routes>
