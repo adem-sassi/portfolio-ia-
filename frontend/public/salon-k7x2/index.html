@@ -81,6 +81,11 @@ label.lbl{display:block;font-size:13px;color:var(--mute);margin:0 0 6px}
 .pl{display:flex;align-items:center;gap:10px;background:#0A1730;border:1px solid var(--line);border-radius:12px;padding:9px 12px}
 .pl.new{animation:slidein .45s var(--spring)}
 @keyframes slidein{from{opacity:0;transform:translateX(-24px)}}
+.nmin{flex:1;min-width:0;background:transparent;border:1px dashed transparent;border-radius:8px;padding:4px 6px;margin:-4px 0;font-weight:700;font-size:15px}
+.nmin:hover{border-color:var(--line)}
+.nmin:focus{outline:0;border:1px solid var(--cyan);background:#07101F}
+.pen{font-size:12px;opacity:.55;margin-left:-4px}
+.btn.off{opacity:.6}
 .pl .nm{flex:1;font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .dot{width:18px;height:18px;border-radius:50%;flex:none;background:radial-gradient(circle at 32% 28%,#fff 0 8%,color-mix(in srgb,var(--c) 70%,#fff) 9% 24%,var(--c) 48%,color-mix(in srgb,var(--c) 55%,#000) 100%);box-shadow:0 0 0 2px rgba(255,255,255,.85),0 2px 6px rgba(0,0,0,.5)}
 button.dot{width:24px;height:24px;transition:transform .2s var(--spring)}
@@ -662,6 +667,11 @@ function lobbyAct(S, pid, a) {
       if (!PLAYER_COLORS.includes(a.color) || S.players.some(x => x.color === a.color)) return 'Couleur déjà prise';
       p.color = a.color; return null;
     }
+    case 'rename': {
+      if (!host && a.id !== pid) return 'Interdit';
+      const p = P(S, a.id); if (!p) return 'Joueur inconnu'; if (p.bot) return 'Un bot garde son nom';
+      p.name = '\u0000'; p.name = cleanName(a.name, S); return null;
+    }
     case 'setMap': if (!host) return 'Réservé à l\'hôte'; if (!MAPS[a.mapId]) return 'Map inconnue'; S.mapId = a.mapId; return null;
     case 'setSetting': {
       if (!host) return 'Réservé à l\'hôte';
@@ -1034,19 +1044,36 @@ function sha256(s) {
 
 /* ================= SONS ET EFFETS ================= */
 let AC = null, NB = null; const sound = { on: LS.get('magnat_snd') !== false };
+let OUT = null, audioOk = false;
+function audioInit() { // chaîne audio : gain maître + compresseur (volume correct sur des enceintes de portable, sans saturer)
+  if (AC) return true;
+  try {
+    const C = window.AudioContext || window.webkitAudioContext; if (!C) return false; AC = new C();
+    const comp = AC.createDynamicsCompressor(); comp.threshold.value = -16; comp.ratio.value = 5; comp.attack.value = .003; comp.release.value = .2;
+    OUT = AC.createGain(); OUT.gain.value = 3; OUT.connect(comp); comp.connect(AC.destination);
+  } catch (e) { AC = null; return false; }
+  return true;
+}
+function audioUnlock() { // Safari et iOS : le son doit être débloqué dans un vrai geste (clic, touche). On réessaie à chaque geste tant que ce n'est pas bon.
+  if (!sound.on || !audioInit()) return;
+  if (AC.state !== 'running') { try { const p = AC.resume(); if (p && p.catch) p.catch(() => { }); } catch (e) { } }
+  if (!audioOk) { try { const s = AC.createBufferSource(); s.buffer = AC.createBuffer(1, 1, 22050); s.connect(AC.destination); s.start(0); } catch (e) { } audioOk = AC.state === 'running'; }
+}
+['pointerdown', 'pointerup', 'touchend', 'click', 'keydown'].forEach(ev => document.addEventListener(ev, audioUnlock, true));
+document.addEventListener('visibilitychange', () => { if (!document.hidden && AC && AC.state !== 'running') { try { AC.resume().catch(() => { }); } catch (e) { } } });
 function sfx(name, delay) {
-  if (!sound.on) return;
-  try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === 'suspended') AC.resume(); } catch (e) { return; }
+  if (!sound.on || !audioInit()) return;
+  if (AC.state !== 'running') { try { const p = AC.resume(); if (p && p.catch) p.catch(() => { }); } catch (e) { } return; } // pas encore débloqué : on ne met rien en file (sinon tout part d'un coup)
   const t = AC.currentTime + (delay || 0) / 1000;
   const tone = (f, st, du, type, vol, f2) => {
     const o = AC.createOscillator(), g = AC.createGain(); o.type = type || 'sine'; o.frequency.setValueAtTime(f, t + st); if (f2) o.frequency.exponentialRampToValueAtTime(f2, t + st + du);
     g.gain.setValueAtTime(0.0001, t + st); g.gain.linearRampToValueAtTime(vol || .07, t + st + .012); g.gain.exponentialRampToValueAtTime(.0001, t + st + du);
-    o.connect(g); g.connect(AC.destination); o.start(t + st); o.stop(t + st + du + .03);
+    o.connect(g); g.connect(OUT); o.start(t + st); o.stop(t + st + du + .03);
   };
   const noise = (st, du, vol, freq) => {
     if (!NB) { NB = AC.createBuffer(1, AC.sampleRate / 2, AC.sampleRate); const d = NB.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; }
     const s = AC.createBufferSource(), f = AC.createBiquadFilter(), g = AC.createGain(); s.buffer = NB; f.type = 'bandpass'; f.frequency.value = freq || 1800; f.Q.value = 1.1;
-    g.gain.setValueAtTime(vol, t + st); g.gain.exponentialRampToValueAtTime(.0001, t + st + du); s.connect(f); f.connect(g); g.connect(AC.destination); s.start(t + st); s.stop(t + st + du + .02);
+    g.gain.setValueAtTime(vol, t + st); g.gain.exponentialRampToValueAtTime(.0001, t + st + du); s.connect(f); f.connect(g); g.connect(OUT); s.start(t + st); s.stop(t + st + du + .02);
   };
   const knock = st => { noise(st, .07, .22, 900); tone(140, st, .12, 'sine', .16, 60); };
   switch (name) {
@@ -1245,12 +1272,13 @@ function renderHome() {
 const SETTINGS_UI = [['auction', 'Enchères', 'Un terrain refusé part aux enchères'], ['doubleRent', 'Loyer doublé', 'Sur un groupe complet sans maison'], ['pot', 'Cagnotte des vacances', 'Taxes et amendes vont sur la case Vacances'],
   ['noRentInJail', 'Pas de loyer en prison', 'Un joueur en prison ne touche rien'], ['evenBuild', 'Construction équilibrée', 'Une maison d\'écart maximum dans un groupe'], ['randomOrder', 'Ordre aléatoire', 'L\'ordre des joueurs est tiré au sort']];
 function renderLobby() {
+  const ae0 = document.activeElement, keepRn = ae0 && ae0.dataset && ae0.dataset.rename ? { id: ae0.dataset.rename, v: ae0.value, s: ae0.selectionStart } : null;
   const host = amHost(), link = location.origin + location.pathname + '#' + S.code;
   const pl = S.players.map(p => {
     const mineRow = host || p.id === net.myId;
     const fresh = !ui.seen[p.id]; ui.seen[p.id] = 1;
     return `<div class="pl ${fresh ? 'new' : ''}"><button class="dot" style="--c:${p.color}" ${mineRow ? `data-a="l-color" data-id="${p.id}" title="Changer de couleur"` : 'disabled'} aria-label="Couleur de ${esc(p.name)}"></button>
-      <span class="nm">${esc(p.name)}</span>${p.id === S.hostId ? '<span class="badge">hôte</span>' : ''}${p.bot ? '<span class="badge">bot</span>' : ''}${p.id === net.myId && !isLocal() ? '<span class="badge">toi</span>' : ''}${!p.conn ? '<span class="badge warn">déconnecté</span>' : ''}
+      ${!p.bot && (p.id === net.myId || isLocal()) ? `<input class="nmin" data-rename="${p.id}" value="${esc(p.name)}" maxlength="14" aria-label="Pseudo" title="Clique pour changer le pseudo"><span class="pen" aria-hidden="true">✏️</span>` : `<span class="nm">${esc(p.name)}</span>`}${p.id === S.hostId ? '<span class="badge">hôte</span>' : ''}${p.bot ? '<span class="badge">bot</span>' : ''}${p.id === net.myId && !isLocal() ? '<span class="badge">toi</span>' : ''}${!p.conn ? '<span class="badge warn">déconnecté</span>' : ''}
       ${host && p.id !== S.hostId && (isLocal() ? S.players.length > 0 : true) ? `<button class="btn sm" data-a="l-remove" data-id="${p.id}" aria-label="Retirer ${esc(p.name)}">Retirer</button>` : ''}</div>`;
   }).join('');
   const maps = Object.values(MAPS).map(m => `<button class="map ${m.id === S.mapId ? 'on' : ''}" style="--a:${m.accent}" data-a="l-map" data-id="${m.id}" ${host ? '' : 'disabled'}><b>${esc(m.name)}</b><span>${esc(m.props[0])}, ${esc(m.props[10])}, ${esc(m.props[21])}…</span><em>${GROUPS.map(g => `<u style="--g:${g}"></u>`).join('')}</em></button>`).join('');
@@ -1269,7 +1297,9 @@ function renderLobby() {
       <h3 class="sec">Règles</h3><div class="opts">
         <label class="opt"><span>Argent de départ</span><select class="field" style="width:auto;padding:6px 10px" data-set="startCash" ${host ? '' : 'disabled'}>${[1000, 1500, 2000, 2500, 3000].map(v => `<option ${S.settings.startCash === v ? 'selected' : ''}>${v}</option>`).join('')}</select></label>${opts}</div>
       ${host ? `<button class="btn primary" data-a="l-start" style="width:100%;margin-top:16px" ${S.players.length < 2 ? 'disabled' : ''}>Lancer la partie</button>` : ''}
+      <button class="btn sm" data-a="snd" style="width:100%;margin-top:10px">${sound.on ? '🔊 Son activé (clique pour tester ou couper)' : '🔇 Son coupé (clique pour activer)'}</button>
     </div></div></div></div>`);
+  if (keepRn) { const inp = document.querySelector('[data-rename="' + keepRn.id + '"]'); if (inp) { inp.value = keepRn.v; inp.focus(); try { inp.setSelectionRange(keepRn.s, keepRn.s); } catch (e) { } } }
 }
 
 /* ================= RENDU : PLATEAU ================= */
@@ -1578,7 +1608,7 @@ function renderSide() {
       <div class="row">${forMe ? `<button class="btn sm cyan" data-a="t-accept" data-id="${t.id}" data-p="${Z.id}">Accepter</button><button class="btn sm" data-a="t-decline" data-id="${t.id}" data-p="${Z.id}">Refuser</button>` : `<button class="btn sm" data-a="t-decline" data-id="${t.id}" data-p="${A.id}">Annuler mon offre</button>`}</div></div>`;
   }).join('');
   const props = me ? B.filter(t => S.own[t.i] && S.own[t.i].o === me.id).map(t => { const o = S.own[t.i]; return `<button class="mini ${o.m ? 'm' : ''}" style="--g:${t.k === 'prop' ? GROUPS[t.g] : t.k === 'rail' ? '#94A3B8' : '#FCD34D'}" data-a="tile" data-i="${t.i}"><u>${t.k === 'prop' ? (o.h ? (o.h === 5 ? '<i class="hs hotel"></i>' : '<i class="hs"></i>'.repeat(o.h)) : '') : tileIcon(t, B)}</u><span>${esc(t.name)}</span><b>${o.m ? 'hyp.' : t.k === 'util' ? '× dés' : money(S, calcRent(S, B, t, 7))}</b></button>`; }).join('') : '';
-  $('#side').innerHTML = `<div class="box"><h2><span>Joueurs, tour ${S.round}</span><span class="row"><button class="btn sm" data-a="snd" aria-label="${sound.on ? 'Couper le son' : 'Activer le son'}">${sound.on ? '🔊' : '🔇'}</button><button class="btn sm" data-a="leave">Quitter</button></span></h2>${players}</div>
+  $('#side').innerHTML = `<div class="box"><h2><span>Joueurs, tour ${S.round}</span><span class="row"><button class="btn sm ${sound.on ? '' : 'off'}" data-a="snd" aria-label="${sound.on ? 'Couper le son' : 'Activer le son'}">${sound.on ? '🔊 Son' : '🔇 Coupé'}</button><button class="btn sm" data-a="leave">Quitter</button></span></h2>${players}</div>
     ${trades ? `<div class="box"><h2>Échanges en attente</h2>${trades}</div>` : ''}
     ${me ? `<div class="box"><h2>${isLocal() ? 'Terrains de ' + esc(me.name) : 'Mes terrains'}</h2>${props ? `<div class="chips">${props}</div>` : '<p class="note">Aucun terrain pour l\'instant. Clique sur une case du plateau pour voir ses loyers.</p>'}</div>` : ''}`;
 }
@@ -1648,7 +1678,7 @@ document.addEventListener('click', e => {
       if (sv.mode === 'host') { if (S.hostId !== net.myId) { LS.del('magnat_save'); S = null; return render(); } hostStart(true); } else net.mode = 'local'; changed(); break; }
     case 'discard': LS.del('magnat_save'); render(); break;
     case 'home': goHome(); break;
-    case 'snd': sound.on = !sound.on; LS.set('magnat_snd', sound.on); if (sound.on) sfx('coin'); renderSide(); break;
+    case 'snd': sound.on = !sound.on; LS.set('magnat_snd', sound.on); if (sound.on) { audioUnlock(); setTimeout(() => sfx('salary'), 60); toast('Son activé'); } else toast('Son coupé'); if (S && S.phase !== 'lobby') renderSide(); else render(); break;
     case 'leave':
       if (amHost()) { if (!confirm(isLocal() ? 'Quitter et effacer cette partie ?' : 'Quitter ferme le salon pour tout le monde. Continuer ?')) return; LS.del('magnat_save'); }
       else if (S && S.phase === 'lobby') doAct(net.myId, { type: 'leaveLobby' });
@@ -1687,9 +1717,16 @@ document.addEventListener('pointermove', e => {
 });
 document.addEventListener('pointerout', e => { const d = e.target.closest && e.target.closest('.deed'); if (d && !d.contains(e.relatedTarget)) { d.classList.remove('tilt'); d.style.setProperty('--rx', '0deg'); d.style.setProperty('--ry', '0deg'); } });
 document.addEventListener('input', e => { const bi = e.target.dataset && e.target.dataset.bidin; if (bi) { ui.bidDraft = ui.bidDraft || {}; ui.bidDraft[bi] = e.target.value; } const s = e.target.dataset && e.target.dataset.cash; if (s && ui.draft) ui.draft[s].cash = Math.max(0, parseInt(e.target.value, 10) || 0); });
+document.addEventListener('change', e => {
+  const rn = e.target.dataset && e.target.dataset.rename; if (!rn || !S || S.phase !== 'lobby') return;
+  const v = e.target.value.trim(), p = P(S, rn); if (!p) return; if (!v || v === p.name) { e.target.value = p.name; return; }
+  if (rn === net.myId || isLocal() && p === S.players[0]) { net.name = v.slice(0, 14); LS.set('magnat_name', net.name); }
+  doAct(rn === net.myId && !amHost() ? net.myId : actorHost(), { type: 'rename', id: rn, name: v });
+});
 document.addEventListener('change', e => { const k = e.target.dataset && e.target.dataset.set; if (k && S) doAct(actorHost(), { type: 'setSetting', key: k, value: e.target.type === 'checkbox' ? e.target.checked : e.target.value }); });
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && ui.modal) closeModal();
+  if (e.key === 'Enter' && e.target.dataset && e.target.dataset.rename) { e.preventDefault(); e.target.blur(); }
   if (e.key === 'Enter' && e.target.dataset && e.target.dataset.bidin && S && S.phase === 'auction') { e.preventDefault(); bidCustom(e.target.dataset.bidin); }
   if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('pick')) { e.preventDefault(); e.target.click(); }
 });
