@@ -10,7 +10,7 @@ export default function MentionsLegales() {
         <section>
           <h2 className="text-neural-blue font-bold text-lg mb-3">Éditeur du site</h2>
           <p>Nom : Adem SASSI</p>
-          <p>Statut : Particulier — Étudiant Master 1 IA</p>
+          <p>Statut : Particulier, étudiant en Master 2 Ingénierie Data & IA</p>
           <p>Email : sassiadem7@gmail.com</p>
           <p>Site : ademsassi.com</p>
         </section>

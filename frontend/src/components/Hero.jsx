@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { ChevronDown, Sparkles } from "lucide-react";
 import AnimatedCounter from "./AnimatedCounter";
 
-const TYPING_STRINGS = ["Étudiant Master 1 IA","Développeur Full-Stack","Machine Learning Engineer","Développeur IoT","NLP Enthusiast"];
+const TYPING_STRINGS = ["Ingénieur IA en alternance","Développeur d'agents LLM","Full-Stack Python & React","RAG & LangGraph","Étudiant Master 2 IA"];
 
 export default function Hero() {
   const { vibrate } = useHaptic();
@@ -46,7 +46,7 @@ export default function Hero() {
   const stats = hero?.stats || [
     { value: "3", label: "Stages" },
     { value: "5+", label: "Projets" },
-    { value: "M1", label: "Niveau IA" },
+    { value: "M2", label: "Ingénierie Data & IA" },
   ];
 
   const fadeIn = (delay) => ({
@@ -65,7 +65,7 @@ export default function Hero() {
         <div className="inline-flex items-center gap-2 glass-card border border-neural-blue/30 rounded-full px-4 py-2 mb-8 text-xs font-mono text-neural-blue tracking-widest"
           style={fadeIn(0.1)}>
           <Sparkles size={12} className="animate-pulse"/>
-          MASTER 1 — INTELLIGENCE ARTIFICIELLE
+          INGÉNIEUR IA · AGENTS LLM & RAG
           <Sparkles size={12} className="animate-pulse"/>
         </div>
 
@@ -103,7 +103,7 @@ export default function Hero() {
 
         <p className="text-dim-star text-lg max-w-2xl mx-auto mb-12 leading-relaxed"
           style={fadeIn(0.5)}>
-          {hero?.description || "Étudiant en Master 1 IA à l'École Hexagone, je recherche un contrat d'apprentissage."}
+          {hero?.description || "Ingénieur IA en alternance chez ACENSI. Je conçois des agents LLM, des architectures RAG et les plateformes qui les font tourner. Étudiant en Master 2 à l'École Hexagone."}
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20"

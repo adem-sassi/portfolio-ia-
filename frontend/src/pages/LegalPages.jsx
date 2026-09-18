@@ -22,7 +22,7 @@ export function TermsPage() {
     <LegalPage title="Conditions d'utilisation">
       <section>
         <h2 className="text-neural-blue font-bold text-lg mb-3">Acceptation des conditions</h2>
-        <p>En accédant à ademsassi.com, vous acceptez les présentes conditions d'utilisation. Ce site est un portfolio personnel présentant les projets et compétences d'Adem SASSI, étudiant en Master 1 Intelligence Artificielle à l'École Hexagone de Versailles.</p>
+        <p>En accédant à ademsassi.com, vous acceptez les présentes conditions d'utilisation. Ce site est un portfolio personnel présentant les projets et compétences d'Adem SASSI, ingénieur IA en alternance et étudiant en Master 2 Ingénierie Data & IA à l'École Hexagone de Versailles.</p>
       </section>
       <section>
         <h2 className="text-neural-blue font-bold text-lg mb-3">Utilisation du site</h2>
@@ -140,7 +140,7 @@ export function CommunityPage() {
       </section>
       <section>
         <h2 className="text-neural-blue font-bold text-lg mb-3">Blog</h2>
-        <p>Je publie des articles techniques sur l'IA, le Machine Learning, le développement Full-Stack et mon parcours en Master 1 IA.</p>
+        <p>Je publie des articles techniques sur l'IA, le Machine Learning, le développement Full-Stack et mon parcours en Master Ingénierie Data & IA et mon alternance en développement d'agents IA.</p>
         <a href="/blog" className="inline-block mt-3 text-neural-blue hover:underline font-mono text-sm">→ Lire le blog</a>
       </section>
       <section>

@@ -45,12 +45,12 @@ export default function Footer() {
             © {new Date().getFullYear()} Adem SASSI — Tous droits réservés · <a href="/mentions-legales" className="hover:text-neural-blue transition-colors">Mentions légales</a>
           </p>
           <p className="text-dim-star text-xs font-mono">
-            Étudiant Master 1 IA · École Hexagone · Versailles
+            Ingénieur IA en alternance · ACENSI · Master 2 École Hexagone
           </p>
           <div className="flex items-center gap-2">
             <div className="w-1.5 h-1.5 rounded-full bg-neural-green animate-pulse"/>
             <p className="text-dim-star text-xs font-mono">
-              Disponible pour un <span className="text-neural-blue">contrat d'apprentissage</span>
+              En alternance chez <span className="text-neural-blue">ACENSI</span> sur le développement d'agents IA
             </p>
           </div>
         </div>

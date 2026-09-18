@@ -304,7 +304,7 @@ router.post("/contact", contactLimiter, async (req, res) => {
           <hr style="border-color:#1a1a2e;margin:24px 0">
           <div style="text-align:center">
             <p style="color:#7B2FFF;font-weight:bold;font-size:18px">Adem SASSI</p>
-            <p style="color:#a0a8c0;font-size:13px">Master 1 IA — École Hexagone, Versailles</p>
+            <p style="color:#a0a8c0;font-size:13px">Ingénieur IA · ACENSI · Master 2 École Hexagone</p>
             <a href="https://ademsassi.com" style="color:#00D4FF;font-size:13px">ademsassi.com</a>
           </div>
         </div>

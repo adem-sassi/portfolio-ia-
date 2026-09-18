@@ -39,7 +39,7 @@ export default function Courses() {
         </div>
         <div className="mb-12">
           <h2 className="font-display text-4xl md:text-5xl font-black text-star-white mb-4">
-            Master 1 <span className="text-neural-violet">Intelligence</span>
+            Master <span className="text-neural-violet">Intelligence</span>
             <br/>Artificielle
           </h2>
           <p className="text-dim-star font-mono text-sm">École Hexagone · Versailles · 2025—2026</p>
