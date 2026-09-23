@@ -658,6 +658,91 @@ body:has(.game){background-image:radial-gradient(1100px 700px at 30% 40%,rgba(40
 .boardbox .tile.corner.k-gojail{background:linear-gradient(150deg,#818CF8,#3730A3)}
 .boardbox .tile.corner .ic{background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.4),rgba(255,255,255,.1))}
 
+/* ===== v10 : icônes dessinées ===== */
+.svgi{width:100%;height:100%;display:block;flex:none}
+.i-question{--ib1:#FCD34D;--ib2:#D97706}.i-chest{--ib1:#67E8F9;--ib2:#0E7490}.i-coins{--ib1:#FDA4AF;--ib2:#BE123C}.i-gem{--ib1:#F0ABFC;--ib2:#A21CAF}
+.i-plane,.i-train,.i-rocket,.i-horseshoe{--ib1:#CBD5E1;--ib2:#475569}.i-bolt{--ib1:#FDE047;--ib2:#CA8A04}.i-drop{--ib1:#7DD3FC;--ib2:#0369A1}
+.i-go{--ib1:#86EFAC;--ib2:#15803D}.i-jail{--ib1:#FDBA74;--ib2:#C2410C}.i-park{--ib1:#5EEAD4;--ib2:#0F766E}.i-siren{--ib1:#A5B4FC;--ib2:#4338CA}
+.boardbox .inf .ic[class*=" i-"]{background:linear-gradient(145deg,var(--ib1),var(--ib2));color:#fff;padding:.62cqw;box-shadow:inset 0 .14cqw 0 rgba(255,255,255,.5),inset 0 -.22cqw .4cqw rgba(0,0,0,.22),0 .28cqw .6cqw rgba(0,0,0,.35)}
+.boardbox .inf .ic .svgi{stroke-width:2.3;filter:drop-shadow(0 .08cqw .1cqw rgba(0,0,0,.35))}
+.boardbox .tile.corner .inf .ic[class*=" i-"]{background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.45),rgba(255,255,255,.12));padding:1.15cqw;box-shadow:inset 0 0 0 .14cqw rgba(255,255,255,.35),0 .4cqw 1cqw rgba(0,0,0,.3)}
+.deck b span{width:3.3cqw;height:3.3cqw;display:grid;place-items:center;filter:none}
+.deck b span .svgi{stroke-width:2.4;filter:drop-shadow(0 .15cqw .2cqw rgba(0,0,0,.4))}
+.medal .svgi{width:56%;height:56%;color:var(--k2);stroke-width:2.4}
+.cfront .corner{width:clamp(14px,2.3cqw,20px);height:clamp(14px,2.3cqw,20px);color:var(--k2)}
+.cicon .svgi{width:54%;height:54%;color:var(--k2);stroke-width:2.2}
+.dico{width:76px;height:76px;margin:2px auto 12px;border-radius:50%;display:grid;place-items:center;font-size:0;color:#fff;background:linear-gradient(145deg,var(--ib1,#CBD5E1),var(--ib2,#475569));box-shadow:inset 0 3px 0 rgba(255,255,255,.45),0 10px 22px rgba(11,23,48,.3)}
+.dico .svgi{width:54%;height:54%;stroke-width:2.2}
+.mini u .svgi{width:12px;height:12px;color:#fff;stroke-width:2.6}
+.evp .svgi{width:16px;height:16px;color:var(--amber)}
+.evcard .evic{width:clamp(58px,10cqw,86px);height:clamp(58px,10cqw,86px);margin:0 auto;border-radius:50%;display:grid;place-items:center;color:#fff;background:linear-gradient(145deg,#FCD34D,#D97706);box-shadow:inset 0 3px 0 rgba(255,255,255,.5),0 10px 24px rgba(217,119,6,.45)}
+.evcard .evic .svgi{width:55%;height:55%;stroke-width:2.3}
+.gavel{display:inline-block;width:34px;height:34px;color:var(--amber)}
+#auc-ring{position:relative;display:inline-grid;place-items:center}
+.ringic{position:absolute;inset:0;display:grid;place-items:center;color:var(--amber)}.ringic .svgi{width:22px;height:22px}
+.debt-ic{width:28px;height:28px;flex:none;color:#FCA5A5}
+.rule>span{width:34px;height:34px;flex:none;border-radius:10px;padding:7px;background:linear-gradient(145deg,#1B3564,#12244A);color:var(--amber);box-shadow:inset 0 1px 0 rgba(255,255,255,.1)}
+.box h2 .btn{display:inline-flex;align-items:center;gap:5px}
+.box h2 .btn .svgi{width:16px;height:16px}
+.btn .svgi{width:17px;height:17px;display:inline-block;vertical-align:-3px}
+
+/* ===== v10 : maisons et hôtels dessinés ===== */
+svg.hs{width:1.95cqw;height:1.95cqw;background:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;fill:#22C55E;stroke:#fff;stroke-width:1.1;stroke-linejoin:round;overflow:visible;filter:drop-shadow(0 .12cqw .15cqw rgba(0,0,0,.6))}
+svg.hs.hotel{width:3.4cqw;height:1.95cqw;fill:#EF4444}
+svg.hs .hd{fill:#14532D;stroke:none}svg.hs.hotel .hd{fill:#7F1D1D}svg.hs .hw{fill:#FEF3C7;stroke:none}
+.sl svg.hs,.sr svg.hs{width:1.7cqw;height:1.7cqw}.sl svg.hs.hotel,.sr svg.hs.hotel{width:2.3cqw;height:1.35cqw}
+.band{gap:.18cqw}
+.mini u svg.hs{width:11px;height:11px}.mini u svg.hs.hotel{width:21px;height:11px}
+.dhouses{bottom:-10px;gap:2px}.dhouses svg.hs{width:21px;height:21px;animation:built .5s var(--spring)}.dhouses svg.hs.hotel{width:38px;height:21px}
+
+/* ===== v10 : réglages ===== */
+.setgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px}
+.setgrid section{min-width:0}.setgrid .wide{grid-column:1/-1}
+.setgrid .lbl small{color:#5F7399}
+.seg{display:flex;background:#0A1730;border:1px solid var(--line);border-radius:12px;padding:3px}
+.seg button{flex:1;padding:8px 10px;border-radius:9px;font-weight:700;color:var(--mute);transition:background .15s,color .15s}
+.seg button.on{background:var(--cyan);color:#04222A}
+.vol{flex:1;accent-color:var(--amber);min-width:0}
+.dskins{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:8px}
+.dsk{display:grid;justify-items:center;gap:6px;padding:10px 6px;border-radius:12px;background:#0A1730;border:1px solid var(--line);transition:transform .15s var(--spring)}
+.dsk:hover{transform:translateY(-2px)}.dsk.on{border-color:var(--cyan);box-shadow:0 0 0 2px var(--cyan)}
+.dsk small{font-size:12px;font-weight:700}
+.dmini{width:38px;height:38px;border-radius:9px;display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);padding:6px;background:var(--db);box-shadow:inset 0 0 0 1px rgba(255,255,255,.2),0 4px 10px rgba(0,0,0,.4)}
+.dmini b{border-radius:50%;background:var(--dp);margin:1.5px}
+.dmini b:nth-child(1){grid-area:1/1}.dmini b:nth-child(2){grid-area:2/2}.dmini b:nth-child(3){grid-area:3/3}
+.dk-classique{--db:linear-gradient(145deg,#fff,#DCE4F2);--dp:#0B1730}.dk-or{--db:linear-gradient(145deg,#FEF3C7,#F59E0B);--dp:#451A03}.dk-onyx{--db:linear-gradient(145deg,#374151,#030712);--dp:#F9FAFB}
+.dk-rubis{--db:linear-gradient(145deg,#FB7185,#9F1239);--dp:#FFF1F2}.dk-neon{--db:linear-gradient(145deg,#1E1B4B,#0B1026);--dp:#22D3EE}.dk-glace{--db:linear-gradient(145deg,rgba(255,255,255,.95),#7DD3FC);--dp:#0369A1}
+
+/* skins des dés sur le plateau */
+.boardbox[data-dice=or] .face{background:linear-gradient(145deg,#FEF3C7,#F59E0B);box-shadow:inset 0 0 0 1px #B45309,inset 0 0 calc(var(--s)*.2) rgba(120,53,15,.35)}
+.boardbox[data-dice=or] .face b{background:radial-gradient(circle at 35% 30%,#92400E,#451A03)}
+.boardbox[data-dice=onyx] .face{background:linear-gradient(145deg,#374151,#030712);box-shadow:inset 0 0 0 1px #4B5563,inset 0 0 calc(var(--s)*.2) rgba(0,0,0,.6)}
+.boardbox[data-dice=onyx] .face b{background:radial-gradient(circle at 35% 30%,#fff,#D1D5DB)}
+.boardbox[data-dice=rubis] .face{background:linear-gradient(145deg,#FB7185,#9F1239);box-shadow:inset 0 0 0 1px #881337,inset 0 0 calc(var(--s)*.2) rgba(76,5,25,.4)}
+.boardbox[data-dice=rubis] .face b{background:radial-gradient(circle at 35% 30%,#fff,#FFE4E6)}
+.boardbox[data-dice=neon] .face{background:linear-gradient(145deg,#1E1B4B,#0B1026);box-shadow:inset 0 0 0 1.5px #22D3EE,0 0 calc(var(--s)*.25) rgba(34,211,238,.5)}
+.boardbox[data-dice=neon] .face b{background:#22D3EE;box-shadow:0 0 6px #22D3EE}
+.boardbox[data-dice=glace] .face{background:linear-gradient(145deg,rgba(255,255,255,.92),rgba(186,230,253,.85));box-shadow:inset 0 0 0 1px rgba(255,255,255,.9),inset 0 0 calc(var(--s)*.25) rgba(3,105,161,.3)}
+.boardbox[data-dice=glace] .face b{background:radial-gradient(circle at 35% 30%,#38BDF8,#0369A1)}
+.boardbox:not([data-dice=classique]) .f1 b{margin:10%}
+.boardbox[data-dice=classique] .f1 b,.boardbox:not([data-dice]) .f1 b{margin:-6%}
+
+/* ===== v10 : thèmes Luxe, Océan, Forêt ===== */
+.boardbox[data-theme=luxe]{--t1:#1A1611;--t2:#0B0906;--tfg:#F5E7C6;--tpr:rgba(212,175,55,.16);--tprfg:#F2D48A;--tmix:5%;--tspec:8%;--tframe:linear-gradient(145deg,#3A2A0C,#0B0906 50%,#4A3510);--tcenter:#0B0906;--tring:#D4AF37;--accent:#D4AF37}
+.boardbox[data-theme=luxe] .tile{box-shadow:inset 0 0 0 .1cqw rgba(212,175,55,.5),0 .3cqw .7cqw rgba(0,0,0,.55)}
+.boardbox[data-theme=luxe] .tile.owned{box-shadow:inset 0 0 0 .22cqw var(--o),0 0 1.4cqw color-mix(in srgb,var(--o) 40%,transparent)}
+.boardbox[data-theme=luxe] .inf .nm{font-family:var(--display);letter-spacing:.01em}
+.boardbox[data-theme=ocean]{--t1:#0F3D52;--t2:#082532;--tfg:#E0F7FF;--tpr:rgba(2,20,30,.55);--tprfg:#A5F3FC;--tmix:12%;--tspec:14%;--tframe:linear-gradient(145deg,#0E7490,#082F49 50%,#0369A1);--tcenter:#04202C;--tring:#22D3EE;--accent:#06B6D4}
+.boardbox[data-theme=foret]{--t1:#1F3B2C;--t2:#12261B;--tfg:#ECFDF5;--tpr:rgba(0,0,0,.35);--tprfg:#BBF7D0;--tmix:10%;--tspec:14%;--tframe:linear-gradient(145deg,#6B4423,#2E1B0D 50%,#7C5230);--tcenter:#0D1F15;--tring:#A16207;--accent:#84CC16}
+
+/* ===== v10 : animations réduites ===== */
+body.lowfx .center .glow,body.lowfx .center .deco span,body.lowfx .bgfx span,body.lowfx .tile.full .band::after,body.lowfx .setrays,body.lowfx .rays,body.lowfx .pcard.turn,body.lowfx .tok.turn::after,body.lowfx .btn.cta{animation:none!important}
+body.lowfx .board.enter .tile{animation:none!important}
+body.lowfx .bgfx{display:none}
+@media (max-width:620px){.setgrid{grid-template-columns:1fr}}
+
+.rr .lv{display:flex;align-items:center;gap:1px;letter-spacing:0}.rr .lv svg.hs{width:11px;height:11px;filter:none;stroke-width:1.4}.rr .lv svg.hs.hotel{width:20px;height:11px}.rr .lv .svgi{width:13px;height:13px;color:#475569}.rr.cur .lv .svgi{color:#CBD5E1}
+
 </style>
 </head>
 <body>
@@ -1075,7 +1160,7 @@ function settle(S) {
 function startEvent(S) {
   const keys = Object.keys(EVENTS), k = keys[Math.floor(Math.random() * keys.length)], E = EVENTS[k];
   S.event = { k, round: S.round, seq: ++S.evseq };
-  log(S, null, E.ic + ' ' + E.t + ' : ' + E.d, { s: 'event' });
+  log(S, null, E.t + ' : ' + E.d, { s: 'event' });
   if (k === 'fete') alive(S).forEach(p => { p.cash += 100; });
   if (k === 'fisc') alive(S).forEach(p => { const x = Math.floor(Math.max(0, p.cash) / 10); if (x) pay(S, p, x, null, true); });
 }
@@ -1376,6 +1461,211 @@ function sha256(s) {
   return H.map(x => (x >>> 0).toString(16).padStart(8, '0')).join('');
 }
 
+/* ================= LANGUE (FR / EN) =================
+   Le jeu est écrit en français. En anglais, chaque texte affiché est traduit au vol (textes, placeholders, infobulles),
+   y compris le journal envoyé par l'hôte : chaque joueur voit la partie dans sa langue. */
+let lang = LS.get('magnat_lang') === 'en' ? 'en' : 'fr';
+const I18N_EX = {}, I18N_RE = [];
+function trName(n) { // noms de cases
+  if (lang !== 'en' || !n) return n; const x = I18N_EX[n]; if (x !== undefined) return x;
+  let m = n.match(/^Aéroport (?:de |d'|du )?(.+)$/); if (m) return m[1] + ' Airport';
+  m = n.match(/^Gare (?:de |d'|du )(.+)$/); if (m) return m[1] + ' Station';
+  return n;
+}
+function trS(s) {
+  if (lang !== 'en' || !s || !/[A-Za-zÀ-ÿ]/.test(s)) return s;
+  const m = s.match(/^(\s*)([\s\S]*?)(\s*)$/), core = m[2]; if (!core) return s;
+  let out = I18N_EX[core];
+  if (out === undefined) for (const [re, rp] of I18N_RE) { if (re.test(core)) { out = core.replace(re, rp); break; } }
+  if (out === undefined) { const t = trName(core); if (t !== core) out = t; }
+  return out === undefined ? s : m[1] + out + m[3];
+}
+const TR_ATTR = ['placeholder', 'title', 'aria-label'];
+function trNode(n) {
+  if (lang !== 'en') return;
+  if (n.nodeType === 3) { const p = n.parentNode; if (p && /^(SCRIPT|STYLE)$/.test(p.nodeName)) return; if (p && p.closest && p.closest('.nmin,.feed p.chat,[data-notr]')) return; const v = n.nodeValue, t = trS(v); if (t !== v) n.nodeValue = t; }
+  else if (n.nodeType === 1 && !/^(SCRIPT|STYLE)$/.test(n.nodeName)) { for (const at of TR_ATTR) { const v = n.getAttribute(at); if (v) { const t = trS(v); if (t !== v) n.setAttribute(at, t); } } for (const c of n.childNodes) trNode(c); }
+}
+new MutationObserver(ms => { if (lang !== 'en') return; for (const m of ms) { if (m.type === 'childList') m.addedNodes.forEach(trNode); else trNode(m.target); } })
+  .observe(document.documentElement, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: TR_ATTR });
+function setLang(l) {
+  lang = l === 'en' ? 'en' : 'fr'; LS.set('magnat_lang', lang); document.documentElement.lang = lang;
+  ui.screen = ''; ui.mapId = ''; render(); if (ui.modal) renderModal(); trNode(document.body);
+}
+document.documentElement.lang = lang;
+
+/* ---------- dictionnaire anglais ---------- */
+(() => {
+  const X = {
+    // accueil, salon
+    "Page privée. Entre le code que t'a donné Ragnar.": "Private page. Enter the code Ragnar gave you.", "Code d'accès": "Access code", "Entrer": "Enter", "Mauvais code.": "Wrong code.",
+    "Ton pseudo": "Your nickname", "Créer un salon en ligne": "Create an online room", "Code du salon": "Room code", "Rejoindre": "Join", "Jouer sur le même écran (ou contre des bots)": "Play on the same screen (or vs bots)",
+    "Comment jouer ?": "How to play?", "Comment jouer": "How to play", "Supprimer": "Delete", "Reprendre la partie locale": "Resume local game", "Annuler": "Cancel",
+    "Partie sur le même écran": "Same-screen game", "Copier le lien": "Copy link", "Envoie le lien à tes amis. Garde cet onglet ouvert : c'est lui qui fait tourner la partie.": "Send the link to your friends. Keep this tab open: it runs the game.",
+    "Ouverture du salon…": "Opening the room…", "En attente du lancement par l'hôte.": "Waiting for the host to start.", "(choisies par l'hôte)": "(set by the host)",
+    "Ajouter": "Add", "Ajouter un bot": "Add a bot", "Pseudo du joueur": "Player nickname", "Quitter": "Leave", "Retirer": "Remove", "hôte": "host", "toi": "you", "bot": "bot", "déconnecté": "disconnected",
+    "Map": "Map", "Règles": "Rules", "Lancer la partie": "Start the game", "Rejoindre la partie": "Join the game", "Pseudo": "Nickname", "Clique pour changer le pseudo": "Click to change your nickname",
+    "Changer de couleur": "Change color", "Choisir son pion": "Choose your token", "Personnaliser": "Customize", "Pion": "Token", "Couleur": "Color", "C'est bon": "Done",
+    "Argent de départ": "Starting cash", "Le montant que tu veux (100 à 1 000 000)": "Any amount you like (100 to 1,000,000)", "Salaire au Départ": "GO salary", "Touché à chaque passage": "Collected each time you pass",
+    "Terrains offerts au début": "Free properties at start", "Distribués au hasard, la partie démarre plus vite": "Dealt at random, the game starts faster", "Aucun": "None",
+    "Partie rapide": "Quick game", "À la fin des tours, le plus riche gagne": "When the rounds are over, the richest wins", "Sans limite": "No limit",
+    "Loyers": "Rents", "Plus hauts = parties plus courtes": "Higher = shorter games", "Normaux": "Normal",
+    "Niveau des bots": "Bot level", "Difficile : ils misent plus et te proposent des échanges": "Hard: they bid more and send you trade offers", "Facile": "Easy", "Normal": "Normal", "Difficile": "Hard",
+    "Vitesse des bots": "Bot speed", "Lente": "Slow", "Normale": "Normal", "Rapide": "Fast",
+    "Temps limité par action": "Time limit per action", "Passé le délai, le jeu joue à ta place (en ligne)": "When time runs out, the game plays for you (online)", "Illimité": "Unlimited",
+    "Enchères": "Auctions", "Un terrain refusé part aux enchères": "A declined property goes to auction", "Loyer doublé": "Double rent", "Sur un groupe complet sans maison": "On a full set with no houses",
+    "Cagnotte des vacances": "Vacation jackpot", "Taxes et amendes vont sur la case Vacances": "Taxes and fines go to the Vacation space", "Pas de loyer en prison": "No rent in jail", "Un joueur en prison ne touche rien": "A jailed player collects nothing",
+    "Construction équilibrée": "Even building", "Une maison d'écart maximum dans un groupe": "At most one house difference within a set", "Ordre aléatoire": "Random order", "L'ordre des joueurs est tiré au sort": "Player order is drawn at random",
+    "Événements mondiaux": "World events", "Tous les 3 tours : boom, krach, fête, soldes...": "Every 3 rounds: boom, crash, party, sales...", "Bonus pile sur le Départ": "Exact landing on GO bonus", "100 de plus si tu t'arrêtes exactement dessus": "100 extra if you land exactly on it",
+    "Tour de chauffe": "Warm-up lap", "Il faut boucler un tour de plateau avant d'acheter": "You must complete a lap before buying",
+    // réglages
+    "Réglages": "Settings", "Langue": "Language", "Son": "Sound", "Activé": "On", "Coupé": "Off", "Volume": "Volume", "Couleurs du plateau": "Board colors", "(que sur ton écran)": "(only on your screen)", "Dés": "Dice",
+    "Animations réduites": "Reduced animations", "Moins d'effets, plus fluide sur les ordis lents": "Fewer effects, smoother on slow computers", "OK": "OK",
+    "Nuit": "Night", "Luxe": "Luxury", "Océan": "Ocean", "Forêt": "Forest", "Classique": "Classic", "Néon": "Neon", "Pastel": "Pastel", "Sable": "Sand", "Or": "Gold", "Onyx": "Onyx", "Rubis": "Ruby", "Glace": "Ice",
+    "Couper le son": "Mute", "Activer le son": "Unmute", "Plein écran": "Full screen", "Règles du jeu": "Game rules", "Son activé": "Sound on", "Son coupé": "Sound off", "Lien copié": "Link copied",
+    "Plein écran indisponible ici": "Full screen unavailable here", "Plein écran indisponible sur cet appareil": "Full screen unavailable on this device",
+    // maps
+    "Monde": "World", "Afrique": "Africa", "Algérie": "Algeria", "Brésil": "Brazil", "Italie": "Italy", "Japon": "Japan", "Maroc": "Morocco", "Royaume": "Kingdom", "Galaxie": "Galaxy", "Tunisie": "Tunisia",
+    // cases spéciales
+    "Départ": "GO", "Prison": "Jail", "Vacances": "Vacation", "Allez en prison": "Go to Jail", "Surprise": "Chance", "Trésor": "Treasure", "Impôts": "Income Tax", "Taxe de luxe": "Luxury Tax", "Simple visite": "Just visiting",
+    "Quartier latin": "Latin Quarter", "Gare de Lyon": "Gare de Lyon", "Gare du Nord": "Gare du Nord", "Électricité": "Electric Company", "Eaux de Paris": "Paris Water Works", "Réseau électrique": "Power Grid", "Fibre optique": "Fiber Network",
+    "Énergie": "Energy", "Télécoms": "Telecoms", "Éoliennes du Nord": "North Wind Farm", "Réseau ferré": "Rail Network", "Pétrole du Texas": "Texas Oil", "Barrage Hoover": "Hoover Dam", "Barrage d'Assouan": "Aswan Dam", "Solaire du Sahara": "Sahara Solar",
+    "Centrale Noor": "Noor Power Plant", "Barrage Al Wahda": "Al Wahda Dam", "Gaz du Sahara": "Sahara Gas", "Barrage de Béni Haroun": "Beni Haroun Dam", "Centrale géothermique": "Geothermal Plant", "Réseau fibre": "Fiber Network",
+    "Barrage d'Itaipu": "Itaipu Dam", "Éthanol du Nordeste": "Nordeste Ethanol", "Aqueduc romain": "Roman Aqueduct", "Centrale du Pô": "Po Power Plant", "Puits enchanté": "Enchanted Well", "Cristal de mana": "Mana Crystal",
+    "Réacteur à fusion": "Fusion Reactor", "Usine à oxygène": "Oxygen Plant", "La Lune": "The Moon", "Voie lactée": "Milky Way", "Mercure": "Mercury", "Vénus": "Venus", "Saturne": "Saturn", "Encelade": "Enceladus", "Ganymède": "Ganymede",
+    "Andromède": "Andromeda", "Cérès": "Ceres", "Déimos": "Deimos", "Véga": "Vega", "Marais maudit": "Cursed Swamp", "Hameau": "Hamlet", "Vieux moulin": "Old Mill", "Forêt sombre": "Dark Forest", "Taverne": "Tavern", "Forge": "Forge",
+    "Village elfe": "Elf Village", "Grotte de cristal": "Crystal Cave", "Port des brumes": "Misty Harbor", "Grand marché": "Grand Market", "Tour du mage": "Wizard Tower", "Arène": "Arena", "Monastère": "Monastery", "Bibliothèque": "Library",
+    "Mines naines": "Dwarf Mines", "Pont du dragon": "Dragon Bridge", "Cité flottante": "Floating City", "Jardins royaux": "Royal Gardens", "Académie de magie": "Magic Academy", "Trésor du dragon": "Dragon's Hoard", "Citadelle": "Citadel",
+    "Château royal": "Royal Castle", "Écurie du Nord": "North Stables", "Écurie du Sud": "South Stables", "Écurie de l'Est": "East Stables", "Écurie de l'Ouest": "West Stables",
+    // partie
+    "Lancer les dés": "Roll the dice", "Relancer les dés (double)": "Roll again (double)", "Terminer le tour": "End turn", "Mettre aux enchères": "Send to auction", "Passer": "Pass", "Utiliser la carte Sortie de prison": "Use Get Out of Jail card",
+    "À toi de jouer": "Your turn", ", à toi de jouer": ", your turn", "va lancer les dés": "is about to roll", "Construis, échange, ou termine ton tour": "Build, trade or end your turn", ", construis, échange, ou termine ton tour": ", build, trade or end your turn",
+    "termine son tour": "is ending their turn", "avance": "is moving", "Enchères en cours": "Auction in progress", "Écrire aux autres joueurs…": "Message the other players…", "Message": "Message",
+    "Joueurs": "Players", "Mes terrains": "My properties", "Aucun terrain pour l'instant. Clique sur une case du plateau pour voir ses loyers.": "No properties yet. Click a board space to see its rents.",
+    "aucun terrain": "no properties", "en prison": "in jail", "passe son prochain tour": "skips next turn", "tour de chauffe": "warm-up lap", "éliminé": "out", "ruiné": "broke", "Échanger": "Trade", "Exclure": "Kick",
+    "Échanges en attente": "Pending trades", "propose à": "offers", "Accepter": "Accept", "Refuser": "Decline", "Contre-offre": "Counter-offer", "Annuler mon offre": "Cancel my offer", "rien": "nothing", "carte Sortie de prison": "Get Out of Jail card",
+    "Proposer l'échange": "Propose trade", "Carte Sortie de prison": "Get Out of Jail card", "Groupe construit : vends les maisons d'abord": "Built set: sell the houses first",
+    "Cagnotte": "Jackpot", "× dés": "× dice", "hyp.": "mortg.", "(hyp.)": "(mortg.)",
+    "Titre de propriété": "Title deed", "Transport": "Transport", "Compagnie": "Utility", "Case spéciale": "Special space", "Appartient à": "Owned by", "Libre": "For sale",
+    "Terrain nu": "Bare land", "Terrain nu ×2": "Bare land ×2", "1 maison": "1 house", "2 maisons": "2 houses", "3 maisons": "3 houses", "4 maisons": "4 houses", "Hôtel": "Hotel", "Maison ou hôtel": "House or hotel", "Hypothèque": "Mortgage", "Prix": "Price",
+    "1 transport": "1 transport", "2 transports": "2 transports", "3 transports": "3 transports", "4 transports": "4 transports", "1 compagnie": "1 utility", "2 compagnies": "2 utilities", "4 × les dés": "4 × the dice", "10 × les dés": "10 × the dice",
+    "Construire": "Build", "Vendre": "Sell", "Hypothéquer": "Mortgage", "Lever l'hypothèque": "Pay off mortgage", "Fermer": "Close", "Hypothéqué": "Mortgaged",
+    "Direction la prison, sans passer par le Départ.": "Straight to jail, without passing GO.", "Tire une carte Surprise.": "Draw a Chance card.", "Tire une carte Trésor.": "Draw a Treasure card.", "Rien ne se passe ici. Souffle un peu.": "Nothing happens here. Take a breather.",
+    "Aux enchères": "Up for auction", "Aucune mise pour l'instant. Qui ouvre ?": "No bids yet. Who opens?", "Meilleure mise :": "Top bid:", "Montant": "Amount", "Montant libre": "Custom amount", "Miser": "Bid", "Se retirer": "Drop out",
+    "Tu tiens la meilleure mise": "You hold the top bid", "s'est retiré de cette enchère": "dropped out of this auction",
+    "Tu dois": "You owe", "à": "to", "et": "and", "la banque": "the bank", "Rembourse pour finir ton tour. Chaque vente part direct chez ton créancier.": "Pay it back to end your turn. Every sale goes straight to your creditor.",
+    "Plus rien à vendre ni à hypothéquer.": "Nothing left to sell or mortgage.", "Abandonner la partie": "Give up the game",
+    "Série complète": "Full set", "Loyers doublés, et les maisons sont débloquées !": "Rents doubled, and houses unlocked!", "Les maisons sont débloquées !": "Houses unlocked!", "Loyer maximum sur chaque transport.": "Maximum rent on every transport.", "Loyer : 10 fois les dés.": "Rent: 10 times the dice.",
+    "possède tous les transports": "owns all the transports", "possède toutes les compagnies": "owns all the utilities",
+    "Événement mondial": "World event", "Partie terminée": "Game over", "Revenir au salon pour rejouer": "Back to the room to play again", "Évolution des fortunes": "Fortune over time",
+    "Tu regardes la partie en spectateur. Tu pourras jouer à la prochaine.": "You're watching as a spectator. You can play in the next game.",
+    "But du jeu": "Goal", "Ruiner tous les autres. En partie rapide, le plus riche à la fin gagne.": "Bankrupt everyone else. In a quick game, the richest at the end wins.", "Ton tour": "Your turn",
+    "Lance les dés et avance. Terrain libre : achète-le, sinon il part aux enchères. Terrain d'un autre : tu paies le loyer.": "Roll and move. Free property: buy it, or it goes to auction. Someone else's: you pay rent.",
+    "Avec tout un groupe de la même couleur, le loyer double et tu peux bâtir des maisons puis un hôtel. Clique sur ton terrain.": "With a full color set, rent doubles and you can build houses then a hotel. Click your property.",
+    "Salaire à chaque passage, bonus si tu t'arrêtes pile dessus.": "Salary every time you pass, bonus if you land exactly on it.", "Pour sortir : un double, l'amende ou une carte. Trois doubles d'affilée t'y envoient.": "To get out: a double, the fine or a card. Three doubles in a row send you there.",
+    "Dettes": "Debts", "Pas assez pour payer ? Vends des maisons ou hypothèque pour rembourser avant de finir ton tour, sinon tu abandonnes.": "Can't pay? Sell houses or mortgage to repay before ending your turn, or you give up.",
+    "Échanges": "Trades", "Bouton Échanger sur un joueur : argent, terrains et cartes. Les bots en Normal et Difficile te feront des offres.": "Trade button on a player: cash, properties and cards. Normal and Hard bots will make you offers.",
+    "Événements": "Events", "Tous les 3 tours (si activé) : boom, krach, portes ouvertes, soldes, fête ou contrôle fiscal.": "Every 3 rounds (if enabled): boom, crash, open house, sales, party or tax audit.",
+    "Raccourcis": "Shortcuts", "Espace : lancer les dés ou terminer le tour. Échap : fermer une fenêtre.": "Space: roll or end turn. Esc: close a window.", "Compris": "Got it",
+    "🎲 À toi de jouer ! · Magnat": "🎲 Your turn! · Magnat",
+    // réseau
+    "Connexion impossible. Un des deux réseaux bloque peut-être le pair-à-pair (essaie en 4G ou sur un autre wifi).": "Can't connect. One of the networks may block peer-to-peer (try 4G or another wifi).",
+    "Connexion perdue, nouvelle tentative…": "Connection lost, retrying…", "Connexion à l'hôte perdue, reconnexion…": "Lost connection to host, reconnecting…", "Hôte injoignable, nouvel essai…": "Host unreachable, retrying…",
+    "Impossible de joindre le serveur de mise en relation. Réessaie dans un instant.": "Can't reach the matchmaking server. Try again in a moment.", "Le code du salon est encore réservé, nouvel essai dans 5 s…": "The room code is still reserved, retrying in 5 s…",
+    "Le code du salon fait 5 caractères.": "The room code has 5 characters.", "Pas de connexion à l'hôte": "No connection to the host", "Salon introuvable. Vérifie le code et que l'hôte a bien la page ouverte.": "Room not found. Check the code and that the host has the page open.",
+    "Serveur de mise en relation injoignable, nouvelle tentative…": "Matchmaking server unreachable, retrying…", "La partie a déjà commencé.": "The game has already started.",
+    "Quitter et effacer cette partie ?": "Leave and delete this game?", "Quitter ferme le salon pour tout le monde. Continuer ?": "Leaving closes the room for everyone. Continue?",
+    "Exclure ce joueur ? Ses terrains retournent à la banque.": "Kick this player? Their properties go back to the bank.", "Abandonner ? Tu es éliminé et tes terrains passent à ton créancier.": "Give up? You're out and your properties go to your creditor.", "Copie ce lien :": "Copy this link:",
+    // erreurs du moteur
+    "Action impossible dans le salon": "Not possible in the room", "Action inconnue": "Unknown action", "Action invalide": "Invalid action", "Attends la fin de l'enchère": "Wait for the auction to end", "Ce n'est pas le moment de lancer les dés": "It's not time to roll",
+    "Ce terrain n'est pas à toi": "This property isn't yours", "Construis de façon équilibrée sur le groupe": "Build evenly across the set", "Couleur déjà prise": "Color already taken", "Il faut au moins 2 joueurs": "You need at least 2 players",
+    "Il te faut tout le groupe de couleur": "You need the whole color set", "Il y a déjà un hôtel": "There's already a hotel", "Impossible": "Not possible", "Impossible d'hypothéquer": "Can't mortgage", "Impossible maintenant": "Not possible right now",
+    "Interdit": "Not allowed", "Joueur inconnu": "Unknown player", "L'hôte ne peut pas être retiré": "The host can't be removed", "L'échange est vide": "The trade is empty", "La partie est terminée": "The game is over", "Le salon est complet": "The room is full",
+    "Map inconnue": "Unknown map", "Mise trop basse": "Bid too low", "Pas assez d'argent": "Not enough money", "Pas d'enchère en cours": "No auction in progress", "Pas d'hypothèque ici": "No mortgage here", "Pion déjà pris": "Token already taken",
+    "Rembourse d'abord ta dette : vends des maisons, hypothèque ou échange. Sinon, abandonne.": "Repay your debt first: sell houses, mortgage or trade. Otherwise, give up.", "Rien à acheter": "Nothing to buy", "Rien à refuser": "Nothing to decline",
+    "Rien à vendre ici": "Nothing to sell here", "Réglage inconnu": "Unknown setting", "Réservé à l'hôte": "Host only", "Tu construis pendant ton tour": "You build during your turn", "Tu es éliminé": "You're out", "Tu n'as pas de carte": "You don't have a card",
+    "Tu ne peux pas finir ton tour maintenant": "You can't end your turn now", "Tu t'es retiré de cette enchère": "You dropped out of this auction", "Un bot garde son nom": "A bot keeps its name", "Un terrain du groupe est hypothéqué": "A property in the set is mortgaged",
+    "Valeur refusée": "Value rejected", "Vends d'abord les constructions du groupe": "Sell the set's buildings first", "Vends de façon équilibrée sur le groupe": "Sell evenly across the set", "Échange introuvable": "Trade not found", "Échange invalide": "Invalid trade",
+    "Échange": "Trade", "Français": "Français",
+    // journal
+    "part en prison.": "goes to jail.", "n'a rien à perdre, la tempête passe.": "has nothing to lose, the storm passes.", "passe son tour.": "skips a turn.", "remporte la partie !": "wins the game!", "sort de prison grâce au double.": "gets out of jail with a double.",
+    "reste en prison.": "stays in jail.", "enchaîne trois doubles.": "rolls three doubles in a row.", "utilise sa carte Sortie de prison.": "uses a Get Out of Jail card.", "annule son offre.": "cancels their offer.",
+    "abandonne et fait faillite. Ses biens retournent à la banque.": "gives up and goes bankrupt. Their assets go back to the bank.", "ne répond pas : le jeu joue à sa place.": "isn't responding: the game plays for them.",
+    "Événements mondiaux activés : un événement surprise tous les 3 tours.": "World events on: a surprise event every 3 rounds."
+  };
+  const GN = { 'marron': 'brown', 'bleu ciel': 'light blue', 'rose': 'pink', 'orange': 'orange', 'rouge': 'red', 'jaune': 'yellow', 'vert': 'green', 'bleu': 'blue' };
+  const EVT = { boom: ['Property boom', 'All rents are doubled this round.'], krach: ['Market crash', 'Rents are halved this round.'], portes: ['Open house', 'No rent this round.'],
+    soldes: ['Construction sale', 'Houses cost half price this round.'], fete: ['National holiday', 'The bank gives 100 to every player.'], fisc: ['Tax audit', 'Every player pays 10% of their cash into the jackpot.'] };
+  for (const k in EVT) { const E = EVENTS[k]; X[E.t] = EVT[k][0]; X[E.d] = EVT[k][1]; X[E.t + ' : ' + E.d] = EVT[k][0] + ': ' + EVT[k][1]; }
+  const CARD_EN = {
+    "Retour à la case Départ.": "Advance to GO.", "Un rendez-vous t'attend : file à {t24}.": "A meeting awaits: head to {t24}.", "On t'invite à {t11}, vas-y directement.": "You're invited to {t11}, go straight there.",
+    "Rends-toi au transport le plus proche.": "Go to the nearest transport.", "Tes placements rapportent 50.": "Your investments pay 50.", "Carte Sortie de prison, à garder pour plus tard.": "Get Out of Jail card, keep it for later.",
+    "Demi-tour : recule de 3 cases.": "U-turn: go back 3 spaces.", "Contrôle fiscal surprise : direction la prison.": "Surprise tax audit: straight to jail.", "Ravalement de façades : 25 par maison, 100 par hôtel.": "Facade renovation: 25 per house, 100 per hotel.",
+    "Flashé par un radar : amende de 15.": "Caught by a speed camera: 15 fine.", "Petite folie : offre-toi une visite à {t39}.": "Treat yourself: take a trip to {t39}.", "Tu régales : verse 50 à chaque joueur.": "Drinks are on you: pay 50 to each player.",
+    "Ton livret arrive à échéance : encaisse 150.": "Your savings mature: collect 150.", "Ton train part de {t5}, ne le rate pas.": "Your ride leaves from {t5}, don't miss it.", "Vent dans le dos : avance de 5 cases.": "Tailwind: move forward 5 spaces.",
+    "Rends-toi à la compagnie la plus proche.": "Go to the nearest utility.", "Coup de chance : tu rejoues tout de suite.": "Lucky break: roll again right away.", "Grève des transports : tu passes ton prochain tour.": "Transport strike: skip your next turn.",
+    "Un promoteur t'offre une maison gratuite sur un de tes groupes complets (sinon 50).": "A developer gives you a free house on one of your full sets (otherwise 50).", "Tempête : une de tes constructions s'envole.": "Storm: one of your buildings is blown away.",
+    "Robin des bois : le joueur le plus riche te donne 100.": "Robin Hood: the richest player gives you 100.", "Vacances offertes : file sur la case Vacances.": "Free vacation: go to the Vacation space.",
+    "Téléportation : tu échanges ta place avec le joueur le plus riche.": "Teleport: swap places with the richest player.", "Tu gagnes au grattage : 100.": "You win a scratch card: 100.",
+    "Erreur de la banque en ta faveur : 200.": "Bank error in your favor: 200.", "Visite chez le dentiste : 50.": "Dentist visit: 50.", "Tu revends ta vieille console : 50.": "You sell your old console: 50.",
+    "Fraude au ticket de métro : direction la prison.": "Subway fare dodging: straight to jail.", "C'est ton anniversaire : chaque joueur t'offre 25.": "It's your birthday: each player gives you 25.", "Trop-perçu d'impôts remboursé : 20.": "Tax refund: 20.",
+    "Ton assurance te verse 100.": "Your insurance pays you 100.", "Passage aux urgences : 100.": "Trip to the ER: 100.", "Frais d'inscription à l'école : 50.": "School fees: 50.", "Deuxième prix du concours de karaoké : 10.": "Second prize in a karaoke contest: 10.",
+    "Travaux de voirie : 40 par maison, 115 par hôtel.": "Street repairs: 40 per house, 115 per hotel.", "Un lointain cousin te lègue 100.": "A distant cousin leaves you 100.", "Impôt sur la fortune : tu paies 10 % de ton argent.": "Wealth tax: pay 10% of your cash.",
+    "Bon cœur : tu donnes 50 au joueur le plus pauvre.": "Big heart: give 50 to the poorest player.", "La banque alimente la cagnotte des vacances : 100 de plus.": "The bank adds 100 to the vacation jackpot.", "Prime de fin d'année : 120.": "Year-end bonus: 120.",
+    "Ton téléphone tombe dans l'eau : 80.": "Your phone falls in the water: 80.", "Tu retrouves un billet dans une vieille veste : 20.": "You find a bill in an old jacket: 20.", "Cagnotte entre amis : chaque joueur te donne 40.": "Friends chip in: each player gives you 40.",
+    "Tournée générale : tu offres 30 à chaque joueur.": "Round of drinks: pay 30 to each player.", "Amende pour tapage nocturne : 60.": "Noise complaint fine: 60.", "Vide-grenier réussi : 70.": "Great garage sale: 70."
+  };
+  const esR = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const cardRe = [];
+  for (const fr in CARD_EN) {
+    if (!/\{t\d+\}/.test(fr)) { X[fr] = CARD_EN[fr]; continue; }
+    const re = new RegExp('^' + esR(fr).replace(/\\\{t\d+\\\}/g, '(.+?)') + '$'), en = CARD_EN[fr];
+    cardRe.push([re, (...g) => { let k = 1; return en.replace(/\{t\d+\}/g, () => trName(g[k++])); }]);
+  }
+  Object.assign(I18N_EX, X);
+  const N = s => trName(s), L = s => (s === 'la banque' ? 'the bank' : s);
+  const pl = (n, one, many) => n + ' ' + (+n > 1 ? many : one);
+  const list = s => s.split(', ').map(x => x === 'carte Sortie de prison' ? 'Get Out of Jail card' : x === 'rien' ? 'nothing' : trName(x)).join(', ');
+  const trCard = s => { if (X[s] !== undefined) return X[s]; for (const [re, f] of cardRe) if (re.test(s)) return s.replace(re, f); return s; };
+  I18N_RE.push(...cardRe,
+    // interface
+    [/^Achète, construis, négocie, ruine tes potes\. Jusqu'à (\d+) joueurs, (\d+) maps\.$/, "Buy, build, trade, bankrupt your friends. Up to $1 players, $2 maps."],
+    [/^🏆 (\d+) victoires? sur (\d+) parties?$/, (m, a, b) => '🏆 ' + pl(a, 'win', 'wins') + ' out of ' + pl(b, 'game', 'games')],
+    [/^Réglages · (.+)$/, 'Settings · $1'], [/^([^,]+), ([^,]+), ([^,]+)…$/, (m, x, y, z) => [x, y, z].map(trName).join(', ') + '…'], [/^Connexion au salon (.+)…$/, 'Connecting to room $1…'], [/^Reprendre le salon (.+)$/, 'Resume room $1'],
+    [/^Joueurs \((\d+)\/(\d+)\)$/, 'Players ($1/$2)'], [/^Joueurs, tour (\d+)(.*)$/, 'Players, round $1$2'], [/^Couleur de (.+)$/, '$1\'s color'], [/^Pion de (.+)$/, '$1\'s token'], [/^Retirer (.+)$/, 'Remove $1'],
+    [/^Pion (.+)$/, 'Token $1'], [/^Réaction (.+)$/, 'Reaction $1'], [/^Dé : (\d)$/, 'Die: $1'], [/^(\d+) chacun$/, '$1 each'], [/^(\d+) tours$/, '$1 rounds'],
+    [/^Acheter pour (.+)$/, 'Buy for $1'], [/^Payer (.+)$/, 'Pay $1'], [/^Tenter un double \((\d)\/3\)$/, 'Try for a double ($1/3)'], [/^Tu as (.+)$/, 'You have $1'], [/^Valeur (.+)$/, 'Value $1'],
+    [/^Argent \(max (.+)\)$/, 'Cash (max $1)'], [/^Tu paies (.+)\.$/, 'You pay $1.'], [/^Tu peux encore récupérer (.+)$/, 'You can still raise $1'], [/^fortune (.+)$/, 'worth $1'], [/^doit (.+) et cherche de l'argent$/, 'owes $1 and is looking for money'],
+    [/^doit (.+)$/, 'owes $1'], [/^carte sortie ×(\d+)$/, 'jail card ×$1'], [/^(.+) donne$/, '$1 gives'], [/^(.+) gagne la partie$/, '$1 wins the game'], [/^Échange avec (.+)$/, 'Trade with $1'], [/^Terrains de (.+)$/, "$1's properties"],
+    [/^est sur (.+)$/, (m, a) => 'is on ' + N(a)], [/^donne : (.+)$/, (m, a) => 'gives: ' + list(a)], [/^reçoit : (.+)$/, (m, a) => 'gets: ' + list(a)], [/^(.+) : pas preneur$/, (m, a) => N(a) + ': no buyer'], [/^Adjugé ! (.+), (.+)$/, 'Sold! $1, $2'],
+    [/^Mise au moins (.+)$/, 'Bid at least $1'], [/^(\d+) achats, (\d+) constructions, loyers \+(.+) \/ -(.+)$/, (m, a, b, c, d) => pl(a, 'buy', 'buys') + ', ' + pl(b, 'build', 'builds') + ', rent +' + c + ' / -' + d],
+    [/^possède tout le groupe (.+)$/, (m, a) => 'owns the whole ' + (GN[a] || a) + ' set'], [/^Vendre 1 maison à (.+)$/, (m, a) => 'Sell 1 house on ' + N(a)], [/^Vendre l'hôtel de (.+)$/, (m, a) => 'Sell the hotel on ' + N(a)],
+    [/^Hypothéquer (.+)$/, (m, a) => 'Mortgage ' + N(a)], [/^Même en vendant tout, il te manque (.+)\. Négocie un échange ou abandonne\.$/, "Even selling everything, you're short $1. Negotiate a trade or give up."],
+    [/^Tu touches (.+) à chaque passage, et (.+) si tu t'arrêtes pile dessus\.$/, 'You collect $1 each time you pass, and $2 if you land exactly on it.'], [/^Tu touches (.+) à chaque passage\.$/, 'You collect $1 each time you pass.'],
+    [/^Celui qui s'arrête ici rafle la cagnotte : (.+)\.$/, 'Whoever lands here takes the jackpot: $1.'], [/^Simple visite, sauf si on t'y envoie\. Pour sortir : un double, (.+) ou une carte\.$/, 'Just visiting, unless you are sent there. To get out: a double, $1 or a card.'],
+    [/^👁 Spectateurs? : (.+)$/, '👁 Spectators: $1'], [/^([☐☑]) (.+)$/, (m, a, b) => a + ' ' + (b === 'Carte Sortie de prison' ? 'Get Out of Jail card' : N(b))], [/^(.+), à toi$/, '$1, your turn'], [/^Mise au moins (.+)$/, 'Bid at least $1'],
+    [/^(.+) n'a pas assez d'argent$/, '$1 does not have enough money'], [/^(.+) n'a pas cette carte$/, "$1 doesn't have that card"], [/^(.+) n'appartient pas à (.+)$/, (m, a, b) => N(a) + ' does not belong to ' + b],
+    [/^Vends d'abord les maisons du groupe de (.+)$/, (m, a) => 'First sell the houses in ' + N(a) + "'s set"],
+    // journal de partie
+    [/^La partie commence sur la map (.+)\. (.+) ouvre le bal\.$/, (m, a, b) => 'The game starts on the ' + (X[a] || a) + ' map. ' + b + ' goes first.'],
+    [/^Chaque joueur reçoit (\d+) terrains? au hasard\.$/, (m, a) => 'Each player gets ' + pl(a, 'random property', 'random properties') + '.'], [/^Partie en (\d+) tours : le plus riche à la fin gagne\.$/, 'Game of $1 rounds: the richest at the end wins.'],
+    [/^lance (\d) et (\d)\.$/, 'rolls $1 and $2.'], [/^lance (\d) et (\d), un double !$/, 'rolls $1 and $2, a double!'], [/^achète (.+) pour (.+)\.$/, (m, a, b) => 'buys ' + N(a) + ' for ' + b + '.'],
+    [/^paie (.+) de loyer à (.+) \((.+)\)\.$/, (m, a, b, c) => 'pays ' + a + ' rent to ' + b + ' (' + N(c) + ').'], [/^paie (.+) pour sortir de prison\.$/, 'pays $1 to get out of jail.'], [/^paie (.+) et sort de prison\.$/, 'pays $1 and leaves jail.'],
+    [/^paie (.+) \((.+)\)\.$/, (m, a, b) => 'pays ' + a + ' (' + N(b) + ').'], [/^s'arrête pile sur le Départ et touche (.+) !$/, 'lands right on GO and collects $1!'], [/^passe par le Départ et touche (.+)\.$/, 'passes GO and collects $1.'],
+    [/^ne peut pas encore acheter (.+) : il faut d'abord boucler un tour de plateau\.$/, (m, a) => "can't buy " + N(a) + ' yet: a full lap comes first.'], [/^tombe sur (.+) \(hypothéquée\), rien à payer\.$/, (m, a) => 'lands on ' + N(a) + ' (mortgaged), nothing to pay.'],
+    [/^tombe sur (.+), mais (.+) est en prison : pas de loyer\.$/, (m, a, b) => 'lands on ' + N(a) + ', but ' + b + ' is in jail: no rent.'], [/^tombe sur (.+) : portes ouvertes, rien à payer\.$/, (m, a) => 'lands on ' + N(a) + ': open house, nothing to pay.'],
+    [/^rafle la cagnotte des vacances : (.+)\.$/, 'grabs the vacation jackpot: $1.'], [/^tire une carte (Surprise|Trésor) : « (.+) »$/, (m, a, b) => 'draws a ' + (a === 'Surprise' ? 'Chance' : 'Treasure') + ' card: "' + trCard(b) + '"'],
+    [/^règle (.+) de travaux\.$/, 'pays $1 for repairs.'], [/^reçoit une construction gratuite sur (.+)\.$/, (m, a) => 'gets a free building on ' + N(a) + '.'], [/^perd une construction sur (.+)\.$/, (m, a) => 'loses a building on ' + N(a) + '.'],
+    [/^verse (.+) à (.+)\.$/, 'gives $1 to $2.'], [/^reçoit (.+) de (.+)\.$/, 'receives $1 from $2.'], [/^échange sa place avec (.+)\.$/, 'swaps places with $1.'], [/^gagne au bout des (\d+) tours avec une fortune de (.+) !$/, 'wins after $1 rounds with a fortune of $2!'],
+    [/^(.+) part aux enchères\.$/, (m, a) => N(a) + ' goes to auction.'], [/^remporte (.+) aux enchères pour (.+)\.$/, (m, a, b) => 'wins ' + N(a) + ' at auction for ' + b + '.'], [/^Personne ne veut de (.+)\.$/, (m, a) => 'Nobody wants ' + N(a) + '.'],
+    [/^abandonne et fait faillite\. Ses biens passent à (.+)\.$/, 'gives up and goes bankrupt. Their assets go to $1.'], [/^ne prend pas (.+)\.$/, (m, a) => "doesn't take " + N(a) + '.'], [/^mise (.+)\.$/, 'bids $1.'],
+    [/^construit une maison sur (.+)\.$/, (m, a) => 'builds a house on ' + N(a) + '.'], [/^construit un hôtel sur (.+)\.$/, (m, a) => 'builds a hotel on ' + N(a) + '.'], [/^vend une construction sur (.+)\.$/, (m, a) => 'sells a building on ' + N(a) + '.'],
+    [/^hypothèque (.+)\.$/, (m, a) => 'mortgages ' + N(a) + '.'], [/^lève l'hypothèque de (.+)\.$/, (m, a) => 'pays off the mortgage on ' + N(a) + '.'], [/^propose un échange à (.+)\.$/, 'offers a trade to $1.'],
+    [/^accepte l'échange de (.+)\.$/, "accepts $1's trade."], [/^refuse l'échange de (.+)\.$/, "declines $1's trade."], [/^n'a pas assez : il doit encore (.+) à (.+)\.$/, (m, a, b) => "can't pay in full: still owes " + a + ' to ' + L(b) + '.'],
+    [/^a fini de rembourser (.+)\.$/, (m, a) => 'has fully repaid ' + L(a) + '.']
+  );
+})();
+
 /* ================= SONS ET EFFETS ================= */
 let AC = null, NB = null; const sound = { on: LS.get('magnat_snd') !== false };
 let OUT = null, audioOk = false;
@@ -1384,7 +1674,7 @@ function audioInit() { // chaîne audio : gain maître + compresseur (volume cor
   try {
     const C = window.AudioContext || window.webkitAudioContext; if (!C) return false; AC = new C();
     const comp = AC.createDynamicsCompressor(); comp.threshold.value = -16; comp.ratio.value = 5; comp.attack.value = .003; comp.release.value = .2;
-    OUT = AC.createGain(); OUT.gain.value = 3; OUT.connect(comp); comp.connect(AC.destination);
+    OUT = AC.createGain(); OUT.gain.value = 3 * vol / 100; OUT.connect(comp); comp.connect(AC.destination);
   } catch (e) { AC = null; return false; }
   return true;
 }
@@ -1447,7 +1737,7 @@ function sfx(name, delay) {
 }
 function confetti(cols, n) {
   cols = cols || PLAYER_COLORS;
-  if (matchMedia('(prefers-reduced-motion:reduce)').matches || $('#confetti')) return;
+  if (lowfx || matchMedia('(prefers-reduced-motion:reduce)').matches || $('#confetti')) return;
   const cv = document.createElement('canvas'); cv.id = 'confetti'; document.body.appendChild(cv);
   const ctx = cv.getContext('2d'), W = cv.width = innerWidth, H = cv.height = innerHeight, t0 = performance.now();
   const ps = Array.from({ length: n || 170 }, (_, i) => ({ x: W / 2 + (Math.random() - .5) * W * .3, y: H * .45, vx: (Math.random() - .5) * 17, vy: -Math.random() * 17 - 5, s: 5 + Math.random() * 7, r: Math.random() * 6, vr: (Math.random() - .5) * .4, c: cols[i % cols.length] }));
@@ -1621,7 +1911,7 @@ function renderHome() {
       <form class="row" id="joinf"><input class="field" id="code" maxlength="5" placeholder="Code du salon" value="${esc(hashCode)}" style="text-transform:uppercase;letter-spacing:.15em" aria-label="Code du salon"><button class="btn">Rejoindre</button></form>
       <div class="sep"></div>
       <button class="btn" style="width:100%" data-a="local">Jouer sur le même écran (ou contre des bots)</button>
-      <button class="btn sm" style="width:100%" data-a="help">Comment jouer ?</button>
+      <div class="row"><button class="btn sm" style="flex:1" data-a="help">Comment jouer ?</button><button class="btn sm" style="flex:1" data-a="theme">${ico('sliders')} Réglages · ${lang === 'en' ? 'English' : 'Français'}</button></div>
     </div></div></div>`);
 }
 const SETTINGS_UI = [['auction', 'Enchères', 'Un terrain refusé part aux enchères'], ['doubleRent', 'Loyer doublé', 'Sur un groupe complet sans maison'], ['pot', 'Cagnotte des vacances', 'Taxes et amendes vont sur la case Vacances'],
@@ -1664,7 +1954,7 @@ function renderLobby() {
     </div></div>
     <h3 class="sec" style="margin-top:22px">Règles ${host ? '' : '<span class="note">(choisies par l\'hôte)</span>'}</h3><div class="opts">${opts}</div>
     <div class="row" style="margin-top:18px;flex-wrap:wrap">${host ? `<button class="btn primary" data-a="l-start" style="flex:2;min-width:220px" ${S.players.length < 2 ? 'disabled' : ''}>Lancer la partie</button>` : ''}
-      <button class="btn" data-a="snd" style="flex:1;min-width:180px">${sound.on ? '🔊 Son activé (tester)' : '🔇 Son coupé'}</button></div>
+      <button class="btn" data-a="theme" style="flex:1;min-width:180px">${ico('sliders')} Réglages</button></div>
     </div></div>`);
   if (ui.modal && ui.modal.type === 'tok') renderModal();
   if (keepSet !== null) { const inp = document.querySelector('[data-set="startCash"]'); if (inp) { inp.value = keepSet; inp.focus(); } }
@@ -1676,22 +1966,76 @@ const ICONS = { go: '🚩', jail: '⛓️', park: '🏖️', gojail: '🚓', cha
 const cell = i => i <= 10 ? [11 - i, 11] : i <= 20 ? [1, 21 - i] : i <= 30 ? [i - 19, 1] : [11, i - 29];
 const sideOf = i => i % 10 === 0 ? 'sb corner' : i < 10 ? 'sb' : i < 20 ? 'sl' : i < 30 ? 'st' : 'sr';
 const frc = c => (c === 1 ? 0.75 : c === 11 ? 11.25 : c) / 12 * 100;
-function tileIcon(t, B) { if (t.k === 'rail') return MAPS[S.mapId].railIcon; if (t.k === 'util') return B.filter(x => x.k === 'util')[0] === t ? '⚡' : '💧'; return ICONS[t.k] || ''; }
+
+/* ================= ICÔNES DESSINÉES (SVG) ================= */
+const SVGI = {
+  question: '<circle cx="12" cy="12" r="9.5"/><path d="M9.1 9.2a3 3 0 0 1 5.8 1c0 2-2.9 2.5-2.9 4.3"/><circle cx="12" cy="17.6" r=".9" fill="currentColor" stroke="none"/>',
+  chest: '<path d="M3.5 10.5V9a5 5 0 0 1 5-5h7a5 5 0 0 1 5 5v1.5"/><rect x="3.5" y="10.5" width="17" height="9.5" rx="1.8"/><path d="M3.5 14.5h17"/><rect x="10.2" y="12.6" width="3.6" height="4.2" rx="1" fill="currentColor"/>',
+  coins: '<ellipse cx="12" cy="6" rx="7" ry="2.6"/><path d="M5 6v4.2c0 1.4 3.1 2.6 7 2.6s7-1.2 7-2.6V6"/><path d="M5 10.2v4.2c0 1.4 3.1 2.6 7 2.6s7-1.2 7-2.6v-4.2"/><path d="M5 14.4v3.8c0 1.4 3.1 2.6 7 2.6s7-1.2 7-2.6v-3.8"/>',
+  gem: '<path d="M6.5 3.5h11L21.5 9 12 20.5 2.5 9z"/><path d="M2.5 9h19M9.5 3.5 12 20.5l2.5-17"/>',
+  receipt: '<path d="M6 2.5h12v19l-2.4-1.6-1.9 1.6-1.7-1.6-1.7 1.6-1.9-1.6L6 21.5z"/><path d="M9 7.5h6M9 11h6M9 14.5h3.5"/>',
+  plane: '<path d="M21 15.5v-2l-7.5-4.5V4.2a1.5 1.5 0 0 0-3 0V9L3 13.5v2l7.5-2.4v4.6l-2 1.6V21l3.5-1 3.5 1v-1.7l-2-1.6v-4.6z"/>',
+  train: '<rect x="5" y="3" width="14" height="14" rx="3.5"/><path d="M5 10h14M8.5 21l2-4M15.5 21l-2-4"/><circle cx="8.8" cy="13.5" r=".9" fill="currentColor" stroke="none"/><circle cx="15.2" cy="13.5" r=".9" fill="currentColor" stroke="none"/>',
+  rocket: '<path d="M12 2.5c3.4 2.3 5 6 5 10.5l-2.4 3h-5.2L7 13c0-4.5 1.6-8.2 5-10.5z"/><circle cx="12" cy="9.5" r="2"/><path d="M7 13 4 15.5l1 3.5 4-2.5M17 13l3 2.5-1 3.5-4-2.5M10.5 19.5 12 22l1.5-2.5"/>',
+  horseshoe: '<path d="M6 20v-8.5a6 6 0 0 1 12 0V20"/><path d="M3.8 20h4.4M15.8 20h4.4"/><circle cx="6" cy="14" r=".9" fill="currentColor" stroke="none"/><circle cx="18" cy="14" r=".9" fill="currentColor" stroke="none"/><circle cx="8.3" cy="8" r=".9" fill="currentColor" stroke="none"/><circle cx="15.7" cy="8" r=".9" fill="currentColor" stroke="none"/>',
+  bolt: '<path d="M13 2.5 4.5 13.5H11l-1 8 8.5-11H12z"/>',
+  drop: '<path d="M12 3s6.5 7 6.5 11.5a6.5 6.5 0 0 1-13 0C5.5 10 12 3 12 3z"/><path d="M9 15a3 3 0 0 0 3 3"/>',
+  go: '<path d="M20 12H5"/><path d="M11 5l-7 7 7 7"/>',
+  jail: '<rect x="3.5" y="3.5" width="17" height="17" rx="2.2"/><path d="M8.2 3.5v17M12 3.5v17M15.8 3.5v17"/>',
+  park: '<path d="M3 12a9 9 0 0 1 18 0z"/><path d="M12 12v7.2a1.9 1.9 0 0 0 3.8 0M12 3v-.5"/>',
+  siren: '<path d="M7 18v-5a5 5 0 0 1 10 0v5"/><path d="M5 18h14v3H5z"/><path d="M12 4V2M4.6 6.6 3.2 5.2M19.4 6.6l1.4-1.4M2.5 12H4M20 12h1.5"/>',
+  house: '<path d="M3.5 10.5 12 3.5l8.5 7"/><path d="M5.5 9v11.5h13V9"/><path d="M10 20.5v-5.5h4v5.5"/>',
+  compass: '<circle cx="12" cy="12" r="9.5"/><path d="m15.8 8.2-2.3 5.3-5.3 2.3 2.3-5.3z"/>',
+  undo: '<path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/>',
+  lock: '<rect x="4.5" y="10.5" width="15" height="10.5" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/><path d="M12 14.5v2.5"/>',
+  key: '<circle cx="8" cy="15.5" r="4.5"/><path d="m11.2 12.3 9-9M16.6 6.9l2.6 2.6M14 9.5l2 2"/>',
+  hammer: '<path d="m14 9.5-9.4 9.4a2.1 2.1 0 0 0 3 3L17 12.5"/><path d="m12.5 5.5 4-2.5 5 5-2.5 4-2.5.5-4.5-4.5z"/>',
+  gift: '<rect x="3.5" y="8.5" width="17" height="4" rx="1"/><path d="M5 12.5v8h14v-8M12 8.5v12"/><path d="M12 8.5S10.4 3.6 7.9 4.6s.2 3.9 4.1 3.9zM12 8.5s1.6-4.9 4.1-3.9-.2 3.9-4.1 3.9z"/>',
+  cake: '<path d="M4 21h16v-7.5a1.5 1.5 0 0 0-1.5-1.5h-13A1.5 1.5 0 0 0 4 13.5z"/><path d="M4 16.2c2.2 1.2 4 1.2 5.4 0s2.8-1.2 4.2 0 3.6 1.2 6.4 0M8 12V9M12 12V9M16 12V9"/>',
+  fast: '<path d="m3.5 6 7.5 6-7.5 6zM12.5 6l7.5 6-7.5 6z"/>',
+  dice: '<rect x="3.5" y="3.5" width="17" height="17" rx="3.8"/><circle cx="8.5" cy="8.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="15.5" cy="8.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="8.5" cy="15.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="15.5" cy="15.5" r="1.3" fill="currentColor" stroke="none"/>',
+  pause: '<rect x="6" y="4.5" width="4" height="15" rx="1.2"/><rect x="14" y="4.5" width="4" height="15" rx="1.2"/>',
+  wind: '<path d="M3 8h11a3 3 0 1 0-3-3M3 12h15a3 3 0 1 1-3 3M3 16h8"/>',
+  target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/>',
+  heart: '<path d="M12 20.5s-8.5-5-8.5-11A4.5 4.5 0 0 1 12 7a4.5 4.5 0 0 1 8.5 2.5c0 6-8.5 11-8.5 11z"/>',
+  swap: '<path d="M3 7h3.5c3 0 4.5 10 8 10H21M17.5 13.5 21 17l-3.5 3.5M3 17h3.5c1.2 0 2.1-1.4 2.8-3M13.7 10c.7-1.6 1.6-3 2.8-3H21M17.5 3.5 21 7l-3.5 3.5"/>',
+  bank: '<path d="M3 9.5 12 4l9 5.5z"/><path d="M5.5 10v8M10 10v8M14 10v8M18.5 10v8M3 20.5h18"/>',
+  up: '<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>',
+  down: '<path d="M3 7l6 6 4-4 8 8"/><path d="M15 17h6v-6"/>',
+  door: '<path d="M5 21V4a1.5 1.5 0 0 1 1.5-1.5h11A1.5 1.5 0 0 1 19 4v17M3 21h18"/><circle cx="14.5" cy="12.5" r=".9" fill="currentColor" stroke="none"/>',
+  sparkle: '<path d="M11 3.5l1.9 5.1 5.1 1.9-5.1 1.9L11 17.5l-1.9-5.1L4 10.5l5.1-1.9z"/><path d="M18.5 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>',
+  alert: '<path d="M12 3.5 2.5 20h19z"/><path d="M12 10v4.5"/><circle cx="12" cy="17.2" r=".9" fill="currentColor" stroke="none"/>',
+  vol: '<path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/>',
+  mute: '<path d="M11 5 6 9H3v6h3l5 4z"/><path d="m16 9 5 6M21 9l-5 6"/>',
+  sliders: '<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>',
+  expand: '<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>',
+  globe: '<circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19M12 2.5c2.6 2.8 3.8 6 3.8 9.5s-1.2 6.7-3.8 9.5c-2.6-2.8-3.8-6-3.8-9.5s1.2-6.7 3.8-9.5z"/>',
+  trophy: '<path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4M12 14v3.5M8 21h8M9 21l.5-3.5h5L15 21"/>'
+};
+const ico = (k, cls) => `<svg class="svgi ${cls || ''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${SVGI[k] || SVGI.question}</svg>`;
+const RAIL_ICON = { '✈️': 'plane', '🚆': 'train', '🚄': 'train', '🚀': 'rocket', '🐎': 'horseshoe' };
+const EV_ICON = { boom: 'up', krach: 'down', portes: 'door', soldes: 'hammer', fete: 'sparkle', fisc: 'receipt' };
+const HOUSE_SVG = '<svg class="hs" viewBox="0 0 12 12" aria-hidden="true"><path d="M1.1 6 6 1.5 10.9 6v5H1.1z"/><path class="hd" d="M4.9 11V7.6h2.2V11z"/></svg>';
+const HOTEL_SVG = '<svg class="hs hotel" viewBox="0 0 22 12" aria-hidden="true"><path d="M1 11V4.4L11 1l10 3.4V11z"/><path class="hw" d="M3.6 5.6h2.4v2H3.6zM7.8 5.6h2.4v2H7.8zM11.8 5.6h2.4v2h-2.4zM16 5.6h2.4v2H16z"/><path class="hd" d="M9.8 11V8.7h2.4V11z"/></svg>';
+const houseHTML = h => (!h ? '' : h === 5 ? HOTEL_SVG : HOUSE_SVG.repeat(h));
+function tileIconKey(t, B) { if (t.k === 'rail') return RAIL_ICON[MAPS[S.mapId].railIcon] || 'plane'; if (t.k === 'util') return B.filter(x => x.k === 'util')[0] === t ? 'bolt' : 'drop'; if (t.k === 'tax') return t.amt >= 200 ? 'coins' : 'gem';
+  return { go: 'go', jail: 'jail', park: 'park', gojail: 'siren', chance: 'question', chest: 'chest' }[t.k] || 'question'; }
+function tileIcon(t, B) { return ico(tileIconKey(t, B)); }
 
 function mountGame() {
   const B = buildBoard(S.mapId), M = MAPS[S.mapId];
   const tiles = B.map(t => {
     const [c, r] = cell(t.i);
     return `<button class="tile ${sideOf(t.i)} k-${t.k}" id="t${t.i}" data-a="tile" data-i="${t.i}" style="--n:${t.i};grid-column:${c};grid-row:${r};${t.k === 'prop' ? '--g:' + GROUPS[t.g] : ''}" aria-label="${esc(t.name)}">
-      ${t.k === 'prop' ? '<span class="band"></span>' : ''}<span class="inf">${t.k !== 'prop' ? `<span class="ic">${tileIcon(t, B)}</span>` : ''}<span class="nm ${/\S{11,}/.test(t.name) ? 'xlong' : /\S{8,}/.test(t.name) || t.name.length > 17 ? 'long' : ''}">${esc(t.name)}</span>${t.i % 10 === 0 ? `<span class="sub">${{ 0: '', 10: 'Simple visite', 20: '', 30: '' }[t.i]}</span>` : ''}${t.price || t.amt ? `<span class="pr"></span>` : ''}</span></button>`;
+      ${t.k === 'prop' ? '<span class="band"></span>' : ''}<span class="inf">${t.k !== 'prop' ? `<span class="ic i-${tileIconKey(t, B)}">${tileIcon(t, B)}</span>` : ''}<span class="nm ${/\S{11,}/.test(t.name) ? 'xlong' : /\S{8,}/.test(t.name) || t.name.length > 17 ? 'long' : ''}">${esc(t.name)}</span>${t.i % 10 === 0 ? `<span class="sub">${{ 0: '', 10: 'Simple visite', 20: '', 30: '' }[t.i]}</span>` : ''}${t.price || t.amt ? `<span class="pr"></span>` : ''}</span></button>`;
   }).join('');
   const die = id => `<div class="die3d" id="${id}"><div class="cube">${[1, 2, 3, 4, 5, 6].map(n => `<div class="face f${n}">${Array.from({ length: 9 }, (_, i) => PIPS[n].includes(i) ? '<b></b>' : '<i></i>').join('')}</div>`).join('')}</div></div>`;
   const deck = (k, sym, lbl) => `<div class="deck d-${k}" id="deck-${k}"><i></i><i></i><b><span>${sym}</span>${lbl}</b></div>`;
-  mount('game', `<div class="game"><div class="boardwrap"><div class="boardbox" data-theme="${theme}" style="--accent:${M.accent}"><div class="board enter" id="board">${tiles}
+  mount('game', `<div class="game"><div class="boardwrap"><div class="boardbox" data-theme="${theme}" data-dice="${diceSkin}" style="--accent:${M.accent}"><div class="board enter" id="board">${tiles}
     <div class="center"><div class="glow"></div><div class="deco" aria-hidden="true">${M.deco.map((d, i) => `<span style="--i:${i}">${d}</span>`).join('')}</div><h1>Magnat<small>Map <b>${esc(M.name)}</b>${isLocal() ? '' : ', salon ' + esc(S.code)}</small></h1>
       <div class="dice">${die('d0')}${die('d1')}<span class="dsum" id="dsum"></span></div>
       <div id="evpill"></div><div class="status" id="status"></div><div class="tbar" id="tbar"></div><div class="actions" id="actions"></div><div id="auction" style="width:100%"></div>
-      <div class="decks" id="decks">${deck('chance', '❓', 'Surprise')}<div class="potbox" id="potbox"></div>${deck('chest', '🎁', 'Trésor')}</div>
+      <div class="decks" id="decks">${deck('chance', ico('question'), 'Surprise')}<div class="potbox" id="potbox"></div>${deck('chest', ico('chest'), 'Trésor')}</div>
       <div class="feed" id="feed" aria-live="polite"></div><form class="chatin" id="chatf"><input id="chatin" maxlength="200" placeholder="Écrire aux autres joueurs…" aria-label="Message" autocomplete="off"><span class="reacts">${REACTIONS.map(r => `<button type="button" data-a="react" data-v="${r}" aria-label="Réaction ${r}">${r}</button>`).join('')}</span></form>
       <div id="cardpop"></div><div id="setfx"></div><div id="turnfx"></div></div>
     <div class="tokens" id="tokens"></div></div></div><div class="dock" id="dock"></div></div><aside class="side" id="side"></aside></div>`);
@@ -1706,9 +2050,12 @@ function dockLayout() { // sur mobile, enchères + journal + chat passent sous l
   const f = $('#feed'); if (f) f.scrollTop = f.scrollHeight;
 }
 mqSmall.addEventListener('change', dockLayout);
-const THEMES = [['nuit', 'Nuit', ['#1D2A4D', '#0B1630', '#F59E0B']], ['classique', 'Classique', ['#FFFDF7', '#2F6B4F', '#EF4444']], ['neon', 'Néon', ['#0D0D1A', '#C026D3', '#22D3EE']], ['pastel', 'Pastel', ['#F5F3FF', '#A5B4FC', '#EC4899']], ['sable', 'Sable', ['#FBF3E4', '#B45309', '#0EA5E9']]];
+const THEMES = [['nuit', 'Nuit', ['#1D2A4D', '#0B1630', '#F59E0B']], ['luxe', 'Luxe', ['#17140F', '#D4AF37', '#F5E7C6']], ['ocean', 'Océan', ['#0E3A4F', '#0E7490', '#22D3EE']], ['foret', 'Forêt', ['#1E3A2B', '#6B4423', '#84CC16']], ['classique', 'Classique', ['#FFFDF7', '#2F6B4F', '#EF4444']], ['neon', 'Néon', ['#0D0D1A', '#C026D3', '#22D3EE']], ['pastel', 'Pastel', ['#F5F3FF', '#A5B4FC', '#EC4899']], ['sable', 'Sable', ['#FBF3E4', '#B45309', '#0EA5E9']]];
 let theme = LS.get('magnat_theme') || 'nuit'; if (!THEMES.some(t => t[0] === theme)) theme = 'nuit';
-function applyTheme() { const bb = document.querySelector('.boardbox'); if (bb) bb.dataset.theme = theme; }
+const DICE = [['classique', 'Classique', '#FFFFFF', '#0B1730'], ['or', 'Or', '#F59E0B', '#451A03'], ['onyx', 'Onyx', '#111827', '#FFFFFF'], ['rubis', 'Rubis', '#E11D48', '#FFFFFF'], ['neon', 'Néon', '#0B1026', '#22D3EE'], ['glace', 'Glace', '#BAE6FD', '#0369A1']];
+let diceSkin = LS.get('magnat_dice') || 'classique', vol = LS.get('magnat_vol'), lowfx = !!LS.get('magnat_lowfx');
+if (typeof vol !== 'number') vol = 80;
+function applyTheme() { const bb = document.querySelector('.boardbox'); if (bb) { bb.dataset.theme = theme; bb.dataset.dice = diceSkin; } document.body.classList.toggle('lowfx', lowfx); }
 const tokOf = p => (p.tok ? esc(p.tok) : esc((p.name.replace(/^Bot /, '') || '?')[0].toUpperCase()));
 function renderGame() {
   if (ui.screen !== 'game' || ui.mapId !== S.mapId) mountGame();
@@ -1804,11 +2151,11 @@ function turnFx() { // bandeau quand c'est à toi, confettis à la victoire
 document.addEventListener('visibilitychange', () => { if (!document.hidden) document.title = 'Magnat'; });
 function eventFx() { // événement mondial : grande carte au centre
   const ev = S.event && S.event.round === S.round && S.phase !== 'over' ? S.event : null, pill = $('#evpill');
-  if (pill) { const k = ev ? String(ev.seq) : ''; if (pill.dataset.k !== k) { pill.dataset.k = k; pill.innerHTML = ev ? `<span class="evp">${EVENTS[ev.k].ic} <b>${EVENTS[ev.k].t}</b><small>${EVENTS[ev.k].d}</small></span>` : ''; } }
+  if (pill) { const k = ev ? String(ev.seq) : ''; if (pill.dataset.k !== k) { pill.dataset.k = k; pill.innerHTML = ev ? `<span class="evp">${ico(EV_ICON[ev.k])} <b>${EVENTS[ev.k].t}</b><small>${EVENTS[ev.k].d}</small></span>` : ''; } }
   const seq = S.event ? S.event.seq : 0; if (seq === ui.evSeq) return; const fresh = ui.evSeq !== undefined && !ui.first; ui.evSeq = seq;
   if (!fresh || !ev) return;
   const fx = $('#cardpop'); if (!fx) return; const E = EVENTS[ev.k]; ui.evBusy = Date.now() + 2600;
-  fx.innerHTML = `<div class="evfx"><div class="evcard"><span class="evic">${E.ic}</span><small>Événement mondial</small><b>${E.t}</b><p>${E.d}</p></div></div>`;
+  fx.innerHTML = `<div class="evfx"><div class="evcard"><span class="evic">${ico(EV_ICON[ev.k])}</span><small>Événement mondial</small><b>${E.t}</b><p>${E.d}</p></div></div>`;
   setTimeout(() => { if (fx.isConnected && fx.querySelector('.evfx')) fx.innerHTML = ''; }, 2600);
 }
 function reactFx() { // réactions : l'emoji s'envole du pion du joueur
@@ -1827,7 +2174,7 @@ function updateTiles() {
     if (pr) pr.textContent = t.amt ? money(S, t.amt) : !o ? money(S, t.price) : o.m ? 'hyp.' : t.k === 'util' ? '×' + (groupOf(B, t).filter(x => S.own[x.i] && S.own[x.i].o === o.o).length === 2 ? 10 : 4) : money(S, calcRent(S, B, t, 7));
     el.style.setProperty('--hc', cur.color);
     const band = el.querySelector('.band'), hh = String(o ? o.h : 0);
-    if (band && band.dataset.h !== hh) { band.dataset.h = hh; band.innerHTML = o && o.h ? (o.h === 5 ? '<i class="hs hotel"></i>' : '<i class="hs"></i>'.repeat(o.h)) : ''; }
+    if (band && band.dataset.h !== hh) { band.dataset.h = hh; band.innerHTML = o && o.h ? houseHTML(o.h) : ''; }
     if (t.k === 'park') el.querySelector('.sub').textContent = S.settings.pot ? money(S, S.pot) : '';
     if (t.k === 'go') el.querySelector('.sub').textContent = '+' + salaryOf(S) + (goLandOf(S) > salaryOf(S) ? ' / +' + goLandOf(S) : '');
   }
@@ -1922,7 +2269,7 @@ function renderCenter() {
     if (bumped) { ui.aSeq = au.seq; ui.aStart = Date.now(); if (au.bidder) sfx('bid'); ui.bidDraft = {}; auctionTicks(); }
     ui.lastAuc = { tile: au.tile, bidder: au.bidder, price: au.price };
     const mineP = S.players.filter(controllable), shell = au.tile + '|' + mineP.map(p => p.id + (au.passed[p.id] ? 'x' : '')).join(',');
-    const ringHTML = () => isLocal() ? '<span class="gavel">🔨</span>' : `<svg class="ring" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="16"/><circle class="rg" cx="20" cy="20" r="16" style="animation-duration:${AUCTION_MS}ms;animation-delay:-${Date.now() - ui.aStart}ms"/><text x="20" y="25" text-anchor="middle">🔨</text></svg>`;
+    const ringHTML = () => isLocal() ? `<span class="gavel">${ico('hammer')}</span>` : `<svg class="ring" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="16"/><circle class="rg" cx="20" cy="20" r="16" style="animation-duration:${AUCTION_MS}ms;animation-delay:-${Date.now() - ui.aStart}ms"/></svg><span class="ringic">${ico('hammer')}</span>`;
     if (ui.aShell !== shell || !aucBox.firstElementChild) {
       const fresh = ui.aOpen !== au.tile; ui.aOpen = au.tile; ui.aShell = shell;
       const ae = document.activeElement, keep = ae && ae.dataset && ae.dataset.bidin ? ae.dataset.bidin : null;
@@ -1980,10 +2327,10 @@ function renderCenter() {
     setTimeout(() => { if (!pop.isConnected) return; sfx('card'); pop.innerHTML = drawnCardHTML(c); setTimeout(() => { if (pop.isConnected) pop.innerHTML = ''; }, 4000); }, dl);
   }
 }
-const CARD_ICON = { fwd: '💨', util: '⚡', again: '🎲', skip: '⏸️', freeHouse: '🏠', loseHouse: '🌪️', richest: '🏹', poorest: '🤝', swap: '🔀', percent: '🏛️', potAdd: '🏖️', cash: '💰', move: '🧭', back: '↩️', rail: '🧳', jail: '🚓', jailcard: '🔑', repairs: '🛠️', payEach: '🥂', collectEach: '🎂' };
+const CARD_ICON = { fwd: 'fast', util: 'bolt', again: 'dice', skip: 'pause', freeHouse: 'house', loseHouse: 'wind', richest: 'target', poorest: 'heart', swap: 'swap', percent: 'bank', potAdd: 'park', cash: 'coins', move: 'compass', back: 'undo', jail: 'lock', jailcard: 'key', repairs: 'hammer', payEach: 'gift', collectEach: 'cake' };
 function drawnCardHTML(c) {
-  const ch = c.kind === 'chance', sym = ch ? '❓' : '🎁', title = ch ? 'Surprise' : 'Trésor', pl = P(S, c.pid);
-  const icon = c.f === 'cash' && c.amt < 0 ? '🧾' : c.f === 'rail' ? MAPS[S.mapId].railIcon : CARD_ICON[c.f] || sym;
+  const ch = c.kind === 'chance', sym = ico(ch ? 'question' : 'chest'), title = ch ? 'Surprise' : 'Trésor', pl = P(S, c.pid);
+  const icon = ico(c.f === 'cash' && c.amt < 0 ? 'receipt' : c.f === 'rail' ? RAIL_ICON[MAPS[S.mapId].railIcon] || 'plane' : CARD_ICON[c.f] || (ch ? 'question' : 'chest'));
   return `<div class="cardpop ${ch ? 'k-chance' : 'k-chest'}"><div class="rays"></div><div class="flip">
     <div class="cback"><div class="cback-in"><div class="medal">${sym}</div><span>${title}</span></div></div>
     <div class="cfront"><span class="corner tl">${sym}</span><span class="corner br">${sym}</span>
@@ -2002,7 +2349,7 @@ function debtPanelHTML(p) { // dette à rembourser pour finir son tour : liquida
   }
   opts.sort((x, y) => (x.k === y.k ? x.gain - y.gain : x.k === 'mortgage' ? -1 : 1));
   const miss = -p.cash - potential;
-  return `<div class="debt"><div class="debt-hd"><span class="debt-ic">⚠️</span><div><b>Tu dois ${whoTo}</b><small>${miss > 0 ? 'Même en vendant tout, il te manque ' + money(S, miss) + '. Négocie un échange ou abandonne.' : 'Rembourse pour finir ton tour. Chaque vente part direct chez ton créancier.'}</small></div></div>
+  return `<div class="debt"><div class="debt-hd"><span class="debt-ic">${ico('alert')}</span><div><b>Tu dois ${whoTo}</b><small>${miss > 0 ? 'Même en vendant tout, il te manque ' + money(S, miss) + '. Négocie un échange ou abandonne.' : 'Rembourse pour finir ton tour. Chaque vente part direct chez ton créancier.'}</small></div></div>
     <div class="debt-bar"><i style="--w:${Math.min(100, Math.round(potential / Math.max(1, -p.cash) * 100))}%"></i><span>Tu peux encore récupérer ${money(S, potential)}</span></div>
     <div class="debt-opts">${opts.map(o => `<button class="btn sm" style="--g:${o.t.k === 'prop' ? GROUPS[o.t.g] : '#94A3B8'}" data-a="manage" data-t="${o.k}" data-i="${o.t.i}" data-p="${p.id}">${esc(o.lbl)}<small>+${money(S, o.gain)}</small></button>`).join('') || '<span class="note">Plus rien à vendre ni à hypothéquer.</span>'}</div>
     <button class="btn danger sm" data-a="bankrupt" data-id="${p.id}">Abandonner la partie</button></div>`;
@@ -2035,8 +2382,8 @@ function renderSide() {
     return `<div class="trade"><b>${esc(A.name)}</b> propose à <b>${esc(Z.name)}</b><div class="ex"><span>donne : ${tradeText(t.give)}</span><span>⇄</span><span>reçoit : ${tradeText(t.get)}</span></div>
       <div class="row">${forMe ? `<button class="btn sm cyan" data-a="t-accept" data-id="${t.id}" data-p="${Z.id}">Accepter</button><button class="btn sm" data-a="t-counter" data-id="${t.id}">Contre-offre</button><button class="btn sm" data-a="t-decline" data-id="${t.id}" data-p="${Z.id}">Refuser</button>` : `<button class="btn sm" data-a="t-decline" data-id="${t.id}" data-p="${A.id}">Annuler mon offre</button>`}</div></div>`;
   }).join('');
-  const props = me ? B.filter(t => S.own[t.i] && S.own[t.i].o === me.id).map(t => { const o = S.own[t.i]; return `<button class="mini ${o.m ? 'm' : ''}" style="--g:${t.k === 'prop' ? GROUPS[t.g] : t.k === 'rail' ? '#94A3B8' : '#FCD34D'}" data-a="tile" data-i="${t.i}"><u>${t.k === 'prop' ? (o.h ? (o.h === 5 ? '<i class="hs hotel"></i>' : '<i class="hs"></i>'.repeat(o.h)) : '') : tileIcon(t, B)}</u><span>${esc(t.name)}</span><b>${o.m ? 'hyp.' : t.k === 'util' ? '× dés' : money(S, calcRent(S, B, t, 7))}</b></button>`; }).join('') : '';
-  $('#side').innerHTML = `<div class="box"><h2><span>Joueurs, tour ${S.round}${S.settings.maxRounds ? ' / ' + S.settings.maxRounds : ''}</span><span class="row"><button class="btn sm ${sound.on ? '' : 'off'}" data-a="snd" aria-label="${sound.on ? 'Couper le son' : 'Activer le son'}" title="Son">${sound.on ? '🔊' : '🔇'}</button><button class="btn sm" data-a="theme" aria-label="Couleurs du plateau" title="Couleurs du plateau">🎨</button><button class="btn sm" data-a="fs" aria-label="Plein écran" title="Plein écran">⛶</button><button class="btn sm" data-a="help" aria-label="Règles" title="Règles du jeu">?</button><button class="btn sm" data-a="leave">Quitter</button></span></h2>${players}${(S.specs || []).length ? `<p class="specs">👁 ${S.specs.length > 1 ? 'Spectateurs' : 'Spectateur'} : ${S.specs.map(x => esc(x.name)).join(', ')}</p>` : ''}${!isLocal() && !P(S, net.myId) ? '<p class="specs me">Tu regardes la partie en spectateur. Tu pourras jouer à la prochaine.</p>' : ''}</div>
+  const props = me ? B.filter(t => S.own[t.i] && S.own[t.i].o === me.id).map(t => { const o = S.own[t.i]; return `<button class="mini ${o.m ? 'm' : ''}" style="--g:${t.k === 'prop' ? GROUPS[t.g] : t.k === 'rail' ? '#94A3B8' : '#FCD34D'}" data-a="tile" data-i="${t.i}"><u>${t.k === 'prop' ? (o.h ? houseHTML(o.h) : '') : tileIcon(t, B)}</u><span>${esc(t.name)}</span><b>${o.m ? 'hyp.' : t.k === 'util' ? '× dés' : money(S, calcRent(S, B, t, 7))}</b></button>`; }).join('') : '';
+  $('#side').innerHTML = `<div class="box"><h2><span>Joueurs, tour ${S.round}${S.settings.maxRounds ? ' / ' + S.settings.maxRounds : ''}</span><span class="row"><button class="btn sm ${sound.on ? '' : 'off'}" data-a="snd" aria-label="${sound.on ? 'Couper le son' : 'Activer le son'}" title="Son">${ico(sound.on ? 'vol' : 'mute')}</button><button class="btn sm" data-a="theme" aria-label="Réglages" title="Réglages">${ico('sliders')}</button><button class="btn sm" data-a="fs" aria-label="Plein écran" title="Plein écran">${ico('expand')}</button><button class="btn sm" data-a="help" aria-label="Règles" title="Règles du jeu">?</button><button class="btn sm" data-a="leave">Quitter</button></span></h2>${players}${(S.specs || []).length ? `<p class="specs">👁 ${S.specs.length > 1 ? 'Spectateurs' : 'Spectateur'} : ${S.specs.map(x => esc(x.name)).join(', ')}</p>` : ''}${!isLocal() && !P(S, net.myId) ? '<p class="specs me">Tu regardes la partie en spectateur. Tu pourras jouer à la prochaine.</p>' : ''}</div>
     ${trades ? `<div class="box"><h2>Échanges en attente</h2>${trades}</div>` : ''}
     ${me ? `<div class="box"><h2>${isLocal() ? 'Terrains de ' + esc(me.name) : 'Mes terrains'}</h2>${props ? `<div class="chips">${props}</div>` : '<p class="note">Aucun terrain pour l\'instant. Clique sur une case du plateau pour voir ses loyers.</p>'}</div>` : ''}`;
 }
@@ -2053,9 +2400,13 @@ function renderModal() {
   renderTradeModal();
 }
 function renderThemeModal() {
-  modalRoot().innerHTML = `<div class="sheet" role="dialog" aria-label="Couleurs du plateau"><div class="hd dark">Couleurs du plateau</div><div class="bd"><p class="note" style="margin-bottom:12px">Choix personnel : ça ne change que ton écran.</p>
-    <div class="themes">${THEMES.map(([k, n, c]) => `<button class="thm ${theme === k ? 'on' : ''}" data-a="pick-theme" data-v="${k}"><span class="sw3">${c.map(x => `<i style="background:${x}"></i>`).join('')}</span><b>${n}</b></button>`).join('')}</div>
-    <button class="btn primary" data-a="close" style="width:100%;margin-top:14px">OK</button></div></div>`;
+  modalRoot().innerHTML = `<div class="sheet big" role="dialog" aria-label="Réglages"><div class="hd dark">Réglages</div><div class="bd setgrid">
+    <section><label class="lbl">Langue</label><div class="seg"><button class="${lang === 'fr' ? 'on' : ''}" data-a="pick-lang" data-v="fr">Français</button><button class="${lang === 'en' ? 'on' : ''}" data-a="pick-lang" data-v="en">English</button></div></section>
+    <section><label class="lbl">Son</label><div class="row"><button class="btn sm ${sound.on ? '' : 'off'}" data-a="snd">${ico(sound.on ? 'vol' : 'mute')}<span>${sound.on ? 'Activé' : 'Coupé'}</span></button><input class="vol" type="range" min="0" max="100" step="5" value="${vol}" data-vol aria-label="Volume"></div></section>
+    <section class="wide"><label class="lbl">Couleurs du plateau <small>(que sur ton écran)</small></label><div class="themes">${THEMES.map(([k, n, c]) => `<button class="thm ${theme === k ? 'on' : ''}" data-a="pick-theme" data-v="${k}"><span class="sw3">${c.map(x => `<i style="background:${x}"></i>`).join('')}</span><b>${n}</b></button>`).join('')}</div></section>
+    <section class="wide"><label class="lbl">Dés</label><div class="dskins">${DICE.map(([k, n, bg, pip]) => `<button class="dsk ${diceSkin === k ? 'on' : ''}" data-a="pick-dice" data-v="${k}"><span class="dmini dk-${k}"><b></b><b></b><b></b></span><small>${n}</small></button>`).join('')}</div></section>
+    <section class="wide"><label class="opt"><span>Animations réduites<small>Moins d'effets, plus fluide sur les ordis lents</small></span><input class="sw" type="checkbox" data-lowfx ${lowfx ? 'checked' : ''}></label></section>
+    <button class="btn primary wide" data-a="close">OK</button></div></div>`;
 }
 function renderTokModal() {
   const p = P(S, ui.modal.id); if (!p) return closeModal();
@@ -2066,14 +2417,14 @@ function renderTokModal() {
     <button class="btn primary" data-a="close" style="width:100%;margin-top:16px">C'est bon</button></div></div>`;
 }
 function renderHelpModal() {
-  const R = [['🎯', 'But du jeu', 'Ruiner tous les autres. En partie rapide, le plus riche à la fin gagne.'], ['🎲', 'Ton tour', 'Lance les dés et avance. Terrain libre : achète-le, sinon il part aux enchères. Terrain d\'un autre : tu paies le loyer.'],
-    ['🏠', 'Construire', 'Avec tout un groupe de la même couleur, le loyer double et tu peux bâtir des maisons puis un hôtel. Clique sur ton terrain.'],
-    ['🚩', 'Départ', 'Salaire à chaque passage, bonus si tu t\'arrêtes pile dessus.'], ['⛓️', 'Prison', 'Pour sortir : un double, l\'amende ou une carte. Trois doubles d\'affilée t\'y envoient.'],
-    ['⚠️', 'Dettes', 'Pas assez pour payer ? Vends des maisons ou hypothèque pour rembourser avant de finir ton tour, sinon tu abandonnes.'],
-    ['🤝', 'Échanges', 'Bouton Échanger sur un joueur : argent, terrains et cartes. Les bots en Normal et Difficile te feront des offres.'],
-    ['🌍', 'Événements', 'Tous les 3 tours (si activé) : boom, krach, portes ouvertes, soldes, fête ou contrôle fiscal.'],
-    ['⌨️', 'Raccourcis', 'Espace : lancer les dés ou terminer le tour. Échap : fermer une fenêtre.']];
-  modalRoot().innerHTML = `<div class="sheet big" role="dialog" aria-label="Règles"><div class="hd dark">Comment jouer</div><div class="bd"><div class="rules">${R.map(([i, t, d]) => `<div class="rule"><span>${i}</span><div><b>${t}</b><p>${d}</p></div></div>`).join('')}</div>
+  const R = [['target', 'But du jeu', 'Ruiner tous les autres. En partie rapide, le plus riche à la fin gagne.'], ['dice', 'Ton tour', 'Lance les dés et avance. Terrain libre : achète-le, sinon il part aux enchères. Terrain d\'un autre : tu paies le loyer.'],
+    ['house', 'Construire', 'Avec tout un groupe de la même couleur, le loyer double et tu peux bâtir des maisons puis un hôtel. Clique sur ton terrain.'],
+    ['go', 'Départ', 'Salaire à chaque passage, bonus si tu t\'arrêtes pile dessus.'], ['jail', 'Prison', 'Pour sortir : un double, l\'amende ou une carte. Trois doubles d\'affilée t\'y envoient.'],
+    ['alert', 'Dettes', 'Pas assez pour payer ? Vends des maisons ou hypothèque pour rembourser avant de finir ton tour, sinon tu abandonnes.'],
+    ['swap', 'Échanges', 'Bouton Échanger sur un joueur : argent, terrains et cartes. Les bots en Normal et Difficile te feront des offres.'],
+    ['sparkle', 'Événements', 'Tous les 3 tours (si activé) : boom, krach, portes ouvertes, soldes, fête ou contrôle fiscal.'],
+    ['key', 'Raccourcis', 'Espace : lancer les dés ou terminer le tour. Échap : fermer une fenêtre.']];
+  modalRoot().innerHTML = `<div class="sheet big" role="dialog" aria-label="Règles"><div class="hd dark">Comment jouer</div><div class="bd"><div class="rules">${R.map(([i, t, d]) => `<div class="rule"><span>${ico(i)}</span><div><b>${t}</b><p>${d}</p></div></div>`).join('')}</div>
     <button class="btn primary" data-a="close" style="width:100%;margin-top:14px">Compris</button></div></div>`;
 }
 function renderTileModal(i) {
@@ -2083,26 +2434,26 @@ function renderTileModal(i) {
   let rows = '', foot = '', kind = '';
   if (t.k === 'prop') {
     kind = 'Titre de propriété'; const labels = ['Terrain nu', '1 maison', '2 maisons', '3 maisons', '4 maisons', 'Hôtel'], max = t.rent[5], full = owner && ownsAll(S, B, owner.id, t) && S.settings.doubleRent;
-    rows = t.rent.map((r, k) => { const v = k === 0 && full ? r * 2 : r; return row(labels[k] + (k === 0 && full ? ' ×2' : ''), money(S, v), Math.max(4, Math.sqrt(v / max) * 100), o && !o.m && o.h === k, k === 5 ? '🏨' : '🏠'.repeat(k)); }).join('');
+    rows = t.rent.map((r, k) => { const v = k === 0 && full ? r * 2 : r; return row(labels[k] + (k === 0 && full ? ' ×2' : ''), money(S, v), Math.max(4, Math.sqrt(v / max) * 100), o && !o.m && o.h === k, houseHTML(k)); }).join('');
     foot = `<div class="df"><span>Maison ou hôtel<b>${money(S, t.house)}</b></span><span>Hypothèque<b>${money(S, t.price / 2)}</b></span></div>`;
   } else if (t.k === 'rail') {
     kind = 'Transport'; const n = owner ? groupOf(B, t).filter(x => S.own[x.i] && S.own[x.i].o === owner.id).length : 0;
-    rows = [1, 2, 3, 4].map(k => row(k + ' transport' + (k > 1 ? 's' : ''), money(S, 25 * Math.pow(2, k - 1)), Math.sqrt(k / 4) * 100 * (.5 + k / 8), o && !o.m && n === k, M.railIcon.repeat(1))).join('');
+    rows = [1, 2, 3, 4].map(k => row(k + ' transport' + (k > 1 ? 's' : ''), money(S, 25 * Math.pow(2, k - 1)), Math.sqrt(k / 4) * 100 * (.5 + k / 8), o && !o.m && n === k, ico(RAIL_ICON[M.railIcon] || 'plane').repeat(k))).join('');
     foot = `<div class="df"><span>Prix<b>${money(S, 200)}</b></span><span>Hypothèque<b>${money(S, 100)}</b></span></div>`;
   } else if (t.k === 'util') {
     kind = 'Compagnie'; const n = owner ? groupOf(B, t).filter(x => S.own[x.i] && S.own[x.i].o === owner.id).length : 0;
-    rows = row('1 compagnie', '4 × les dés', 40, o && !o.m && n === 1, '🎲') + row('2 compagnies', '10 × les dés', 100, o && !o.m && n === 2, '🎲🎲');
+    rows = row('1 compagnie', '4 × les dés', 40, o && !o.m && n === 1, ico('dice')) + row('2 compagnies', '10 × les dés', 100, o && !o.m && n === 2, ico('dice') + ico('dice'));
     foot = `<div class="df"><span>Prix<b>${money(S, 150)}</b></span><span>Hypothèque<b>${money(S, 75)}</b></span></div>`;
   } else {
     kind = 'Case spéciale';
     rows = `<p class="dtxt">${{ go: 'Tu touches ' + money(S, salaryOf(S)) + ' à chaque passage' + (goLandOf(S) > salaryOf(S) ? ', et ' + money(S, goLandOf(S)) + ' si tu t\'arrêtes pile dessus.' : '.'), jail: 'Simple visite, sauf si on t\'y envoie. Pour sortir : un double, ' + money(S, JAIL_FINE) + ' ou une carte.', park: S.settings.pot ? 'Celui qui s\'arrête ici rafle la cagnotte : ' + money(S, S.pot) + '.' : 'Rien ne se passe ici. Souffle un peu.', gojail: 'Direction la prison, sans passer par le Départ.', chance: 'Tire une carte Surprise.', chest: 'Tire une carte Trésor.', tax: 'Tu paies ' + money(S, t.amt || 0) + '.' }[t.k]}</p>`;
   }
-  const big = t.k === 'prop' ? '' : `<div class="dico">${tileIcon(t, B)}</div>`;
+  const big = t.k === 'prop' ? '' : `<div class="dico i-${tileIconKey(t, B)}">${tileIcon(t, B)}</div>`;
   const own = isBuyable(t) ? (owner ? `<div class="ownr" style="--c:${owner.color}"><i class="dot"></i>Appartient à <b>${esc(owner.name)}</b></div>` : `<div class="ownr free">Libre <b>${money(S, t.price)}</b></div>`) : '';
   const acts = can && S.phase !== 'over' ? `<div class="mact">${t.k === 'prop' ? `<button class="btn" data-a="manage" data-t="build" data-i="${i}" data-p="${owner.id}" ${o.h >= 5 || o.m ? 'disabled' : ''}>Construire<small>${money(S, -houseCost(S, t))}</small></button><button class="btn" data-a="manage" data-t="sell" data-i="${i}" data-p="${owner.id}" ${!o.h ? 'disabled' : ''}>Vendre<small>+${money(S, t.house / 2)}</small></button>` : ''}
     ${o.m ? `<button class="btn wide" data-a="manage" data-t="unmortgage" data-i="${i}" data-p="${owner.id}">Lever l'hypothèque<small>${money(S, -Math.ceil(t.price / 2 * 1.1))}</small></button>` : `<button class="btn wide" data-a="manage" data-t="mortgage" data-i="${i}" data-p="${owner.id}" ${o.h ? 'disabled' : ''}>Hypothéquer<small>+${money(S, t.price / 2)}</small></button>`}</div>` : '';
   modalRoot().innerHTML = `<div class="deed k-${t.k} ${o && o.m ? 'is-mort' : ''}" role="dialog" aria-label="${esc(t.name)}" style="--g:${g}"><div class="deed-in">
-    <div class="deed-hd"><small>${kind}</small><b>${esc(t.name)}</b>${t.price ? `<span class="dprice">${money(S, t.price)}</span>` : ''}${t.k === 'prop' ? `<span class="dhouses">${o && o.h ? (o.h === 5 ? '<i class="hs hotel"></i>' : '<i class="hs"></i>'.repeat(o.h)) : ''}</span>` : ''}</div>
+    <div class="deed-hd"><small>${kind}</small><b>${esc(t.name)}</b>${t.price ? `<span class="dprice">${money(S, t.price)}</span>` : ''}${t.k === 'prop' ? `<span class="dhouses">${o && o.h ? houseHTML(o.h) : ''}</span>` : ''}</div>
     <div class="deed-bd">${big}${own}<div class="rrs">${rows}</div>${foot}${acts}<button class="btn ghost" data-a="close">Fermer</button></div>
     ${o && o.m ? '<div class="stamp">Hypothéqué</div>' : ''}<div class="glare"></div></div></div>`;
 }
@@ -2133,18 +2484,20 @@ document.addEventListener('click', e => {
       if (sv.mode === 'host') { if (S.hostId !== net.myId) { LS.del('magnat_save'); S = null; return render(); } hostStart(true); } else net.mode = 'local'; changed(); break; }
     case 'discard': LS.del('magnat_save'); render(); break;
     case 'home': goHome(); break;
-    case 'snd': sound.on = !sound.on; LS.set('magnat_snd', sound.on); if (sound.on) { audioUnlock(); setTimeout(() => sfx('salary'), 60); toast('Son activé'); } else toast('Son coupé'); if (S && S.phase !== 'lobby') renderSide(); else render(); break;
+    case 'snd': setTimeout(() => { if (ui.modal && ui.modal.type === 'theme') renderModal(); }, 0); sound.on = !sound.on; LS.set('magnat_snd', sound.on); if (sound.on) { audioUnlock(); setTimeout(() => sfx('salary'), 60); toast('Son activé'); } else toast('Son coupé'); if (S && S.phase !== 'lobby') renderSide(); else render(); break;
     case 'leave':
-      if (amHost()) { if (!confirm(isLocal() ? 'Quitter et effacer cette partie ?' : 'Quitter ferme le salon pour tout le monde. Continuer ?')) return; LS.del('magnat_save'); }
+      if (amHost()) { if (!confirm(trS(isLocal() ? 'Quitter et effacer cette partie ?' : 'Quitter ferme le salon pour tout le monde. Continuer ?'))) return; LS.del('magnat_save'); }
       else if (S && S.phase === 'lobby') doAct(net.myId, { type: 'leaveLobby' });
       goHome(); break;
-    case 'copy': (navigator.clipboard ? navigator.clipboard.writeText(d.v) : Promise.reject()).then(() => toast('Lien copié'), () => prompt('Copie ce lien :', d.v)); break;
+    case 'copy': (navigator.clipboard ? navigator.clipboard.writeText(d.v) : Promise.reject()).then(() => toast('Lien copié'), () => prompt(trS('Copie ce lien :'), d.v)); break;
     case 'l-color': case 'l-tok': ui.modal = { type: 'tok', id: d.id }; renderModal(); break;
     case 'pick-tok': doAct(amHost() ? actorHost() : net.myId, { type: 'setToken', id: ui.modal.id, tok: d.v }); break;
     case 'pick-col': doAct(amHost() ? actorHost() : net.myId, { type: 'setColor', id: ui.modal.id, color: d.v }); break;
     case 'help': ui.modal = { type: 'help' }; renderModal(); break;
     case 'theme': ui.modal = { type: 'theme' }; renderModal(); break;
     case 'pick-theme': theme = d.v; LS.set('magnat_theme', theme); applyTheme(); renderModal(); break;
+    case 'pick-dice': diceSkin = d.v; LS.set('magnat_dice', diceSkin); applyTheme(); renderModal(); break;
+    case 'pick-lang': setLang(d.v); break;
     case 'spec-join': doAct(net.myId, { type: 'specJoin' }); break;
     case 't-counter': { const tr = S.trades.find(x => x.id === +d.id); if (!tr) return; ui.draft = { from: tr.to, to: tr.from, give: JSON.parse(JSON.stringify(tr.get)), get: JSON.parse(JSON.stringify(tr.give)), counter: tr.id }; ui.modal = { type: 'trade' }; renderModal(); break; }
     case 'react': { const me = viewPlayer() || (S && P(S, net.myId)); if (me && S && S.phase !== 'lobby') doAct(me.id, { type: 'react', e: d.v }); break; }
@@ -2154,9 +2507,9 @@ document.addEventListener('click', e => {
     case 'l-map': doAct(actorHost(), { type: 'setMap', mapId: d.id }); break;
     case 'l-start': doAct(actorHost(), { type: 'start' }); break;
     case 'rematch': doAct(actorHost(), { type: 'rematch' }); break;
-    case 'kick': if (confirm('Exclure ce joueur ? Ses terrains retournent à la banque.')) doAct(actorHost(), { type: 'kick', id: d.id }); break;
+    case 'kick': if (confirm(trS('Exclure ce joueur ? Ses terrains retournent à la banque.'))) doAct(actorHost(), { type: 'kick', id: d.id }); break;
     case 'act': doAct(S.players[S.turn].id, { type: d.t }); break;
-    case 'bankrupt': if (confirm('Abandonner ? Tu es éliminé et tes terrains passent à ton créancier.')) doAct(d.id, { type: 'bankrupt' }); break;
+    case 'bankrupt': if (confirm(trS('Abandonner ? Tu es éliminé et tes terrains passent à ton créancier.'))) doAct(d.id, { type: 'bankrupt' }); break;
     case 'bid': doAct(d.id, { type: 'bid', amount: +d.v }); break;
     case 'pass': doAct(d.id, { type: 'pass' }); break;
     case 'bid-custom': if (S.phase === 'auction') bidCustom(d.id); break;
@@ -2179,7 +2532,9 @@ document.addEventListener('pointermove', e => {
   d.style.setProperty('--mx', (x * 100).toFixed(1) + '%'); d.style.setProperty('--my', (y * 100).toFixed(1) + '%'); d.classList.add('tilt');
 });
 document.addEventListener('pointerout', e => { const d = e.target.closest && e.target.closest('.deed'); if (d && !d.contains(e.relatedTarget)) { d.classList.remove('tilt'); d.style.setProperty('--rx', '0deg'); d.style.setProperty('--ry', '0deg'); } });
-document.addEventListener('input', e => { const bi = e.target.dataset && e.target.dataset.bidin; if (bi) { ui.bidDraft = ui.bidDraft || {}; ui.bidDraft[bi] = e.target.value; } const s = e.target.dataset && e.target.dataset.cash; if (s && ui.draft) ui.draft[s].cash = Math.max(0, parseInt(e.target.value, 10) || 0); });
+document.addEventListener('input', e => {
+  if (e.target.dataset && 'vol' in e.target.dataset) { vol = +e.target.value; LS.set('magnat_vol', vol); if (OUT) OUT.gain.value = 3 * vol / 100; clearTimeout(ui.volT); ui.volT = setTimeout(() => sfx('coin'), 120); }
+  if (e.target.dataset && 'lowfx' in e.target.dataset) { lowfx = e.target.checked; LS.set('magnat_lowfx', lowfx); applyTheme(); } const bi = e.target.dataset && e.target.dataset.bidin; if (bi) { ui.bidDraft = ui.bidDraft || {}; ui.bidDraft[bi] = e.target.value; } const s = e.target.dataset && e.target.dataset.cash; if (s && ui.draft) ui.draft[s].cash = Math.max(0, parseInt(e.target.value, 10) || 0); });
 document.addEventListener('change', e => {
   const rn = e.target.dataset && e.target.dataset.rename; if (!rn || !S || S.phase !== 'lobby') return;
   const v = e.target.value.trim(), p = P(S, rn); if (!p) return; if (!v || v === p.name) { e.target.value = p.name; return; }
