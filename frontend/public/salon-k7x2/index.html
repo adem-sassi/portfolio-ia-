@@ -581,6 +581,83 @@ body:has(.game){background-image:radial-gradient(1100px 700px at 30% 40%,rgba(40
 @media (max-width:980px){.maps{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:620px){.rules{grid-template-columns:1fr}.tokgrid{grid-template-columns:repeat(5,1fr)}.reacts button{font-size:14px;padding:4px 2px}.srow small{display:none}.tok i{font-size:3cqw}}
 
+/* ===== v9 : thèmes du plateau ===== */
+.boardbox{--t1:#1D2A4D;--t2:#131C37;--tfg:#F1F5FF;--tpr:rgba(5,12,28,.6);--tprfg:#C7D2FE;--tmix:9%;--tspec:16%;--tsh:0 .1cqw .2cqw rgba(0,0,0,.5);--tic:radial-gradient(circle at 35% 30%,rgba(255,255,255,.22),rgba(255,255,255,.05));
+  --tframe:linear-gradient(145deg,#1A2E5A,#0B1630 45%,#12224A);--tcenter:#081226;--tring:#2F4F8C}
+.boardbox[data-theme=classique]{--t1:#FFFDF7;--t2:#F1EBDD;--tfg:#1F2937;--tpr:#E6DFCF;--tprfg:#374151;--tmix:10%;--tspec:14%;--tsh:none;--tic:radial-gradient(circle at 35% 30%,#fff,#E9E2D2);
+  --tframe:linear-gradient(145deg,#2F6B4F,#1B4A35 50%,#2A6147);--tcenter:#0F2E22;--tring:#3F8B66;--accent:#F59E0B}
+.boardbox[data-theme=neon]{--t1:#10101E;--t2:#07070F;--tfg:#F5F3FF;--tpr:rgba(255,255,255,.08);--tprfg:#E9D5FF;--tmix:0%;--tspec:0%;--tic:radial-gradient(circle at 35% 30%,rgba(255,255,255,.14),rgba(255,255,255,.02));
+  --tframe:linear-gradient(145deg,#2A0E4A,#07070F 50%,#0A2A3A);--tcenter:#05050C;--tring:#C026D3;--accent:#C026D3}
+.boardbox[data-theme=pastel]{--t1:#FAF8FF;--t2:#ECE8FB;--tfg:#312E81;--tpr:#DDD6FE;--tprfg:#3730A3;--tmix:18%;--tspec:16%;--tsh:none;--tic:radial-gradient(circle at 35% 30%,#fff,#E0E7FF);
+  --tframe:linear-gradient(145deg,#C4B5FD,#A5B4FC 50%,#F9A8D4);--tcenter:#1E1B4B;--tring:#A78BFA;--accent:#EC4899}
+.boardbox[data-theme=sable]{--t1:#FFF8EC;--t2:#F3E4C8;--tfg:#422006;--tpr:#EAD7B0;--tprfg:#78350F;--tmix:12%;--tspec:14%;--tsh:none;--tic:radial-gradient(circle at 35% 30%,#fff,#F1E2C2);
+  --tframe:linear-gradient(145deg,#B45309,#7C2D12 50%,#A16207);--tcenter:#1C1208;--tring:#D97706;--accent:#0EA5E9}
+.boardbox .board{background:var(--tframe);box-shadow:0 0 0 .18cqw var(--tring),0 0 0 .55cqw #0C1833,0 0 0 .7cqw color-mix(in srgb,var(--accent) 55%,#1B3159),0 0 9cqw color-mix(in srgb,var(--accent) 22%,transparent),0 3cqw 7cqw rgba(0,0,0,.55)}
+.boardbox .tile{background:linear-gradient(165deg,var(--t1),var(--t2));color:var(--tfg)}
+.boardbox .tile.k-prop{background:linear-gradient(165deg,color-mix(in srgb,var(--g) var(--tmix),var(--t1)),var(--t2))}
+.boardbox .tile.k-chance{background:linear-gradient(165deg,color-mix(in srgb,#F59E0B var(--tspec),var(--t1)),var(--t2))}
+.boardbox .tile.k-chest{background:linear-gradient(165deg,color-mix(in srgb,#22D3EE var(--tspec),var(--t1)),var(--t2))}
+.boardbox .tile.k-tax{background:linear-gradient(165deg,color-mix(in srgb,#F43F5E var(--tspec),var(--t1)),var(--t2))}
+.boardbox .tile.k-rail{background:linear-gradient(165deg,color-mix(in srgb,#94A3B8 var(--tspec),var(--t1)),var(--t2))}
+.boardbox .tile.k-util{background:linear-gradient(165deg,color-mix(in srgb,#FACC15 var(--tspec),var(--t1)),var(--t2))}
+.boardbox .tile.owned{background:linear-gradient(165deg,color-mix(in srgb,var(--o) 30%,var(--t1)),color-mix(in srgb,var(--o) 12%,var(--t2)))}
+.boardbox .tile.mort{background:repeating-linear-gradient(45deg,var(--t1) 0 .8cqw,var(--t2) .8cqw 1.6cqw)}
+.boardbox .inf .nm{text-shadow:var(--tsh)}
+.boardbox .inf .pr{background:var(--tpr);color:var(--tprfg)}
+.boardbox .tile.owned .pr{background:var(--o);color:#07101F}
+.boardbox .inf .ic{background:var(--tic)}
+.boardbox .tile.corner{color:#fff}
+.boardbox .tile.corner .nm{text-shadow:0 .15cqw .3cqw rgba(0,0,0,.45)}
+.boardbox .center{background:var(--tcenter)}
+.boardbox[data-theme=neon] .tile.k-prop{box-shadow:inset 0 0 0 .14cqw color-mix(in srgb,var(--g) 75%,transparent),0 0 1.2cqw color-mix(in srgb,var(--g) 40%,transparent)}
+.boardbox[data-theme=neon] .band{box-shadow:0 0 1.4cqw var(--g),inset 0 .16cqw 0 rgba(255,255,255,.5)}
+.boardbox[data-theme=neon] .tile.owned{box-shadow:inset 0 0 0 .22cqw var(--o),0 0 1.8cqw var(--o)}
+.boardbox:is([data-theme=classique],[data-theme=pastel],[data-theme=sable]) .tile{box-shadow:inset 0 -.25cqw 0 rgba(0,0,0,.08),0 .3cqw .7cqw rgba(0,0,0,.28)}
+.boardbox:is([data-theme=classique],[data-theme=pastel],[data-theme=sable]) .tile.owned{box-shadow:inset 0 0 0 .22cqw var(--o),0 .3cqw .8cqw rgba(0,0,0,.3)}
+.boardbox:is([data-theme=classique],[data-theme=pastel],[data-theme=sable]) .tile.here{animation:herelight 1.3s ease-in-out infinite}
+@keyframes herelight{0%,100%{box-shadow:inset 0 0 0 .32cqw var(--hc,var(--cyan))}50%{box-shadow:inset 0 0 0 .32cqw var(--hc,var(--cyan)),0 0 2.4cqw var(--hc,var(--cyan))}}
+.themes{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
+.thm{display:grid;gap:6px;justify-items:center;padding:10px 6px;border-radius:12px;background:#0A1730;border:1px solid var(--line);transition:transform .15s var(--spring)}
+.thm:hover{transform:translateY(-2px)}
+.thm.on{border-color:var(--cyan);box-shadow:0 0 0 2px var(--cyan)}
+.sw3{display:flex;width:60px;height:40px;border-radius:8px;overflow:hidden;box-shadow:0 3px 8px rgba(0,0,0,.4)}
+.sw3 i{flex:1}.sw3 i:first-child{flex:2}
+.thm b{font-size:13px}
+
+/* ===== v9 : série complète ===== */
+.tile.full .band{overflow:hidden}
+.tile.full .band::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.75) 50%,transparent 65%);translate:-120% 0;animation:bandshine 3.6s ease-in-out infinite}
+@keyframes bandshine{0%,70%{translate:-120% 0}100%{translate:120% 0}}
+.tile.setwin{z-index:4;animation:setwin 1.4s cubic-bezier(.2,.9,.3,1)}
+@keyframes setwin{0%{transform:scale(1)}25%{transform:scale(1.28) rotate(-3deg);box-shadow:0 0 0 .4cqw #fff,0 0 4cqw var(--o,#fff);filter:brightness(1.6)}55%{transform:scale(1.12) rotate(2deg)}100%{transform:none}}
+.setfx{position:absolute;inset:0;z-index:8;display:grid;place-items:center;pointer-events:none;overflow:hidden;overflow:clip;background:radial-gradient(circle,color-mix(in srgb,var(--g) 30%,rgba(3,8,20,.75)),rgba(3,8,20,.92));animation:cardfade 3.6s forwards}
+.setrays{position:absolute;width:140%;aspect-ratio:1;border-radius:50%;background:repeating-conic-gradient(color-mix(in srgb,var(--g) 55%,transparent) 0 8deg,transparent 8deg 20deg);-webkit-mask:radial-gradient(circle,#000 5%,transparent 60%);mask:radial-gradient(circle,#000 5%,transparent 60%);animation:rot 10s linear infinite,raysin 1s ease-out both}
+.setin{position:relative;text-align:center;display:grid;justify-items:center;gap:.8cqw;width:92%}
+.setin>small{font:800 clamp(22px,5cqw,50px)/1 var(--display);letter-spacing:-.02em;color:#fff;text-shadow:0 0 30px var(--g),0 .4cqw 0 color-mix(in srgb,var(--g) 60%,#000);animation:settitle .7s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes settitle{from{transform:scale(2.4);opacity:0}}
+.setcards{position:relative;height:clamp(96px,17cqw,170px);width:100%;display:flex;justify-content:center;align-items:flex-end;margin:.6cqw 0 1cqw}
+.scard{position:absolute;bottom:0;width:clamp(62px,11cqw,110px);aspect-ratio:.72;border-radius:10%/7%;background:linear-gradient(175deg,#fff,#E6ECF7);color:#0B1730;box-shadow:0 1.4cqw 2.4cqw rgba(0,0,0,.55),0 0 0 2px rgba(255,255,255,.6);display:flex;flex-direction:column;align-items:center;overflow:hidden;
+  transform-origin:50% 130%;transform:translateX(calc(var(--i)*7cqw)) rotate(calc(var(--i)*11deg));animation:scard .8s cubic-bezier(.2,1.3,.4,1) both;animation-delay:calc(.25s + var(--d)*.14s)}
+.scard u{width:100%;height:24%;background:linear-gradient(180deg,color-mix(in srgb,var(--g) 85%,#fff),var(--g))}
+.scard b{font:800 clamp(9px,1.35cqw,13px)/1.1 var(--display);padding:12% 6% 0;text-wrap:balance}
+.scard span{margin-top:auto;margin-bottom:10%;font:800 clamp(9px,1.2cqw,12px) var(--display);color:#3B4C70}
+@keyframes scard{from{transform:translateY(160%) rotate(0);opacity:0}}
+.setwho{display:flex;align-items:center;gap:8px;font-size:clamp(13px,1.9cqw,18px);font-weight:600;color:#fff;animation:rise .5s ease-out .9s both}
+.setin p{font-size:clamp(12px,1.6cqw,15px);color:#FDE68A;font-weight:700;animation:rise .5s ease-out 1.1s both}
+
+/* ===== v9 : divers ===== */
+.cashin .num{width:120px;max-width:120px;font:700 14px var(--display);text-align:right}
+.specs{font-size:12px;color:var(--mute);margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.06)}
+.specs.me{color:var(--cyan)}
+.feed .who.spec{color:var(--mute)}
+.fort{width:auto!important;margin-right:4px}
+.pcard .owndots{order:9}
+.boardbox .tile.corner.k-go{background:linear-gradient(150deg,color-mix(in srgb,var(--accent) 95%,#fff),color-mix(in srgb,var(--accent) 60%,#1B0F00))}
+.boardbox .tile.corner.k-jail{background:repeating-linear-gradient(90deg,rgba(0,0,0,.22) 0 5%,transparent 5% 16%),linear-gradient(150deg,#FB923C,#9A3412)}
+.boardbox .tile.corner.k-park{background:linear-gradient(150deg,#2DD4BF,#0E6B7E)}
+.boardbox .tile.corner.k-gojail{background:linear-gradient(150deg,#818CF8,#3730A3)}
+.boardbox .tile.corner .ic{background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.4),rgba(255,255,255,.1))}
+
 </style>
 </head>
 <body>
@@ -600,7 +677,8 @@ body:has(.game){background-image:radial-gradient(1100px 700px at 30% 40%,rgba(40
 <script>
 'use strict';
 /* ================= MOTEUR DE JEU (aucune dépendance au DOM) ================= */
-const GROUPS = ['#A9744F', '#6CC5F0', '#E879B9', '#F59542', '#EF5350', '#F2CF3B', '#3FBF7F', '#6D7BFF'];
+const GROUPS = ['#A0633C', '#38BDF8', '#EC4899', '#F97316', '#EF4444', '#FACC15', '#22C55E', '#6366F1'];
+const GROUP_NAMES = ['marron', 'bleu ciel', 'rose', 'orange', 'rouge', 'jaune', 'vert', 'bleu'];
 const PLAYER_COLORS = ['#22D3EE', '#F59E0B', '#F472B6', '#A3E635', '#C084FC', '#FB7185', '#2DD4BF', '#FDE047'];
 const PLAYER_TOKENS = ['🚗', '🎩', '🐶', '🚀', '⛵', '👑', '🦁', '🐱', '🦊', '🐸', '🎸', '⚽', '🍕', '💎', '🛵', '🐉', '👻', '🦄'];
 const REACTIONS = ['😂', '🔥', '😡', '👏', '💸', '😱', '🤝', '😭'];
@@ -759,8 +837,8 @@ const CARDS = {
 };
 
 const DEFAULT_SETTINGS = { startCash: 1500, auction: true, doubleRent: true, pot: true, noRentInJail: false, evenBuild: true, randomOrder: true,
-  salary: 200, goLand: true, startProps: 0, maxRounds: 0, lapToBuy: false, turnTime: 0, events: true, botLevel: 2, botSpeed: 2 };
-const SETTING_CHOICES = { salary: [100, 200, 300, 400], startProps: [0, 1, 2, 3], maxRounds: [0, 15, 25, 40], turnTime: [0, 30, 60, 90], botLevel: [1, 2, 3], botSpeed: [1, 2, 3] };
+  salary: 200, goLand: true, startProps: 0, maxRounds: 0, lapToBuy: false, turnTime: 0, events: true, botLevel: 2, botSpeed: 2, rentMult: 100 };
+const SETTING_CHOICES = { salary: [100, 200, 300, 400], startProps: [0, 1, 2, 3], maxRounds: [0, 15, 25, 40], turnTime: [0, 30, 60, 90], botLevel: [1, 2, 3], botSpeed: [1, 2, 3], rentMult: [100, 150, 200] };
 const salaryOf = S => S.settings.salary || 200, goLandOf = S => salaryOf(S) + (S.settings.goLand === false ? 0 : 100);
 
 /* ---------- plateau ---------- */
@@ -791,7 +869,7 @@ const rid = () => Math.random().toString(36).slice(2, 10);
 
 const evOn = (S, k) => !!(S.event && S.event.round === S.round && (!k || S.event.k === k));
 const houseCost = (S, t) => evOn(S, 'soldes') ? t.house / 2 : t.house;
-function calcRent(S, B, t, diceSum) { const r = rent0(S, B, t, diceSum); return !r ? 0 : evOn(S, 'boom') ? r * 2 : evOn(S, 'krach') ? Math.floor(r / 2) : evOn(S, 'portes') ? 0 : r; }
+function calcRent(S, B, t, diceSum) { const r = Math.floor(rent0(S, B, t, diceSum) * (S.settings.rentMult || 100) / 100); return !r ? 0 : evOn(S, 'boom') ? r * 2 : evOn(S, 'krach') ? Math.floor(r / 2) : evOn(S, 'portes') ? 0 : r; }
 function rent0(S, B, t, diceSum) {
   const o = S.own[t.i]; if (!o || o.m) return 0;
   if (t.k === 'prop') return o.h > 0 ? t.rent[o.h] : t.rent[0] * (S.settings.doubleRent && ownsAll(S, B, o.o, t) ? 2 : 1);
@@ -838,6 +916,11 @@ function lobbyAct(S, pid, a) {
       if (!PLAYER_COLORS.includes(a.color) || S.players.some(x => x.color === a.color)) return 'Couleur déjà prise';
       p.color = a.color; return null;
     }
+    case 'specJoin': {
+      const sp = (S.specs || []).find(x => x.id === pid); if (!sp || P(S, pid)) return 'Impossible';
+      const e2 = lobbyAct(S, pid, { type: 'join', name: sp.name }); if (e2) return e2;
+      S.specs = S.specs.filter(x => x.id !== pid); return null;
+    }
     case 'setToken': {
       if (!host && a.id !== pid) return 'Interdit';
       const p = P(S, a.id); if (!p) return 'Joueur inconnu';
@@ -854,7 +937,7 @@ function lobbyAct(S, pid, a) {
       if (!host) return 'Réservé à l\'hôte';
       if (!(a.key in DEFAULT_SETTINGS)) return 'Réglage inconnu';
       if (SETTING_CHOICES[a.key]) { const v = parseInt(a.value, 10); if (!SETTING_CHOICES[a.key].includes(v)) return 'Valeur refusée'; S.settings[a.key] = v; return null; }
-      S.settings[a.key] = a.key === 'startCash' ? Math.max(500, Math.min(5000, parseInt(a.value, 10) || 1500)) : !!a.value; return null;
+      S.settings[a.key] = a.key === 'startCash' ? Math.max(100, Math.min(1000000, Math.round(parseInt(a.value, 10) || 1500))) : !!a.value; return null;
     }
     case 'start': {
       if (!host) return 'Réservé à l\'hôte';
@@ -1075,7 +1158,7 @@ function doBankrupt(S, B, p) {
 function act(S, pid, a) { const r = act0(S, pid, a); if (!r && S.players && S.phase !== 'lobby') settleDebts(S); return r; }
 function act0(S, pid, a) {
   if (!a || typeof a.type !== 'string') return 'Action invalide';
-  if (a.type === 'chat') { const p = P(S, pid); const m = String(a.m || '').trim().slice(0, 200); if (!p || !m) return null; log(S, p, m, { chat: 1, s: 'chat' }); return null; }
+  if (a.type === 'chat') { const p = P(S, pid), sp = !p && (S.specs || []).find(x => x.id === pid); const m = String(a.m || '').trim().slice(0, 200); if (!m || (!p && !sp)) return null; if (p) log(S, p, m, { chat: 1, s: 'chat' }); else log(S, null, m, { chat: 1, s: 'chat', sp: sp.name }); return null; }
   if (a.type === 'react') { const p = P(S, pid); if (!p || !REACTIONS.includes(a.e) || S.phase === 'lobby') return null; S.react = { p: pid, e: a.e, seq: (S.react ? S.react.seq : 0) + 1 }; return null; }
   if (S.phase === 'lobby') return lobbyAct(S, pid, a);
   const B = buildBoard(S.mapId);
@@ -1250,7 +1333,7 @@ function botAct(S, b) {
   return null;
 }
 
-if (typeof module !== 'undefined') module.exports = { PLAYER_TOKENS, REACTIONS, EVENTS, houseCost, evOn, owed, CARDS, SETTING_CHOICES, MAPS, PLAYER_COLORS, buildBoard, newLobby, act, botAct, worth, P, alive, calcRent, groupOf, ownsAll, groupHasHouses, tradeError, money, DEFAULT_SETTINGS };
+if (typeof module !== 'undefined') module.exports = { GROUPS, GROUP_NAMES, PLAYER_TOKENS, REACTIONS, EVENTS, houseCost, evOn, owed, CARDS, SETTING_CHOICES, MAPS, PLAYER_COLORS, buildBoard, newLobby, act, botAct, worth, P, alive, calcRent, groupOf, ownsAll, groupHasHouses, tradeError, money, DEFAULT_SETTINGS };
 
 </script>
 <script>
@@ -1357,15 +1440,17 @@ function sfx(name, delay) {
     case 'bid': tone(1250, 0, .05, 'square', .04); tone(1600, .05, .07, 'square', .03); break;
     case 'jail': tone(220, 0, .45, 'sawtooth', .05, 70); break;
     case 'event': [392, 523, 659, 784].forEach((f, i) => tone(f, i * .09, .5, 'sawtooth', .035)); knock(0); break;
+    case 'set': knock(0); [523, 659, 784, 1047].forEach((f, i) => tone(f, .05 + i * .1, .5, 'triangle', .07)); [1047, 1319, 1568].forEach(f => tone(f, .5, .9, 'sine', .05)); break;
     case 'pop': tone(660, 0, .08, 'sine', .07, 1320); noise(0, .05, .06, 3000); break;
     case 'win': [523, 659, 784, 1047, 1319, 1568].forEach((f, i) => tone(f, i * .11, .35, 'triangle', .08)); break;
   }
 }
-function confetti() {
+function confetti(cols, n) {
+  cols = cols || PLAYER_COLORS;
   if (matchMedia('(prefers-reduced-motion:reduce)').matches || $('#confetti')) return;
   const cv = document.createElement('canvas'); cv.id = 'confetti'; document.body.appendChild(cv);
   const ctx = cv.getContext('2d'), W = cv.width = innerWidth, H = cv.height = innerHeight, t0 = performance.now();
-  const ps = Array.from({ length: 170 }, (_, i) => ({ x: W / 2 + (Math.random() - .5) * W * .3, y: H * .45, vx: (Math.random() - .5) * 17, vy: -Math.random() * 17 - 5, s: 5 + Math.random() * 7, r: Math.random() * 6, vr: (Math.random() - .5) * .4, c: PLAYER_COLORS[i % PLAYER_COLORS.length] }));
+  const ps = Array.from({ length: n || 170 }, (_, i) => ({ x: W / 2 + (Math.random() - .5) * W * .3, y: H * .45, vx: (Math.random() - .5) * 17, vy: -Math.random() * 17 - 5, s: 5 + Math.random() * 7, r: Math.random() * 6, vr: (Math.random() - .5) * .4, c: cols[i % cols.length] }));
   (function frame(now) {
     const el = now - t0; ctx.clearRect(0, 0, W, H);
     for (const p of ps) { p.vy += .33; p.vx *= .992; p.x += p.vx; p.y += p.vy; p.r += p.vr; ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.globalAlpha = Math.max(0, 1 - el / 4200); ctx.fillStyle = p.c; ctx.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2); ctx.restore(); }
@@ -1464,16 +1549,16 @@ function hostOnData(conn, msg) {
     const pid = String(msg.pid || '').slice(0, 24); if (pid.length < 8 || pid === S.hostId) return;
     const ex = P(S, pid);
     if (ex) { if (ex.bot || ex.local) return; }
-    else if (S.phase !== 'lobby') return conn.send({ t: 'err', m: 'La partie a déjà commencé.', fatal: true });
+    else if (S.phase !== 'lobby') { S.specs = (S.specs || []).filter(x => x.id !== pid); S.specs.push({ id: pid, name: String(msg.name || 'Invité').replace(/[<>]/g, '').trim().slice(0, 14) || 'Invité' }); conn.spec = true; }
     else { const e = lobbyAct(S, pid, { type: 'join', name: msg.name }); if (e) return conn.send({ t: 'err', m: e, fatal: true }); }
     const old = net.conns[pid]; conn.pid = pid; net.conns[pid] = conn; if (old && old !== conn) try { old.close(); } catch (e) { }
-    P(S, pid).conn = true; changed();
+    const pl = P(S, pid); if (pl) pl.conn = true; changed();
   } else if (msg.t === 'act' && conn.pid && msg.a) {
     if (msg.a.type === 'leaveLobby') { if (S.phase === 'lobby') hostApply(conn.pid, { type: 'remove', id: conn.pid }, conn); return; }
     hostApply(conn.pid, msg.a, conn);
   }
 }
-function hostOnClose(conn) { if (!S || !conn.pid || net.conns[conn.pid] !== conn) return; delete net.conns[conn.pid]; const p = P(S, conn.pid); if (p) { p.conn = false; changed(); } }
+function hostOnClose(conn) { if (!S || !conn.pid || net.conns[conn.pid] !== conn) return; delete net.conns[conn.pid]; const p = P(S, conn.pid); if (p) { p.conn = false; changed(); } else if (S.specs && S.specs.some(x => x.id === conn.pid)) { S.specs = S.specs.filter(x => x.id !== conn.pid); changed(); } }
 
 function clientStart(code) {
   net.mode = 'client'; net.code = code; net.everConnected = false; ui.homeErr = ''; ui.joining = true; render();
@@ -1542,14 +1627,16 @@ function renderHome() {
 const SETTINGS_UI = [['auction', 'Enchères', 'Un terrain refusé part aux enchères'], ['doubleRent', 'Loyer doublé', 'Sur un groupe complet sans maison'], ['pot', 'Cagnotte des vacances', 'Taxes et amendes vont sur la case Vacances'],
   ['noRentInJail', 'Pas de loyer en prison', 'Un joueur en prison ne touche rien'], ['evenBuild', 'Construction équilibrée', 'Une maison d\'écart maximum dans un groupe'], ['randomOrder', 'Ordre aléatoire', 'L\'ordre des joueurs est tiré au sort'],
   ['events', 'Événements mondiaux', 'Tous les 3 tours : boom, krach, fête, soldes...'], ['goLand', 'Bonus pile sur le Départ', '100 de plus si tu t\'arrêtes exactement dessus'], ['lapToBuy', 'Tour de chauffe', 'Il faut boucler un tour de plateau avant d\'acheter']];
-const SETTINGS_SEL = [['startCash', 'Argent de départ', '', [1000, 1500, 2000, 2500, 3000].map(v => [v, v])], ['salary', 'Salaire au Départ', 'Touché à chaque passage', [100, 200, 300, 400].map(v => [v, v])],
+const SETTINGS_SEL = [['salary', 'Salaire au Départ', 'Touché à chaque passage', [100, 200, 300, 400].map(v => [v, v])],
   ['startProps', 'Terrains offerts au début', 'Distribués au hasard, la partie démarre plus vite', [[0, 'Aucun'], [1, '1 chacun'], [2, '2 chacun'], [3, '3 chacun']]],
   ['maxRounds', 'Partie rapide', 'À la fin des tours, le plus riche gagne', [[0, 'Sans limite'], [15, '15 tours'], [25, '25 tours'], [40, '40 tours']]],
+  ['rentMult', 'Loyers', 'Plus hauts = parties plus courtes', [[100, 'Normaux'], [150, 'x1,5'], [200, 'x2']]],
   ['botLevel', 'Niveau des bots', 'Difficile : ils misent plus et te proposent des échanges', [[1, 'Facile'], [2, 'Normal'], [3, 'Difficile']]],
   ['botSpeed', 'Vitesse des bots', '', [[1, 'Lente'], [2, 'Normale'], [3, 'Rapide']]],
   ['turnTime', 'Temps limité par action', 'Passé le délai, le jeu joue à ta place (en ligne)', [[0, 'Illimité'], [30, '30 s'], [60, '60 s'], [90, '90 s']]]];
 function renderLobby() {
   const ae0 = document.activeElement, keepRn = ae0 && ae0.dataset && ae0.dataset.rename ? { id: ae0.dataset.rename, v: ae0.value, s: ae0.selectionStart } : null;
+  const keepSet = ae0 && ae0.dataset && ae0.dataset.set === 'startCash' ? ae0.value : null;
   const host = amHost(), link = location.origin + location.pathname + '#' + S.code;
   const pl = S.players.map(p => {
     const mineRow = host || p.id === net.myId;
@@ -1560,13 +1647,14 @@ function renderLobby() {
   }).join('');
   const maps = Object.values(MAPS).map(m => `<button class="map ${m.id === S.mapId ? 'on' : ''}" style="--a:${m.accent}" data-a="l-map" data-id="${m.id}" ${host ? '' : 'disabled'}><i class="memo">${m.deco[0]}</i><b>${esc(m.name)}</b><span>${esc(m.props[0])}, ${esc(m.props[10])}, ${esc(m.props[21])}…</span><em>${GROUPS.map(g => `<u style="--g:${g}"></u>`).join('')}</em></button>`).join('');
   const cfg = Object.assign({}, DEFAULT_SETTINGS, S.settings);
-  const opts = SETTINGS_SEL.map(([k, t, d, ch]) => `<label class="opt"><span>${t}${d ? `<small>${d}</small>` : ''}</span><select class="field sel" data-set="${k}" ${host ? '' : 'disabled'}>${ch.map(([v, l]) => `<option value="${v}" ${cfg[k] === v ? 'selected' : ''}>${l}</option>`).join('')}</select></label>`).join('')
+  const opts = `<label class="opt"><span>Argent de départ<small>Le montant que tu veux (100 à 1 000 000)</small></span><span class="cashin"><input class="field sel num" type="number" inputmode="numeric" data-set="startCash" min="100" max="1000000" step="50" value="${cfg.startCash}" ${host ? '' : 'disabled'} aria-label="Argent de départ"></span></label>`
+    + SETTINGS_SEL.map(([k, t, d, ch]) => `<label class="opt"><span>${t}${d ? `<small>${d}</small>` : ''}</span><select class="field sel" data-set="${k}" ${host ? '' : 'disabled'}>${ch.map(([v, l]) => `<option value="${v}" ${cfg[k] === v ? 'selected' : ''}>${l}</option>`).join('')}</select></label>`).join('')
     + SETTINGS_UI.map(([k, t, d]) => `<label class="opt"><span>${t}<small>${d}</small></span><input class="sw" type="checkbox" data-set="${k}" ${cfg[k] ? 'checked' : ''} ${host ? '' : 'disabled'}></label>`).join('');
   mount('lobby', `${BGFX}<div class="shell"><div class="card wide${introCls('lobby')}"><div class="lobby">
     <div>
       ${isLocal() ? '<h3 class="sec">Partie sur le même écran</h3>' : `<h3 class="sec">Code du salon</h3><div class="row"><div class="code">${esc(S.code)}</div><button class="btn sm" data-a="copy" data-v="${esc(link)}">Copier le lien</button></div>
       <p class="note" style="margin-top:6px">${host ? (net.ready ? 'Envoie le lien à tes amis. Garde cet onglet ouvert : c\'est lui qui fait tourner la partie.' : 'Ouverture du salon…') : 'En attente du lancement par l\'hôte.'}</p>`}
-      <h3 class="sec">Joueurs (${S.players.length}/${MAX_PLAYERS})</h3><div class="plist">${pl || '<p class="note">Ajoute au moins deux joueurs.</p>'}</div>
+      <h3 class="sec">Joueurs (${S.players.length}/${MAX_PLAYERS})</h3><div class="plist">${pl || '<p class="note">Ajoute au moins deux joueurs.</p>'}</div>${!isLocal() && !P(S, net.myId) && (S.specs || []).some(x => x.id === net.myId) ? '<button class="btn primary" data-a="spec-join" style="width:100%;margin-top:10px">Rejoindre la partie</button>' : ''}
       ${host ? `<div class="stack" style="margin-top:12px">${isLocal() ? '<form class="row" id="addlocalf"><input class="field" id="localname" maxlength="14" placeholder="Pseudo du joueur"><button class="btn">Ajouter</button></form>' : ''}
         <button class="btn" data-a="l-bot" style="width:100%">Ajouter un bot</button></div>` : ''}
       <button class="btn danger" data-a="leave" style="width:100%;margin-top:12px">Quitter</button>
@@ -1579,6 +1667,7 @@ function renderLobby() {
       <button class="btn" data-a="snd" style="flex:1;min-width:180px">${sound.on ? '🔊 Son activé (tester)' : '🔇 Son coupé'}</button></div>
     </div></div>`);
   if (ui.modal && ui.modal.type === 'tok') renderModal();
+  if (keepSet !== null) { const inp = document.querySelector('[data-set="startCash"]'); if (inp) { inp.value = keepSet; inp.focus(); } }
   if (keepRn) { const inp = document.querySelector('[data-rename="' + keepRn.id + '"]'); if (inp) { inp.value = keepRn.v; inp.focus(); try { inp.setSelectionRange(keepRn.s, keepRn.s); } catch (e) { } } }
 }
 
@@ -1598,13 +1687,13 @@ function mountGame() {
   }).join('');
   const die = id => `<div class="die3d" id="${id}"><div class="cube">${[1, 2, 3, 4, 5, 6].map(n => `<div class="face f${n}">${Array.from({ length: 9 }, (_, i) => PIPS[n].includes(i) ? '<b></b>' : '<i></i>').join('')}</div>`).join('')}</div></div>`;
   const deck = (k, sym, lbl) => `<div class="deck d-${k}" id="deck-${k}"><i></i><i></i><b><span>${sym}</span>${lbl}</b></div>`;
-  mount('game', `<div class="game"><div class="boardwrap"><div class="boardbox" style="--accent:${M.accent}"><div class="board enter" id="board">${tiles}
+  mount('game', `<div class="game"><div class="boardwrap"><div class="boardbox" data-theme="${theme}" style="--accent:${M.accent}"><div class="board enter" id="board">${tiles}
     <div class="center"><div class="glow"></div><div class="deco" aria-hidden="true">${M.deco.map((d, i) => `<span style="--i:${i}">${d}</span>`).join('')}</div><h1>Magnat<small>Map <b>${esc(M.name)}</b>${isLocal() ? '' : ', salon ' + esc(S.code)}</small></h1>
       <div class="dice">${die('d0')}${die('d1')}<span class="dsum" id="dsum"></span></div>
       <div id="evpill"></div><div class="status" id="status"></div><div class="tbar" id="tbar"></div><div class="actions" id="actions"></div><div id="auction" style="width:100%"></div>
       <div class="decks" id="decks">${deck('chance', '❓', 'Surprise')}<div class="potbox" id="potbox"></div>${deck('chest', '🎁', 'Trésor')}</div>
       <div class="feed" id="feed" aria-live="polite"></div><form class="chatin" id="chatf"><input id="chatin" maxlength="200" placeholder="Écrire aux autres joueurs…" aria-label="Message" autocomplete="off"><span class="reacts">${REACTIONS.map(r => `<button type="button" data-a="react" data-v="${r}" aria-label="Réaction ${r}">${r}</button>`).join('')}</span></form>
-      <div id="cardpop"></div><div id="turnfx"></div></div>
+      <div id="cardpop"></div><div id="setfx"></div><div id="turnfx"></div></div>
     <div class="tokens" id="tokens"></div></div></div><div class="dock" id="dock"></div></div><aside class="side" id="side"></aside></div>`);
   if (ui.modal && ui.modal.type === 'tok') closeModal();
   ui.mapId = S.mapId; ui.first = true; ui.rSeq = undefined; ui.evSeq = undefined; dockLayout(); setTimeout(() => { const b = $('#board'); if (b) b.classList.remove('enter'); }, 1400);
@@ -1617,6 +1706,9 @@ function dockLayout() { // sur mobile, enchères + journal + chat passent sous l
   const f = $('#feed'); if (f) f.scrollTop = f.scrollHeight;
 }
 mqSmall.addEventListener('change', dockLayout);
+const THEMES = [['nuit', 'Nuit', ['#1D2A4D', '#0B1630', '#F59E0B']], ['classique', 'Classique', ['#FFFDF7', '#2F6B4F', '#EF4444']], ['neon', 'Néon', ['#0D0D1A', '#C026D3', '#22D3EE']], ['pastel', 'Pastel', ['#F5F3FF', '#A5B4FC', '#EC4899']], ['sable', 'Sable', ['#FBF3E4', '#B45309', '#0EA5E9']]];
+let theme = LS.get('magnat_theme') || 'nuit'; if (!THEMES.some(t => t[0] === theme)) theme = 'nuit';
+function applyTheme() { const bb = document.querySelector('.boardbox'); if (bb) bb.dataset.theme = theme; }
 const tokOf = p => (p.tok ? esc(p.tok) : esc((p.name.replace(/^Bot /, '') || '?')[0].toUpperCase()));
 function renderGame() {
   if (ui.screen !== 'game' || ui.mapId !== S.mapId) mountGame();
@@ -1635,8 +1727,26 @@ function renderGame() {
   ui.first = false;
 }
 function flashTile(i, cls, delay, ms) { setTimeout(() => { const el = $('#t' + i); if (!el) return; el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); setTimeout(() => el.classList.remove(cls), ms || 1100); }, delay || 0); }
+const setKey = t => (t.k === 'prop' ? 'g' + t.g : t.k);
+function fullSets(own) { const B = buildBoard(S.mapId), res = {}; B.filter(isBuyable).forEach(t => { const k = setKey(t), o = own[t.i]; if (!(k in res)) res[k] = o ? o.o : null; else if (!o || res[k] !== o.o) res[k] = null; }); return res; }
+function setFx(p, key) { // "Série complète !" : cartes en éventail, cases qui brillent, confettis aux couleurs du groupe
+  const B = buildBoard(S.mapId), tl = B.filter(t => isBuyable(t) && setKey(t) === key), g = key[0] === 'g' ? GROUPS[+key.slice(1)] : key === 'rail' ? '#94A3B8' : '#FACC15';
+  const what = key[0] === 'g' ? 'tout le groupe ' + GROUP_NAMES[+key.slice(1)] : key === 'rail' ? 'tous les transports' : 'toutes les compagnies';
+  const perk = key[0] === 'g' ? (S.settings.doubleRent ? 'Loyers doublés, et les maisons sont débloquées !' : 'Les maisons sont débloquées !') : key === 'rail' ? 'Loyer maximum sur chaque transport.' : 'Loyer : 10 fois les dés.';
+  const run = () => {
+    const box = $('#setfx'); if (!box || !S) return;
+    tl.forEach((t, i) => setTimeout(() => { const el = $('#t' + t.i); if (el) { el.classList.remove('setwin'); void el.offsetWidth; el.classList.add('setwin'); } }, 300 + i * 160));
+    box.innerHTML = `<div class="setfx" style="--c:${p.color};--g:${g}"><div class="setrays"></div><div class="setin"><small>Série complète</small>
+      <div class="setcards">${tl.map((t, i) => `<div class="scard" style="--i:${i - (tl.length - 1) / 2};--d:${i}"><u></u><b>${esc(t.name)}</b><span>${money(S, t.price)}</span></div>`).join('')}</div>
+      <div class="setwho"><span class="ava sm" style="--c:${p.color}">${tokOf(p)}</span><span><b style="color:${p.color}">${esc(p.name)}</b> possède ${what}</span></div><p>${perk}</p></div></div>`;
+    sfx('set'); confetti([g, p.color, '#FFFFFF', '#FDE68A'], 120);
+    setTimeout(() => { if (box.isConnected) box.innerHTML = ''; }, 3600);
+  };
+  const wait = Math.max(0, (ui.setBusy || 0) - Date.now()); ui.setBusy = Date.now() + wait + 3800; setTimeout(run, wait + 250);
+}
 function ownFx() { // achat d'un terrain, construction
   const prev = ui.own;
+  if (prev && !ui.first) { const a0 = fullSets(prev), a1 = fullSets(S.own); for (const k in a1) if (a1[k] && a1[k] !== a0[k] && P(S, a1[k])) setFx(P(S, a1[k]), k); }
   if (prev && !ui.first) for (const i in S.own) {
     const o = S.own[i], q = prev[i];
     if (!q || q.o !== o.o) { flashTile(i, 'bought', ui.fxDelay); sfx('buy', ui.fxDelay); }
@@ -1711,7 +1821,7 @@ function updateTiles() {
   const B = buildBoard(S.mapId), cur = S.players[S.turn];
   for (const t of B) {
     const el = $('#t' + t.i), o = S.own[t.i], pr = el.querySelector('.pr');
-    el.classList.toggle('owned', !!o && !o.m); el.classList.toggle('mort', !!o && o.m);
+    el.classList.toggle('owned', !!o && !o.m); el.classList.toggle('mort', !!o && o.m); el.classList.toggle('full', !!o && t.k === 'prop' && ownsAll(S, B, o.o, t));
     el.classList.toggle('here', S.phase !== 'over' && cur.pos === t.i && !ui.anim[cur.id]);
     if (o) el.style.setProperty('--o', P(S, o.o).color); else el.style.removeProperty('--o');
     if (pr) pr.textContent = t.amt ? money(S, t.amt) : !o ? money(S, t.price) : o.m ? 'hyp.' : t.k === 'util' ? '×' + (groupOf(B, t).filter(x => S.own[x.i] && S.own[x.i].o === o.o).length === 2 ? 10 : 4) : money(S, calcRent(S, B, t, 7));
@@ -1857,7 +1967,7 @@ function renderCenter() {
   if (ui.held) return;
   // journal
   const feed = $('#feed'), stick = feed.scrollHeight - feed.scrollTop - feed.clientHeight < 40 || ui.first;
-  feed.innerHTML = S.log.map(l => { const p = l.p && P(S, l.p); return `<p class="${l.chat ? 'chat' : l.card ? 'crd' : p ? '' : 'sys'}${(l.n || 0) > ui.lastLogN ? ' new' : ''}">${p ? `<span class="who" style="--c:${p.color}">${esc(p.name)}</span>${l.chat ? ' : ' : ' '}` : ''}${esc(l.m)}</p>`; }).join('');
+  feed.innerHTML = S.log.map(l => { const p = l.p && P(S, l.p); return `<p class="${l.chat ? 'chat' : l.card ? 'crd' : p ? '' : 'sys'}${(l.n || 0) > ui.lastLogN ? ' new' : ''}">${p ? `<span class="who" style="--c:${p.color}">${esc(p.name)}</span>${l.chat ? ' : ' : ' '}` : l.sp ? `<span class="who spec">👁 ${esc(l.sp)}</span> : ` : ''}${esc(l.m)}</p>`; }).join('');
   if (!ui.first) S.log.filter(l => l.s && (l.n || 0) > ui.lastLogN).slice(-3).forEach((l, i) => sfx(l.s, i * 260));
   ui.lastLogN = S.lseq || 0;
   if (stick) feed.scrollTop = feed.scrollHeight;
@@ -1923,10 +2033,10 @@ function renderSide() {
   const trades = S.trades.filter(t => controllable(P(S, t.to)) || controllable(P(S, t.from))).map(t => {
     const A = P(S, t.from), Z = P(S, t.to), forMe = controllable(Z);
     return `<div class="trade"><b>${esc(A.name)}</b> propose à <b>${esc(Z.name)}</b><div class="ex"><span>donne : ${tradeText(t.give)}</span><span>⇄</span><span>reçoit : ${tradeText(t.get)}</span></div>
-      <div class="row">${forMe ? `<button class="btn sm cyan" data-a="t-accept" data-id="${t.id}" data-p="${Z.id}">Accepter</button><button class="btn sm" data-a="t-decline" data-id="${t.id}" data-p="${Z.id}">Refuser</button>` : `<button class="btn sm" data-a="t-decline" data-id="${t.id}" data-p="${A.id}">Annuler mon offre</button>`}</div></div>`;
+      <div class="row">${forMe ? `<button class="btn sm cyan" data-a="t-accept" data-id="${t.id}" data-p="${Z.id}">Accepter</button><button class="btn sm" data-a="t-counter" data-id="${t.id}">Contre-offre</button><button class="btn sm" data-a="t-decline" data-id="${t.id}" data-p="${Z.id}">Refuser</button>` : `<button class="btn sm" data-a="t-decline" data-id="${t.id}" data-p="${A.id}">Annuler mon offre</button>`}</div></div>`;
   }).join('');
   const props = me ? B.filter(t => S.own[t.i] && S.own[t.i].o === me.id).map(t => { const o = S.own[t.i]; return `<button class="mini ${o.m ? 'm' : ''}" style="--g:${t.k === 'prop' ? GROUPS[t.g] : t.k === 'rail' ? '#94A3B8' : '#FCD34D'}" data-a="tile" data-i="${t.i}"><u>${t.k === 'prop' ? (o.h ? (o.h === 5 ? '<i class="hs hotel"></i>' : '<i class="hs"></i>'.repeat(o.h)) : '') : tileIcon(t, B)}</u><span>${esc(t.name)}</span><b>${o.m ? 'hyp.' : t.k === 'util' ? '× dés' : money(S, calcRent(S, B, t, 7))}</b></button>`; }).join('') : '';
-  $('#side').innerHTML = `<div class="box"><h2><span>Joueurs, tour ${S.round}${S.settings.maxRounds ? ' / ' + S.settings.maxRounds : ''}</span><span class="row"><button class="btn sm ${sound.on ? '' : 'off'}" data-a="snd" aria-label="${sound.on ? 'Couper le son' : 'Activer le son'}">${sound.on ? '🔊 Son' : '🔇 Coupé'}</button><button class="btn sm" data-a="fs" aria-label="Plein écran" title="Plein écran">⛶</button><button class="btn sm" data-a="help" aria-label="Règles" title="Règles du jeu">?</button><button class="btn sm" data-a="leave">Quitter</button></span></h2>${players}</div>
+  $('#side').innerHTML = `<div class="box"><h2><span>Joueurs, tour ${S.round}${S.settings.maxRounds ? ' / ' + S.settings.maxRounds : ''}</span><span class="row"><button class="btn sm ${sound.on ? '' : 'off'}" data-a="snd" aria-label="${sound.on ? 'Couper le son' : 'Activer le son'}" title="Son">${sound.on ? '🔊' : '🔇'}</button><button class="btn sm" data-a="theme" aria-label="Couleurs du plateau" title="Couleurs du plateau">🎨</button><button class="btn sm" data-a="fs" aria-label="Plein écran" title="Plein écran">⛶</button><button class="btn sm" data-a="help" aria-label="Règles" title="Règles du jeu">?</button><button class="btn sm" data-a="leave">Quitter</button></span></h2>${players}${(S.specs || []).length ? `<p class="specs">👁 ${S.specs.length > 1 ? 'Spectateurs' : 'Spectateur'} : ${S.specs.map(x => esc(x.name)).join(', ')}</p>` : ''}${!isLocal() && !P(S, net.myId) ? '<p class="specs me">Tu regardes la partie en spectateur. Tu pourras jouer à la prochaine.</p>' : ''}</div>
     ${trades ? `<div class="box"><h2>Échanges en attente</h2>${trades}</div>` : ''}
     ${me ? `<div class="box"><h2>${isLocal() ? 'Terrains de ' + esc(me.name) : 'Mes terrains'}</h2>${props ? `<div class="chips">${props}</div>` : '<p class="note">Aucun terrain pour l\'instant. Clique sur une case du plateau pour voir ses loyers.</p>'}</div>` : ''}`;
 }
@@ -1936,10 +2046,16 @@ function closeModal() { ui.modal = null; ui.draft = null; const m = $('#modal');
 function modalRoot() { let m = $('#modal'); if (!m) { m = document.createElement('div'); m.id = 'modal'; m.className = 'modal fresh'; m.dataset.a = 'backdrop'; document.body.appendChild(m); setTimeout(() => m.classList.remove('fresh'), 420); } return m; }
 function renderModal() {
   if (ui.modal && ui.modal.type === 'help') return renderHelpModal();
+  if (ui.modal && ui.modal.type === 'theme') return renderThemeModal();
   if (ui.modal && ui.modal.type === 'tok' && S && S.phase === 'lobby') return renderTokModal();
   if (!ui.modal || !S || S.phase === 'lobby') return closeModal();
   if (ui.modal.type === 'tile') return renderTileModal(ui.modal.i);
   renderTradeModal();
+}
+function renderThemeModal() {
+  modalRoot().innerHTML = `<div class="sheet" role="dialog" aria-label="Couleurs du plateau"><div class="hd dark">Couleurs du plateau</div><div class="bd"><p class="note" style="margin-bottom:12px">Choix personnel : ça ne change que ton écran.</p>
+    <div class="themes">${THEMES.map(([k, n, c]) => `<button class="thm ${theme === k ? 'on' : ''}" data-a="pick-theme" data-v="${k}"><span class="sw3">${c.map(x => `<i style="background:${x}"></i>`).join('')}</span><b>${n}</b></button>`).join('')}</div>
+    <button class="btn primary" data-a="close" style="width:100%;margin-top:14px">OK</button></div></div>`;
 }
 function renderTokModal() {
   const p = P(S, ui.modal.id); if (!p) return closeModal();
@@ -2027,6 +2143,10 @@ document.addEventListener('click', e => {
     case 'pick-tok': doAct(amHost() ? actorHost() : net.myId, { type: 'setToken', id: ui.modal.id, tok: d.v }); break;
     case 'pick-col': doAct(amHost() ? actorHost() : net.myId, { type: 'setColor', id: ui.modal.id, color: d.v }); break;
     case 'help': ui.modal = { type: 'help' }; renderModal(); break;
+    case 'theme': ui.modal = { type: 'theme' }; renderModal(); break;
+    case 'pick-theme': theme = d.v; LS.set('magnat_theme', theme); applyTheme(); renderModal(); break;
+    case 'spec-join': doAct(net.myId, { type: 'specJoin' }); break;
+    case 't-counter': { const tr = S.trades.find(x => x.id === +d.id); if (!tr) return; ui.draft = { from: tr.to, to: tr.from, give: JSON.parse(JSON.stringify(tr.get)), get: JSON.parse(JSON.stringify(tr.give)), counter: tr.id }; ui.modal = { type: 'trade' }; renderModal(); break; }
     case 'react': { const me = viewPlayer() || (S && P(S, net.myId)); if (me && S && S.phase !== 'lobby') doAct(me.id, { type: 'react', e: d.v }); break; }
     case 'fs': { const dd = document, el = dd.documentElement, on = dd.fullscreenElement || dd.webkitFullscreenElement, f = on ? (dd.exitFullscreen || dd.webkitExitFullscreen) : (el.requestFullscreen || el.webkitRequestFullscreen); if (f) { try { const r = f.call(on ? dd : el); if (r && r.catch) r.catch(() => toast('Plein écran indisponible ici')); } catch (er) { toast('Plein écran indisponible ici'); } } else toast('Plein écran indisponible sur cet appareil'); break; }
     case 'l-remove': doAct(actorHost(), { type: 'remove', id: d.id }); break;
@@ -2046,7 +2166,7 @@ document.addEventListener('click', e => {
     case 'trade-open': { const me = viewPlayer(); if (!me) return; ui.draft = { from: me.id, to: d.id, give: { cash: 0, props: [], cards: 0 }, get: { cash: 0, props: [], cards: 0 } }; ui.modal = { type: 'trade' }; renderModal(); break; }
     case 'tr-toggle': { const arr = ui.draft[d.s].props, i = +d.i, k = arr.indexOf(i); if (k >= 0) arr.splice(k, 1); else arr.push(i); renderModal(); break; }
     case 'tr-card': ui.draft[d.s].cards = ui.draft[d.s].cards ? 0 : 1; renderModal(); break;
-    case 'tr-send': { const dr = ui.draft; doAct(dr.from, { type: 'tradePropose', trade: { to: dr.to, give: dr.give, get: dr.get } }); closeModal(); break; }
+    case 'tr-send': { const dr = ui.draft; if (dr.counter) doAct(dr.from, { type: 'tradeDecline', id: dr.counter }); doAct(dr.from, { type: 'tradePropose', trade: { to: dr.to, give: dr.give, get: dr.get } }); closeModal(); break; }
     case 't-accept': doAct(d.p, { type: 'tradeAccept', id: +d.id }); break;
     case 't-decline': doAct(d.p, { type: 'tradeDecline', id: +d.id }); break;
   }
@@ -2072,7 +2192,7 @@ document.addEventListener('keydown', e => {
   if ((e.key === ' ' || e.code === 'Space') && !e.repeat && S && S.phase !== 'lobby' && !ui.modal && !/INPUT|TEXTAREA|SELECT/.test((document.activeElement || {}).tagName || '')) {
     const b = document.querySelector('#actions .btn.primary:not([disabled])'); if (b) { e.preventDefault(); if (document.activeElement && document.activeElement.tagName === 'BUTTON') document.activeElement.blur(); b.click(); }
   }
-  if (e.key === 'Enter' && e.target.dataset && e.target.dataset.rename) { e.preventDefault(); e.target.blur(); }
+  if (e.key === 'Enter' && e.target.dataset && (e.target.dataset.rename || e.target.dataset.set === 'startCash')) { e.preventDefault(); e.target.blur(); }
   if (e.key === 'Enter' && e.target.dataset && e.target.dataset.bidin && S && S.phase === 'auction') { e.preventDefault(); bidCustom(e.target.dataset.bidin); }
   if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('pick')) { e.preventDefault(); e.target.click(); }
 });
@@ -2081,8 +2201,9 @@ document.addEventListener('submit', e => {
   if (id === 'gatef') { const h = sha256($('#gatein').value.trim()); if (h === ACCESS_HASH) { LS.set('magnat_gate', h); ui.gateOk = true; render(); } else { $('#gateerr').textContent = 'Mauvais code.'; const f = $('#gatef'); f.classList.remove('intro', 'shake'); void f.offsetWidth; f.classList.add('shake'); } }
   else if (id === 'joinf') { readName(); const code = $('#code').value.replace(/[^a-z0-9]/gi, '').toUpperCase(); if (code.length !== 5) { ui.homeErr = 'Le code du salon fait 5 caractères.'; return render(); } clientStart(code); }
   else if (id === 'addlocalf') { const v = $('#localname').value.trim(); if (v) doAct(actorHost(), { type: 'addPlayer', name: v }); }
-  else if (id === 'chatf') { const inp = $('#chatin'), m = inp.value.trim(); if (!m) return; const me = viewPlayer() || P(S, net.myId); if (me) doAct(me.id, { type: 'chat', m }); inp.value = ''; }
+  else if (id === 'chatf') { const inp = $('#chatin'), m = inp.value.trim(); if (!m) return; const me = viewPlayer() || P(S, net.myId); if (me) doAct(me.id, { type: 'chat', m }); else if (net.mode === 'client') doAct(net.myId, { type: 'chat', m }); inp.value = ''; }
 });
+window.addEventListener('pagehide', () => { if (net.mode === 'client' && net.peer) try { net.peer.destroy(); } catch (e) { } });
 window.addEventListener('beforeunload', e => { if (S && S.phase !== 'lobby' && S.phase !== 'over' && net.mode === 'host') { e.preventDefault(); e.returnValue = ''; } });
 render();
 
