@@ -502,6 +502,85 @@ body:has(.game){background-image:radial-gradient(1100px 700px at 30% 40%,rgba(40
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 
+/* ===== v8 : pions, maps, événements, réactions, stats ===== */
+.tokb{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:17px;flex:none;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--c) 45%,#fff),var(--c));box-shadow:0 0 0 2px rgba(255,255,255,.85),0 2px 6px rgba(0,0,0,.5);transition:transform .2s var(--spring)}
+.tokb:hover:not(:disabled){transform:scale(1.18) rotate(-10deg)}
+.pvw{display:grid;place-items:center;margin:2px 0 14px}.pvw .ava{width:64px;height:64px;font-size:34px;grid-row:auto;animation:pop .4s var(--spring)}
+.tokgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.tokpick{aspect-ratio:1;border-radius:12px;font-size:24px;display:grid;place-items:center;background:#0A1730;border:1px solid var(--line);transition:transform .15s var(--spring),background .15s}
+.tokpick:hover:not(:disabled){transform:scale(1.12);background:var(--panel2)}
+.tokpick.on{background:color-mix(in srgb,var(--c) 30%,#0A1730);border-color:var(--c);box-shadow:0 0 0 2px var(--c)}
+.tokpick:disabled{opacity:.25;filter:grayscale(1)}
+.colgrid{display:flex;gap:10px;flex-wrap:wrap}
+.colgrid .dot{width:30px;height:30px}
+.colgrid .dot.on{box-shadow:0 0 0 3px #fff,0 0 0 6px var(--c)}
+.colgrid .dot:disabled{opacity:.2}
+.ava{font-size:17px}
+.tok i{font-size:2cqw}
+
+.maps{grid-template-columns:repeat(3,1fr);gap:8px}
+.map{padding:10px 10px 8px 46px;min-height:62px}
+.map .memo{position:absolute;left:9px;top:50%;translate:0 -50%;font-style:normal;font-size:26px;line-height:1;filter:drop-shadow(0 3px 5px rgba(0,0,0,.4));transition:transform .3s var(--spring)}
+.map:hover .memo,.map.on .memo{transform:scale(1.18) rotate(-8deg)}
+.map b{font-size:15px}.map span{font-size:11px}.map em{margin-top:6px;height:4px}
+.rec{margin:-12px 0 20px;font-weight:700;color:var(--amber);font-size:14px}
+
+.center .deco{position:absolute;inset:0;z-index:-1;pointer-events:none}
+.center .deco span{position:absolute;font-size:10cqw;opacity:.085;filter:grayscale(.2) blur(.3px);animation:decofloat 9s ease-in-out infinite;animation-delay:calc(var(--i)*-2.2s)}
+.center .deco span:nth-child(1){left:5%;top:10%;rotate:-14deg}.center .deco span:nth-child(2){right:5%;top:14%;rotate:12deg}
+.center .deco span:nth-child(3){left:7%;bottom:8%;rotate:10deg}.center .deco span:nth-child(4){right:6%;bottom:10%;rotate:-10deg}
+@keyframes decofloat{50%{transform:translateY(-10%) scale(1.06)}}
+
+#evpill{width:100%;display:flex;justify-content:center}
+.evp{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;max-width:100%;margin:.2cqw 0 .6cqw;padding:4px 12px;border-radius:99px;font-size:clamp(11px,1.35cqw,13px);background:linear-gradient(90deg,rgba(245,158,11,.22),rgba(34,211,238,.18));border:1px solid rgba(245,158,11,.55);box-shadow:0 0 18px rgba(245,158,11,.2);animation:pop .4s var(--spring)}
+.evp small{color:var(--mute);font-size:.95em}
+.evfx{position:absolute;inset:0;display:grid;place-items:center;z-index:7;pointer-events:none;background:radial-gradient(circle,rgba(3,8,20,.55),rgba(3,8,20,.85));animation:cardfade 2.6s forwards}
+.evcard{width:min(80%,360px);border-radius:20px;padding:20px 22px;text-align:center;background:linear-gradient(170deg,#FFFBEB,#FDE68A);color:#1A1204;box-shadow:0 30px 70px rgba(0,0,0,.6),0 0 60px rgba(245,158,11,.45);animation:evin .7s var(--spring) both}
+.evcard .evic{display:block;font-size:clamp(40px,8cqw,70px);line-height:1;animation:crown 1.4s ease-in-out infinite}
+.evcard small{display:block;margin-top:6px;font:800 12px var(--display);color:#92400E;letter-spacing:.05em;text-transform:uppercase}
+.evcard b{display:block;font:800 clamp(20px,3.6cqw,30px)/1.1 var(--display);margin:2px 0 6px}
+.evcard p{font-weight:600;color:#44340A;font-size:14px}
+@keyframes evin{from{transform:translateY(-60%) rotate(-10deg) scale(.5);opacity:0}}
+
+.chatin{position:relative}
+.chatin .reacts{display:flex;align-items:center;gap:1px;padding:0 4px;background:#0A1730;border:1px solid var(--line);border-top:0;border-left:0;border-radius:0 0 12px 0}
+.chatin input{border-radius:0 0 0 12px}
+.reacts button{font-size:16px;line-height:1;padding:5px 3px;border-radius:7px;transition:transform .15s var(--spring),background .15s}
+.reacts button:hover{transform:scale(1.35) translateY(-2px);background:rgba(255,255,255,.08)}
+.rfx{position:absolute;translate:-50% -50%;font-size:clamp(22px,4cqw,40px);z-index:6;pointer-events:none;animation:rfx 2s ease-out both;filter:drop-shadow(0 4px 8px rgba(0,0,0,.5))}
+@keyframes rfx{0%{opacity:0;transform:translate(0,0) scale(.3)}12%{opacity:1;transform:translate(calc(var(--dx)*.3),-20px) scale(1.25)}100%{opacity:0;transform:translate(var(--dx),-130px) scale(1)}}
+.coinp{position:absolute;translate:-50% -50%;font-size:clamp(12px,1.8cqw,18px);z-index:5;pointer-events:none;animation:coin 1s cubic-bezier(.2,.7,.3,1) both}
+@keyframes coin{0%{opacity:1;transform:translate(0,0) scale(.4)}60%{opacity:1;transform:translate(var(--dx),var(--dy)) scale(1.1) rotate(200deg)}100%{opacity:0;transform:translate(calc(var(--dx)*1.1),calc(var(--dy) + 40px)) scale(.8) rotate(360deg)}}
+
+.box h2{flex-wrap:wrap}
+.box h2 .row{flex-wrap:wrap;justify-content:flex-end}
+.fort{font-size:11.5px;color:var(--mute);font-weight:600;width:100%}
+
+.center.is-over .dice,.center.is-over .decks,.center.is-over #evpill,.center.is-over .feed,.center.is-over .chatin{display:none!important}
+.center.is-over .chatin input{border-radius:12px 0 0 12px;border-top:1px solid var(--line)}.center.is-over .chatin .reacts{border-top:1px solid var(--line);border-radius:0 12px 12px 0}
+.center.is-over{justify-content:flex-start}
+.center.is-over .actions{margin:.4cqw 0}
+.winner .crown{font-size:clamp(30px,5.5cqw,54px)}
+.chart{width:100%;height:clamp(60px,11cqw,110px);margin:6px 0;background:rgba(10,23,48,.6);border:1px solid var(--line);border-radius:12px}
+.chart polyline{fill:none;stroke:var(--c);stroke-width:2.5;vector-effect:non-scaling-stroke;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:4000;stroke-dashoffset:4000;animation:draw 2s ease-out .3s forwards;filter:drop-shadow(0 0 4px var(--c))}
+@keyframes draw{to{stroke-dashoffset:0}}
+.stable{display:grid;gap:4px;text-align:left;margin-bottom:6px}
+.srow{display:grid;grid-template-columns:22px auto 1fr auto;grid-template-rows:auto auto;column-gap:8px;align-items:center;padding:5px 10px;border-radius:10px;background:rgba(10,23,48,.7);border:1px solid var(--line);animation:slidein .45s var(--spring) both}
+.srow:nth-child(2){animation-delay:.1s}.srow:nth-child(3){animation-delay:.2s}.srow:nth-child(4){animation-delay:.3s}.srow:nth-child(5){animation-delay:.4s}
+.srow.win{border-color:var(--c);box-shadow:0 0 18px color-mix(in srgb,var(--c) 30%,transparent)}
+.srow .sp{grid-row:1/3;font:800 15px var(--display);color:var(--mute)}
+.srow .ava.sm{grid-row:1/3;width:28px;height:28px;font-size:15px}
+.srow b{font-size:14px}.srow small{grid-column:3/5;font-size:11px;color:var(--mute)}
+.srow .sw2{grid-column:4;grid-row:1;font:800 14px var(--display);color:var(--c);white-space:nowrap}
+.srow b{grid-column:3;grid-row:1}
+.rules{display:grid;grid-template-columns:1fr 1fr;gap:10px 18px}
+.rule{display:flex;gap:10px;align-items:flex-start}
+.rule>span{font-size:22px;line-height:1.2}
+.rule b{font-family:var(--display);font-size:15px}
+.rule p{font-size:13px;color:#C9D6EE;margin-top:2px}
+@media (max-width:980px){.maps{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:620px){.rules{grid-template-columns:1fr}.tokgrid{grid-template-columns:repeat(5,1fr)}.reacts button{font-size:14px;padding:4px 2px}.srow small{display:none}.tok i{font-size:3cqw}}
+
 </style>
 </head>
 <body>
@@ -523,6 +602,16 @@ body:has(.game){background-image:radial-gradient(1100px 700px at 30% 40%,rgba(40
 /* ================= MOTEUR DE JEU (aucune dépendance au DOM) ================= */
 const GROUPS = ['#A9744F', '#6CC5F0', '#E879B9', '#F59542', '#EF5350', '#F2CF3B', '#3FBF7F', '#6D7BFF'];
 const PLAYER_COLORS = ['#22D3EE', '#F59E0B', '#F472B6', '#A3E635', '#C084FC', '#FB7185', '#2DD4BF', '#FDE047'];
+const PLAYER_TOKENS = ['🚗', '🎩', '🐶', '🚀', '⛵', '👑', '🦁', '🐱', '🦊', '🐸', '🎸', '⚽', '🍕', '💎', '🛵', '🐉', '👻', '🦄'];
+const REACTIONS = ['😂', '🔥', '😡', '👏', '💸', '😱', '🤝', '😭'];
+const EVENTS = {
+  boom: { ic: '📈', t: 'Boom immobilier', d: 'Tous les loyers doublent pendant ce tour.' },
+  krach: { ic: '📉', t: 'Krach boursier', d: 'Les loyers sont divisés par deux pendant ce tour.' },
+  portes: { ic: '🚪', t: 'Portes ouvertes', d: 'Aucun loyer pendant ce tour.' },
+  soldes: { ic: '🏗️', t: 'Soldes du BTP', d: 'Les maisons coûtent moitié prix pendant ce tour.' },
+  fete: { ic: '🎉', t: 'Fête nationale', d: 'La banque offre 100 à chaque joueur.' },
+  fisc: { ic: '🧾', t: 'Contrôle fiscal', d: 'Chaque joueur verse 10 % de son argent à la cagnotte.' }
+};
 const MAX_PLAYERS = 6, SALARY = 200, GO_LAND = 300, JAIL_FINE = 50;
 
 /* Pour ajouter une map : copier un bloc, changer id/name/cur/accent, 22 propriétés (de la moins chère
@@ -563,6 +652,36 @@ const MAPS = {
       'Dakar', 'Abidjan', 'Accra', 'Alger', 'Tunis', 'Casablanca', 'Lagos', 'Nairobi', 'Le Caire',
       'Marrakech', 'Zanzibar', 'Johannesburg', 'Le Cap', 'Seychelles'],
     rails: ['Aéroport d\'Addis-Abeba', 'Aéroport de Casablanca', 'Aéroport du Caire', 'Aéroport de Johannesburg'], utils: ['Barrage d\'Assouan', 'Solaire du Sahara'] },
+  maroc: { id: 'maroc', name: 'Maroc', cur: 'DH', accent: '#F97316', railIcon: '✈️',
+    props: ['Guelmim', 'Taza', 'Khouribga', 'Béni Mellal', 'Nador', 'Oujda', 'Kénitra', 'Safi',
+      'Meknès', 'Tétouan', 'El Jadida', 'Fès', 'Ouarzazate', 'Chefchaouen', 'Essaouira', 'Agadir', 'Tanger',
+      'Rabat', 'Casablanca', 'Marrakech', 'Anfa', 'La Palmeraie'],
+    rails: ['Aéroport Mohammed V', 'Aéroport de Marrakech', 'Aéroport de Tanger', 'Aéroport d\'Agadir'], utils: ['Centrale Noor', 'Barrage Al Wahda'] },
+  algerie: { id: 'algerie', name: 'Algérie', cur: 'DA', accent: '#16A34A', railIcon: '✈️',
+    props: ['Djelfa', 'Tiaret', 'Biskra', 'M\'Sila', 'Batna', 'Sétif', 'Tlemcen', 'Ghardaïa',
+      'Blida', 'Béjaïa', 'Tizi Ouzou', 'Skikda', 'Mostaganem', 'Constantine', 'Annaba', 'Tamanrasset', 'Timimoun',
+      'Oran', 'Tipaza', 'Hydra', 'Sidi Fredj', 'Alger'],
+    rails: ['Aéroport d\'Alger', 'Aéroport d\'Oran', 'Aéroport de Constantine', 'Aéroport de Djanet'], utils: ['Gaz du Sahara', 'Barrage de Béni Haroun'] },
+  japon: { id: 'japon', name: 'Japon', cur: '¥', accent: '#EC4899', railIcon: '🚄',
+    props: ['Aomori', 'Akita', 'Sendai', 'Niigata', 'Nagano', 'Kanazawa', 'Hiroshima', 'Nara',
+      'Nagoya', 'Kobe', 'Fukuoka', 'Sapporo', 'Yokohama', 'Okinawa', 'Hakone', 'Nikko', 'Osaka',
+      'Kyoto', 'Shibuya', 'Shinjuku', 'Roppongi', 'Ginza'],
+    rails: ['Gare de Tokyo', 'Gare d\'Osaka', 'Gare de Kyoto', 'Gare d\'Hiroshima'], utils: ['Centrale géothermique', 'Réseau fibre'] },
+  bresil: { id: 'bresil', name: 'Brésil', cur: 'R$', accent: '#84CC16', railIcon: '✈️',
+    props: ['Manaus', 'Belém', 'Teresina', 'Natal', 'Maceió', 'Recife', 'Fortaleza', 'Salvador',
+      'Goiânia', 'Curitiba', 'Belo Horizonte', 'Porto Alegre', 'Brasília', 'Florianópolis', 'Foz do Iguaçu', 'Paraty', 'Búzios',
+      'São Paulo', 'Ipanema', 'Copacabana', 'Leblon', 'Rio de Janeiro'],
+    rails: ['Aéroport de Guarulhos', 'Aéroport du Galeão', 'Aéroport de Brasília', 'Aéroport de Salvador'], utils: ['Barrage d\'Itaipu', 'Éthanol du Nordeste'] },
+  italie: { id: 'italie', name: 'Italie', cur: '€', accent: '#14B8A6', railIcon: '🚆',
+    props: ['Bari', 'Palerme', 'Catane', 'Naples', 'Pise', 'Bologne', 'Vérone', 'Turin',
+      'Gênes', 'Sienne', 'Florence', 'Venise', 'Milan', 'Rome', 'Positano', 'Amalfi', 'Cinque Terre',
+      'Capri', 'Portofino', 'Cortina', 'Lac de Côme', 'Sardaigne'],
+    rails: ['Gare de Milan', 'Gare de Rome', 'Gare de Florence', 'Gare de Venise'], utils: ['Aqueduc romain', 'Centrale du Pô'] },
+  royaume: { id: 'royaume', name: 'Royaume', cur: 'or', accent: '#0EA5E9', railIcon: '🐎',
+    props: ['Marais maudit', 'Hameau', 'Vieux moulin', 'Forêt sombre', 'Taverne', 'Forge', 'Village elfe', 'Grotte de cristal',
+      'Port des brumes', 'Grand marché', 'Tour du mage', 'Arène', 'Monastère', 'Bibliothèque', 'Mines naines', 'Pont du dragon', 'Cité flottante',
+      'Jardins royaux', 'Académie de magie', 'Trésor du dragon', 'Citadelle', 'Château royal'],
+    rails: ['Écurie du Nord', 'Écurie du Sud', 'Écurie de l\'Est', 'Écurie de l\'Ouest'], utils: ['Puits enchanté', 'Cristal de mana'] },
   galaxie: { id: 'galaxie', name: 'Galaxie', cur: 'cr', accent: '#C084FC', railIcon: '🚀',
     props: ['Phobos', 'Déimos', 'La Lune', 'Cérès', 'Pluton', 'Mercure', 'Mars', 'Vénus',
       'Io', 'Europe', 'Ganymède', 'Titan', 'Encelade', 'Triton', 'Uranus', 'Neptune', 'Saturne',
@@ -570,6 +689,10 @@ const MAPS = {
     rails: ['Station Alpha', 'Station Bêta', 'Station Gamma', 'Station Delta'], utils: ['Réacteur à fusion', 'Usine à oxygène'] }
 };
 
+const MAP_DECO = { paris: ['🗼', '🥐', '🎨', '🍷'], france: ['🥖', '🧀', '🏰', '🚲'], tunisie: ['🕌', '🌴', '🐪', '🏖️'], monde: ['🌍', '✈️', '🗽', '🗻'],
+  europe: ['🏛️', '🎡', '🚲', '⛪'], usa: ['🗽', '🍔', '🎰', '🌉'], afrique: ['🦁', '🌅', '🐘', '🥁'], maroc: ['🕌', '🐪', '🍵', '🏜️'], algerie: ['🏜️', '🌴', '🕌', '⛰️'],
+  japon: ['⛩️', '🍣', '🌸', '🗾'], bresil: ['⚽', '🦜', '🎉', '🌴'], italie: ['🍕', '🛵', '🏛️', '🍝'], royaume: ['🏰', '🐉', '🧙', '⚔️'], galaxie: ['🪐', '🚀', '👽', '🌠'] };
+for (const k in MAPS) MAPS[k].deco = MAP_DECO[k] || ['🎲'];
 const LAYOUT = ['go', 0, 'chest', 0, 'tax200', 'rail', 1, 'chance', 1, 1, 'jail', 2, 'util', 2, 2, 'rail', 3, 'chest', 3, 3,
   'park', 4, 'chance', 4, 4, 'rail', 5, 5, 'util', 5, 'gojail', 6, 6, 'chest', 6, 'rail', 'chance', 7, 'tax100', 7];
 const PRICES = [60, 60, 100, 100, 120, 140, 140, 160, 180, 180, 200, 220, 220, 240, 260, 260, 280, 300, 300, 320, 350, 400];
@@ -636,8 +759,8 @@ const CARDS = {
 };
 
 const DEFAULT_SETTINGS = { startCash: 1500, auction: true, doubleRent: true, pot: true, noRentInJail: false, evenBuild: true, randomOrder: true,
-  salary: 200, goLand: true, startProps: 0, maxRounds: 0, lapToBuy: false, turnTime: 0 };
-const SETTING_CHOICES = { salary: [100, 200, 300, 400], startProps: [0, 1, 2, 3], maxRounds: [0, 15, 25, 40], turnTime: [0, 30, 60, 90] };
+  salary: 200, goLand: true, startProps: 0, maxRounds: 0, lapToBuy: false, turnTime: 0, events: true, botLevel: 2, botSpeed: 2 };
+const SETTING_CHOICES = { salary: [100, 200, 300, 400], startProps: [0, 1, 2, 3], maxRounds: [0, 15, 25, 40], turnTime: [0, 30, 60, 90], botLevel: [1, 2, 3], botSpeed: [1, 2, 3] };
 const salaryOf = S => S.settings.salary || 200, goLandOf = S => salaryOf(S) + (S.settings.goLand === false ? 0 : 100);
 
 /* ---------- plateau ---------- */
@@ -666,7 +789,10 @@ function log(S, p, m, extra) { S.lseq = (S.lseq || 0) + 1; S.log.push(Object.ass
 function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 const rid = () => Math.random().toString(36).slice(2, 10);
 
-function calcRent(S, B, t, diceSum) {
+const evOn = (S, k) => !!(S.event && S.event.round === S.round && (!k || S.event.k === k));
+const houseCost = (S, t) => evOn(S, 'soldes') ? t.house / 2 : t.house;
+function calcRent(S, B, t, diceSum) { const r = rent0(S, B, t, diceSum); return !r ? 0 : evOn(S, 'boom') ? r * 2 : evOn(S, 'krach') ? Math.floor(r / 2) : evOn(S, 'portes') ? 0 : r; }
+function rent0(S, B, t, diceSum) {
   const o = S.own[t.i]; if (!o || o.m) return 0;
   if (t.k === 'prop') return o.h > 0 ? t.rent[o.h] : t.rent[0] * (S.settings.doubleRent && ownsAll(S, B, o.o, t) ? 2 : 1);
   const n = groupOf(B, t).filter(x => S.own[x.i] && S.own[x.i].o === o.o).length;
@@ -690,7 +816,7 @@ function lobbyAct(S, pid, a) {
       if (P(S, pid)) return null;
       if (S.players.length >= MAX_PLAYERS) return 'Le salon est complet';
       const used = S.players.map(p => p.color);
-      S.players.push({ id: pid, name: cleanName(a.name, S), color: PLAYER_COLORS.find(c => !used.includes(c)), bot: false, conn: true });
+      S.players.push({ id: pid, name: cleanName(a.name, S), color: PLAYER_COLORS.find(c => !used.includes(c)), tok: freeTok(S), bot: false, conn: true });
       return null;
     }
     case 'addPlayer': {
@@ -698,7 +824,7 @@ function lobbyAct(S, pid, a) {
       if (S.players.length >= MAX_PLAYERS) return 'Le salon est complet';
       const used = S.players.map(p => p.color), bots = ['Rex', 'Nova', 'Pixel', 'Moka', 'Zed', 'Luna'];
       const name = a.bot ? 'Bot ' + bots.find(n => !S.players.some(p => p.name === 'Bot ' + n)) : a.name;
-      S.players.push({ id: rid(), name: cleanName(name, S), color: PLAYER_COLORS.find(c => !used.includes(c)), bot: !!a.bot, conn: true, local: !a.bot });
+      S.players.push({ id: rid(), name: cleanName(name, S), color: PLAYER_COLORS.find(c => !used.includes(c)), tok: freeTok(S), bot: !!a.bot, conn: true, local: !a.bot });
       return null;
     }
     case 'remove': {
@@ -711,6 +837,12 @@ function lobbyAct(S, pid, a) {
       const p = P(S, a.id); if (!p) return 'Joueur inconnu';
       if (!PLAYER_COLORS.includes(a.color) || S.players.some(x => x.color === a.color)) return 'Couleur déjà prise';
       p.color = a.color; return null;
+    }
+    case 'setToken': {
+      if (!host && a.id !== pid) return 'Interdit';
+      const p = P(S, a.id); if (!p) return 'Joueur inconnu';
+      if (!PLAYER_TOKENS.includes(a.tok) || S.players.some(x => x !== p && x.tok === a.tok)) return 'Pion déjà pris';
+      p.tok = a.tok; return null;
     }
     case 'rename': {
       if (!host && a.id !== pid) return 'Interdit';
@@ -732,6 +864,9 @@ function lobbyAct(S, pid, a) {
   }
   return 'Action impossible dans le salon';
 }
+const freeTok = S => shuffle(PLAYER_TOKENS.filter(t => !S.players.some(p => p.tok === t)))[0] || '🎲';
+const stat = p => p.st || (p.st = { rin: 0, rout: 0, buys: 0, builds: 0 });
+function snap(S) { S.hist = S.hist || []; S.hist.push({ r: S.round, w: S.players.map(p => (p.bankrupt ? 0 : Math.round(worth(S, p)))) }); if (S.hist.length > 160) S.hist.splice(1, 1); }
 function cleanName(n, S) {
   n = String(n || '').replace(/[<>]/g, '').trim().slice(0, 14) || 'Joueur';
   let base = n, k = 2; while (S.players.some(p => p.name === n)) n = base.slice(0, 12) + ' ' + k++;
@@ -739,8 +874,9 @@ function cleanName(n, S) {
 }
 function startGame(S) {
   if (S.settings.randomOrder) shuffle(S.players);
-  S.players.forEach(p => Object.assign(p, { cash: S.settings.startCash, pos: 0, inJail: false, jailTurns: 0, jailCards: 0, bankrupt: false, debts: [], laps: 0, skip: false }));
-  Object.assign(S, { phase: 'roll', own: {}, turn: 0, dice: [1, 1], rollSeq: 0, doubles: 0, again: false, pot: 0, auction: null, aseq: 0, trades: [], tid: 0, winner: null, log: [], round: 1,
+  S.players.forEach(p => Object.assign(p, { cash: S.settings.startCash, pos: 0, inJail: false, jailTurns: 0, jailCards: 0, bankrupt: false, debts: [], laps: 0, skip: false, tr: 0, st: { rin: 0, rout: 0, buys: 0, builds: 0 } }));
+  S.players.forEach(p => { if (!p.tok) p.tok = freeTok(S); });
+  Object.assign(S, { phase: 'roll', own: {}, turn: 0, dice: [1, 1], rollSeq: 0, doubles: 0, again: false, pot: 0, auction: null, aseq: 0, trades: [], tid: 0, winner: null, log: [], round: 1, event: null, evseq: 0, hist: [], react: null,
     decks: { chance: shuffle(CARDS.chance.map((_, i) => i)), chest: shuffle(CARDS.chest.map((c, i) => (c.f === 'potAdd' && !S.settings.pot ? -1 : i)).filter(i => i >= 0)), ci: 0, ti: 0 } });
   S.settings = Object.assign({}, DEFAULT_SETTINGS, S.settings);
   if (S.settings.startProps) { // distribution de départ : des terrains offerts au hasard
@@ -750,6 +886,8 @@ function startGame(S) {
   log(S, null, 'La partie commence sur la map ' + MAPS[S.mapId].name + '. ' + S.players[0].name + ' ouvre le bal.');
   if (S.settings.startProps) log(S, null, 'Chaque joueur reçoit ' + S.settings.startProps + ' terrain' + (S.settings.startProps > 1 ? 's' : '') + ' au hasard.');
   if (S.settings.maxRounds) log(S, null, 'Partie en ' + S.settings.maxRounds + ' tours : le plus riche à la fin gagne.');
+  if (S.settings.events) log(S, null, 'Événements mondiaux activés : un événement surprise tous les 3 tours.');
+  snap(S);
 }
 
 /* ---------- argent et déplacements ---------- */
@@ -794,6 +932,8 @@ function land(S, B, p) {
     if (o.m) { log(S, p, 'tombe sur ' + t.name + ' (hypothéquée), rien à payer.'); return; }
     if (S.settings.noRentInJail && owner.inJail) { log(S, p, 'tombe sur ' + t.name + ', mais ' + owner.name + ' est en prison : pas de loyer.'); return; }
     const r = calcRent(S, B, t, S.dice[0] + S.dice[1]);
+    if (!r) { log(S, p, 'tombe sur ' + t.name + ' : portes ouvertes, rien à payer.'); return; }
+    stat(p).rout += r; stat(owner).rin += r;
     pay(S, p, r, owner.id); log(S, p, 'paie ' + money(S, r) + ' de loyer à ' + owner.name + ' (' + t.name + ').');
   } else if (t.k === 'tax') { pay(S, p, t.amt, null, true); log(S, p, 'paie ' + money(S, t.amt) + ' (' + t.name + ').'); }
   else if (t.k === 'gojail') goJail(S, p);
@@ -849,8 +989,15 @@ function settle(S) {
   if (p.bankrupt) return nextTurn(S);
   S.phase = (!p.inJail && S.again) ? 'roll' : 'end';
 }
+function startEvent(S) {
+  const keys = Object.keys(EVENTS), k = keys[Math.floor(Math.random() * keys.length)], E = EVENTS[k];
+  S.event = { k, round: S.round, seq: ++S.evseq };
+  log(S, null, E.ic + ' ' + E.t + ' : ' + E.d, { s: 'event' });
+  if (k === 'fete') alive(S).forEach(p => { p.cash += 100; });
+  if (k === 'fisc') alive(S).forEach(p => { const x = Math.floor(Math.max(0, p.cash) / 10); if (x) pay(S, p, x, null, true); });
+}
 function nextTurn(S) {
-  S.doubles = 0; S.again = false;
+  S.doubles = 0; S.again = false; const r0 = S.round;
   let t = S.turn, guard = 0;
   for (;;) {
     t = (t + 1) % S.players.length; if (t === 0) S.round++;
@@ -859,8 +1006,13 @@ function nextTurn(S) {
     break;
   }
   S.turn = t; S.phase = 'roll';
+  if (S.round !== r0) {
+    snap(S);
+    S.trades = S.trades.filter(x => { const f = P(S, x.from); return !(f && f.bot && S.round - (x.round || 0) > 2); });
+    if (S.settings.events && S.round % 3 === 0 && !(S.settings.maxRounds && S.round > S.settings.maxRounds)) startEvent(S);
+  }
   if (S.settings.maxRounds && S.round > S.settings.maxRounds) { // partie rapide : le plus riche gagne
-    const rank = alive(S).sort((x, y) => worth(S, y) - worth(S, x)); S.phase = 'over'; S.winner = rank[0].id; S.round = S.settings.maxRounds; S.auction = null;
+    const rank = alive(S).sort((x, y) => worth(S, y) - worth(S, x)); snap(S); S.phase = 'over'; S.winner = rank[0].id; S.round = S.settings.maxRounds; S.auction = null;
     log(S, rank[0], 'gagne au bout des ' + S.settings.maxRounds + ' tours avec une fortune de ' + money(S, worth(S, rank[0])) + ' !');
   }
 }
@@ -873,7 +1025,7 @@ function auctionMaybeClose(S, B) {
 }
 function closeAuction(S, B) {
   const a = S.auction, t = B[a.tile], w = a.bidder && P(S, a.bidder);
-  if (w && !w.bankrupt) { pay(S, w, a.price, null); S.own[t.i] = { o: w.id, h: 0, m: false }; log(S, w, 'remporte ' + t.name + ' aux enchères pour ' + money(S, a.price) + '.', { s: 'sold' }); }
+  if (w && !w.bankrupt) { pay(S, w, a.price, null); S.own[t.i] = { o: w.id, h: 0, m: false }; stat(w).buys++; log(S, w, 'remporte ' + t.name + ' aux enchères pour ' + money(S, a.price) + '.', { s: 'sold' }); }
   else log(S, null, 'Personne ne veut de ' + t.name + '.', { s: 'nosale' });
   S.auction = null; settle(S);
 }
@@ -914,7 +1066,7 @@ function doBankrupt(S, B, p) {
   S.trades = S.trades.filter(t => t.from !== p.id && t.to !== p.id);
   log(S, p, 'abandonne et fait faillite.' + (heir ? ' Ses biens passent à ' + heir.name + '.' : ' Ses biens retournent à la banque.'), { s: 'bankrupt' });
   const rest = alive(S);
-  if (rest.length <= 1) { S.phase = 'over'; S.winner = rest[0] ? rest[0].id : null; S.auction = null; if (rest[0]) log(S, rest[0], 'remporte la partie !'); return; }
+  if (rest.length <= 1) { snap(S); S.phase = 'over'; S.winner = rest[0] ? rest[0].id : null; S.auction = null; if (rest[0]) log(S, rest[0], 'remporte la partie !'); return; }
   if (S.auction) { if (S.auction.bidder === p.id) { S.auction.bidder = null; S.auction.price = 0; S.auction.seq = ++S.aseq; } auctionMaybeClose(S, B); return; }
   if (S.players[S.turn].id === p.id) nextTurn(S);
 }
@@ -924,6 +1076,7 @@ function act(S, pid, a) { const r = act0(S, pid, a); if (!r && S.players && S.ph
 function act0(S, pid, a) {
   if (!a || typeof a.type !== 'string') return 'Action invalide';
   if (a.type === 'chat') { const p = P(S, pid); const m = String(a.m || '').trim().slice(0, 200); if (!p || !m) return null; log(S, p, m, { chat: 1, s: 'chat' }); return null; }
+  if (a.type === 'react') { const p = P(S, pid); if (!p || !REACTIONS.includes(a.e) || S.phase === 'lobby') return null; S.react = { p: pid, e: a.e, seq: (S.react ? S.react.seq : 0) + 1 }; return null; }
   if (S.phase === 'lobby') return lobbyAct(S, pid, a);
   const B = buildBoard(S.mapId);
   if (a.type === 'auctionClose') { if (pid !== '__host') return 'Interdit'; if (S.phase === 'auction') closeAuction(S, B); return null; }
@@ -965,7 +1118,7 @@ function act0(S, pid, a) {
     case 'buy': {
       if (!mine || S.phase !== 'buy') return 'Rien à acheter';
       const bt = B[p.pos]; if (p.cash < bt.price) return 'Pas assez d\'argent';
-      pay(S, p, bt.price, null); S.own[bt.i] = { o: p.id, h: 0, m: false };
+      pay(S, p, bt.price, null); S.own[bt.i] = { o: p.id, h: 0, m: false }; stat(p).buys++;
       log(S, p, 'achète ' + bt.name + ' pour ' + money(S, bt.price) + '.'); settle(S); return null;
     }
     case 'decline': {
@@ -997,8 +1150,8 @@ function act0(S, pid, a) {
       if (grp.some(x => S.own[x.i].m)) return 'Un terrain du groupe est hypothéqué';
       if (o.h >= 5) return 'Il y a déjà un hôtel';
       if (S.settings.evenBuild && o.h > Math.min(...grp.map(x => S.own[x.i].h))) return 'Construis de façon équilibrée sur le groupe';
-      if (p.cash < t.house) return 'Pas assez d\'argent';
-      pay(S, p, t.house, null); o.h++; log(S, p, (o.h === 5 ? 'construit un hôtel sur ' : 'construit une maison sur ') + t.name + '.'); return null;
+      const hc = houseCost(S, t); if (p.cash < hc) return 'Pas assez d\'argent';
+      pay(S, p, hc, null); o.h++; stat(p).builds++; log(S, p, (o.h === 5 ? 'construit un hôtel sur ' : 'construit une maison sur ') + t.name + '.'); return null;
     }
     case 'sell': {
       if (!t || !o || o.o !== pid || !o.h) return 'Rien à vendre ici';
@@ -1021,7 +1174,7 @@ function act0(S, pid, a) {
     }
     case 'tradePropose': {
       const x = a.trade || {}; const norm = s => ({ cash: parseInt(s && s.cash, 10) || 0, props: (s && Array.isArray(s.props) ? s.props : []).map(Number), cards: parseInt(s && s.cards, 10) || 0 });
-      const tr = { id: ++S.tid, from: pid, to: x.to, give: norm(x.give), get: norm(x.get) };
+      const tr = { id: ++S.tid, from: pid, to: x.to, give: norm(x.give), get: norm(x.get), round: S.round };
       const e = tradeError(S, B, tr); if (e) return e;
       S.trades = S.trades.filter(y => !(y.from === pid && y.to === tr.to)); S.trades.push(tr);
       log(S, p, 'propose un échange à ' + P(S, tr.to).name + '.', { s: 'trade' }); return null;
@@ -1044,7 +1197,7 @@ function act0(S, pid, a) {
 /* ---------- bots ---------- */
 function botAct(S, b) {
   if (S.phase === 'lobby' || S.phase === 'over' || b.bankrupt) return null;
-  const B = buildBoard(S.mapId);
+  const B = buildBoard(S.mapId), lvl = S.settings.botLevel || 2;
   const tr = S.trades.find(t => t.to === b.id);
   if (tr && S.phase !== 'auction') {
     if (tradeError(S, B, tr)) return { type: 'tradeDecline', id: tr.id };
@@ -1053,12 +1206,12 @@ function botAct(S, b) {
       const completes = others.every(x => S.own[x.i] && S.own[x.i].o === receiver) || others.every(x => side.props.includes(x.i) || (S.own[x.i] && S.own[x.i].o === receiver));
       return s + t.price * (S.own[i].m ? 0.5 : 1) * (completes ? 2.5 : 1);
     }, 0);
-    return { type: val(tr.give, b.id) >= val(tr.get, tr.from) * 1.15 ? 'tradeAccept' : 'tradeDecline', id: tr.id };
+    return { type: val(tr.give, b.id) >= val(tr.get, tr.from) * [1.05, 1.05, 1.15, 1.3][lvl] ? 'tradeAccept' : 'tradeDecline', id: tr.id };
   }
   if (S.phase === 'auction') {
     const a = S.auction; if (a.bidder === b.id || a.passed[b.id]) return null;
     const t = B[a.tile], completes = groupOf(B, t).every(x => x.i === t.i || (S.own[x.i] && S.own[x.i].o === b.id));
-    const limit = Math.min(b.cash - 60, Math.round(t.price * (completes ? 1.6 : 0.85)));
+    const limit = Math.min(b.cash - 60, Math.round(t.price * (completes ? [0, 1.3, 1.6, 2][lvl] : [0, .7, .85, 1][lvl])));
     const next = a.price + (a.price < t.price / 2 ? 20 : 10);
     return next <= limit ? { type: 'bid', amount: next } : { type: 'pass' };
   }
@@ -1067,7 +1220,7 @@ function botAct(S, b) {
     if (b.inJail) { if (b.jailCards) return { type: 'useJailCard' }; if (b.cash > 400 && Object.keys(S.own).length < 20) return { type: 'payJail' }; }
     return { type: 'roll' };
   }
-  if (S.phase === 'buy') return { type: b.cash - B[b.pos].price >= 40 ? 'buy' : 'decline' };
+  if (S.phase === 'buy') { const left = b.cash - B[b.pos].price; return { type: (lvl === 1 ? left >= 150 && Math.random() < .8 : left >= (lvl === 3 ? 0 : 40)) ? 'buy' : 'decline' }; }
   if (S.phase === 'end') {
     const mineT = B.filter(t => S.own[t.i] && S.own[t.i].o === b.id);
     if (b.cash < 0) {
@@ -1079,14 +1232,25 @@ function botAct(S, b) {
     const um = mineT.find(t => S.own[t.i].m && b.cash > Math.ceil(t.price * 0.55) + 300);
     if (um) return { type: 'unmortgage', tile: um.i };
     const build = mineT.filter(t => t.k === 'prop' && S.own[t.i].h < 5 && ownsAll(S, B, b.id, t) && !groupOf(B, t).some(x => S.own[x.i].m)
-      && S.own[t.i].h <= Math.min(...groupOf(B, t).map(x => S.own[x.i].h)) && b.cash > t.house + 250).sort((x, y) => y.price - x.price)[0];
+      && S.own[t.i].h <= Math.min(...groupOf(B, t).map(x => S.own[x.i].h)) && b.cash > houseCost(S, t) + [0, 400, 250, 120][lvl]).sort((x, y) => y.price - x.price)[0];
     if (build) return { type: 'build', tile: build.i };
+    if (lvl >= 2 && (b.tr || 0) < S.round - 3 && !S.trades.some(x => x.from === b.id)) { // il manque 1 terrain pour compléter un groupe : le bot fait une offre
+      for (const t of B) {
+        if (t.k !== 'prop') continue;
+        const grp = groupOf(B, t), miss = grp.filter(x => !S.own[x.i] || S.own[x.i].o !== b.id);
+        if (miss.length !== 1 || !S.own[miss[0].i]) continue;
+        const m = miss[0], owner = P(S, S.own[m.i].o); if (!owner || owner.bankrupt || owner.bot || owner.id === b.id || groupHasHouses(S, B, m)) continue;
+        const offer = Math.round(m.price * (lvl === 3 ? 1.9 : 1.5) / 10) * 10; if (b.cash - offer < 150) continue;
+        b.tr = S.round;
+        return { type: 'tradePropose', trade: { to: owner.id, give: { cash: offer, props: [], cards: 0 }, get: { cash: 0, props: [m.i], cards: 0 } } };
+      }
+    }
     return { type: 'endTurn' };
   }
   return null;
 }
 
-if (typeof module !== 'undefined') module.exports = { owed, CARDS, SETTING_CHOICES, MAPS, PLAYER_COLORS, buildBoard, newLobby, act, botAct, worth, P, alive, calcRent, groupOf, ownsAll, groupHasHouses, tradeError, money, DEFAULT_SETTINGS };
+if (typeof module !== 'undefined') module.exports = { PLAYER_TOKENS, REACTIONS, EVENTS, houseCost, evOn, owed, CARDS, SETTING_CHOICES, MAPS, PLAYER_COLORS, buildBoard, newLobby, act, botAct, worth, P, alive, calcRent, groupOf, ownsAll, groupHasHouses, tradeError, money, DEFAULT_SETTINGS };
 
 </script>
 <script>
@@ -1192,6 +1356,8 @@ function sfx(name, delay) {
     case 'turn': tone(660, 0, .12); tone(880, .11, .28); break;
     case 'bid': tone(1250, 0, .05, 'square', .04); tone(1600, .05, .07, 'square', .03); break;
     case 'jail': tone(220, 0, .45, 'sawtooth', .05, 70); break;
+    case 'event': [392, 523, 659, 784].forEach((f, i) => tone(f, i * .09, .5, 'sawtooth', .035)); knock(0); break;
+    case 'pop': tone(660, 0, .08, 'sine', .07, 1320); noise(0, .05, .06, 3000); break;
     case 'win': [523, 659, 784, 1047, 1319, 1568].forEach((f, i) => tone(f, i * .11, .35, 'triangle', .08)); break;
   }
 }
@@ -1245,6 +1411,7 @@ function scheduleBots() {
   if (S.phase === 'lobby' || S.phase === 'over' || !S.players.some(p => p.bot && !p.bankrupt)) return;
   let delay = S.phase === 'auction' ? 900 : 1100;
   if (S.rollSeq !== lastBotRoll) { lastBotRoll = S.rollSeq; delay = 1500 + (S.dice[0] + S.dice[1]) * 150; }
+  delay *= [1, 1.5, 1, .55][S.settings.botSpeed || 2];
   botTimer = setTimeout(() => { if (!S) return; for (const b of S.players) { if (!b.bot) continue; const a = botAct(S, b); if (a) return hostApply(b.id, a, null); } }, delay);
 }
 let tTimer = null, tKey = '', autoPilot = false; const afk = {};
@@ -1360,7 +1527,7 @@ function renderGate() {
 function renderHome() {
   const sv = LS.get('magnat_save'), hashCode = (location.hash || '').replace(/[^a-z0-9]/gi, '').toUpperCase().slice(0, 5);
   if (ui.joining) return mount('join', `${BGFX}<div class="shell"><div class="card stack">${LOGO}<p class="tag">Connexion au salon ${esc(net.code)}…</p><button class="btn" data-a="home">Annuler</button></div></div>`);
-  mount('home', `${BGFX}<div class="shell"><div class="card${introCls('home')}">${LOGO}<p class="tag">Achète, construis, négocie, ruine tes potes. Jusqu'à ${MAX_PLAYERS} joueurs, ${Object.keys(MAPS).length} maps.</p>
+  mount('home', `${BGFX}<div class="shell"><div class="card${introCls('home')}">${LOGO}<p class="tag">Achète, construis, négocie, ruine tes potes. Jusqu'à ${MAX_PLAYERS} joueurs, ${Object.keys(MAPS).length} maps.</p>${(() => { const r = LS.get('magnat_rec'); return r && r.played ? `<p class="rec">🏆 ${r.won} victoire${r.won > 1 ? 's' : ''} sur ${r.played} partie${r.played > 1 ? 's' : ''}</p>` : ''; })()}
     <div class="stack">
       <div><label class="lbl" for="name">Ton pseudo</label><input class="field" id="name" maxlength="14" value="${esc(net.name)}" placeholder="Ragnar"></div>
       <div class="err">${esc(ui.homeErr)}</div>
@@ -1369,14 +1536,17 @@ function renderHome() {
       <form class="row" id="joinf"><input class="field" id="code" maxlength="5" placeholder="Code du salon" value="${esc(hashCode)}" style="text-transform:uppercase;letter-spacing:.15em" aria-label="Code du salon"><button class="btn">Rejoindre</button></form>
       <div class="sep"></div>
       <button class="btn" style="width:100%" data-a="local">Jouer sur le même écran (ou contre des bots)</button>
+      <button class="btn sm" style="width:100%" data-a="help">Comment jouer ?</button>
     </div></div></div>`);
 }
 const SETTINGS_UI = [['auction', 'Enchères', 'Un terrain refusé part aux enchères'], ['doubleRent', 'Loyer doublé', 'Sur un groupe complet sans maison'], ['pot', 'Cagnotte des vacances', 'Taxes et amendes vont sur la case Vacances'],
   ['noRentInJail', 'Pas de loyer en prison', 'Un joueur en prison ne touche rien'], ['evenBuild', 'Construction équilibrée', 'Une maison d\'écart maximum dans un groupe'], ['randomOrder', 'Ordre aléatoire', 'L\'ordre des joueurs est tiré au sort'],
-  ['goLand', 'Bonus pile sur le Départ', '100 de plus si tu t\'arrêtes exactement dessus'], ['lapToBuy', 'Tour de chauffe', 'Il faut boucler un tour de plateau avant d\'acheter']];
+  ['events', 'Événements mondiaux', 'Tous les 3 tours : boom, krach, fête, soldes...'], ['goLand', 'Bonus pile sur le Départ', '100 de plus si tu t\'arrêtes exactement dessus'], ['lapToBuy', 'Tour de chauffe', 'Il faut boucler un tour de plateau avant d\'acheter']];
 const SETTINGS_SEL = [['startCash', 'Argent de départ', '', [1000, 1500, 2000, 2500, 3000].map(v => [v, v])], ['salary', 'Salaire au Départ', 'Touché à chaque passage', [100, 200, 300, 400].map(v => [v, v])],
   ['startProps', 'Terrains offerts au début', 'Distribués au hasard, la partie démarre plus vite', [[0, 'Aucun'], [1, '1 chacun'], [2, '2 chacun'], [3, '3 chacun']]],
   ['maxRounds', 'Partie rapide', 'À la fin des tours, le plus riche gagne', [[0, 'Sans limite'], [15, '15 tours'], [25, '25 tours'], [40, '40 tours']]],
+  ['botLevel', 'Niveau des bots', 'Difficile : ils misent plus et te proposent des échanges', [[1, 'Facile'], [2, 'Normal'], [3, 'Difficile']]],
+  ['botSpeed', 'Vitesse des bots', '', [[1, 'Lente'], [2, 'Normale'], [3, 'Rapide']]],
   ['turnTime', 'Temps limité par action', 'Passé le délai, le jeu joue à ta place (en ligne)', [[0, 'Illimité'], [30, '30 s'], [60, '60 s'], [90, '90 s']]]];
 function renderLobby() {
   const ae0 = document.activeElement, keepRn = ae0 && ae0.dataset && ae0.dataset.rename ? { id: ae0.dataset.rename, v: ae0.value, s: ae0.selectionStart } : null;
@@ -1384,11 +1554,11 @@ function renderLobby() {
   const pl = S.players.map(p => {
     const mineRow = host || p.id === net.myId;
     const fresh = !ui.seen[p.id]; ui.seen[p.id] = 1;
-    return `<div class="pl ${fresh ? 'new' : ''}"><button class="dot" style="--c:${p.color}" ${mineRow ? `data-a="l-color" data-id="${p.id}" title="Changer de couleur"` : 'disabled'} aria-label="Couleur de ${esc(p.name)}"></button>
+    return `<div class="pl ${fresh ? 'new' : ''}"><button class="dot" style="--c:${p.color}" ${mineRow ? `data-a="l-color" data-id="${p.id}" title="Changer de couleur"` : 'disabled'} aria-label="Couleur de ${esc(p.name)}"></button><button class="tokb" style="--c:${p.color}" ${mineRow ? `data-a="l-tok" data-id="${p.id}" title="Choisir son pion"` : 'disabled'} aria-label="Pion de ${esc(p.name)}">${tokOf(p)}</button>
       ${!p.bot && (p.id === net.myId || isLocal()) ? `<input class="nmin" data-rename="${p.id}" value="${esc(p.name)}" maxlength="14" aria-label="Pseudo" title="Clique pour changer le pseudo"><span class="pen" aria-hidden="true">✏️</span>` : `<span class="nm">${esc(p.name)}</span>`}${p.id === S.hostId ? '<span class="badge">hôte</span>' : ''}${p.bot ? '<span class="badge">bot</span>' : ''}${p.id === net.myId && !isLocal() ? '<span class="badge">toi</span>' : ''}${!p.conn ? '<span class="badge warn">déconnecté</span>' : ''}
       ${host && p.id !== S.hostId && (isLocal() ? S.players.length > 0 : true) ? `<button class="btn sm" data-a="l-remove" data-id="${p.id}" aria-label="Retirer ${esc(p.name)}">Retirer</button>` : ''}</div>`;
   }).join('');
-  const maps = Object.values(MAPS).map(m => `<button class="map ${m.id === S.mapId ? 'on' : ''}" style="--a:${m.accent}" data-a="l-map" data-id="${m.id}" ${host ? '' : 'disabled'}><b>${esc(m.name)}</b><span>${esc(m.props[0])}, ${esc(m.props[10])}, ${esc(m.props[21])}…</span><em>${GROUPS.map(g => `<u style="--g:${g}"></u>`).join('')}</em></button>`).join('');
+  const maps = Object.values(MAPS).map(m => `<button class="map ${m.id === S.mapId ? 'on' : ''}" style="--a:${m.accent}" data-a="l-map" data-id="${m.id}" ${host ? '' : 'disabled'}><i class="memo">${m.deco[0]}</i><b>${esc(m.name)}</b><span>${esc(m.props[0])}, ${esc(m.props[10])}, ${esc(m.props[21])}…</span><em>${GROUPS.map(g => `<u style="--g:${g}"></u>`).join('')}</em></button>`).join('');
   const cfg = Object.assign({}, DEFAULT_SETTINGS, S.settings);
   const opts = SETTINGS_SEL.map(([k, t, d, ch]) => `<label class="opt"><span>${t}${d ? `<small>${d}</small>` : ''}</span><select class="field sel" data-set="${k}" ${host ? '' : 'disabled'}>${ch.map(([v, l]) => `<option value="${v}" ${cfg[k] === v ? 'selected' : ''}>${l}</option>`).join('')}</select></label>`).join('')
     + SETTINGS_UI.map(([k, t, d]) => `<label class="opt"><span>${t}<small>${d}</small></span><input class="sw" type="checkbox" data-set="${k}" ${cfg[k] ? 'checked' : ''} ${host ? '' : 'disabled'}></label>`).join('');
@@ -1408,6 +1578,7 @@ function renderLobby() {
     <div class="row" style="margin-top:18px;flex-wrap:wrap">${host ? `<button class="btn primary" data-a="l-start" style="flex:2;min-width:220px" ${S.players.length < 2 ? 'disabled' : ''}>Lancer la partie</button>` : ''}
       <button class="btn" data-a="snd" style="flex:1;min-width:180px">${sound.on ? '🔊 Son activé (tester)' : '🔇 Son coupé'}</button></div>
     </div></div>`);
+  if (ui.modal && ui.modal.type === 'tok') renderModal();
   if (keepRn) { const inp = document.querySelector('[data-rename="' + keepRn.id + '"]'); if (inp) { inp.value = keepRn.v; inp.focus(); try { inp.setSelectionRange(keepRn.s, keepRn.s); } catch (e) { } } }
 }
 
@@ -1428,14 +1599,15 @@ function mountGame() {
   const die = id => `<div class="die3d" id="${id}"><div class="cube">${[1, 2, 3, 4, 5, 6].map(n => `<div class="face f${n}">${Array.from({ length: 9 }, (_, i) => PIPS[n].includes(i) ? '<b></b>' : '<i></i>').join('')}</div>`).join('')}</div></div>`;
   const deck = (k, sym, lbl) => `<div class="deck d-${k}" id="deck-${k}"><i></i><i></i><b><span>${sym}</span>${lbl}</b></div>`;
   mount('game', `<div class="game"><div class="boardwrap"><div class="boardbox" style="--accent:${M.accent}"><div class="board enter" id="board">${tiles}
-    <div class="center"><div class="glow"></div><div class="wm">${esc(M.name)}</div><h1>Magnat<small>Map <b>${esc(M.name)}</b>${isLocal() ? '' : ', salon ' + esc(S.code)}</small></h1>
+    <div class="center"><div class="glow"></div><div class="deco" aria-hidden="true">${M.deco.map((d, i) => `<span style="--i:${i}">${d}</span>`).join('')}</div><h1>Magnat<small>Map <b>${esc(M.name)}</b>${isLocal() ? '' : ', salon ' + esc(S.code)}</small></h1>
       <div class="dice">${die('d0')}${die('d1')}<span class="dsum" id="dsum"></span></div>
-      <div class="status" id="status"></div><div class="tbar" id="tbar"></div><div class="actions" id="actions"></div><div id="auction" style="width:100%"></div>
+      <div id="evpill"></div><div class="status" id="status"></div><div class="tbar" id="tbar"></div><div class="actions" id="actions"></div><div id="auction" style="width:100%"></div>
       <div class="decks" id="decks">${deck('chance', '❓', 'Surprise')}<div class="potbox" id="potbox"></div>${deck('chest', '🎁', 'Trésor')}</div>
-      <div class="feed" id="feed" aria-live="polite"></div><form class="chatin" id="chatf"><input id="chatin" maxlength="200" placeholder="Écrire aux autres joueurs…" aria-label="Message" autocomplete="off"></form>
+      <div class="feed" id="feed" aria-live="polite"></div><form class="chatin" id="chatf"><input id="chatin" maxlength="200" placeholder="Écrire aux autres joueurs…" aria-label="Message" autocomplete="off"><span class="reacts">${REACTIONS.map(r => `<button type="button" data-a="react" data-v="${r}" aria-label="Réaction ${r}">${r}</button>`).join('')}</span></form>
       <div id="cardpop"></div><div id="turnfx"></div></div>
     <div class="tokens" id="tokens"></div></div></div><div class="dock" id="dock"></div></div><aside class="side" id="side"></aside></div>`);
-  ui.mapId = S.mapId; ui.first = true; dockLayout(); setTimeout(() => { const b = $('#board'); if (b) b.classList.remove('enter'); }, 1400);
+  if (ui.modal && ui.modal.type === 'tok') closeModal();
+  ui.mapId = S.mapId; ui.first = true; ui.rSeq = undefined; ui.evSeq = undefined; dockLayout(); setTimeout(() => { const b = $('#board'); if (b) b.classList.remove('enter'); }, 1400);
 }
 const mqSmall = matchMedia('(max-width:620px)');
 function dockLayout() { // sur mobile, enchères + journal + chat passent sous le plateau
@@ -1445,6 +1617,7 @@ function dockLayout() { // sur mobile, enchères + journal + chat passent sous l
   const f = $('#feed'); if (f) f.scrollTop = f.scrollHeight;
 }
 mqSmall.addEventListener('change', dockLayout);
+const tokOf = p => (p.tok ? esc(p.tok) : esc((p.name.replace(/^Bot /, '') || '?')[0].toUpperCase()));
 function renderGame() {
   if (ui.screen !== 'game' || ui.mapId !== S.mapId) mountGame();
   if (ui.first) { ui.rollSeq = S.rollSeq; ui.cardSeq = S.lastCard ? S.lastCard.seq : 0; S.players.forEach(p => ui.disp[p.id] = p.pos); ui.lastLogN = S.lseq || 0; }
@@ -1456,7 +1629,8 @@ function renderGame() {
   ui.held = Date.now() < (ui.holdUntil || 0); ui.fxDelay = 0;
   const rolledNow = S.rollSeq !== ui.rollSeq;
   renderDice(); ui.rollStart = rolledNow; updateTokens(); ui.rollStart = false;
-  if (!ui.held) { updateTiles(); ownFx(); cashFx(); renderSide(); turnFx(); }
+  reactFx();
+  if (!ui.held) { updateTiles(); ownFx(); cashFx(); renderSide(); eventFx(); turnFx(); }
   renderCenter(); if (ui.modal && ui.modal.type === 'tile') renderModal();
   ui.first = false;
 }
@@ -1475,6 +1649,11 @@ function floater(p, d, delay) {
     const layer = $('#tokens'), tk = $('#k' + p.id); if (!layer || !tk || !S) return;
     const el = document.createElement('div'); el.className = 'fl ' + (d > 0 ? 'up' : 'down'); el.textContent = (d > 0 ? '+' : '') + money(S, d);
     el.style.left = tk.style.left; el.style.top = tk.style.top; layer.appendChild(el); setTimeout(() => el.remove(), 1750);
+    if (d >= 100 && !matchMedia('(prefers-reduced-motion:reduce)').matches) for (let k = 0; k < 8; k++) {
+      const c = document.createElement('div'); c.className = 'coinp'; c.textContent = '🪙'; c.style.left = tk.style.left; c.style.top = tk.style.top;
+      const ang = Math.PI * (1.1 + k / 7 * .8); c.style.setProperty('--dx', Math.cos(ang) * (40 + Math.random() * 30) + 'px'); c.style.setProperty('--dy', Math.sin(ang) * (50 + Math.random() * 30) + 'px');
+      c.style.animationDelay = k * 25 + 'ms'; layer.appendChild(c); setTimeout(() => c.remove(), 1100);
+    }
   }, delay);
 }
 function cashFx() { // +200 / -50 au-dessus du pion, compteur qui défile
@@ -1498,15 +1677,35 @@ function cashTick() {
   if (more) ui.raf = requestAnimationFrame(cashTick);
 }
 function turnFx() { // bandeau quand c'est à toi, confettis à la victoire
-  if (S.phase === 'over') { if (!ui.over) { ui.over = true; if (!ui.first) { confetti(); sfx('win'); } } return; }
+  if (S.phase === 'over') {
+    if (!ui.over) { ui.over = true; if (!ui.first) { confetti(); sfx('win'); const rec = LS.get('magnat_rec') || { played: 0, won: 0 }, w = P(S, S.winner); rec.played++; if (isLocal() ? w && !w.bot : S.winner === net.myId) rec.won++; LS.set('magnat_rec', rec); } }
+    return;
+  }
   ui.over = false;
   const cur = S.players[S.turn], key = cur.id + ':' + S.round;
   if (key === ui.turnKey) return; const was = ui.turnKey; ui.turnKey = key;
   if (!was && ui.first && S.round > 1) return;
   if (!controllable(cur) || S.phase !== 'roll') return;
   const fx = $('#turnfx'); if (!fx) return;
-  fx.innerHTML = `<div class="turnfx" style="--c:${cur.color}"><span>${isLocal() ? esc(cur.name) + ', à toi' : 'À toi de jouer'}</span></div>`; sfx('turn');
-  setTimeout(() => { if (fx.isConnected) fx.innerHTML = ''; }, 1600);
+  if (!isLocal()) { if (document.hidden) document.title = '🎲 À toi de jouer ! · Magnat'; try { if (navigator.vibrate) navigator.vibrate(150); } catch (e) { } }
+  const show = () => { if (!fx.isConnected) return; fx.innerHTML = `<div class="turnfx" style="--c:${cur.color}"><span>${isLocal() ? esc(cur.name) + ', à toi' : 'À toi de jouer'}</span></div>`; sfx('turn'); setTimeout(() => { if (fx.isConnected) fx.innerHTML = ''; }, 1600); };
+  const wait = (ui.evBusy || 0) - Date.now(); if (wait > 0) setTimeout(show, wait); else show();
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden) document.title = 'Magnat'; });
+function eventFx() { // événement mondial : grande carte au centre
+  const ev = S.event && S.event.round === S.round && S.phase !== 'over' ? S.event : null, pill = $('#evpill');
+  if (pill) { const k = ev ? String(ev.seq) : ''; if (pill.dataset.k !== k) { pill.dataset.k = k; pill.innerHTML = ev ? `<span class="evp">${EVENTS[ev.k].ic} <b>${EVENTS[ev.k].t}</b><small>${EVENTS[ev.k].d}</small></span>` : ''; } }
+  const seq = S.event ? S.event.seq : 0; if (seq === ui.evSeq) return; const fresh = ui.evSeq !== undefined && !ui.first; ui.evSeq = seq;
+  if (!fresh || !ev) return;
+  const fx = $('#cardpop'); if (!fx) return; const E = EVENTS[ev.k]; ui.evBusy = Date.now() + 2600;
+  fx.innerHTML = `<div class="evfx"><div class="evcard"><span class="evic">${E.ic}</span><small>Événement mondial</small><b>${E.t}</b><p>${E.d}</p></div></div>`;
+  setTimeout(() => { if (fx.isConnected && fx.querySelector('.evfx')) fx.innerHTML = ''; }, 2600);
+}
+function reactFx() { // réactions : l'emoji s'envole du pion du joueur
+  const seq = S.react ? S.react.seq : 0; if (seq === ui.rSeq) return; const fresh = ui.rSeq !== undefined && !ui.first; ui.rSeq = seq;
+  if (!fresh || !S.react) return;
+  const layer = $('#tokens'), tk = $('#k' + S.react.p); if (!layer || !tk) return; sfx('pop');
+  for (let k = 0; k < 3; k++) { const el = document.createElement('div'); el.className = 'rfx'; el.textContent = S.react.e; el.style.left = tk.style.left; el.style.top = tk.style.top; el.style.setProperty('--dx', (k - 1) * 22 + (Math.random() * 16 - 8) + 'px'); el.style.animationDelay = k * 110 + 'ms'; layer.appendChild(el); setTimeout(() => el.remove(), 2200); }
 }
 function updateTiles() {
   const B = buildBoard(S.mapId), cur = S.players[S.turn];
@@ -1532,7 +1731,7 @@ function place(el, pos, idx) {
 function updateTokens() {
   const layer = $('#tokens'), reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
   S.players.forEach((p, idx) => {
-    let el = $('#k' + p.id); if (!el) { el = document.createElement('div'); el.id = 'k' + p.id; el.className = 'tok'; el.innerHTML = '<i>' + esc((p.name.replace(/^Bot /, '') || '?')[0].toUpperCase()) + '</i>'; el.style.setProperty('--c', p.color); layer.appendChild(el); }
+    let el = $('#k' + p.id); if (!el) { el = document.createElement('div'); el.id = 'k' + p.id; el.className = 'tok'; el.innerHTML = '<i>' + tokOf(p) + '</i>'; el.style.setProperty('--c', p.color); layer.appendChild(el); }
     el.classList.toggle('hidden', !!p.bankrupt); el.classList.toggle('turn', S.players[S.turn].id === p.id && S.phase !== 'over'); el.classList.toggle('jail', !!p.inJail);
     if (ui.disp[p.id] === undefined) ui.disp[p.id] = p.pos;
     if (ui.disp[p.id] !== p.pos && !ui.anim[p.id]) {
@@ -1576,10 +1775,14 @@ function renderCenter() {
   const B = buildBoard(S.mapId), cur = S.players[S.turn], mine = controllable(cur), moving = Object.values(ui.anim).some(Boolean);
   const who = p => `<span class="who" style="--c:${p.color}">${esc(p.name)}</span>`;
   let status = '', html = '';
+  const cen = $('.center'); if (cen) cen.classList.toggle('is-over', S.phase === 'over');
   if (S.phase === 'over') {
-    const w = P(S, S.winner), rank = S.players.slice().sort((a, b) => worth(S, b) - worth(S, a));
-    status = ''; html = `<div class="winner" style="width:100%"><span class="crown">👑</span><div class="big" style="--c:${w ? w.color : '#fff'}">${w ? esc(w.name) + ' gagne la partie' : 'Partie terminée'}</div>
-      <div class="rank">${rank.map((p, i) => (i + 1) + '. ' + esc(p.name)).join('  /  ')}</div>
+    const w = P(S, S.winner), sc = p => (p.id === S.winner ? 1e9 : p.bankrupt ? -1e9 + (S.players.indexOf(p)) : worth(S, p)), rank = S.players.slice().sort((a, b) => sc(b) - sc(a));
+    const Hs = S.hist || [], mx = Math.max(1, ...Hs.flatMap(h => h.w)), W = 520, HH = 110, X = i => 4 + i * (W - 8) / Math.max(1, Hs.length - 1), Y = v => HH - 4 - v / mx * (HH - 12);
+    const chart = Hs.length > 1 ? `<svg class="chart" viewBox="0 0 ${W} ${HH}" preserveAspectRatio="none" aria-label="Évolution des fortunes">${S.players.map((p, k) => `<polyline style="--c:${p.color}" points="${Hs.map((h, i) => X(i).toFixed(1) + ',' + Y(h.w[k] || 0).toFixed(1)).join(' ')}"/>`).join('')}</svg>` : '';
+    const rows = rank.map((p, i) => { const st = p.st || { rin: 0, rout: 0, buys: 0, builds: 0 }; return `<div class="srow ${p.id === S.winner ? 'win' : ''}" style="--c:${p.color}"><span class="sp">${i + 1}</span><span class="ava sm" style="--c:${p.color}">${tokOf(p)}</span><b>${esc(p.name)}</b><small>${st.buys} achats, ${st.builds} constructions, loyers +${money(S, st.rin)} / -${money(S, st.rout)}</small><span class="sw2">${p.bankrupt ? 'ruiné' : money(S, Math.round(worth(S, p)))}</span></div>`; }).join('');
+    status = ''; html = `<div class="winner" style="width:100%"><span class="crown">${w ? tokOf(w) : '👑'}</span><div class="big" style="--c:${w ? w.color : '#fff'}">${w ? esc(w.name) + ' gagne la partie' : 'Partie terminée'}</div>
+      ${chart}<div class="stable">${rows}</div>
       <div class="actions">${amHost() ? '<button class="btn primary" data-a="rematch">Revenir au salon pour rejouer</button>' : ''}<button class="btn" data-a="leave">Quitter</button></div></div>`;
   } else if (moving && S.phase !== 'auction') status = who(cur) + ' avance<span class="dots"></span>';
   else if (S.phase === 'roll') {
@@ -1628,7 +1831,7 @@ function renderCenter() {
     const num = $('#auc-num'); num.textContent = money(S, au.price);
     if (bumped && au.bidder) { num.classList.remove('bump'); void num.offsetWidth; num.classList.add('bump'); document.querySelectorAll('[data-bidin]').forEach(inp => inp.value = ''); }
     $('#auc-lead').innerHTML = bidder ? `Meilleure mise : <b style="color:${bidder.color}">${esc(bidder.name)}</b>` : 'Aucune mise pour l\'instant. Qui ouvre ?';
-    const ava = p => `<span class="ava sm" style="--c:${p.color}">${esc((p.name.replace(/^Bot /, '') || '?')[0].toUpperCase())}</span>`;
+    const ava = p => `<span class="ava sm" style="--c:${p.color}">${tokOf(p)}</span>`;
     $('#auc-seats').innerHTML = alive(S).map(p => `<div class="seat ${au.passed[p.id] ? 'out' : ''} ${au.bidder === p.id ? 'lead' : ''}" style="--c:${p.color}">${ava(p)}<small>${esc(p.name)}</small>${au.bidder === p.id ? '<em>👑</em>' : ''}</div>`).join('');
     const hk = JSON.stringify(au.hist || []);
     if (hk !== ui.aHist) { ui.aHist = hk; $('#auc-hist').innerHTML = (au.hist || []).slice().reverse().map((h, i) => { const hp = P(S, h.p); return hp ? `<span class="hb ${i === 0 ? 'last' : ''}" style="--c:${hp.color}">${esc(hp.name)} <b>${money(S, h.amt)}</b></span>` : ''; }).join(''); }
@@ -1712,8 +1915,8 @@ function tradeText(side) {
 function renderSide() {
   const B = buildBoard(S.mapId), me = viewPlayer(), cur = S.players[S.turn];
   const players = S.players.map(p => `<div class="pcard ${p.id === cur.id && S.phase !== 'over' ? 'turn' : ''} ${p.bankrupt ? 'out' : ''}" style="--c:${p.color}">
-    <span class="ava">${esc((p.name.replace(/^Bot /, '') || '?')[0].toUpperCase())}</span><span class="nm">${esc(p.name)}</span><span class="cash ${p.cash < 0 ? 'neg' : ''}" id="cash-${p.id}">${p.bankrupt ? 'éliminé' : money(S, Math.round(ui.shown[p.id] === undefined ? p.cash : ui.shown[p.id]))}</span>
-    <div class="meta">${p.bot ? '<span class="badge">bot</span>' : ''}${p.id === net.myId && !isLocal() ? '<span class="badge">toi</span>' : ''}${p.inJail ? '<span class="badge warn">en prison</span>' : ''}${p.skip && !p.bankrupt ? '<span class="badge warn">passe son prochain tour</span>' : ''}${S.settings.lapToBuy && !p.laps && !p.bankrupt ? '<span class="badge">tour de chauffe</span>' : ''}${!p.bankrupt && owed(p) ? `<span class="badge warn">doit ${money(S, owed(p))}</span>` : ''}${p.jailCards ? '<span class="badge">carte sortie ×' + p.jailCards + '</span>' : ''}${!p.conn && !p.bankrupt ? '<span class="badge warn">déconnecté</span>' : ''}
+    <span class="ava">${tokOf(p)}</span><span class="nm">${esc(p.name)}</span><span class="cash ${p.cash < 0 ? 'neg' : ''}" id="cash-${p.id}">${p.bankrupt ? 'éliminé' : money(S, Math.round(ui.shown[p.id] === undefined ? p.cash : ui.shown[p.id]))}</span>
+    <div class="meta">${!p.bankrupt ? `<span class="fort">fortune ${money(S, Math.round(worth(S, p)))}</span>` : ''}${p.bot ? '<span class="badge">bot</span>' : ''}${p.id === net.myId && !isLocal() ? '<span class="badge">toi</span>' : ''}${p.inJail ? '<span class="badge warn">en prison</span>' : ''}${p.skip && !p.bankrupt ? '<span class="badge warn">passe son prochain tour</span>' : ''}${S.settings.lapToBuy && !p.laps && !p.bankrupt ? '<span class="badge">tour de chauffe</span>' : ''}${!p.bankrupt && owed(p) ? `<span class="badge warn">doit ${money(S, owed(p))}</span>` : ''}${p.jailCards ? '<span class="badge">carte sortie ×' + p.jailCards + '</span>' : ''}${!p.conn && !p.bankrupt ? '<span class="badge warn">déconnecté</span>' : ''}
       ${!p.bankrupt ? `<span class="owndots">${B.filter(t => S.own[t.i] && S.own[t.i].o === p.id).map(t => `<u style="--g:${t.k === 'prop' ? GROUPS[t.g] : t.k === 'rail' ? '#94A3B8' : '#FCD34D'}" class="${S.own[t.i].m ? 'm' : ''}"></u>`).join('') || '<span class="badge">aucun terrain</span>'}</span>` : ''}
       ${me && !me.bankrupt && !p.bankrupt && p.id !== me.id && S.phase !== 'over' ? `<button class="btn sm" data-a="trade-open" data-id="${p.id}">Échanger</button>` : ''}
       ${amHost() && !p.bankrupt && p.id !== S.hostId && S.phase !== 'over' && !p.local ? `<button class="btn sm danger" data-a="kick" data-id="${p.id}">Exclure</button>` : ''}</div></div>`).join('');
@@ -1723,7 +1926,7 @@ function renderSide() {
       <div class="row">${forMe ? `<button class="btn sm cyan" data-a="t-accept" data-id="${t.id}" data-p="${Z.id}">Accepter</button><button class="btn sm" data-a="t-decline" data-id="${t.id}" data-p="${Z.id}">Refuser</button>` : `<button class="btn sm" data-a="t-decline" data-id="${t.id}" data-p="${A.id}">Annuler mon offre</button>`}</div></div>`;
   }).join('');
   const props = me ? B.filter(t => S.own[t.i] && S.own[t.i].o === me.id).map(t => { const o = S.own[t.i]; return `<button class="mini ${o.m ? 'm' : ''}" style="--g:${t.k === 'prop' ? GROUPS[t.g] : t.k === 'rail' ? '#94A3B8' : '#FCD34D'}" data-a="tile" data-i="${t.i}"><u>${t.k === 'prop' ? (o.h ? (o.h === 5 ? '<i class="hs hotel"></i>' : '<i class="hs"></i>'.repeat(o.h)) : '') : tileIcon(t, B)}</u><span>${esc(t.name)}</span><b>${o.m ? 'hyp.' : t.k === 'util' ? '× dés' : money(S, calcRent(S, B, t, 7))}</b></button>`; }).join('') : '';
-  $('#side').innerHTML = `<div class="box"><h2><span>Joueurs, tour ${S.round}${S.settings.maxRounds ? ' / ' + S.settings.maxRounds : ''}</span><span class="row"><button class="btn sm ${sound.on ? '' : 'off'}" data-a="snd" aria-label="${sound.on ? 'Couper le son' : 'Activer le son'}">${sound.on ? '🔊 Son' : '🔇 Coupé'}</button><button class="btn sm" data-a="leave">Quitter</button></span></h2>${players}</div>
+  $('#side').innerHTML = `<div class="box"><h2><span>Joueurs, tour ${S.round}${S.settings.maxRounds ? ' / ' + S.settings.maxRounds : ''}</span><span class="row"><button class="btn sm ${sound.on ? '' : 'off'}" data-a="snd" aria-label="${sound.on ? 'Couper le son' : 'Activer le son'}">${sound.on ? '🔊 Son' : '🔇 Coupé'}</button><button class="btn sm" data-a="fs" aria-label="Plein écran" title="Plein écran">⛶</button><button class="btn sm" data-a="help" aria-label="Règles" title="Règles du jeu">?</button><button class="btn sm" data-a="leave">Quitter</button></span></h2>${players}</div>
     ${trades ? `<div class="box"><h2>Échanges en attente</h2>${trades}</div>` : ''}
     ${me ? `<div class="box"><h2>${isLocal() ? 'Terrains de ' + esc(me.name) : 'Mes terrains'}</h2>${props ? `<div class="chips">${props}</div>` : '<p class="note">Aucun terrain pour l\'instant. Clique sur une case du plateau pour voir ses loyers.</p>'}</div>` : ''}`;
 }
@@ -1732,9 +1935,30 @@ function renderSide() {
 function closeModal() { ui.modal = null; ui.draft = null; const m = $('#modal'); if (m) m.remove(); }
 function modalRoot() { let m = $('#modal'); if (!m) { m = document.createElement('div'); m.id = 'modal'; m.className = 'modal fresh'; m.dataset.a = 'backdrop'; document.body.appendChild(m); setTimeout(() => m.classList.remove('fresh'), 420); } return m; }
 function renderModal() {
+  if (ui.modal && ui.modal.type === 'help') return renderHelpModal();
+  if (ui.modal && ui.modal.type === 'tok' && S && S.phase === 'lobby') return renderTokModal();
   if (!ui.modal || !S || S.phase === 'lobby') return closeModal();
   if (ui.modal.type === 'tile') return renderTileModal(ui.modal.i);
   renderTradeModal();
+}
+function renderTokModal() {
+  const p = P(S, ui.modal.id); if (!p) return closeModal();
+  modalRoot().innerHTML = `<div class="sheet" role="dialog" aria-label="Personnaliser"><div class="hd dark">Pion de ${esc(p.name)}</div><div class="bd">
+    <div class="pvw"><span class="ava" style="--c:${p.color}">${tokOf(p)}</span></div>
+    <label class="lbl">Pion</label><div class="tokgrid">${PLAYER_TOKENS.map(t => { const taken = S.players.some(x => x !== p && x.tok === t); return `<button class="tokpick ${p.tok === t ? 'on' : ''}" style="--c:${p.color}" data-a="pick-tok" data-v="${t}" ${taken ? 'disabled' : ''} aria-label="Pion ${t}">${t}</button>`; }).join('')}</div>
+    <label class="lbl" style="margin-top:14px">Couleur</label><div class="colgrid">${PLAYER_COLORS.map(c => { const taken = S.players.some(x => x !== p && x.color === c); return `<button class="dot ${p.color === c ? 'on' : ''}" style="--c:${c}" data-a="pick-col" data-v="${c}" ${taken ? 'disabled' : ''} aria-label="Couleur"></button>`; }).join('')}</div>
+    <button class="btn primary" data-a="close" style="width:100%;margin-top:16px">C'est bon</button></div></div>`;
+}
+function renderHelpModal() {
+  const R = [['🎯', 'But du jeu', 'Ruiner tous les autres. En partie rapide, le plus riche à la fin gagne.'], ['🎲', 'Ton tour', 'Lance les dés et avance. Terrain libre : achète-le, sinon il part aux enchères. Terrain d\'un autre : tu paies le loyer.'],
+    ['🏠', 'Construire', 'Avec tout un groupe de la même couleur, le loyer double et tu peux bâtir des maisons puis un hôtel. Clique sur ton terrain.'],
+    ['🚩', 'Départ', 'Salaire à chaque passage, bonus si tu t\'arrêtes pile dessus.'], ['⛓️', 'Prison', 'Pour sortir : un double, l\'amende ou une carte. Trois doubles d\'affilée t\'y envoient.'],
+    ['⚠️', 'Dettes', 'Pas assez pour payer ? Vends des maisons ou hypothèque pour rembourser avant de finir ton tour, sinon tu abandonnes.'],
+    ['🤝', 'Échanges', 'Bouton Échanger sur un joueur : argent, terrains et cartes. Les bots en Normal et Difficile te feront des offres.'],
+    ['🌍', 'Événements', 'Tous les 3 tours (si activé) : boom, krach, portes ouvertes, soldes, fête ou contrôle fiscal.'],
+    ['⌨️', 'Raccourcis', 'Espace : lancer les dés ou terminer le tour. Échap : fermer une fenêtre.']];
+  modalRoot().innerHTML = `<div class="sheet big" role="dialog" aria-label="Règles"><div class="hd dark">Comment jouer</div><div class="bd"><div class="rules">${R.map(([i, t, d]) => `<div class="rule"><span>${i}</span><div><b>${t}</b><p>${d}</p></div></div>`).join('')}</div>
+    <button class="btn primary" data-a="close" style="width:100%;margin-top:14px">Compris</button></div></div>`;
 }
 function renderTileModal(i) {
   const B = buildBoard(S.mapId), t = B[i], o = S.own[i], owner = o && P(S, o.o), can = owner && controllable(owner), M = MAPS[S.mapId];
@@ -1759,7 +1983,7 @@ function renderTileModal(i) {
   }
   const big = t.k === 'prop' ? '' : `<div class="dico">${tileIcon(t, B)}</div>`;
   const own = isBuyable(t) ? (owner ? `<div class="ownr" style="--c:${owner.color}"><i class="dot"></i>Appartient à <b>${esc(owner.name)}</b></div>` : `<div class="ownr free">Libre <b>${money(S, t.price)}</b></div>`) : '';
-  const acts = can && S.phase !== 'over' ? `<div class="mact">${t.k === 'prop' ? `<button class="btn" data-a="manage" data-t="build" data-i="${i}" data-p="${owner.id}" ${o.h >= 5 || o.m ? 'disabled' : ''}>Construire<small>${money(S, -t.house)}</small></button><button class="btn" data-a="manage" data-t="sell" data-i="${i}" data-p="${owner.id}" ${!o.h ? 'disabled' : ''}>Vendre<small>+${money(S, t.house / 2)}</small></button>` : ''}
+  const acts = can && S.phase !== 'over' ? `<div class="mact">${t.k === 'prop' ? `<button class="btn" data-a="manage" data-t="build" data-i="${i}" data-p="${owner.id}" ${o.h >= 5 || o.m ? 'disabled' : ''}>Construire<small>${money(S, -houseCost(S, t))}</small></button><button class="btn" data-a="manage" data-t="sell" data-i="${i}" data-p="${owner.id}" ${!o.h ? 'disabled' : ''}>Vendre<small>+${money(S, t.house / 2)}</small></button>` : ''}
     ${o.m ? `<button class="btn wide" data-a="manage" data-t="unmortgage" data-i="${i}" data-p="${owner.id}">Lever l'hypothèque<small>${money(S, -Math.ceil(t.price / 2 * 1.1))}</small></button>` : `<button class="btn wide" data-a="manage" data-t="mortgage" data-i="${i}" data-p="${owner.id}" ${o.h ? 'disabled' : ''}>Hypothéquer<small>+${money(S, t.price / 2)}</small></button>`}</div>` : '';
   modalRoot().innerHTML = `<div class="deed k-${t.k} ${o && o.m ? 'is-mort' : ''}" role="dialog" aria-label="${esc(t.name)}" style="--g:${g}"><div class="deed-in">
     <div class="deed-hd"><small>${kind}</small><b>${esc(t.name)}</b>${t.price ? `<span class="dprice">${money(S, t.price)}</span>` : ''}${t.k === 'prop' ? `<span class="dhouses">${o && o.h ? (o.h === 5 ? '<i class="hs hotel"></i>' : '<i class="hs"></i>'.repeat(o.h)) : ''}</span>` : ''}</div>
@@ -1799,8 +2023,12 @@ document.addEventListener('click', e => {
       else if (S && S.phase === 'lobby') doAct(net.myId, { type: 'leaveLobby' });
       goHome(); break;
     case 'copy': (navigator.clipboard ? navigator.clipboard.writeText(d.v) : Promise.reject()).then(() => toast('Lien copié'), () => prompt('Copie ce lien :', d.v)); break;
-    case 'l-color': { const free = PLAYER_COLORS.filter(c => !S.players.some(p => p.color === c)), p = P(S, d.id); if (!free.length || !p) return;
-      const next = free.find(c => PLAYER_COLORS.indexOf(c) > PLAYER_COLORS.indexOf(p.color)) || free[0]; doAct(amHost() ? actorHost() : net.myId, { type: 'setColor', id: d.id, color: next }); break; }
+    case 'l-color': case 'l-tok': ui.modal = { type: 'tok', id: d.id }; renderModal(); break;
+    case 'pick-tok': doAct(amHost() ? actorHost() : net.myId, { type: 'setToken', id: ui.modal.id, tok: d.v }); break;
+    case 'pick-col': doAct(amHost() ? actorHost() : net.myId, { type: 'setColor', id: ui.modal.id, color: d.v }); break;
+    case 'help': ui.modal = { type: 'help' }; renderModal(); break;
+    case 'react': { const me = viewPlayer() || (S && P(S, net.myId)); if (me && S && S.phase !== 'lobby') doAct(me.id, { type: 'react', e: d.v }); break; }
+    case 'fs': { const dd = document, el = dd.documentElement, on = dd.fullscreenElement || dd.webkitFullscreenElement, f = on ? (dd.exitFullscreen || dd.webkitExitFullscreen) : (el.requestFullscreen || el.webkitRequestFullscreen); if (f) { try { const r = f.call(on ? dd : el); if (r && r.catch) r.catch(() => toast('Plein écran indisponible ici')); } catch (er) { toast('Plein écran indisponible ici'); } } else toast('Plein écran indisponible sur cet appareil'); break; }
     case 'l-remove': doAct(actorHost(), { type: 'remove', id: d.id }); break;
     case 'l-bot': doAct(actorHost(), { type: 'addPlayer', bot: true }); break;
     case 'l-map': doAct(actorHost(), { type: 'setMap', mapId: d.id }); break;
@@ -1841,6 +2069,9 @@ document.addEventListener('change', e => {
 document.addEventListener('change', e => { const k = e.target.dataset && e.target.dataset.set; if (k && S) doAct(actorHost(), { type: 'setSetting', key: k, value: e.target.type === 'checkbox' ? e.target.checked : e.target.value }); });
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && ui.modal) closeModal();
+  if ((e.key === ' ' || e.code === 'Space') && !e.repeat && S && S.phase !== 'lobby' && !ui.modal && !/INPUT|TEXTAREA|SELECT/.test((document.activeElement || {}).tagName || '')) {
+    const b = document.querySelector('#actions .btn.primary:not([disabled])'); if (b) { e.preventDefault(); if (document.activeElement && document.activeElement.tagName === 'BUTTON') document.activeElement.blur(); b.click(); }
+  }
   if (e.key === 'Enter' && e.target.dataset && e.target.dataset.rename) { e.preventDefault(); e.target.blur(); }
   if (e.key === 'Enter' && e.target.dataset && e.target.dataset.bidin && S && S.phase === 'auction') { e.preventDefault(); bidCustom(e.target.dataset.bidin); }
   if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('pick')) { e.preventDefault(); e.target.click(); }
