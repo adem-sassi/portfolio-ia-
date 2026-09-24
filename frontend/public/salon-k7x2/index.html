@@ -743,6 +743,52 @@ body.lowfx .bgfx{display:none}
 
 .rr .lv{display:flex;align-items:center;gap:1px;letter-spacing:0}.rr .lv svg.hs{width:11px;height:11px;filter:none;stroke-width:1.4}.rr .lv svg.hs.hotel{width:20px;height:11px}.rr .lv .svgi{width:13px;height:13px;color:#475569}.rr.cur .lv .svgi{color:#CBD5E1}
 
+/* ===== v11 : vue 3D ===== */
+.boardbox.v3d{perspective:1900px;perspective-origin:50% 30%}
+.boardbox.v3d .board{transform:rotateX(26deg) scale(.9);transform-origin:50% 58%;transform-style:preserve-3d;transition:transform .6s var(--spring)}
+.boardbox.v3d .tokens,.boardbox.v3d .tok{transform-style:preserve-3d}
+.boardbox.v3d .tok i{transform-origin:50% 100%;transform:rotateX(-26deg) translateY(-18%)}
+.boardbox.v3d .tok.land i{animation:none}
+.boardbox.v3d .tile:hover{transform:translateZ(1.2cqw) scale(1.04)}
+.boardbox.v3d .board::after{content:'';position:absolute;left:4%;right:4%;bottom:-6%;height:10%;border-radius:50%;background:rgba(0,0,0,.55);filter:blur(22px);transform:translateZ(-40px);pointer-events:none}
+
+/* ===== v11 : pions dessinés ===== */
+.tok i.pawn{background:none!important;border:0!important;box-shadow:none!important;border-radius:0;width:100%;height:150%;translate:0 -30%;color:var(--c);display:block;filter:drop-shadow(0 .35cqw .35cqw rgba(0,0,0,.55))}
+.tok i.pawn svg{width:100%;height:100%;display:block}
+.tok.turn i.pawn{filter:drop-shadow(0 0 .8cqw var(--c)) drop-shadow(0 .35cqw .35cqw rgba(0,0,0,.55))}
+
+/* ===== v11 : pièces volantes, fiche au survol ===== */
+.flyc{position:absolute;translate:-50% -50%;font-size:clamp(12px,1.9cqw,19px);z-index:6;pointer-events:none;filter:drop-shadow(0 2px 3px rgba(0,0,0,.5))}
+.tip{position:fixed;z-index:45;width:220px;padding:10px 12px 9px;border-radius:14px;background:rgba(11,22,46,.96);border:1px solid #2F4F8C;box-shadow:0 18px 40px rgba(0,0,0,.55);pointer-events:none;opacity:0;transition:opacity .12s;overflow:hidden}
+.tip.on{opacity:1}
+.tip u{position:absolute;left:0;right:0;top:0;height:5px;background:var(--g)}
+.tip .tn{display:block;font:800 15px var(--display);margin:2px 0 6px}
+.tip .tr{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12.5px;color:var(--mute);padding:3px 0;border-top:1px solid rgba(255,255,255,.06)}
+.tip .tr b{color:var(--text);font-family:var(--display);display:flex;gap:3px;align-items:center}
+.tip .th svg.hs{width:14px;height:14px}.tip .th svg.hs.hotel{width:26px;height:14px}
+.tip .ava.sm{width:22px;height:22px;font-size:12px}
+
+/* ===== v11 : banque, stock ===== */
+.box.bank h2{align-items:center}.box.bank h2 span{display:flex;align-items:center;gap:6px}.box.bank h2 .svgi{width:17px;height:17px;color:var(--amber)}
+.loanv{font:800 13px var(--display);color:#FCA5A5}
+.box.bank .row .btn{flex:1}
+.box.bank .note{margin-top:6px;font-size:11.5px}
+.stockl{display:flex;align-items:center;justify-content:center;gap:5px;margin-top:4px;font:800 clamp(10px,1.3cqw,13px) var(--display);color:var(--mute)}
+.stockl svg.hs{width:1.6cqw;height:1.6cqw;min-width:11px;min-height:11px;filter:none}.stockl svg.hs.hotel{width:2.8cqw;min-width:19px}
+.debt .btn.cyan{margin-right:6px}
+
+/* ===== v11 : podium ===== */
+.podium{display:flex;justify-content:center;align-items:flex-end;gap:clamp(6px,1.4cqw,14px);margin:0 auto 4px;height:clamp(96px,17cqw,150px)}
+.pod{display:flex;flex-direction:column;align-items:center;gap:3px;width:clamp(62px,11cqw,100px);animation:rise .6s var(--spring) both}
+.pod.p1{animation-delay:.35s}.pod.p2{animation-delay:.15s}.pod.p3{animation-delay:0s}
+.pod .ava{width:clamp(30px,5cqw,46px);height:clamp(30px,5cqw,46px);font-size:clamp(16px,2.6cqw,24px);grid-row:auto}
+.pod.p1 .ava{width:clamp(38px,6.4cqw,58px);height:clamp(38px,6.4cqw,58px);font-size:clamp(20px,3.3cqw,30px);box-shadow:0 0 0 3px #FCD34D,0 0 24px rgba(252,211,77,.6)}
+.pod b{font-size:clamp(10px,1.4cqw,13px);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pod i{font:800 clamp(16px,2.8cqw,26px)/1 var(--display);font-style:normal;color:#07101F;width:100%;display:grid;place-items:center;border-radius:10px 10px 0 0;background:linear-gradient(180deg,color-mix(in srgb,var(--c) 80%,#fff),var(--c));box-shadow:inset 0 2px 0 rgba(255,255,255,.5)}
+.pod.p1 i{height:clamp(40px,7cqw,64px)}.pod.p2 i{height:clamp(28px,5cqw,46px)}.pod.p3 i{height:clamp(20px,3.5cqw,32px)}
+.chart{height:clamp(46px,8cqw,90px)}
+.stable{max-height:clamp(70px,16cqw,160px);overflow-y:auto;scrollbar-width:thin}
+
 </style>
 </head>
 <body>
@@ -922,7 +968,10 @@ const CARDS = {
 };
 
 const DEFAULT_SETTINGS = { startCash: 1500, auction: true, doubleRent: true, pot: true, noRentInJail: false, evenBuild: true, randomOrder: true,
-  salary: 200, goLand: true, startProps: 0, maxRounds: 0, lapToBuy: false, turnTime: 0, events: true, botLevel: 2, botSpeed: 2, rentMult: 100 };
+  salary: 200, goLand: true, startProps: 0, maxRounds: 0, lapToBuy: false, turnTime: 0, events: true, botLevel: 2, botSpeed: 2, rentMult: 100, loans: true, houseLimit: false, buildAnywhere: false };
+const HOUSE_STOCK = 32, HOTEL_STOCK = 12;
+const maxLoan = S => Math.max(250, Math.round((S.settings.startCash || 1500) / 2 / 50) * 50);
+function stock(S) { let h = 0, H = 0; for (const i in S.own) { const x = S.own[i].h || 0; if (x === 5) H++; else h += x; } return { h: HOUSE_STOCK - h, H: HOTEL_STOCK - H }; }
 const SETTING_CHOICES = { salary: [100, 200, 300, 400], startProps: [0, 1, 2, 3], maxRounds: [0, 15, 25, 40], turnTime: [0, 30, 60, 90], botLevel: [1, 2, 3], botSpeed: [1, 2, 3], rentMult: [100, 150, 200] };
 const salaryOf = S => S.settings.salary || 200, goLandOf = S => salaryOf(S) + (S.settings.goLand === false ? 0 : 100);
 
@@ -947,7 +996,7 @@ const alive = S => S.players.filter(p => !p.bankrupt);
 const isBuyable = t => t.k === 'prop' || t.k === 'rail' || t.k === 'util';
 const groupOf = (B, t) => B.filter(x => x.k === t.k && (t.k !== 'prop' || x.g === t.g));
 const ownsAll = (S, B, pid, t) => groupOf(B, t).every(x => S.own[x.i] && S.own[x.i].o === pid);
-const groupHasHouses = (S, B, t) => t.k === 'prop' && groupOf(B, t).some(x => S.own[x.i] && S.own[x.i].h > 0);
+const groupHasHouses = (S, B, t) => t.k === 'prop' && groupOf(B, t).some(x => S.own[x.i] && S.own[x.i].h > 0 && (!S.own[t.i] || S.own[x.i].o === S.own[t.i].o));
 function log(S, p, m, extra) { S.lseq = (S.lseq || 0) + 1; S.log.push(Object.assign({ n: S.lseq, p: p ? p.id : null, m }, extra || {})); if (S.log.length > 50) S.log.splice(0, S.log.length - 50); }
 function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 const rid = () => Math.random().toString(36).slice(2, 10);
@@ -963,7 +1012,7 @@ function rent0(S, B, t, diceSum) {
   return (n === 2 ? 10 : 4) * diceSum;
 }
 function worth(S, p) {
-  const B = buildBoard(S.mapId); let w = p.cash;
+  const B = buildBoard(S.mapId); let w = p.cash - (p.loan || 0);
   for (const i in S.own) { const o = S.own[i]; if (o.o !== p.id) continue; const t = B[i]; w += o.m ? t.price / 2 : t.price; if (o.h) w += o.h * t.house; }
   return w;
 }
@@ -1084,6 +1133,8 @@ function goJail(S, p) { p.pos = 10; p.inJail = true; p.jailTurns = 0; S.again = 
 function goBonus(S, p, np) {
   if (np === 0) { p.laps = (p.laps || 0) + 1; p.cash += goLandOf(S); log(S, p, 's\'arrête pile sur le Départ et touche ' + money(S, goLandOf(S)) + ' !', { s: 'salary' }); }
   else if (np < p.pos) { p.laps = (p.laps || 0) + 1; p.cash += salaryOf(S); log(S, p, 'passe par le Départ et touche ' + money(S, salaryOf(S)) + '.', { s: 'salary' }); }
+  else return;
+  if (p.loan > 0) { const r = Math.min(p.loan, Math.floor(salaryOf(S) / 2)); p.cash -= r; p.loan -= r; log(S, p, 'rembourse ' + money(S, r) + ' de son prêt au passage du Départ.'); }
 }
 function moveBy(S, B, p, n) { const np = (p.pos + n) % 40; goBonus(S, p, np); p.pos = np; land(S, B, p); }
 function moveTo(S, B, p, idx) { goBonus(S, p, idx); p.pos = idx; land(S, B, p); }
@@ -1229,7 +1280,7 @@ function doBankrupt(S, B, p) {
     const o = S.own[i]; if (o.o !== p.id) continue;
     if (heir) { if (o.h) { heir.cash += o.h * B[i].house / 2; o.h = 0; } o.o = heir.id; } else delete S.own[i];
   }
-  p.bankrupt = true; p.cash = 0; p.debts = [];
+  p.bankrupt = true; p.cash = 0; p.debts = []; p.loan = 0;
   S.players.forEach(q => { if (q.debts) q.debts.forEach(d => { if (d.to === p.id) { d.to = null; d.pot = false; } }); }); p.jailCards = 0; p.inJail = false;
   S.trades = S.trades.filter(t => t.from !== p.id && t.to !== p.id);
   log(S, p, 'abandonne et fait faillite.' + (heir ? ' Ses biens passent à ' + heir.name + '.' : ' Ses biens retournent à la banque.'), { s: 'bankrupt' });
@@ -1314,16 +1365,18 @@ function act0(S, pid, a) {
     case 'build': {
       if (!t || t.k !== 'prop' || !o || o.o !== pid) return 'Ce terrain n\'est pas à toi';
       if (!mine || S.phase === 'auction' || S.phase === 'moving') return 'Tu construis pendant ton tour';
-      const grp = groupOf(B, t); if (!ownsAll(S, B, pid, t)) return 'Il te faut tout le groupe de couleur';
+      if (!S.settings.buildAnywhere && !ownsAll(S, B, pid, t)) return 'Il te faut tout le groupe de couleur';
+      const grp = groupOf(B, t).filter(x => S.own[x.i] && S.own[x.i].o === pid);
       if (grp.some(x => S.own[x.i].m)) return 'Un terrain du groupe est hypothéqué';
       if (o.h >= 5) return 'Il y a déjà un hôtel';
       if (S.settings.evenBuild && o.h > Math.min(...grp.map(x => S.own[x.i].h))) return 'Construis de façon équilibrée sur le groupe';
+      if (S.settings.houseLimit) { const st = stock(S); if (o.h === 4 ? st.H <= 0 : st.h <= 0) return o.h === 4 ? 'La banque n\'a plus d\'hôtels' : 'La banque n\'a plus de maisons'; }
       const hc = houseCost(S, t); if (p.cash < hc) return 'Pas assez d\'argent';
       pay(S, p, hc, null); o.h++; stat(p).builds++; log(S, p, (o.h === 5 ? 'construit un hôtel sur ' : 'construit une maison sur ') + t.name + '.'); return null;
     }
     case 'sell': {
       if (!t || !o || o.o !== pid || !o.h) return 'Rien à vendre ici';
-      if (S.settings.evenBuild && o.h < Math.max(...groupOf(B, t).map(x => S.own[x.i].h))) return 'Vends de façon équilibrée sur le groupe';
+      if (S.settings.evenBuild && o.h < Math.max(...groupOf(B, t).filter(x => S.own[x.i] && S.own[x.i].o === pid).map(x => S.own[x.i].h))) return 'Vends de façon équilibrée sur le groupe';
       o.h--; p.cash += t.house / 2; log(S, p, 'vend une construction sur ' + t.name + '.', { s: 'sell' }); return null;
     }
     case 'mortgage': {
@@ -1335,6 +1388,17 @@ function act0(S, pid, a) {
       if (!t || !o || o.o !== pid || !o.m) return 'Pas d\'hypothèque ici';
       const cost = Math.ceil(t.price / 2 * 1.1); if (p.cash < cost) return 'Pas assez d\'argent';
       pay(S, p, cost, null); o.m = false; log(S, p, 'lève l\'hypothèque de ' + t.name + '.', { s: 'unmortgage' }); return null;
+    }
+    case 'loan': {
+      if (!S.settings.loans) return 'Les prêts sont désactivés';
+      if (S.phase === 'auction') return 'Attends la fin de l\'enchère';
+      const amt = 250, due = Math.round(amt * 1.2);
+      if ((p.loan || 0) + due > Math.round(maxLoan(S) * 1.2)) return 'Prêt maximum atteint';
+      p.cash += amt; p.loan = (p.loan || 0) + due; log(S, p, 'emprunte ' + money(S, amt) + ' à la banque (à rembourser : ' + money(S, due) + ').', { s: 'coin' }); return null;
+    }
+    case 'repay': {
+      if (!p.loan) return 'Rien à rembourser'; const x = Math.min(p.loan, Math.max(0, p.cash)); if (!x) return 'Pas assez d\'argent';
+      p.cash -= x; p.loan -= x; log(S, p, 'rembourse ' + money(S, x) + ' à la banque.', { s: 'unmortgage' }); return null;
     }
     case 'bankrupt': {
       if (S.phase === 'auction') return 'Attends la fin de l\'enchère';
@@ -1395,12 +1459,15 @@ function botAct(S, b) {
       const withH = mineT.filter(t => S.own[t.i].h > 0).sort((x, y) => S.own[y.i].h - S.own[x.i].h)[0];
       if (withH) return { type: 'sell', tile: withH.i };
       const m = mineT.filter(t => !S.own[t.i].m).sort((x, y) => x.price - y.price)[0];
-      return m ? { type: 'mortgage', tile: m.i } : { type: 'bankrupt' };
+      if (m) return { type: 'mortgage', tile: m.i };
+      return S.settings.loans && (b.loan || 0) + 300 <= Math.round(maxLoan(S) * 1.2) ? { type: 'loan' } : { type: 'bankrupt' };
     }
+    if (b.loan > 0 && b.cash > b.loan + 500) return { type: 'repay' };
     const um = mineT.find(t => S.own[t.i].m && b.cash > Math.ceil(t.price * 0.55) + 300);
     if (um) return { type: 'unmortgage', tile: um.i };
     const build = mineT.filter(t => t.k === 'prop' && S.own[t.i].h < 5 && ownsAll(S, B, b.id, t) && !groupOf(B, t).some(x => S.own[x.i].m)
-      && S.own[t.i].h <= Math.min(...groupOf(B, t).map(x => S.own[x.i].h)) && b.cash > houseCost(S, t) + [0, 400, 250, 120][lvl]).sort((x, y) => y.price - x.price)[0];
+      && S.own[t.i].h <= Math.min(...groupOf(B, t).map(x => S.own[x.i].h)) && b.cash > houseCost(S, t) + [0, 400, 250, 120][lvl]
+      && (!S.settings.houseLimit || (S.own[t.i].h === 4 ? stock(S).H > 0 : stock(S).h > 0))).sort((x, y) => y.price - x.price)[0];
     if (build) return { type: 'build', tile: build.i };
     if (lvl >= 2 && (b.tr || 0) < S.round - 3 && !S.trades.some(x => x.from === b.id)) { // il manque 1 terrain pour compléter un groupe : le bot fait une offre
       for (const t of B) {
@@ -1418,7 +1485,7 @@ function botAct(S, b) {
   return null;
 }
 
-if (typeof module !== 'undefined') module.exports = { GROUPS, GROUP_NAMES, PLAYER_TOKENS, REACTIONS, EVENTS, houseCost, evOn, owed, CARDS, SETTING_CHOICES, MAPS, PLAYER_COLORS, buildBoard, newLobby, act, botAct, worth, P, alive, calcRent, groupOf, ownsAll, groupHasHouses, tradeError, money, DEFAULT_SETTINGS };
+if (typeof module !== 'undefined') module.exports = { stock, maxLoan, GROUPS, GROUP_NAMES, PLAYER_TOKENS, REACTIONS, EVENTS, houseCost, evOn, owed, CARDS, SETTING_CHOICES, MAPS, PLAYER_COLORS, buildBoard, newLobby, act, botAct, worth, P, alive, calcRent, groupOf, ownsAll, groupHasHouses, tradeError, money, DEFAULT_SETTINGS };
 
 </script>
 <script>
@@ -1587,6 +1654,12 @@ document.documentElement.lang = lang;
     "Tu ne peux pas finir ton tour maintenant": "You can't end your turn now", "Tu t'es retiré de cette enchère": "You dropped out of this auction", "Un bot garde son nom": "A bot keeps its name", "Un terrain du groupe est hypothéqué": "A property in the set is mortgaged",
     "Valeur refusée": "Value rejected", "Vends d'abord les constructions du groupe": "Sell the set's buildings first", "Vends de façon équilibrée sur le groupe": "Sell evenly across the set", "Échange introuvable": "Trade not found", "Échange invalide": "Invalid trade",
     "Échange": "Trade", "Français": "Français",
+    "Prêts bancaires": "Bank loans", "Emprunte 250 à la banque, rembourse 300 (auto au Départ)": "Borrow 250 from the bank, repay 300 (automatic at GO)", "Stock de maisons limité": "Limited house supply", "32 maisons et 12 hôtels pour toute la partie": "32 houses and 12 hotels for the whole game",
+    "Construction libre": "Free building", "Construire sans avoir tout le groupe": "Build without owning the whole set", "Banque": "Bank", "Rembourser": "Repay", "Pions": "Tokens", "Emoji": "Emoji", "Pions classiques": "Classic pawns",
+    "Vue 3D du plateau": "3D board view", "Plateau incliné, pions debout": "Tilted board, standing tokens", "Propriétaire": "Owner", "Loyer actuel": "Current rent", "Constructions": "Buildings", "Loyer nu": "Base rent", "Avec hôtel": "With hotel", "Ici": "Here",
+    "Clique pour les détails": "Click for details", "Les prêts sont désactivés": "Loans are disabled", "Prêt maximum atteint": "Maximum loan reached", "Rien à rembourser": "Nothing to repay", "La banque n'a plus de maisons": "The bank is out of houses", "La banque n'a plus d'hôtels": "The bank is out of hotels",
+    "Si activé : emprunte 250 et rends 300. La moitié de ton salaire rembourse automatiquement au passage du Départ.": "If enabled: borrow 250 and pay back 300. Half your salary repays it automatically when you pass GO.",
+    "Espace : lancer les dés ou terminer le tour. B : acheter. Échap : fermer une fenêtre.": "Space: roll or end turn. B: buy. Esc: close a window.",
     // journal
     "part en prison.": "goes to jail.", "n'a rien à perdre, la tempête passe.": "has nothing to lose, the storm passes.", "passe son tour.": "skips a turn.", "remporte la partie !": "wins the game!", "sort de prison grâce au double.": "gets out of jail with a double.",
     "reste en prison.": "stays in jail.", "enchaîne trois doubles.": "rolls three doubles in a row.", "utilise sa carte Sortie de prison.": "uses a Get Out of Jail card.", "annule son offre.": "cancels their offer.",
@@ -1631,7 +1704,9 @@ document.documentElement.lang = lang;
     // interface
     [/^Achète, construis, négocie, ruine tes potes\. Jusqu'à (\d+) joueurs, (\d+) maps\.$/, "Buy, build, trade, bankrupt your friends. Up to $1 players, $2 maps."],
     [/^🏆 (\d+) victoires? sur (\d+) parties?$/, (m, a, b) => '🏆 ' + pl(a, 'win', 'wins') + ' out of ' + pl(b, 'game', 'games')],
-    [/^Réglages · (.+)$/, 'Settings · $1'], [/^([^,]+), ([^,]+), ([^,]+)…$/, (m, x, y, z) => [x, y, z].map(trName).join(', ') + '…'], [/^Connexion au salon (.+)…$/, 'Connecting to room $1…'], [/^Reprendre le salon (.+)$/, 'Resume room $1'],
+    [/^Réglages · (.+)$/, 'Settings · $1'], [/^Emprunter (.+) à la banque$/, 'Borrow $1 from the bank'], [/^Emprunter (.+)$/, 'Borrow $1'], [/^prêt (.+)$/, 'loan $1'],
+    [/^Tu rends (.+) par tranche\. La moitié de ton salaire rembourse le prêt au Départ\.$/, 'You pay back $1 per loan. Half your salary repays it at GO.'],
+    [/^emprunte (.+) à la banque \(à rembourser : (.+)\)\.$/, 'borrows $1 from the bank (to repay: $2).'], [/^rembourse (.+) de son prêt au passage du Départ\.$/, 'repays $1 of their loan when passing GO.'], [/^rembourse (.+) à la banque\.$/, 'repays $1 to the bank.'], [/^([^,]+), ([^,]+), ([^,]+)…$/, (m, x, y, z) => [x, y, z].map(trName).join(', ') + '…'], [/^Connexion au salon (.+)…$/, 'Connecting to room $1…'], [/^Reprendre le salon (.+)$/, 'Resume room $1'],
     [/^Joueurs \((\d+)\/(\d+)\)$/, 'Players ($1/$2)'], [/^Joueurs, tour (\d+)(.*)$/, 'Players, round $1$2'], [/^Couleur de (.+)$/, '$1\'s color'], [/^Pion de (.+)$/, '$1\'s token'], [/^Retirer (.+)$/, 'Remove $1'],
     [/^Pion (.+)$/, 'Token $1'], [/^Réaction (.+)$/, 'Reaction $1'], [/^Dé : (\d)$/, 'Die: $1'], [/^(\d+) chacun$/, '$1 each'], [/^(\d+) tours$/, '$1 rounds'],
     [/^Acheter pour (.+)$/, 'Buy for $1'], [/^Payer (.+)$/, 'Pay $1'], [/^Tenter un double \((\d)\/3\)$/, 'Try for a double ($1/3)'], [/^Tu as (.+)$/, 'You have $1'], [/^Valeur (.+)$/, 'Value $1'],
@@ -1916,6 +1991,7 @@ function renderHome() {
 }
 const SETTINGS_UI = [['auction', 'Enchères', 'Un terrain refusé part aux enchères'], ['doubleRent', 'Loyer doublé', 'Sur un groupe complet sans maison'], ['pot', 'Cagnotte des vacances', 'Taxes et amendes vont sur la case Vacances'],
   ['noRentInJail', 'Pas de loyer en prison', 'Un joueur en prison ne touche rien'], ['evenBuild', 'Construction équilibrée', 'Une maison d\'écart maximum dans un groupe'], ['randomOrder', 'Ordre aléatoire', 'L\'ordre des joueurs est tiré au sort'],
+  ['loans', 'Prêts bancaires', 'Emprunte 250 à la banque, rembourse 300 (auto au Départ)'], ['houseLimit', 'Stock de maisons limité', '32 maisons et 12 hôtels pour toute la partie'], ['buildAnywhere', 'Construction libre', 'Construire sans avoir tout le groupe'],
   ['events', 'Événements mondiaux', 'Tous les 3 tours : boom, krach, fête, soldes...'], ['goLand', 'Bonus pile sur le Départ', '100 de plus si tu t\'arrêtes exactement dessus'], ['lapToBuy', 'Tour de chauffe', 'Il faut boucler un tour de plateau avant d\'acheter']];
 const SETTINGS_SEL = [['salary', 'Salaire au Départ', 'Touché à chaque passage', [100, 200, 300, 400].map(v => [v, v])],
   ['startProps', 'Terrains offerts au début', 'Distribués au hasard, la partie démarre plus vite', [[0, 'Aucun'], [1, '1 chacun'], [2, '2 chacun'], [3, '3 chacun']]],
@@ -2031,7 +2107,7 @@ function mountGame() {
   }).join('');
   const die = id => `<div class="die3d" id="${id}"><div class="cube">${[1, 2, 3, 4, 5, 6].map(n => `<div class="face f${n}">${Array.from({ length: 9 }, (_, i) => PIPS[n].includes(i) ? '<b></b>' : '<i></i>').join('')}</div>`).join('')}</div></div>`;
   const deck = (k, sym, lbl) => `<div class="deck d-${k}" id="deck-${k}"><i></i><i></i><b><span>${sym}</span>${lbl}</b></div>`;
-  mount('game', `<div class="game"><div class="boardwrap"><div class="boardbox" data-theme="${theme}" data-dice="${diceSkin}" style="--accent:${M.accent}"><div class="board enter" id="board">${tiles}
+  mount('game', `<div class="game"><div class="boardwrap"><div class="boardbox${view3d ? ' v3d' : ''}" data-theme="${theme}" data-dice="${diceSkin}" style="--accent:${M.accent}"><div class="board enter" id="board">${tiles}
     <div class="center"><div class="glow"></div><div class="deco" aria-hidden="true">${M.deco.map((d, i) => `<span style="--i:${i}">${d}</span>`).join('')}</div><h1>Magnat<small>Map <b>${esc(M.name)}</b>${isLocal() ? '' : ', salon ' + esc(S.code)}</small></h1>
       <div class="dice">${die('d0')}${die('d1')}<span class="dsum" id="dsum"></span></div>
       <div id="evpill"></div><div class="status" id="status"></div><div class="tbar" id="tbar"></div><div class="actions" id="actions"></div><div id="auction" style="width:100%"></div>
@@ -2053,9 +2129,11 @@ mqSmall.addEventListener('change', dockLayout);
 const THEMES = [['nuit', 'Nuit', ['#1D2A4D', '#0B1630', '#F59E0B']], ['luxe', 'Luxe', ['#17140F', '#D4AF37', '#F5E7C6']], ['ocean', 'Océan', ['#0E3A4F', '#0E7490', '#22D3EE']], ['foret', 'Forêt', ['#1E3A2B', '#6B4423', '#84CC16']], ['classique', 'Classique', ['#FFFDF7', '#2F6B4F', '#EF4444']], ['neon', 'Néon', ['#0D0D1A', '#C026D3', '#22D3EE']], ['pastel', 'Pastel', ['#F5F3FF', '#A5B4FC', '#EC4899']], ['sable', 'Sable', ['#FBF3E4', '#B45309', '#0EA5E9']]];
 let theme = LS.get('magnat_theme') || 'nuit'; if (!THEMES.some(t => t[0] === theme)) theme = 'nuit';
 const DICE = [['classique', 'Classique', '#FFFFFF', '#0B1730'], ['or', 'Or', '#F59E0B', '#451A03'], ['onyx', 'Onyx', '#111827', '#FFFFFF'], ['rubis', 'Rubis', '#E11D48', '#FFFFFF'], ['neon', 'Néon', '#0B1026', '#22D3EE'], ['glace', 'Glace', '#BAE6FD', '#0369A1']];
+let view3d = !!LS.get('magnat_3d'), pawnStyle = LS.get('magnat_pawn') === 'pion' ? 'pion' : 'emoji';
 let diceSkin = LS.get('magnat_dice') || 'classique', vol = LS.get('magnat_vol'), lowfx = !!LS.get('magnat_lowfx');
 if (typeof vol !== 'number') vol = 80;
-function applyTheme() { const bb = document.querySelector('.boardbox'); if (bb) { bb.dataset.theme = theme; bb.dataset.dice = diceSkin; } document.body.classList.toggle('lowfx', lowfx); }
+function applyTheme() { const bb = document.querySelector('.boardbox'); if (bb) { bb.dataset.theme = theme; bb.dataset.dice = diceSkin; bb.classList.toggle('v3d', view3d); } document.body.classList.toggle('lowfx', lowfx); }
+const PAWN_SVG = '<svg viewBox="0 0 24 32" aria-hidden="true"><ellipse cx="12" cy="29.6" rx="9.5" ry="2.2" fill="rgba(0,0,0,.35)"/><path d="M4.2 28.6h15.6a1.6 1.6 0 0 0 0-3.2h-.9l-2.4-8.1c.4-.6.6-1.3.6-2H6.9c0 .7.2 1.4.6 2l-2.4 8.1h-.9a1.6 1.6 0 0 0 0 3.2z" fill="currentColor" stroke="rgba(0,0,0,.3)" stroke-width=".6"/><rect x="6.4" y="12.6" width="11.2" height="2.8" rx="1.4" fill="currentColor" stroke="rgba(0,0,0,.3)" stroke-width=".6"/><circle cx="12" cy="7.6" r="5.4" fill="currentColor" stroke="rgba(0,0,0,.3)" stroke-width=".6"/><circle cx="10.1" cy="5.8" r="1.7" fill="#fff" opacity=".6"/><path d="M9.4 18.6 7.6 24.8" stroke="#fff" stroke-opacity=".4" stroke-width="1.3" stroke-linecap="round"/></svg>';
 const tokOf = p => (p.tok ? esc(p.tok) : esc((p.name.replace(/^Bot /, '') || '?')[0].toUpperCase()));
 function renderGame() {
   if (ui.screen !== 'game' || ui.mapId !== S.mapId) mountGame();
@@ -2113,7 +2191,20 @@ function floater(p, d, delay) {
     }
   }, delay);
 }
+function flyCoins(fromId, toId, amt) {
+  const layer = $('#tokens'), a0 = $('#k' + fromId), b0 = $('#k' + toId); if (!layer || !a0 || !b0 || lowfx) return;
+  const n = Math.min(9, 3 + Math.floor(amt / 60));
+  for (let k = 0; k < n; k++) {
+    const c = document.createElement('div'); c.className = 'flyc'; c.textContent = '🪙'; c.style.left = a0.style.left; c.style.top = a0.style.top; layer.appendChild(c);
+    setTimeout(() => { c.style.transition = 'left .75s cubic-bezier(.5,0,.3,1), top .75s cubic-bezier(.3,-.6,.4,1), opacity .2s .65s, transform .75s'; c.style.left = b0.style.left; c.style.top = b0.style.top; c.style.transform = 'rotate(' + (360 + k * 40) + 'deg)'; c.style.opacity = '0'; }, 40 + k * 70);
+    setTimeout(() => c.remove(), 1100 + k * 70);
+  }
+  sfx('coin', 700);
+}
 function cashFx() { // +200 / -50 au-dessus du pion, compteur qui défile
+  const deltas = [];
+  S.players.forEach(p => { const prev = ui.cash[p.id]; if (prev !== undefined && !ui.first && prev !== p.cash) deltas.push([p, p.cash - prev]); });
+  deltas.filter(x => x[1] < 0).forEach(([p, d]) => { const r = deltas.find(y => y[0] !== p && y[1] === -d); if (r) flyCoins(p.id, r[0].id, -d); });
   S.players.forEach(p => {
     const prev = ui.cash[p.id]; ui.cash[p.id] = p.cash;
     if (prev === undefined || ui.first || ui.shown[p.id] === undefined) { ui.shown[p.id] = p.cash; return; }
@@ -2188,7 +2279,7 @@ function place(el, pos, idx) {
 function updateTokens() {
   const layer = $('#tokens'), reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
   S.players.forEach((p, idx) => {
-    let el = $('#k' + p.id); if (!el) { el = document.createElement('div'); el.id = 'k' + p.id; el.className = 'tok'; el.innerHTML = '<i>' + tokOf(p) + '</i>'; el.style.setProperty('--c', p.color); layer.appendChild(el); }
+    let el = $('#k' + p.id); if (!el) { el = document.createElement('div'); el.id = 'k' + p.id; el.className = 'tok'; el.innerHTML = pawnStyle === 'pion' ? '<i class="pawn">' + PAWN_SVG + '</i>' : '<i>' + tokOf(p) + '</i>'; el.style.setProperty('--c', p.color); layer.appendChild(el); }
     el.classList.toggle('hidden', !!p.bankrupt); el.classList.toggle('turn', S.players[S.turn].id === p.id && S.phase !== 'over'); el.classList.toggle('jail', !!p.inJail);
     if (ui.disp[p.id] === undefined) ui.disp[p.id] = p.pos;
     if (ui.disp[p.id] !== p.pos && !ui.anim[p.id]) {
@@ -2238,7 +2329,8 @@ function renderCenter() {
     const Hs = S.hist || [], mx = Math.max(1, ...Hs.flatMap(h => h.w)), W = 520, HH = 110, X = i => 4 + i * (W - 8) / Math.max(1, Hs.length - 1), Y = v => HH - 4 - v / mx * (HH - 12);
     const chart = Hs.length > 1 ? `<svg class="chart" viewBox="0 0 ${W} ${HH}" preserveAspectRatio="none" aria-label="Évolution des fortunes">${S.players.map((p, k) => `<polyline style="--c:${p.color}" points="${Hs.map((h, i) => X(i).toFixed(1) + ',' + Y(h.w[k] || 0).toFixed(1)).join(' ')}"/>`).join('')}</svg>` : '';
     const rows = rank.map((p, i) => { const st = p.st || { rin: 0, rout: 0, buys: 0, builds: 0 }; return `<div class="srow ${p.id === S.winner ? 'win' : ''}" style="--c:${p.color}"><span class="sp">${i + 1}</span><span class="ava sm" style="--c:${p.color}">${tokOf(p)}</span><b>${esc(p.name)}</b><small>${st.buys} achats, ${st.builds} constructions, loyers +${money(S, st.rin)} / -${money(S, st.rout)}</small><span class="sw2">${p.bankrupt ? 'ruiné' : money(S, Math.round(worth(S, p)))}</span></div>`; }).join('');
-    status = ''; html = `<div class="winner" style="width:100%"><span class="crown">${w ? tokOf(w) : '👑'}</span><div class="big" style="--c:${w ? w.color : '#fff'}">${w ? esc(w.name) + ' gagne la partie' : 'Partie terminée'}</div>
+    const podium = `<div class="podium">${[1, 0, 2].map(k => rank[k] ? `<div class="pod p${k + 1}" style="--c:${rank[k].color}"><span class="ava" style="--c:${rank[k].color}">${tokOf(rank[k])}</span><b>${esc(rank[k].name)}</b><i>${k + 1}</i></div>` : '').join('')}</div>`;
+    status = ''; html = `<div class="winner" style="width:100%">${podium}<div class="big" style="--c:${w ? w.color : '#fff'}">${w ? esc(w.name) + ' gagne la partie' : 'Partie terminée'}</div>
       ${chart}<div class="stable">${rows}</div>
       <div class="actions">${amHost() ? '<button class="btn primary" data-a="rematch">Revenir au salon pour rejouer</button>' : ''}<button class="btn" data-a="leave">Quitter</button></div></div>`;
   } else if (moving && S.phase !== 'auction') status = who(cur) + ' avance<span class="dots"></span>';
@@ -2309,7 +2401,7 @@ function renderCenter() {
     if (aucBox.firstElementChild) aucBox.innerHTML = '';
   }
   const decks = $('#decks'); if (decks) decks.classList.toggle('hidden', S.phase === 'auction' || S.phase === 'over' || (mine && cur.cash < 0 && S.phase === 'end'));
-  const pb = $('#potbox'); if (pb && !ui.held) pb.innerHTML = S.settings.pot ? `<small>Cagnotte des vacances</small><b>${money(S, S.pot)}</b>` : '';
+  const pb = $('#potbox'); if (pb && !ui.held) pb.innerHTML = (S.settings.pot ? `<small>Cagnotte des vacances</small><b>${money(S, S.pot)}</b>` : '') + (S.settings.houseLimit ? (() => { const st = stock(S); return `<span class="stockl">${HOUSE_SVG} ${Math.max(0, st.h)} · ${HOTEL_SVG} ${Math.max(0, st.H)}</span>`; })() : '');
 
   if (ui.held) return;
   // journal
@@ -2344,7 +2436,7 @@ function debtPanelHTML(p) { // dette à rembourser pour finir son tour : liquida
   let potential = 0; const opts = [];
   for (const t of mineT) {
     const o = S.own[t.i]; potential += (o.h || 0) * (t.house || 0) / 2 + (o.m ? 0 : t.price / 2);
-    if (o.h > 0) { if (!S.settings.evenBuild || o.h >= Math.max(...groupOf(B, t).map(x => S.own[x.i].h))) opts.push({ k: 'sell', t, gain: t.house / 2, lbl: (o.h === 5 ? 'Vendre l\'hôtel de ' : 'Vendre 1 maison à ') + t.name }); }
+    if (o.h > 0) { if (!S.settings.evenBuild || o.h >= Math.max(...groupOf(B, t).filter(x => S.own[x.i] && S.own[x.i].o === p.id).map(x => S.own[x.i].h))) opts.push({ k: 'sell', t, gain: t.house / 2, lbl: (o.h === 5 ? 'Vendre l\'hôtel de ' : 'Vendre 1 maison à ') + t.name }); }
     else if (!o.m && !groupHasHouses(S, B, t)) opts.push({ k: 'mortgage', t, gain: t.price / 2, lbl: 'Hypothéquer ' + t.name });
   }
   opts.sort((x, y) => (x.k === y.k ? x.gain - y.gain : x.k === 'mortgage' ? -1 : 1));
@@ -2352,7 +2444,7 @@ function debtPanelHTML(p) { // dette à rembourser pour finir son tour : liquida
   return `<div class="debt"><div class="debt-hd"><span class="debt-ic">${ico('alert')}</span><div><b>Tu dois ${whoTo}</b><small>${miss > 0 ? 'Même en vendant tout, il te manque ' + money(S, miss) + '. Négocie un échange ou abandonne.' : 'Rembourse pour finir ton tour. Chaque vente part direct chez ton créancier.'}</small></div></div>
     <div class="debt-bar"><i style="--w:${Math.min(100, Math.round(potential / Math.max(1, -p.cash) * 100))}%"></i><span>Tu peux encore récupérer ${money(S, potential)}</span></div>
     <div class="debt-opts">${opts.map(o => `<button class="btn sm" style="--g:${o.t.k === 'prop' ? GROUPS[o.t.g] : '#94A3B8'}" data-a="manage" data-t="${o.k}" data-i="${o.t.i}" data-p="${p.id}">${esc(o.lbl)}<small>+${money(S, o.gain)}</small></button>`).join('') || '<span class="note">Plus rien à vendre ni à hypothéquer.</span>'}</div>
-    <button class="btn danger sm" data-a="bankrupt" data-id="${p.id}">Abandonner la partie</button></div>`;
+    ${S.settings.loans && (p.loan || 0) + 300 <= Math.round(maxLoan(S) * 1.2) ? `<button class="btn sm cyan" data-a="loan">Emprunter ${money(S, 250)} à la banque</button> ` : ''}<button class="btn danger sm" data-a="bankrupt" data-id="${p.id}">Abandonner la partie</button></div>`;
 }
 function auctionTicks(stop) { // tic-tac sur les 3 dernières secondes
   (ui.tickT || []).forEach(clearTimeout); ui.tickT = [];
@@ -2373,7 +2465,7 @@ function renderSide() {
   const B = buildBoard(S.mapId), me = viewPlayer(), cur = S.players[S.turn];
   const players = S.players.map(p => `<div class="pcard ${p.id === cur.id && S.phase !== 'over' ? 'turn' : ''} ${p.bankrupt ? 'out' : ''}" style="--c:${p.color}">
     <span class="ava">${tokOf(p)}</span><span class="nm">${esc(p.name)}</span><span class="cash ${p.cash < 0 ? 'neg' : ''}" id="cash-${p.id}">${p.bankrupt ? 'éliminé' : money(S, Math.round(ui.shown[p.id] === undefined ? p.cash : ui.shown[p.id]))}</span>
-    <div class="meta">${!p.bankrupt ? `<span class="fort">fortune ${money(S, Math.round(worth(S, p)))}</span>` : ''}${p.bot ? '<span class="badge">bot</span>' : ''}${p.id === net.myId && !isLocal() ? '<span class="badge">toi</span>' : ''}${p.inJail ? '<span class="badge warn">en prison</span>' : ''}${p.skip && !p.bankrupt ? '<span class="badge warn">passe son prochain tour</span>' : ''}${S.settings.lapToBuy && !p.laps && !p.bankrupt ? '<span class="badge">tour de chauffe</span>' : ''}${!p.bankrupt && owed(p) ? `<span class="badge warn">doit ${money(S, owed(p))}</span>` : ''}${p.jailCards ? '<span class="badge">carte sortie ×' + p.jailCards + '</span>' : ''}${!p.conn && !p.bankrupt ? '<span class="badge warn">déconnecté</span>' : ''}
+    <div class="meta">${!p.bankrupt ? `<span class="fort">fortune ${money(S, Math.round(worth(S, p)))}</span>` : ''}${p.bot ? '<span class="badge">bot</span>' : ''}${p.id === net.myId && !isLocal() ? '<span class="badge">toi</span>' : ''}${p.inJail ? '<span class="badge warn">en prison</span>' : ''}${p.skip && !p.bankrupt ? '<span class="badge warn">passe son prochain tour</span>' : ''}${S.settings.lapToBuy && !p.laps && !p.bankrupt ? '<span class="badge">tour de chauffe</span>' : ''}${!p.bankrupt && owed(p) ? `<span class="badge warn">doit ${money(S, owed(p))}</span>` : ''}${!p.bankrupt && p.loan ? `<span class="badge">prêt ${money(S, p.loan)}</span>` : ''}${p.jailCards ? '<span class="badge">carte sortie ×' + p.jailCards + '</span>' : ''}${!p.conn && !p.bankrupt ? '<span class="badge warn">déconnecté</span>' : ''}
       ${!p.bankrupt ? `<span class="owndots">${B.filter(t => S.own[t.i] && S.own[t.i].o === p.id).map(t => `<u style="--g:${t.k === 'prop' ? GROUPS[t.g] : t.k === 'rail' ? '#94A3B8' : '#FCD34D'}" class="${S.own[t.i].m ? 'm' : ''}"></u>`).join('') || '<span class="badge">aucun terrain</span>'}</span>` : ''}
       ${me && !me.bankrupt && !p.bankrupt && p.id !== me.id && S.phase !== 'over' ? `<button class="btn sm" data-a="trade-open" data-id="${p.id}">Échanger</button>` : ''}
       ${amHost() && !p.bankrupt && p.id !== S.hostId && S.phase !== 'over' && !p.local ? `<button class="btn sm danger" data-a="kick" data-id="${p.id}">Exclure</button>` : ''}</div></div>`).join('');
@@ -2385,6 +2477,7 @@ function renderSide() {
   const props = me ? B.filter(t => S.own[t.i] && S.own[t.i].o === me.id).map(t => { const o = S.own[t.i]; return `<button class="mini ${o.m ? 'm' : ''}" style="--g:${t.k === 'prop' ? GROUPS[t.g] : t.k === 'rail' ? '#94A3B8' : '#FCD34D'}" data-a="tile" data-i="${t.i}"><u>${t.k === 'prop' ? (o.h ? houseHTML(o.h) : '') : tileIcon(t, B)}</u><span>${esc(t.name)}</span><b>${o.m ? 'hyp.' : t.k === 'util' ? '× dés' : money(S, calcRent(S, B, t, 7))}</b></button>`; }).join('') : '';
   $('#side').innerHTML = `<div class="box"><h2><span>Joueurs, tour ${S.round}${S.settings.maxRounds ? ' / ' + S.settings.maxRounds : ''}</span><span class="row"><button class="btn sm ${sound.on ? '' : 'off'}" data-a="snd" aria-label="${sound.on ? 'Couper le son' : 'Activer le son'}" title="Son">${ico(sound.on ? 'vol' : 'mute')}</button><button class="btn sm" data-a="theme" aria-label="Réglages" title="Réglages">${ico('sliders')}</button><button class="btn sm" data-a="fs" aria-label="Plein écran" title="Plein écran">${ico('expand')}</button><button class="btn sm" data-a="help" aria-label="Règles" title="Règles du jeu">?</button><button class="btn sm" data-a="leave">Quitter</button></span></h2>${players}${(S.specs || []).length ? `<p class="specs">👁 ${S.specs.length > 1 ? 'Spectateurs' : 'Spectateur'} : ${S.specs.map(x => esc(x.name)).join(', ')}</p>` : ''}${!isLocal() && !P(S, net.myId) ? '<p class="specs me">Tu regardes la partie en spectateur. Tu pourras jouer à la prochaine.</p>' : ''}</div>
     ${trades ? `<div class="box"><h2>Échanges en attente</h2>${trades}</div>` : ''}
+    ${me && S.settings.loans && S.phase !== 'over' ? `<div class="box bank"><h2><span>${ico('bank')} Banque</span>${me.loan ? `<b class="loanv">prêt ${money(S, me.loan)}</b>` : ''}</h2><div class="row"><button class="btn sm" data-a="loan" ${(me.loan || 0) + 300 > Math.round(maxLoan(S) * 1.2) ? 'disabled' : ''}>Emprunter ${money(S, 250)}</button><button class="btn sm" data-a="repay" ${!me.loan || me.cash <= 0 ? 'disabled' : ''}>Rembourser</button></div><p class="note">Tu rends ${money(S, 300)} par tranche. La moitié de ton salaire rembourse le prêt au Départ.</p></div>` : ''}
     ${me ? `<div class="box"><h2>${isLocal() ? 'Terrains de ' + esc(me.name) : 'Mes terrains'}</h2>${props ? `<div class="chips">${props}</div>` : '<p class="note">Aucun terrain pour l\'instant. Clique sur une case du plateau pour voir ses loyers.</p>'}</div>` : ''}`;
 }
 
@@ -2405,6 +2498,8 @@ function renderThemeModal() {
     <section><label class="lbl">Son</label><div class="row"><button class="btn sm ${sound.on ? '' : 'off'}" data-a="snd">${ico(sound.on ? 'vol' : 'mute')}<span>${sound.on ? 'Activé' : 'Coupé'}</span></button><input class="vol" type="range" min="0" max="100" step="5" value="${vol}" data-vol aria-label="Volume"></div></section>
     <section class="wide"><label class="lbl">Couleurs du plateau <small>(que sur ton écran)</small></label><div class="themes">${THEMES.map(([k, n, c]) => `<button class="thm ${theme === k ? 'on' : ''}" data-a="pick-theme" data-v="${k}"><span class="sw3">${c.map(x => `<i style="background:${x}"></i>`).join('')}</span><b>${n}</b></button>`).join('')}</div></section>
     <section class="wide"><label class="lbl">Dés</label><div class="dskins">${DICE.map(([k, n, bg, pip]) => `<button class="dsk ${diceSkin === k ? 'on' : ''}" data-a="pick-dice" data-v="${k}"><span class="dmini dk-${k}"><b></b><b></b><b></b></span><small>${n}</small></button>`).join('')}</div></section>
+    <section><label class="lbl">Pions</label><div class="seg"><button class="${pawnStyle === 'emoji' ? 'on' : ''}" data-a="pick-pawn" data-v="emoji">Emoji</button><button class="${pawnStyle === 'pion' ? 'on' : ''}" data-a="pick-pawn" data-v="pion">Pions classiques</button></div></section>
+    <section><label class="opt"><span>Vue 3D du plateau<small>Plateau incliné, pions debout</small></span><input class="sw" type="checkbox" data-v3d ${view3d ? 'checked' : ''}></label></section>
     <section class="wide"><label class="opt"><span>Animations réduites<small>Moins d'effets, plus fluide sur les ordis lents</small></span><input class="sw" type="checkbox" data-lowfx ${lowfx ? 'checked' : ''}></label></section>
     <button class="btn primary wide" data-a="close">OK</button></div></div>`;
 }
@@ -2423,7 +2518,8 @@ function renderHelpModal() {
     ['alert', 'Dettes', 'Pas assez pour payer ? Vends des maisons ou hypothèque pour rembourser avant de finir ton tour, sinon tu abandonnes.'],
     ['swap', 'Échanges', 'Bouton Échanger sur un joueur : argent, terrains et cartes. Les bots en Normal et Difficile te feront des offres.'],
     ['sparkle', 'Événements', 'Tous les 3 tours (si activé) : boom, krach, portes ouvertes, soldes, fête ou contrôle fiscal.'],
-    ['key', 'Raccourcis', 'Espace : lancer les dés ou terminer le tour. Échap : fermer une fenêtre.']];
+    ['bank', 'Banque', 'Si activé : emprunte 250 et rends 300. La moitié de ton salaire rembourse automatiquement au passage du Départ.'],
+    ['key', 'Raccourcis', 'Espace : lancer les dés ou terminer le tour. B : acheter. Échap : fermer une fenêtre.']];
   modalRoot().innerHTML = `<div class="sheet big" role="dialog" aria-label="Règles"><div class="hd dark">Comment jouer</div><div class="bd"><div class="rules">${R.map(([i, t, d]) => `<div class="rule"><span>${ico(i)}</span><div><b>${t}</b><p>${d}</p></div></div>`).join('')}</div>
     <button class="btn primary" data-a="close" style="width:100%;margin-top:14px">Compris</button></div></div>`;
 }
@@ -2498,6 +2594,8 @@ document.addEventListener('click', e => {
     case 'pick-theme': theme = d.v; LS.set('magnat_theme', theme); applyTheme(); renderModal(); break;
     case 'pick-dice': diceSkin = d.v; LS.set('magnat_dice', diceSkin); applyTheme(); renderModal(); break;
     case 'pick-lang': setLang(d.v); break;
+    case 'pick-pawn': pawnStyle = d.v; LS.set('magnat_pawn', pawnStyle); document.querySelectorAll('.tok').forEach(x => x.remove()); if (S && S.phase !== 'lobby' && ui.screen === 'game') renderGame(); renderModal(); break;
+    case 'loan': case 'repay': { const me = viewPlayer(); if (me) doAct(me.id, { type: d.a }); break; }
     case 'spec-join': doAct(net.myId, { type: 'specJoin' }); break;
     case 't-counter': { const tr = S.trades.find(x => x.id === +d.id); if (!tr) return; ui.draft = { from: tr.to, to: tr.from, give: JSON.parse(JSON.stringify(tr.get)), get: JSON.parse(JSON.stringify(tr.give)), counter: tr.id }; ui.modal = { type: 'trade' }; renderModal(); break; }
     case 'react': { const me = viewPlayer() || (S && P(S, net.myId)); if (me && S && S.phase !== 'lobby') doAct(me.id, { type: 'react', e: d.v }); break; }
@@ -2524,6 +2622,24 @@ document.addEventListener('click', e => {
     case 't-decline': doAct(d.p, { type: 'tradeDecline', id: +d.id }); break;
   }
 });
+function tipHTML(i) {
+  const B = buildBoard(S.mapId), t = B[i], o = S.own[i], ow = o && P(S, o.o), g = t.k === 'prop' ? GROUPS[t.g] : t.k === 'rail' ? '#94A3B8' : t.k === 'util' ? '#FACC15' : null;
+  let body = '';
+  if (isBuyable(t)) {
+    body = ow ? `<div class="tr"><span>Propriétaire</span><b style="color:${ow.color}">${esc(ow.name)}</b></div><div class="tr"><span>${o.m ? 'Hypothéqué' : 'Loyer actuel'}</span><b>${o.m ? '-' : t.k === 'util' ? (groupOf(B, t).filter(x => S.own[x.i] && S.own[x.i].o === o.o).length === 2 ? '10' : '4') + ' × les dés' : money(S, calcRent(S, B, t, 7))}</b></div>${o.h ? `<div class="tr"><span>Constructions</span><b class="th">${houseHTML(o.h)}</b></div>` : ''}`
+      : `<div class="tr"><span>Prix</span><b>${money(S, t.price)}</b></div>${t.k === 'prop' ? `<div class="tr"><span>Loyer nu</span><b>${money(S, t.rent[0])}</b></div><div class="tr"><span>Avec hôtel</span><b>${money(S, t.rent[5])}</b></div>` : ''}`;
+    const here = S.players.filter(p => !p.bankrupt && p.pos === i); if (here.length) body += `<div class="tr"><span>Ici</span><b>${here.map(p => `<span class="ava sm" style="--c:${p.color}">${tokOf(p)}</span>`).join('')}</b></div>`;
+  } else body = `<div class="tr"><span>Clique pour les détails</span></div>`;
+  return `${g ? `<u style="--g:${g}"></u>` : ''}<b class="tn">${esc(t.name)}</b>${body}`;
+}
+document.addEventListener('mouseover', e => {
+  const tile = e.target.closest && e.target.closest('.tile'), tip = $('#tip');
+  if (!tile || !S || S.phase === 'lobby' || matchMedia('(hover:none)').matches) { if (tip) tip.classList.remove('on'); return; }
+  let el = tip; if (!el) { el = document.createElement('div'); el.id = 'tip'; el.className = 'tip'; document.body.appendChild(el); }
+  el.innerHTML = tipHTML(+tile.dataset.i); el.classList.add('on');
+  const r = tile.getBoundingClientRect(), w = 220, x = Math.min(innerWidth - w - 8, Math.max(8, r.left + r.width / 2 - w / 2)), up = r.top > innerHeight / 2;
+  el.style.left = x + 'px'; el.style.top = (up ? r.top - 8 : r.bottom + 8) + 'px'; el.style.transform = up ? 'translateY(-100%)' : 'none';
+});
 document.addEventListener('pointermove', e => {
   const d = e.target.closest && e.target.closest('.deed'); if (!d || e.pointerType === 'touch') return;
   if (e.buttons || e.target.closest('.btn')) return; // la carte ne bouge pas sous un bouton ou pendant un clic
@@ -2534,6 +2650,7 @@ document.addEventListener('pointermove', e => {
 document.addEventListener('pointerout', e => { const d = e.target.closest && e.target.closest('.deed'); if (d && !d.contains(e.relatedTarget)) { d.classList.remove('tilt'); d.style.setProperty('--rx', '0deg'); d.style.setProperty('--ry', '0deg'); } });
 document.addEventListener('input', e => {
   if (e.target.dataset && 'vol' in e.target.dataset) { vol = +e.target.value; LS.set('magnat_vol', vol); if (OUT) OUT.gain.value = 3 * vol / 100; clearTimeout(ui.volT); ui.volT = setTimeout(() => sfx('coin'), 120); }
+  if (e.target.dataset && 'v3d' in e.target.dataset) { view3d = e.target.checked; LS.set('magnat_3d', view3d); applyTheme(); setTimeout(() => { if (S && ui.screen === 'game') S.players.forEach((p, idx) => { const k = $('#k' + p.id); if (k) place(k, ui.disp[p.id], idx); }); }, 50); }
   if (e.target.dataset && 'lowfx' in e.target.dataset) { lowfx = e.target.checked; LS.set('magnat_lowfx', lowfx); applyTheme(); } const bi = e.target.dataset && e.target.dataset.bidin; if (bi) { ui.bidDraft = ui.bidDraft || {}; ui.bidDraft[bi] = e.target.value; } const s = e.target.dataset && e.target.dataset.cash; if (s && ui.draft) ui.draft[s].cash = Math.max(0, parseInt(e.target.value, 10) || 0); });
 document.addEventListener('change', e => {
   const rn = e.target.dataset && e.target.dataset.rename; if (!rn || !S || S.phase !== 'lobby') return;
@@ -2544,6 +2661,7 @@ document.addEventListener('change', e => {
 document.addEventListener('change', e => { const k = e.target.dataset && e.target.dataset.set; if (k && S) doAct(actorHost(), { type: 'setSetting', key: k, value: e.target.type === 'checkbox' ? e.target.checked : e.target.value }); });
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && ui.modal) closeModal();
+  if ((e.key === 'b' || e.key === 'B') && S && S.phase === 'buy' && !ui.modal && !/INPUT|TEXTAREA|SELECT/.test((document.activeElement || {}).tagName || '')) { const bb = document.querySelector('[data-a=act][data-t=buy]:not([disabled])'); if (bb) bb.click(); }
   if ((e.key === ' ' || e.code === 'Space') && !e.repeat && S && S.phase !== 'lobby' && !ui.modal && !/INPUT|TEXTAREA|SELECT/.test((document.activeElement || {}).tagName || '')) {
     const b = document.querySelector('#actions .btn.primary:not([disabled])'); if (b) { e.preventDefault(); if (document.activeElement && document.activeElement.tagName === 'BUTTON') document.activeElement.blur(); b.click(); }
   }
