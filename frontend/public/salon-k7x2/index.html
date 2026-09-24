@@ -789,6 +789,23 @@ body.lowfx .bgfx{display:none}
 .chart{height:clamp(46px,8cqw,90px)}
 .stable{max-height:clamp(70px,16cqw,160px);overflow-y:auto;scrollbar-width:thin}
 
+/* ===== v12 : propriétaire bien visible ===== */
+.boardbox .board .tile.owned{background:linear-gradient(165deg,color-mix(in srgb,var(--o) 46%,var(--t1)),color-mix(in srgb,var(--o) 26%,var(--t2)))}
+.boardbox .board .tile.owned.sb{box-shadow:inset 0 0 0 .28cqw var(--o),inset 0 -.8cqw 0 var(--o),0 0 1.6cqw color-mix(in srgb,var(--o) 60%,transparent)}
+.boardbox .board .tile.owned.st{box-shadow:inset 0 0 0 .28cqw var(--o),inset 0 .8cqw 0 var(--o),0 0 1.6cqw color-mix(in srgb,var(--o) 60%,transparent)}
+.boardbox .board .tile.owned.sl{box-shadow:inset 0 0 0 .28cqw var(--o),inset .8cqw 0 0 var(--o),0 0 1.6cqw color-mix(in srgb,var(--o) 60%,transparent)}
+.boardbox .board .tile.owned.sr{box-shadow:inset 0 0 0 .28cqw var(--o),inset -.8cqw 0 0 var(--o),0 0 1.6cqw color-mix(in srgb,var(--o) 60%,transparent)}
+.boardbox .board .tile.mort.sb{box-shadow:inset 0 -.8cqw 0 color-mix(in srgb,var(--o) 45%,#555)}.boardbox .board .tile.mort.st{box-shadow:inset 0 .8cqw 0 color-mix(in srgb,var(--o) 45%,#555)}
+.boardbox .board .tile.mort.sl{box-shadow:inset .8cqw 0 0 color-mix(in srgb,var(--o) 45%,#555)}.boardbox .board .tile.mort.sr{box-shadow:inset -.8cqw 0 0 color-mix(in srgb,var(--o) 45%,#555)}
+.tile .own{position:absolute;z-index:3;width:2.5cqw;height:2.5cqw;min-width:14px;min-height:14px;border-radius:50%;display:grid;place-items:center;font:800 1.35cqw/1 var(--display);color:rgba(7,16,31,.85);pointer-events:none;
+  background:radial-gradient(circle at 32% 26%,rgba(255,255,255,.95) 0 7%,color-mix(in srgb,var(--o) 60%,#fff) 8% 28%,var(--o) 55%,color-mix(in srgb,var(--o) 60%,#000) 100%);box-shadow:0 0 0 .22cqw #fff,0 .2cqw .6cqw rgba(0,0,0,.65);animation:pop .4s var(--spring)}
+.tile.sb .own{right:.35cqw;bottom:1.05cqw}.tile.st .own{left:.25cqw;bottom:calc(24% + .3cqw);width:2.2cqw;height:2.2cqw;font-size:1.2cqw}.tile.sl .own{left:1.05cqw;bottom:.35cqw}.tile.sr .own{right:1.05cqw;bottom:.35cqw}
+.tile.mort .own{filter:grayscale(1);opacity:.65}
+.boardbox .board .tile.owned .pr{box-shadow:0 0 0 .14cqw rgba(255,255,255,.8)}
+.badge.shieldb{display:inline-flex;align-items:center;gap:3px;background:#0E3B2B;color:#6EE7B7}.badge.shieldb .svgi{width:11px;height:11px}
+@media (max-width:620px){.tile .own{width:3.4cqw;height:3.4cqw;font-size:1.9cqw}}
+.tile.st:not(.k-prop) .own{bottom:.35cqw}
+
 </style>
 </head>
 <body>
@@ -819,7 +836,17 @@ const EVENTS = {
   portes: { ic: '🚪', t: 'Portes ouvertes', d: 'Aucun loyer pendant ce tour.' },
   soldes: { ic: '🏗️', t: 'Soldes du BTP', d: 'Les maisons coûtent moitié prix pendant ce tour.' },
   fete: { ic: '🎉', t: 'Fête nationale', d: 'La banque offre 100 à chaque joueur.' },
-  fisc: { ic: '🧾', t: 'Contrôle fiscal', d: 'Chaque joueur verse 10 % de son argent à la cagnotte.' }
+  fisc: { ic: '🧾', t: 'Contrôle fiscal', d: 'Chaque joueur verse 10 % de son argent à la cagnotte.' },
+  loterie: { ic: '🎟️', t: 'Loterie nationale', d: 'Un joueur tiré au sort gagne 300.' },
+  greve: { ic: '🚧', t: 'Grève générale', d: 'Les transports ne rapportent rien pendant ce tour.' },
+  panne: { ic: '🔌', t: 'Panne géante', d: 'Les compagnies ne rapportent rien pendant ce tour.' },
+  tourisme: { ic: '🧳', t: 'Saison touristique', d: 'Les loyers des transports doublent pendant ce tour.' },
+  amnistie: { ic: '🔓', t: 'Amnistie', d: 'Tous les joueurs en prison sont libérés.' },
+  inflation: { ic: '💹', t: 'Inflation', d: 'Tous les loyers augmentent de 50 % pendant ce tour.' },
+  solidarite: { ic: '🤲', t: 'Solidarité', d: 'Le plus riche donne 10 % de son argent au plus pauvre.' },
+  tempete: { ic: '🌪️', t: 'Tempête', d: 'Chaque joueur perd une construction.' },
+  dividendes: { ic: '📊', t: 'Dividendes', d: 'Chaque joueur touche 20 par terrain possédé.' },
+  prime: { ic: '🚩', t: 'Prime au Départ', d: 'Le salaire du Départ est doublé pendant ce tour.' }
 };
 const MAX_PLAYERS = 6, SALARY = 200, GO_LAND = 300, JAIL_FINE = 50;
 
@@ -937,7 +964,17 @@ const CARDS = {
     { m: 'Robin des bois : le joueur le plus riche te donne 100.', f: 'richest', v: 100 },
     { m: 'Vacances offertes : file sur la case Vacances.', f: 'move', v: 20 },
     { m: 'Téléportation : tu échanges ta place avec le joueur le plus riche.', f: 'swap' },
-    { m: 'Tu gagnes au grattage : 100.', f: 'cash', v: 100 }
+    { m: 'Tu gagnes au grattage : 100.', f: 'cash', v: 100 },
+    { m: 'Pickpocket : tu subtilises 50 à un joueur au hasard.', f: 'steal', v: 50 },
+    { m: 'Voyage surprise : file sur une case au hasard.', f: 'randomMove' },
+    { m: 'Immunité : ton prochain loyer est offert.', f: 'shield' },
+    { m: 'Visite de prestige : file à {t37}.', f: 'move', v: 37 },
+    { m: 'Embouteillage : recule de 2 cases.', f: 'back', v: 2 },
+    { m: 'Turbo : avance de 8 cases.', f: 'fwd', v: 8 },
+    { m: 'Loto sportif : tu gagnes 80.', f: 'cash', v: 80 },
+    { m: 'Amende de stationnement : 40.', f: 'cash', v: -40 },
+    { m: 'Bourse en folie : 20 par terrain que tu possèdes.', f: 'perProp', v: 20 },
+    { m: 'Inspection surprise : 30 par maison, 90 par hôtel.', f: 'repairs', v: [30, 90] }
   ],
   chest: [
     { m: 'Retour à la case Départ.', f: 'move', v: 0 },
@@ -963,16 +1000,26 @@ const CARDS = {
     { m: 'Cagnotte entre amis : chaque joueur te donne 40.', f: 'collectEach', v: 40 },
     { m: 'Tournée générale : tu offres 30 à chaque joueur.', f: 'payEach', v: 30 },
     { m: 'Amende pour tapage nocturne : 60.', f: 'cash', v: -60 },
-    { m: 'Vide-grenier réussi : 70.', f: 'cash', v: 70 }
+    { m: 'Vide-grenier réussi : 70.', f: 'cash', v: 70 },
+    { m: 'Prime à la rénovation : 25 par maison que tu possèdes.', f: 'perHouse', v: 25 },
+    { m: 'Héritage d\'une tante : 150.', f: 'cash', v: 150 },
+    { m: 'Cotisation du club : verse 20 à chaque joueur.', f: 'payEach', v: 20 },
+    { m: 'Soirée pizza chez toi : chaque joueur te donne 15.', f: 'collectEach', v: 15 },
+    { m: 'Carte Immunité : ton prochain loyer est offert.', f: 'shield' },
+    { m: 'Remboursement de soins : 60.', f: 'cash', v: 60 },
+    { m: 'Réparation de voiture : 120.', f: 'cash', v: -120 },
+    { m: 'Concours de cuisine gagné : 90.', f: 'cash', v: 90 },
+    { m: 'Impôt local : 15 par terrain que tu possèdes.', f: 'perProp', v: -15 },
+    { m: 'Livraison ratée : recule d\'une case.', f: 'back', v: 1 }
   ]
 };
 
 const DEFAULT_SETTINGS = { startCash: 1500, auction: true, doubleRent: true, pot: true, noRentInJail: false, evenBuild: true, randomOrder: true,
-  salary: 200, goLand: true, startProps: 0, maxRounds: 0, lapToBuy: false, turnTime: 0, events: true, botLevel: 2, botSpeed: 2, rentMult: 100, loans: true, houseLimit: false, buildAnywhere: false };
+  salary: 200, goLand: true, startProps: 0, maxRounds: 0, lapToBuy: false, turnTime: 0, events: true, eventEvery: 3, botLevel: 2, botSpeed: 2, rentMult: 100, loans: true, houseLimit: false, buildAnywhere: false };
 const HOUSE_STOCK = 32, HOTEL_STOCK = 12;
 const maxLoan = S => Math.max(250, Math.round((S.settings.startCash || 1500) / 2 / 50) * 50);
 function stock(S) { let h = 0, H = 0; for (const i in S.own) { const x = S.own[i].h || 0; if (x === 5) H++; else h += x; } return { h: HOUSE_STOCK - h, H: HOTEL_STOCK - H }; }
-const SETTING_CHOICES = { salary: [100, 200, 300, 400], startProps: [0, 1, 2, 3], maxRounds: [0, 15, 25, 40], turnTime: [0, 30, 60, 90], botLevel: [1, 2, 3], botSpeed: [1, 2, 3], rentMult: [100, 150, 200] };
+const SETTING_CHOICES = { salary: [100, 200, 300, 400], startProps: [0, 1, 2, 3], maxRounds: [0, 15, 25, 40], turnTime: [0, 30, 60, 90], botLevel: [1, 2, 3], botSpeed: [1, 2, 3], rentMult: [100, 150, 200], eventEvery: [2, 3, 4, 6] };
 const salaryOf = S => S.settings.salary || 200, goLandOf = S => salaryOf(S) + (S.settings.goLand === false ? 0 : 100);
 
 /* ---------- plateau ---------- */
@@ -1003,7 +1050,12 @@ const rid = () => Math.random().toString(36).slice(2, 10);
 
 const evOn = (S, k) => !!(S.event && S.event.round === S.round && (!k || S.event.k === k));
 const houseCost = (S, t) => evOn(S, 'soldes') ? t.house / 2 : t.house;
-function calcRent(S, B, t, diceSum) { const r = Math.floor(rent0(S, B, t, diceSum) * (S.settings.rentMult || 100) / 100); return !r ? 0 : evOn(S, 'boom') ? r * 2 : evOn(S, 'krach') ? Math.floor(r / 2) : evOn(S, 'portes') ? 0 : r; }
+function calcRent(S, B, t, diceSum) {
+  let r = Math.floor(rent0(S, B, t, diceSum) * (S.settings.rentMult || 100) / 100); if (!r) return 0;
+  if (evOn(S, 'portes') || (evOn(S, 'greve') && t.k === 'rail') || (evOn(S, 'panne') && t.k === 'util')) return 0;
+  if (evOn(S, 'boom')) r *= 2; if (evOn(S, 'krach')) r = Math.floor(r / 2); if (evOn(S, 'inflation')) r = Math.floor(r * 1.5); if (evOn(S, 'tourisme') && t.k === 'rail') r *= 2;
+  return r;
+}
 function rent0(S, B, t, diceSum) {
   const o = S.own[t.i]; if (!o || o.m) return 0;
   if (t.k === 'prop') return o.h > 0 ? t.rent[o.h] : t.rent[0] * (S.settings.doubleRent && ownsAll(S, B, o.o, t) ? 2 : 1);
@@ -1131,8 +1183,9 @@ function settleDebts(S) { // dès qu'un joueur endetté récupère de l'argent (
 }
 function goJail(S, p) { p.pos = 10; p.inJail = true; p.jailTurns = 0; S.again = false; S.doubles = 0; log(S, p, 'part en prison.', { s: 'jail' }); }
 function goBonus(S, p, np) {
-  if (np === 0) { p.laps = (p.laps || 0) + 1; p.cash += goLandOf(S); log(S, p, 's\'arrête pile sur le Départ et touche ' + money(S, goLandOf(S)) + ' !', { s: 'salary' }); }
-  else if (np < p.pos) { p.laps = (p.laps || 0) + 1; p.cash += salaryOf(S); log(S, p, 'passe par le Départ et touche ' + money(S, salaryOf(S)) + '.', { s: 'salary' }); }
+  const x2 = evOn(S, 'prime') ? 2 : 1, sal = salaryOf(S) * x2, land = goLandOf(S) * x2;
+  if (np === 0) { p.laps = (p.laps || 0) + 1; p.cash += land; log(S, p, 's\'arrête pile sur le Départ et touche ' + money(S, land) + ' !', { s: 'salary' }); }
+  else if (np < p.pos) { p.laps = (p.laps || 0) + 1; p.cash += sal; log(S, p, 'passe par le Départ et touche ' + money(S, sal) + '.', { s: 'salary' }); }
   else return;
   if (p.loan > 0) { const r = Math.min(p.loan, Math.floor(salaryOf(S) / 2)); p.cash -= r; p.loan -= r; log(S, p, 'rembourse ' + money(S, r) + ' de son prêt au passage du Départ.'); }
 }
@@ -1151,7 +1204,8 @@ function land(S, B, p) {
     if (o.m) { log(S, p, 'tombe sur ' + t.name + ' (hypothéquée), rien à payer.'); return; }
     if (S.settings.noRentInJail && owner.inJail) { log(S, p, 'tombe sur ' + t.name + ', mais ' + owner.name + ' est en prison : pas de loyer.'); return; }
     const r = calcRent(S, B, t, S.dice[0] + S.dice[1]);
-    if (!r) { log(S, p, 'tombe sur ' + t.name + ' : portes ouvertes, rien à payer.'); return; }
+    if (!r) { log(S, p, 'tombe sur ' + t.name + ' : pas de loyer pendant l\'événement.'); return; }
+    if (p.shield) { p.shield = false; log(S, p, 'utilise son immunité sur ' + t.name + ' : pas de loyer.', { s: 'jailout' }); return; }
     stat(p).rout += r; stat(owner).rin += r;
     pay(S, p, r, owner.id); log(S, p, 'paie ' + money(S, r) + ' de loyer à ' + owner.name + ' (' + t.name + ').');
   } else if (t.k === 'tax') { pay(S, p, t.amt, null, true); log(S, p, 'paie ' + money(S, t.amt) + ' (' + t.name + ').'); }
@@ -1168,6 +1222,9 @@ function drawCard(S, B, p, kind) {
   const others = alive(S).length - 1;
   const rivals = alive(S).filter(o => o.id !== p.id), richest = rivals.slice().sort((x, y) => y.cash - x.cash)[0], poorest = rivals.slice().sort((x, y) => x.cash - y.cash)[0];
   let amt = c.f === 'cash' ? c.v : c.f === 'payEach' ? -c.v * others : c.f === 'collectEach' ? c.v * others : c.f === 'percent' ? -Math.floor(Math.max(0, p.cash) * c.v / 100) : c.f === 'poorest' && poorest ? -c.v : c.f === 'richest' && richest && richest.cash > 0 ? c.v : 0;
+  const nProps = Object.values(S.own).filter(o => o.o === p.id).length, nHouses = Object.values(S.own).filter(o => o.o === p.id).reduce((s, o) => s + (o.h || 0), 0);
+  const victims = rivals.filter(o => o.cash > 0), victim = victims[Math.floor(Math.random() * victims.length)];
+  if (c.f === 'perProp') amt = c.v * nProps; if (c.f === 'perHouse') amt = c.v * nHouses; if (c.f === 'steal') amt = victim ? Math.min(c.v, victim.cash) : 0;
   if (c.f === 'repairs') for (const i in S.own) { const o = S.own[i]; if (o.o === p.id && o.h) amt -= o.h === 5 ? c.v[1] : o.h * c.v[0]; }
   S.lastCard = { kind, text, f: c.f, amt, pid: p.id, seq: (S.lastCard ? S.lastCard.seq : 0) + 1 };
   switch (c.f) {
@@ -1189,10 +1246,16 @@ function drawCard(S, B, p, kind) {
     case 'richest': if (richest && richest.cash > 0) { pay(S, richest, c.v, p.id); log(S, richest, 'verse ' + money(S, c.v) + ' à ' + p.name + '.'); } break;
     case 'poorest': if (poorest) { pay(S, p, c.v, poorest.id); log(S, poorest, 'reçoit ' + money(S, c.v) + ' de ' + p.name + '.'); } break;
     case 'swap': { const r = rivals.filter(o => !o.inJail).sort((x, y) => y.cash - x.cash)[0]; if (r) { const x = p.pos; p.pos = r.pos; r.pos = x; log(S, p, 'échange sa place avec ' + r.name + '.'); } break; }
+    case 'steal': if (victim && amt) { pay(S, victim, amt, p.id); log(S, p, 'subtilise ' + money(S, amt) + ' à ' + victim.name + '.'); } break;
+    case 'randomMove': { let idx = Math.floor(Math.random() * 40); if (idx === p.pos) idx = (idx + 7) % 40; moveTo(S, B, p, idx); break; }
+    case 'shield': p.shield = true; break;
+    case 'perProp': if (amt > 0) p.cash += amt; else if (amt < 0) pay(S, p, -amt, null, true); break;
+    case 'perHouse': if (amt > 0) p.cash += amt; break;
     case 'freeHouse': {
       const ok = B.filter(t => t.k === 'prop' && S.own[t.i] && S.own[t.i].o === p.id && S.own[t.i].h < 5 && ownsAll(S, B, p.id, t) && !groupOf(B, t).some(x => S.own[x.i].m)
         && S.own[t.i].h <= Math.min(...groupOf(B, t).map(x => S.own[x.i].h))).sort((x, y) => y.price - x.price)[0];
-      if (ok) { S.own[ok.i].h++; log(S, p, 'reçoit une construction gratuite sur ' + ok.name + '.'); } else { p.cash += c.v; S.lastCard.amt = c.v; }
+      const stk = !S.settings.houseLimit || (ok && (S.own[ok.i].h === 4 ? stock(S).H > 0 : stock(S).h > 0));
+      if (ok && stk) { S.own[ok.i].h++; log(S, p, 'reçoit une construction gratuite sur ' + ok.name + '.'); } else { p.cash += c.v; S.lastCard.amt = c.v; }
       break;
     }
     case 'loseHouse': {
@@ -1214,6 +1277,12 @@ function startEvent(S) {
   log(S, null, E.t + ' : ' + E.d, { s: 'event' });
   if (k === 'fete') alive(S).forEach(p => { p.cash += 100; });
   if (k === 'fisc') alive(S).forEach(p => { const x = Math.floor(Math.max(0, p.cash) / 10); if (x) pay(S, p, x, null, true); });
+  const B = buildBoard(S.mapId), al = alive(S);
+  if (k === 'loterie') { const w = al[Math.floor(Math.random() * al.length)]; w.cash += 300; log(S, w, 'gagne la loterie nationale : ' + money(S, 300) + ' !', { s: 'salary' }); }
+  if (k === 'amnistie') al.forEach(p => { if (p.inJail) { p.inJail = false; p.jailTurns = 0; log(S, p, 'est libéré par l\'amnistie.'); } });
+  if (k === 'solidarite') { const s = al.slice().sort((x, y) => y.cash - x.cash), r = s[0], q = s[s.length - 1], x = Math.floor(Math.max(0, r.cash) / 10); if (r !== q && x) { pay(S, r, x, q.id); log(S, r, 'verse ' + money(S, x) + ' à ' + q.name + '.'); } }
+  if (k === 'tempete') al.forEach(p => { const hit = B.filter(t => S.own[t.i] && S.own[t.i].o === p.id && S.own[t.i].h > 0).sort((x, y) => S.own[y.i].h - S.own[x.i].h)[0]; if (hit) { S.own[hit.i].h--; log(S, p, 'perd une construction sur ' + hit.name + '.'); } });
+  if (k === 'dividendes') al.forEach(p => { const n = Object.values(S.own).filter(o => o.o === p.id).length; if (n) { p.cash += 20 * n; log(S, p, 'touche ' + money(S, 20 * n) + ' de dividendes.'); } });
 }
 function nextTurn(S) {
   S.doubles = 0; S.again = false; const r0 = S.round;
@@ -1228,7 +1297,7 @@ function nextTurn(S) {
   if (S.round !== r0) {
     snap(S);
     S.trades = S.trades.filter(x => { const f = P(S, x.from); return !(f && f.bot && S.round - (x.round || 0) > 2); });
-    if (S.settings.events && S.round % 3 === 0 && !(S.settings.maxRounds && S.round > S.settings.maxRounds)) startEvent(S);
+    if (S.settings.events && S.round % (S.settings.eventEvery || 3) === 0 && !(S.settings.maxRounds && S.round > S.settings.maxRounds)) startEvent(S);
   }
   if (S.settings.maxRounds && S.round > S.settings.maxRounds) { // partie rapide : le plus riche gagne
     const rank = alive(S).sort((x, y) => worth(S, y) - worth(S, x)); snap(S); S.phase = 'over'; S.winner = rank[0].id; S.round = S.settings.maxRounds; S.auction = null;
@@ -1654,7 +1723,9 @@ document.documentElement.lang = lang;
     "Tu ne peux pas finir ton tour maintenant": "You can't end your turn now", "Tu t'es retiré de cette enchère": "You dropped out of this auction", "Un bot garde son nom": "A bot keeps its name", "Un terrain du groupe est hypothéqué": "A property in the set is mortgaged",
     "Valeur refusée": "Value rejected", "Vends d'abord les constructions du groupe": "Sell the set's buildings first", "Vends de façon équilibrée sur le groupe": "Sell evenly across the set", "Échange introuvable": "Trade not found", "Échange invalide": "Invalid trade",
     "Échange": "Trade", "Français": "Français",
-    "Prêts bancaires": "Bank loans", "Emprunte 250 à la banque, rembourse 300 (auto au Départ)": "Borrow 250 from the bank, repay 300 (automatic at GO)", "Stock de maisons limité": "Limited house supply", "32 maisons et 12 hôtels pour toute la partie": "32 houses and 12 hotels for the whole game",
+    "Prêts bancaires": "Bank loans", "16 événements : boom, loterie, grève, amnistie, tempête...": "16 events: boom, lottery, strike, amnesty, storm...", "Fréquence des événements": "Event frequency",
+    "Tous les 2 tours": "Every 2 rounds", "Tous les 3 tours": "Every 3 rounds", "Tous les 4 tours": "Every 4 rounds", "Tous les 6 tours": "Every 6 rounds", "immunité": "immunity", "est libéré par l'amnistie.": "is released by the amnesty.",
+    "16 événements (si activé, fréquence réglable) : boom, krach, loterie, grève, panne, inflation, amnistie, tempête, dividendes...": "16 events (if enabled, adjustable frequency): boom, crash, lottery, strike, blackout, inflation, amnesty, storm, dividends...", "Emprunte 250 à la banque, rembourse 300 (auto au Départ)": "Borrow 250 from the bank, repay 300 (automatic at GO)", "Stock de maisons limité": "Limited house supply", "32 maisons et 12 hôtels pour toute la partie": "32 houses and 12 hotels for the whole game",
     "Construction libre": "Free building", "Construire sans avoir tout le groupe": "Build without owning the whole set", "Banque": "Bank", "Rembourser": "Repay", "Pions": "Tokens", "Emoji": "Emoji", "Pions classiques": "Classic pawns",
     "Vue 3D du plateau": "3D board view", "Plateau incliné, pions debout": "Tilted board, standing tokens", "Propriétaire": "Owner", "Loyer actuel": "Current rent", "Constructions": "Buildings", "Loyer nu": "Base rent", "Avec hôtel": "With hotel", "Ici": "Here",
     "Clique pour les détails": "Click for details", "Les prêts sont désactivés": "Loans are disabled", "Prêt maximum atteint": "Maximum loan reached", "Rien à rembourser": "Nothing to repay", "La banque n'a plus de maisons": "The bank is out of houses", "La banque n'a plus d'hôtels": "The bank is out of hotels",
@@ -1668,7 +1739,11 @@ document.documentElement.lang = lang;
   };
   const GN = { 'marron': 'brown', 'bleu ciel': 'light blue', 'rose': 'pink', 'orange': 'orange', 'rouge': 'red', 'jaune': 'yellow', 'vert': 'green', 'bleu': 'blue' };
   const EVT = { boom: ['Property boom', 'All rents are doubled this round.'], krach: ['Market crash', 'Rents are halved this round.'], portes: ['Open house', 'No rent this round.'],
-    soldes: ['Construction sale', 'Houses cost half price this round.'], fete: ['National holiday', 'The bank gives 100 to every player.'], fisc: ['Tax audit', 'Every player pays 10% of their cash into the jackpot.'] };
+    soldes: ['Construction sale', 'Houses cost half price this round.'], fete: ['National holiday', 'The bank gives 100 to every player.'], fisc: ['Tax audit', 'Every player pays 10% of their cash into the jackpot.'],
+    loterie: ['National lottery', 'A random player wins 300.'], greve: ['General strike', 'Transports earn nothing this round.'], panne: ['Giant blackout', 'Utilities earn nothing this round.'],
+    tourisme: ['Tourist season', 'Transport rents double this round.'], amnistie: ['Amnesty', 'All jailed players are released.'], inflation: ['Inflation', 'All rents go up 50% this round.'],
+    solidarite: ['Solidarity', 'The richest gives 10% of their cash to the poorest.'], tempete: ['Storm', 'Every player loses one building.'], dividendes: ['Dividends', 'Every player gets 20 per property owned.'],
+    prime: ['GO bonus', 'The GO salary is doubled this round.'] };
   for (const k in EVT) { const E = EVENTS[k]; X[E.t] = EVT[k][0]; X[E.d] = EVT[k][1]; X[E.t + ' : ' + E.d] = EVT[k][0] + ': ' + EVT[k][1]; }
   const CARD_EN = {
     "Retour à la case Départ.": "Advance to GO.", "Un rendez-vous t'attend : file à {t24}.": "A meeting awaits: head to {t24}.", "On t'invite à {t11}, vas-y directement.": "You're invited to {t11}, go straight there.",
@@ -1686,7 +1761,14 @@ document.documentElement.lang = lang;
     "Travaux de voirie : 40 par maison, 115 par hôtel.": "Street repairs: 40 per house, 115 per hotel.", "Un lointain cousin te lègue 100.": "A distant cousin leaves you 100.", "Impôt sur la fortune : tu paies 10 % de ton argent.": "Wealth tax: pay 10% of your cash.",
     "Bon cœur : tu donnes 50 au joueur le plus pauvre.": "Big heart: give 50 to the poorest player.", "La banque alimente la cagnotte des vacances : 100 de plus.": "The bank adds 100 to the vacation jackpot.", "Prime de fin d'année : 120.": "Year-end bonus: 120.",
     "Ton téléphone tombe dans l'eau : 80.": "Your phone falls in the water: 80.", "Tu retrouves un billet dans une vieille veste : 20.": "You find a bill in an old jacket: 20.", "Cagnotte entre amis : chaque joueur te donne 40.": "Friends chip in: each player gives you 40.",
-    "Tournée générale : tu offres 30 à chaque joueur.": "Round of drinks: pay 30 to each player.", "Amende pour tapage nocturne : 60.": "Noise complaint fine: 60.", "Vide-grenier réussi : 70.": "Great garage sale: 70."
+    "Tournée générale : tu offres 30 à chaque joueur.": "Round of drinks: pay 30 to each player.",
+    "Pickpocket : tu subtilises 50 à un joueur au hasard.": "Pickpocket: you snatch 50 from a random player.", "Voyage surprise : file sur une case au hasard.": "Surprise trip: go to a random space.",
+    "Immunité : ton prochain loyer est offert.": "Immunity: your next rent is free.", "Visite de prestige : file à {t37}.": "Prestige visit: head to {t37}.", "Embouteillage : recule de 2 cases.": "Traffic jam: go back 2 spaces.",
+    "Turbo : avance de 8 cases.": "Turbo: move forward 8 spaces.", "Loto sportif : tu gagnes 80.": "Sports lottery: you win 80.", "Amende de stationnement : 40.": "Parking fine: 40.",
+    "Bourse en folie : 20 par terrain que tu possèdes.": "Stock market frenzy: 20 per property you own.", "Inspection surprise : 30 par maison, 90 par hôtel.": "Surprise inspection: 30 per house, 90 per hotel.",
+    "Prime à la rénovation : 25 par maison que tu possèdes.": "Renovation bonus: 25 per house you own.", "Héritage d'une tante : 150.": "Inheritance from an aunt: 150.", "Cotisation du club : verse 20 à chaque joueur.": "Club dues: pay 20 to each player.",
+    "Soirée pizza chez toi : chaque joueur te donne 15.": "Pizza night at yours: each player gives you 15.", "Carte Immunité : ton prochain loyer est offert.": "Immunity card: your next rent is free.", "Remboursement de soins : 60.": "Medical refund: 60.",
+    "Réparation de voiture : 120.": "Car repair: 120.", "Concours de cuisine gagné : 90.": "Cooking contest won: 90.", "Impôt local : 15 par terrain que tu possèdes.": "Local tax: 15 per property you own.", "Livraison ratée : recule d'une case.": "Missed delivery: go back one space.", "Amende pour tapage nocturne : 60.": "Noise complaint fine: 60.", "Vide-grenier réussi : 70.": "Great garage sale: 70."
   };
   const esR = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const cardRe = [];
@@ -1706,6 +1788,8 @@ document.documentElement.lang = lang;
     [/^🏆 (\d+) victoires? sur (\d+) parties?$/, (m, a, b) => '🏆 ' + pl(a, 'win', 'wins') + ' out of ' + pl(b, 'game', 'games')],
     [/^Réglages · (.+)$/, 'Settings · $1'], [/^Emprunter (.+) à la banque$/, 'Borrow $1 from the bank'], [/^Emprunter (.+)$/, 'Borrow $1'], [/^prêt (.+)$/, 'loan $1'],
     [/^Tu rends (.+) par tranche\. La moitié de ton salaire rembourse le prêt au Départ\.$/, 'You pay back $1 per loan. Half your salary repays it at GO.'],
+    [/^tombe sur (.+) : pas de loyer pendant l'événement\.$/, (m, x) => 'lands on ' + trName(x) + ': no rent during the event.'], [/^utilise son immunité sur (.+) : pas de loyer\.$/, (m, x) => 'uses their immunity on ' + trName(x) + ': no rent.'],
+    [/^gagne la loterie nationale : (.+) !$/, 'wins the national lottery: $1!'], [/^touche (.+) de dividendes\.$/, 'collects $1 in dividends.'], [/^subtilise (.+) à (.+)\.$/, 'snatches $1 from $2.'],
     [/^emprunte (.+) à la banque \(à rembourser : (.+)\)\.$/, 'borrows $1 from the bank (to repay: $2).'], [/^rembourse (.+) de son prêt au passage du Départ\.$/, 'repays $1 of their loan when passing GO.'], [/^rembourse (.+) à la banque\.$/, 'repays $1 to the bank.'], [/^([^,]+), ([^,]+), ([^,]+)…$/, (m, x, y, z) => [x, y, z].map(trName).join(', ') + '…'], [/^Connexion au salon (.+)…$/, 'Connecting to room $1…'], [/^Reprendre le salon (.+)$/, 'Resume room $1'],
     [/^Joueurs \((\d+)\/(\d+)\)$/, 'Players ($1/$2)'], [/^Joueurs, tour (\d+)(.*)$/, 'Players, round $1$2'], [/^Couleur de (.+)$/, '$1\'s color'], [/^Pion de (.+)$/, '$1\'s token'], [/^Retirer (.+)$/, 'Remove $1'],
     [/^Pion (.+)$/, 'Token $1'], [/^Réaction (.+)$/, 'Reaction $1'], [/^Dé : (\d)$/, 'Die: $1'], [/^(\d+) chacun$/, '$1 each'], [/^(\d+) tours$/, '$1 rounds'],
@@ -1992,10 +2076,11 @@ function renderHome() {
 const SETTINGS_UI = [['auction', 'Enchères', 'Un terrain refusé part aux enchères'], ['doubleRent', 'Loyer doublé', 'Sur un groupe complet sans maison'], ['pot', 'Cagnotte des vacances', 'Taxes et amendes vont sur la case Vacances'],
   ['noRentInJail', 'Pas de loyer en prison', 'Un joueur en prison ne touche rien'], ['evenBuild', 'Construction équilibrée', 'Une maison d\'écart maximum dans un groupe'], ['randomOrder', 'Ordre aléatoire', 'L\'ordre des joueurs est tiré au sort'],
   ['loans', 'Prêts bancaires', 'Emprunte 250 à la banque, rembourse 300 (auto au Départ)'], ['houseLimit', 'Stock de maisons limité', '32 maisons et 12 hôtels pour toute la partie'], ['buildAnywhere', 'Construction libre', 'Construire sans avoir tout le groupe'],
-  ['events', 'Événements mondiaux', 'Tous les 3 tours : boom, krach, fête, soldes...'], ['goLand', 'Bonus pile sur le Départ', '100 de plus si tu t\'arrêtes exactement dessus'], ['lapToBuy', 'Tour de chauffe', 'Il faut boucler un tour de plateau avant d\'acheter']];
+  ['events', 'Événements mondiaux', '16 événements : boom, loterie, grève, amnistie, tempête...'], ['goLand', 'Bonus pile sur le Départ', '100 de plus si tu t\'arrêtes exactement dessus'], ['lapToBuy', 'Tour de chauffe', 'Il faut boucler un tour de plateau avant d\'acheter']];
 const SETTINGS_SEL = [['salary', 'Salaire au Départ', 'Touché à chaque passage', [100, 200, 300, 400].map(v => [v, v])],
   ['startProps', 'Terrains offerts au début', 'Distribués au hasard, la partie démarre plus vite', [[0, 'Aucun'], [1, '1 chacun'], [2, '2 chacun'], [3, '3 chacun']]],
   ['maxRounds', 'Partie rapide', 'À la fin des tours, le plus riche gagne', [[0, 'Sans limite'], [15, '15 tours'], [25, '25 tours'], [40, '40 tours']]],
+  ['eventEvery', 'Fréquence des événements', '', [[2, 'Tous les 2 tours'], [3, 'Tous les 3 tours'], [4, 'Tous les 4 tours'], [6, 'Tous les 6 tours']]],
   ['rentMult', 'Loyers', 'Plus hauts = parties plus courtes', [[100, 'Normaux'], [150, 'x1,5'], [200, 'x2']]],
   ['botLevel', 'Niveau des bots', 'Difficile : ils misent plus et te proposent des échanges', [[1, 'Facile'], [2, 'Normal'], [3, 'Difficile']]],
   ['botSpeed', 'Vitesse des bots', '', [[1, 'Lente'], [2, 'Normale'], [3, 'Rapide']]],
@@ -2080,6 +2165,8 @@ const SVGI = {
   down: '<path d="M3 7l6 6 4-4 8 8"/><path d="M15 17h6v-6"/>',
   door: '<path d="M5 21V4a1.5 1.5 0 0 1 1.5-1.5h11A1.5 1.5 0 0 1 19 4v17M3 21h18"/><circle cx="14.5" cy="12.5" r=".9" fill="currentColor" stroke="none"/>',
   sparkle: '<path d="M11 3.5l1.9 5.1 5.1 1.9-5.1 1.9L11 17.5l-1.9-5.1L4 10.5l5.1-1.9z"/><path d="M18.5 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>',
+  shield: '<path d="M12 2.8 4.5 5.8v5.7c0 4.6 3.2 8.5 7.5 9.7 4.3-1.2 7.5-5.1 7.5-9.7V5.8z"/><path d="m8.8 12.2 2.3 2.3 4.3-4.6"/>',
+  ticket: '<path d="M3 8.5V6.5A1.5 1.5 0 0 1 4.5 5h15A1.5 1.5 0 0 1 21 6.5v2a2.5 2.5 0 0 0 0 5v2a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 15.5v-2a2.5 2.5 0 0 0 0-5z"/><path d="M14 5v12" stroke-dasharray="2 2"/>',
   alert: '<path d="M12 3.5 2.5 20h19z"/><path d="M12 10v4.5"/><circle cx="12" cy="17.2" r=".9" fill="currentColor" stroke="none"/>',
   vol: '<path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/>',
   mute: '<path d="M11 5 6 9H3v6h3l5 4z"/><path d="m16 9 5 6M21 9l-5 6"/>',
@@ -2090,7 +2177,7 @@ const SVGI = {
 };
 const ico = (k, cls) => `<svg class="svgi ${cls || ''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${SVGI[k] || SVGI.question}</svg>`;
 const RAIL_ICON = { '✈️': 'plane', '🚆': 'train', '🚄': 'train', '🚀': 'rocket', '🐎': 'horseshoe' };
-const EV_ICON = { boom: 'up', krach: 'down', portes: 'door', soldes: 'hammer', fete: 'sparkle', fisc: 'receipt' };
+const EV_ICON = { boom: 'up', krach: 'down', portes: 'door', soldes: 'hammer', fete: 'sparkle', fisc: 'receipt', loterie: 'ticket', greve: 'pause', panne: 'bolt', tourisme: 'plane', amnistie: 'key', inflation: 'up', solidarite: 'heart', tempete: 'wind', dividendes: 'coins', prime: 'go' };
 const HOUSE_SVG = '<svg class="hs" viewBox="0 0 12 12" aria-hidden="true"><path d="M1.1 6 6 1.5 10.9 6v5H1.1z"/><path class="hd" d="M4.9 11V7.6h2.2V11z"/></svg>';
 const HOTEL_SVG = '<svg class="hs hotel" viewBox="0 0 22 12" aria-hidden="true"><path d="M1 11V4.4L11 1l10 3.4V11z"/><path class="hw" d="M3.6 5.6h2.4v2H3.6zM7.8 5.6h2.4v2H7.8zM11.8 5.6h2.4v2h-2.4zM16 5.6h2.4v2H16z"/><path class="hd" d="M9.8 11V8.7h2.4V11z"/></svg>';
 const houseHTML = h => (!h ? '' : h === 5 ? HOTEL_SVG : HOUSE_SVG.repeat(h));
@@ -2259,7 +2346,10 @@ function updateTiles() {
   const B = buildBoard(S.mapId), cur = S.players[S.turn];
   for (const t of B) {
     const el = $('#t' + t.i), o = S.own[t.i], pr = el.querySelector('.pr');
-    el.classList.toggle('owned', !!o && !o.m); el.classList.toggle('mort', !!o && o.m); el.classList.toggle('full', !!o && t.k === 'prop' && ownsAll(S, B, o.o, t));
+    el.classList.toggle('owned', !!o && !o.m); el.classList.toggle('mort', !!o && o.m);
+    let ob = el.querySelector(':scope > .own');
+    if (o) { const ow = P(S, o.o), k = ow.id + (o.m ? 'm' : '') + ow.color + (ow.tok || ''); if (!ob) { ob = document.createElement('span'); ob.className = 'own'; el.appendChild(ob); } if (ob.dataset.k !== k) { ob.dataset.k = k; ob.innerHTML = tokOf(ow); ob.style.setProperty('--o', ow.color); ob.title = ow.name; } }
+    else if (ob) ob.remove(); el.classList.toggle('full', !!o && t.k === 'prop' && ownsAll(S, B, o.o, t));
     el.classList.toggle('here', S.phase !== 'over' && cur.pos === t.i && !ui.anim[cur.id]);
     if (o) el.style.setProperty('--o', P(S, o.o).color); else el.style.removeProperty('--o');
     if (pr) pr.textContent = t.amt ? money(S, t.amt) : !o ? money(S, t.price) : o.m ? 'hyp.' : t.k === 'util' ? '×' + (groupOf(B, t).filter(x => S.own[x.i] && S.own[x.i].o === o.o).length === 2 ? 10 : 4) : money(S, calcRent(S, B, t, 7));
@@ -2419,7 +2509,7 @@ function renderCenter() {
     setTimeout(() => { if (!pop.isConnected) return; sfx('card'); pop.innerHTML = drawnCardHTML(c); setTimeout(() => { if (pop.isConnected) pop.innerHTML = ''; }, 4000); }, dl);
   }
 }
-const CARD_ICON = { fwd: 'fast', util: 'bolt', again: 'dice', skip: 'pause', freeHouse: 'house', loseHouse: 'wind', richest: 'target', poorest: 'heart', swap: 'swap', percent: 'bank', potAdd: 'park', cash: 'coins', move: 'compass', back: 'undo', jail: 'lock', jailcard: 'key', repairs: 'hammer', payEach: 'gift', collectEach: 'cake' };
+const CARD_ICON = { steal: 'target', randomMove: 'compass', shield: 'shield', perProp: 'bank', perHouse: 'house', fwd: 'fast', util: 'bolt', again: 'dice', skip: 'pause', freeHouse: 'house', loseHouse: 'wind', richest: 'target', poorest: 'heart', swap: 'swap', percent: 'bank', potAdd: 'park', cash: 'coins', move: 'compass', back: 'undo', jail: 'lock', jailcard: 'key', repairs: 'hammer', payEach: 'gift', collectEach: 'cake' };
 function drawnCardHTML(c) {
   const ch = c.kind === 'chance', sym = ico(ch ? 'question' : 'chest'), title = ch ? 'Surprise' : 'Trésor', pl = P(S, c.pid);
   const icon = ico(c.f === 'cash' && c.amt < 0 ? 'receipt' : c.f === 'rail' ? RAIL_ICON[MAPS[S.mapId].railIcon] || 'plane' : CARD_ICON[c.f] || (ch ? 'question' : 'chest'));
@@ -2465,7 +2555,7 @@ function renderSide() {
   const B = buildBoard(S.mapId), me = viewPlayer(), cur = S.players[S.turn];
   const players = S.players.map(p => `<div class="pcard ${p.id === cur.id && S.phase !== 'over' ? 'turn' : ''} ${p.bankrupt ? 'out' : ''}" style="--c:${p.color}">
     <span class="ava">${tokOf(p)}</span><span class="nm">${esc(p.name)}</span><span class="cash ${p.cash < 0 ? 'neg' : ''}" id="cash-${p.id}">${p.bankrupt ? 'éliminé' : money(S, Math.round(ui.shown[p.id] === undefined ? p.cash : ui.shown[p.id]))}</span>
-    <div class="meta">${!p.bankrupt ? `<span class="fort">fortune ${money(S, Math.round(worth(S, p)))}</span>` : ''}${p.bot ? '<span class="badge">bot</span>' : ''}${p.id === net.myId && !isLocal() ? '<span class="badge">toi</span>' : ''}${p.inJail ? '<span class="badge warn">en prison</span>' : ''}${p.skip && !p.bankrupt ? '<span class="badge warn">passe son prochain tour</span>' : ''}${S.settings.lapToBuy && !p.laps && !p.bankrupt ? '<span class="badge">tour de chauffe</span>' : ''}${!p.bankrupt && owed(p) ? `<span class="badge warn">doit ${money(S, owed(p))}</span>` : ''}${!p.bankrupt && p.loan ? `<span class="badge">prêt ${money(S, p.loan)}</span>` : ''}${p.jailCards ? '<span class="badge">carte sortie ×' + p.jailCards + '</span>' : ''}${!p.conn && !p.bankrupt ? '<span class="badge warn">déconnecté</span>' : ''}
+    <div class="meta">${!p.bankrupt ? `<span class="fort">fortune ${money(S, Math.round(worth(S, p)))}</span>` : ''}${p.bot ? '<span class="badge">bot</span>' : ''}${p.id === net.myId && !isLocal() ? '<span class="badge">toi</span>' : ''}${p.inJail ? '<span class="badge warn">en prison</span>' : ''}${p.skip && !p.bankrupt ? '<span class="badge warn">passe son prochain tour</span>' : ''}${S.settings.lapToBuy && !p.laps && !p.bankrupt ? '<span class="badge">tour de chauffe</span>' : ''}${!p.bankrupt && owed(p) ? `<span class="badge warn">doit ${money(S, owed(p))}</span>` : ''}${!p.bankrupt && p.loan ? `<span class="badge">prêt ${money(S, p.loan)}</span>` : ''}${!p.bankrupt && p.shield ? `<span class="badge shieldb">${ico('shield')} immunité</span>` : ''}${p.jailCards ? '<span class="badge">carte sortie ×' + p.jailCards + '</span>' : ''}${!p.conn && !p.bankrupt ? '<span class="badge warn">déconnecté</span>' : ''}
       ${!p.bankrupt ? `<span class="owndots">${B.filter(t => S.own[t.i] && S.own[t.i].o === p.id).map(t => `<u style="--g:${t.k === 'prop' ? GROUPS[t.g] : t.k === 'rail' ? '#94A3B8' : '#FCD34D'}" class="${S.own[t.i].m ? 'm' : ''}"></u>`).join('') || '<span class="badge">aucun terrain</span>'}</span>` : ''}
       ${me && !me.bankrupt && !p.bankrupt && p.id !== me.id && S.phase !== 'over' ? `<button class="btn sm" data-a="trade-open" data-id="${p.id}">Échanger</button>` : ''}
       ${amHost() && !p.bankrupt && p.id !== S.hostId && S.phase !== 'over' && !p.local ? `<button class="btn sm danger" data-a="kick" data-id="${p.id}">Exclure</button>` : ''}</div></div>`).join('');
@@ -2517,7 +2607,7 @@ function renderHelpModal() {
     ['go', 'Départ', 'Salaire à chaque passage, bonus si tu t\'arrêtes pile dessus.'], ['jail', 'Prison', 'Pour sortir : un double, l\'amende ou une carte. Trois doubles d\'affilée t\'y envoient.'],
     ['alert', 'Dettes', 'Pas assez pour payer ? Vends des maisons ou hypothèque pour rembourser avant de finir ton tour, sinon tu abandonnes.'],
     ['swap', 'Échanges', 'Bouton Échanger sur un joueur : argent, terrains et cartes. Les bots en Normal et Difficile te feront des offres.'],
-    ['sparkle', 'Événements', 'Tous les 3 tours (si activé) : boom, krach, portes ouvertes, soldes, fête ou contrôle fiscal.'],
+    ['sparkle', 'Événements', '16 événements (si activé, fréquence réglable) : boom, krach, loterie, grève, panne, inflation, amnistie, tempête, dividendes...'],
     ['bank', 'Banque', 'Si activé : emprunte 250 et rends 300. La moitié de ton salaire rembourse automatiquement au passage du Départ.'],
     ['key', 'Raccourcis', 'Espace : lancer les dés ou terminer le tour. B : acheter. Échap : fermer une fenêtre.']];
   modalRoot().innerHTML = `<div class="sheet big" role="dialog" aria-label="Règles"><div class="hd dark">Comment jouer</div><div class="bd"><div class="rules">${R.map(([i, t, d]) => `<div class="rule"><span>${ico(i)}</span><div><b>${t}</b><p>${d}</p></div></div>`).join('')}</div>
