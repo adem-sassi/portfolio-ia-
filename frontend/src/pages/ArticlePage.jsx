@@ -10,7 +10,7 @@ import { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Clock, Eye, Calendar, Tag, Send, Heart, Flame, ThumbsUp, Brain } from "lucide-react";
 
-const API_URL = "https://web-production-cba0c.up.railway.app";
+const API_URL = "";
 
 function readingTime(content) {
   if (!content) return 1;

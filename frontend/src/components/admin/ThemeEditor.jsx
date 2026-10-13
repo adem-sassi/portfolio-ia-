@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Palette, Save, Loader2, RotateCcw } from "lucide-react";
 
-const API_URL = "https://web-production-cba0c.up.railway.app";
+const API_URL = "";
 
 const DEFAULT_COLORS = {
   neuralBlue: "#00D4FF",

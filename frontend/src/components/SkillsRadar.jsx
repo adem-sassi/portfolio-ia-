@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer, Tooltip } from "recharts";
 
-const API_URL = "https://web-production-cba0c.up.railway.app";
+const API_URL = "";
 
 export default function SkillsRadar() {
   const [data, setData] = useState([]);

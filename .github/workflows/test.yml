@@ -73,7 +73,7 @@ jobs:
           
       - name: Check API is up
         run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://web-production-cba0c.up.railway.app/api/content)
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://ademsassi.com/api/content)
           if [ "$STATUS" = "200" ]; then
             echo "✅ API répond 200 OK"
           else

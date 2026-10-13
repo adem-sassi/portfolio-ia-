@@ -30,7 +30,7 @@ export default function CVUpload({ token }) {
       });
 
       // Envoyer en JSON
-      const res = await fetch("https://web-production-cba0c.up.railway.app/api/admin/upload-cv", {
+      const res = await fetch("/api/admin/upload-cv", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,7 +58,7 @@ export default function CVUpload({ token }) {
 
   const deleteCV = async () => {
     try {
-      await fetch("https://web-production-cba0c.up.railway.app/api/admin/delete-cv", { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
+      await fetch("/api/admin/delete-cv", { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
       setCvName(""); localStorage.removeItem("cv_filename");
       setStatus("idle"); setMessage("CV supprimé.");
     } catch { setMessage("Erreur suppression."); }
@@ -78,12 +78,12 @@ export default function CVUpload({ token }) {
             <p className="text-xs text-dim-star">CV actuel sur le portfolio</p>
           </div>
           <div className="flex gap-2">
-            <a href="https://web-production-cba0c.up.railway.app/api/content/cv" target="_blank"
+            <a href="/api/content/cv" target="_blank"
               className="w-8 h-8 flex items-center justify-center rounded-lg"
               style={{ background: "rgba(0,212,255,0.1)", border: "1px solid rgba(0,212,255,0.2)" }}>
               <Eye size={13} className="text-neural-blue"/>
             </a>
-            <a href="https://web-production-cba0c.up.railway.app/api/content/cv" download
+            <a href="/api/content/cv" download
               className="w-8 h-8 flex items-center justify-center rounded-lg"
               style={{ background: "rgba(0,212,255,0.1)", border: "1px solid rgba(0,212,255,0.2)" }}>
               <Download size={13} className="text-neural-blue"/>

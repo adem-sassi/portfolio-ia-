@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Calendar, Tag, ArrowRight, BookOpen, Search, Clock, FileText, Eye, Heart, Flame, ThumbsUp, MessageCircle } from "lucide-react";
 
-const API_URL = "https://web-production-cba0c.up.railway.app";
+const API_URL = "";
 
 function readingTime(content) {
   const words = content?.split(/\s+/).length || 0;

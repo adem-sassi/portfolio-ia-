@@ -54,7 +54,7 @@ function Portfolio() {
 import MaintenancePage from "./pages/MaintenancePage";
 
 // ⚠️ Mettre à false quand le backend est repayé
-const MAINTENANCE_MODE = true;
+const MAINTENANCE_MODE = false;
 
 export default function App() {
   if (MAINTENANCE_MODE) return <MaintenancePage />;

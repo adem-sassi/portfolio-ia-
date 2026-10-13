@@ -1,9 +1,13 @@
 {
   "buildCommand": "cd frontend && npm install && npm run build",
   "outputDirectory": "frontend/dist",
-  "installCommand": "npm install",
+  "installCommand": "npm install && npm install --prefix backend",
+  "functions": {
+    "api/index.js": { "maxDuration": 30 }
+  },
   "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
+    { "source": "/api/(.*)", "destination": "/api" },
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
   ],
   "headers": [
     {
@@ -18,10 +22,12 @@
       ]
     },
     {
+      "source": "/api/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "no-store" }]
+    },
+    {
       "source": "/assets/(.*)",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
-      ]
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
     }
   ]
 }

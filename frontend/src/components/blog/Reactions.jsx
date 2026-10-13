@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const API_URL = "https://web-production-cba0c.up.railway.app";
+const API_URL = "";
 
 const REACTIONS = [
   { type: "fire", emoji: "🔥", label: "Excellent" },

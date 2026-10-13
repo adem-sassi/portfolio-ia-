@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { Upload, Loader2, Image as ImageIcon } from "lucide-react";
 
-const API_URL = "https://web-production-cba0c.up.railway.app";
+const API_URL = "";
 
 export default function ImageClassifier() {
   const [image, setImage] = useState(null);

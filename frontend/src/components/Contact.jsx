@@ -37,7 +37,7 @@ export default function Contact() {
     setErrorMsg("");
 
     try {
-      const res = await fetch("https://web-production-cba0c.up.railway.app/api/admin/contact", {
+      const res = await fetch("/api/admin/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

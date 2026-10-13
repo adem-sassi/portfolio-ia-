@@ -6,7 +6,7 @@ import TechEditor from "./TechEditor";
 import BlogEditor from "./BlogEditor";
 import SecurityDashboard from "./SecurityDashboard";
 
-const API_URL = "https://web-production-cba0c.up.railway.app";
+const API_URL = "";
 
 function VisitChart({ token }) {
   const [stats, setStats] = useState(null);

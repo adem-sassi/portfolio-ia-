@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Brain, Loader2, Send } from "lucide-react";
 
-const API_URL = "https://web-production-cba0c.up.railway.app";
+const API_URL = "";
 
 const COLORS = { positif: "#00FF88", negatif: "#FF2FBB", neutre: "#00D4FF" };
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Send, MessageCircle } from "lucide-react";
 
-const API_URL = "https://web-production-cba0c.up.railway.app";
+const API_URL = "";
 const AVATARS_COLORS = ["#00D4FF", "#7B2FFF", "#FF2FBB", "#00FF88", "#FFD700"];
 
 export default function Comments({ slug }) {

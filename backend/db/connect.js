@@ -1,14 +1,20 @@
 import mongoose from "mongoose";
 
-export async function connectDB() {
-  try {
-    const uri = process.env.MONGODB_URI;
-    if (!uri) throw new Error("MONGODB_URI manquant dans le .env");
+// Cache global : en serverless, la connexion survit entre deux appels de la même instance
+const cached = global._mongo || (global._mongo = { conn: null, promise: null });
 
-    await mongoose.connect(uri);
-    console.log("✅ MongoDB connecté avec succès");
-  } catch (err) {
-    console.error("❌ Erreur MongoDB:", err.message);
-    process.exit(1);
+export async function connectDB() {
+  if (cached.conn) return cached.conn;
+  const uri = process.env.MONGODB_URI;
+  if (!uri) throw new Error("MONGODB_URI manquant");
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(uri, { serverSelectionTimeoutMS: 8000 });
   }
+  try {
+    cached.conn = await cached.promise;
+  } catch (e) {
+    cached.promise = null;
+    throw e;
+  }
+  return cached.conn;
 }

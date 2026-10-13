@@ -1,4 +1,4 @@
-const API_URL = "https://web-production-cba0c.up.railway.app";
+const API_URL = "";
 import { useState } from "react";
 import { Lock, Eye, EyeOff, Loader2, ShieldCheck, Mail } from "lucide-react";
 

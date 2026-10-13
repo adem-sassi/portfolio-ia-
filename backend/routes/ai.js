@@ -6,7 +6,7 @@ import Content from "../models/Content.js";
 import Article from "../models/Article.js";
 
 const router = express.Router();
-const MODEL = "llama-3.3-70b-versatile";
+const MODEL = "openai/gpt-oss-120b";
 const getClient = () => new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 // ── Génère le system prompt depuis MongoDB ────────────────────────────────────
@@ -110,7 +110,7 @@ router.post("/chat", async (req, res) => {
     const systemPrompt = await buildSystemPrompt();
 
     const r = await getClient().chat.completions.create({
-      model: MODEL,
+      model: MODEL, reasoning_effort: "low",
       max_tokens: 800,
       temperature: 0.7,
       messages: [
@@ -132,7 +132,7 @@ router.post("/analyze-text", async (req, res) => {
     const { text } = req.body;
     if (!text || text.length < 5) return res.status(400).json({ error: "Texte trop court" });
     const r = await getClient().chat.completions.create({
-      model: MODEL, max_tokens: 512,
+      model: MODEL, reasoning_effort: "low", max_tokens: 512,
       messages: [{ role: "user", content: `Analyse ce texte, retourne UNIQUEMENT un JSON valide sans markdown:\n{"sentiment":"positive","score":0.5,"emotions":["joie"],"tone":"professionnel","summary":"résumé"}\nTexte: "${text}"` }],
     });
     res.json(JSON.parse(r.choices[0].message.content.trim().replace(/```json|```/g, "").trim()));
@@ -145,7 +145,7 @@ router.post("/review-code", async (req, res) => {
     const { code, language } = req.body;
     if (!code) return res.status(400).json({ error: "Aucun code fourni" });
     const r = await getClient().chat.completions.create({
-      model: MODEL, max_tokens: 1024,
+      model: MODEL, reasoning_effort: "low", max_tokens: 1024,
       messages: [{ role: "user", content: `Review ce code ${language||""}, retourne UNIQUEMENT un JSON valide sans markdown:\n{"score":80,"issues":[{"severity":"warning","message":"problème"}],"suggestions":["suggestion"],"complexity":"medium","summary":"évaluation"}\nCode:\n${code}` }],
     });
     res.json(JSON.parse(r.choices[0].message.content.trim().replace(/```json|```/g, "").trim()));
@@ -157,7 +157,7 @@ router.post("/generate-bio", async (req, res) => {
   try {
     const { name, skills, interests, style } = req.body;
     const r = await getClient().chat.completions.create({
-      model: MODEL, max_tokens: 600,
+      model: MODEL, reasoning_effort: "low", max_tokens: 600,
       messages: [{ role: "user", content: `Écris une bio portfolio en français. Nom: ${name||"l'étudiant"}, Compétences: ${skills?.join(",")||"ML,DL,NLP"}, Intérêts: ${interests?.join(",")||"IA"}, Style: ${style||"professionnel"}. Écris 2-3 paragraphes percutants.` }],
     });
     res.json({ bio: r.choices[0].message.content });
@@ -169,7 +169,7 @@ router.post("/quiz", async (req, res) => {
   try {
     const { topic, difficulty } = req.body;
     const r = await getClient().chat.completions.create({
-      model: MODEL, max_tokens: 1200,
+      model: MODEL, reasoning_effort: "low", max_tokens: 1200,
       messages: [{ role: "user", content: `Génère un quiz en français sur "${topic||"IA"}" niveau ${difficulty||"intermédiaire"}. Retourne UNIQUEMENT un JSON valide sans markdown:\n{"topic":"sujet","questions":[{"question":"?","options":["A","B","C","D"],"correct":0,"explanation":"explication"}]}\nGénère exactement 5 questions.` }],
     });
     res.json(JSON.parse(r.choices[0].message.content.trim().replace(/```json|```/g, "").trim()));

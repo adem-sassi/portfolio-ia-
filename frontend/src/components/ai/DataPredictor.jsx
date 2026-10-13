@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { TrendingUp, TrendingDown, Minus, Loader2 } from "lucide-react";
 
-const API_URL = "https://web-production-cba0c.up.railway.app";
+const API_URL = "";
 
 const EXAMPLES = [
   { label: "Températures", data: [12, 14, 13, 16, 18, 17, 20, 22, 21, 24], context: "températures journalières en °C" },

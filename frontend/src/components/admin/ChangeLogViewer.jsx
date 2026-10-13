@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { RefreshCw } from "lucide-react";
 
-const API_URL = "https://web-production-cba0c.up.railway.app";
+const API_URL = "";
 
 export default function ChangeLogViewer({ token }) {
   const [logs, setLogs] = useState([]);

@@ -115,15 +115,5 @@ router.delete("/comments/:id", authMiddleware, async (req, res) => {
 });
 
 
-// Publier les articles planifiés automatiquement
-setInterval(async () => {
-  try {
-    const now = new Date();
-    await Article.updateMany(
-      { published: false, scheduledAt: { $lte: now }, scheduledAt: { $exists: true, $ne: null } },
-      { $set: { published: true } }
-    );
-  } catch {}
-}, 60 * 1000); // Vérifier chaque minute
 
 export default router;

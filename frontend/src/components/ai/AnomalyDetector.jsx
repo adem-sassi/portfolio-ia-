@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { AlertTriangle, Loader2, CheckCircle } from "lucide-react";
 
-const API_URL = "https://web-production-cba0c.up.railway.app";
+const API_URL = "";
 
 const EXAMPLES = [
   { label: "Avec anomalies", data: [10, 12, 11, 13, 12, 95, 11, 13, 12, 10, 11, 200] },

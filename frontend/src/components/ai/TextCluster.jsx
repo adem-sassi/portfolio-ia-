@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Layers, Loader2, Plus, X } from "lucide-react";
 
-const API_URL = "https://web-production-cba0c.up.railway.app";
+const API_URL = "";
 
 const EXAMPLE_TEXTS = [
   "J'adore la programmation Python",

@@ -16,7 +16,7 @@ export default function Hero() {
 
   // Fetch direct sans cache
   useEffect(() => {
-    fetch("https://web-production-cba0c.up.railway.app/api/content/hero?t=" + Date.now())
+    fetch("/api/content/hero?t=" + Date.now())
       .then(r => r.json())
       .then(data => setHero(data))
       .catch(() => {});

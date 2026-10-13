@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Lock, Loader2, CheckCircle } from "lucide-react";
 
-const API_URL = "https://web-production-cba0c.up.railway.app";
+const API_URL = "";
 
 export default function ResetPassword() {
   const [params] = useSearchParams();

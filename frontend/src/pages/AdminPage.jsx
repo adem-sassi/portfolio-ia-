@@ -3,7 +3,7 @@ import AdminLogin from "../components/admin/AdminLogin";
 import AdminDashboard from "../components/admin/AdminDashboard";
 import { Loader2 } from "lucide-react";
 
-const API_URL = "https://web-production-cba0c.up.railway.app";
+const API_URL = "";
 export default function AdminPage() {
   const [token, setToken] = useState(null);
   const [checking, setChecking] = useState(true);

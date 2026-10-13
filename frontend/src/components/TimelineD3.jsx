@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-const API_URL = "https://web-production-cba0c.up.railway.app";
+const API_URL = "";
 
 export default function TimelineD3() {
   const [timeline, setTimeline] = useState([]);

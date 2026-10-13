@@ -31,3 +31,4 @@ backend/logs/
 *.log
 .vercel
 .env*
+.env.local

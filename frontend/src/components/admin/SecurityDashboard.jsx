@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Shield, Eye, AlertTriangle, Users, Globe, Clock, Ban, RefreshCw } from "lucide-react";
 
-const API_URL = "https://web-production-cba0c.up.railway.app";
+const API_URL = "";
 
 export default function SecurityDashboard({ token }) {
   const [data, setData] = useState(null);

@@ -2,7 +2,7 @@ import { marked } from "marked";
 import { useState, useEffect } from "react";
 import { Plus, Trash2, Save, Eye, EyeOff, Edit, BarChart2, Check, X, Clock, MessageCircle, Heart, Flame } from "lucide-react";
 
-const API_URL = "https://web-production-cba0c.up.railway.app";
+const API_URL = "";
 
 function ArticleStats({ article, token }) {
   const [comments, setComments] = useState([]);
