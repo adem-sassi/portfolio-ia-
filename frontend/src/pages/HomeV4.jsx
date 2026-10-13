@@ -50,6 +50,17 @@ const COURSES = [
 
 const link = (u) => (!u || u === "#" ? "" : /^(https?:|mailto:)/.test(u) ? u : "https://" + u);
 const initials = (n) => String(n || "?").split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
+/* En cours = "actuellement"/"présent", ou date de fin pas encore passée (année scolaire finie fin août) */
+const isNow = (y) => {
+  const txt = String(y || "");
+  if (/actuel|pr[ée]sent|aujourd|en cours/i.test(txt)) return true;
+  const m = [...txt.matchAll(/(?:(\d{1,2})\/)?(\d{4})/g)];
+  if (!m.length) return false;
+  const last = m[m.length - 1];
+  const endYear = +last[2], endMonth = last[1] ? +last[1] : 8;
+  const now = new Date(), cy = now.getFullYear(), cm = now.getMonth() + 1;
+  return endYear > cy || (endYear === cy && cm <= endMonth);
+};
 const statsList = (s) => (!s ? [] : Array.isArray(s) ? s.map((x) => (typeof x === "object" ? [x.label || "", x.value ?? ""] : ["", x])) : Object.entries(s));
 
 function useContent() {
@@ -614,7 +625,7 @@ export default function HomeV4() {
               <div className="path-l">parcours</div>
               <div className="path">
                 {(about.timeline || []).map((t, i) => (
-                  <div className={"step" + (/202[6-9]/.test(t.year || "") ? " now" : "")} key={i}>
+                  <div className={"step" + (isNow(t.year) ? " now" : "")} key={i}>
                     <div className="d">{t.year}</div>
                     <div><h3>{t.title}</h3><div className="place">{t.place}</div>{t.desc && <p>{t.desc}</p>}</div>
                   </div>
