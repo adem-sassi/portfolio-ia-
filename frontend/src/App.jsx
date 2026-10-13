@@ -1,3 +1,4 @@
+import VisitTracker from "./components/VisitTracker";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { useState } from "react";
@@ -61,7 +62,8 @@ export default function App() {
 
   return (
       <LangProvider>
-        <Routes>
+        <VisitTracker />
+      <Routes>
           <Route path="/" element={<Portfolio/>}/>
           <Route path="/admin" element={<AdminPage/>}/>
           <Route path="/mentions-legales" element={<MentionsLegales/>}/>
