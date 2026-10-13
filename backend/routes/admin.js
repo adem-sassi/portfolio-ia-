@@ -26,6 +26,23 @@ const PUBLIC_DIR = join(__dirname, "../../frontend/public");
 const CV_PATH = join(PUBLIC_DIR, "cv.pdf");
 
 // ── POST /api/admin/login ─────────────────────────────────────────────────────
+
+// ── Mot de passe admin : haché (scrypt) dans MongoDB, sinon ADMIN_PASSWORD ──
+const hashPassword = (pwd, salt = crypto.randomBytes(16).toString("hex")) =>
+  ({ salt, hash: crypto.scryptSync(pwd, salt, 64).toString("hex") });
+async function checkAdminPassword(pwd) {
+  const doc = await Content.findOne({ section: "admin_auth" });
+  if (doc?.data?.hash && doc?.data?.salt) {
+    const a = Buffer.from(hashPassword(pwd, doc.data.salt).hash, "hex");
+    const b = Buffer.from(doc.data.hash, "hex");
+    return a.length === b.length && crypto.timingSafeEqual(a, b);
+  }
+  const env = String(process.env.ADMIN_PASSWORD || "");
+  const a = Buffer.from(String(pwd)), b = Buffer.from(env);
+  return env.length > 0 && a.length === b.length && crypto.timingSafeEqual(a, b);
+}
+const forgotLimiter = rateLimit({ windowMs: 60 * 60 * 1000, max: 5, message: { error: "Trop de demandes, réessaie dans une heure" } });
+
 router.post("/login", async (req, res) => {
   try {
     const { password } = req.body;
@@ -41,7 +58,7 @@ router.post("/login", async (req, res) => {
 
     if (!password) return res.status(400).json({ error: "Mot de passe requis" });
     
-    if (password !== process.env.ADMIN_PASSWORD) {
+    if (!(await checkAdminPassword(password))) {
       await new Promise(r => setTimeout(r, 1000));
       
       // Compter les tentatives échouées
@@ -165,23 +182,26 @@ async function deleteResetToken() {
 }
 
 // POST /api/admin/forgot-password
-router.post("/forgot-password", async (req, res) => {
+router.post("/forgot-password", forgotLimiter, async (req, res) => {
   try {
-    const token = jwt.sign({ reset: true }, process.env.JWT_SECRET, { expiresIn: "15m" });
-    const resetLink = `${process.env.FRONTEND_URL}/admin/reset-password?token=${token}`;
+    const jti = crypto.randomBytes(16).toString("hex");
+    const token = jwt.sign({ reset: true, jti }, process.env.JWT_SECRET, { expiresIn: "15m" });
+    await saveResetToken(jti);
+    const base = (process.env.FRONTEND_URL || "https://ademsassi.com").replace(/\/$/, "");
+    const resetLink = `${base}/admin/reset-password?token=${encodeURIComponent(token)}`;
 
     const resend = new Resend(process.env.RESEND_API_KEY);
     await resend.emails.send({
-      from: "Portfolio Admin <onboarding@resend.dev>",
+      from: "Portfolio Admin <contact@ademsassi.com>",
       to: process.env.EMAIL_USER,
-      subject: "Reset mot de passe - ademsassi.com",
+      subject: "Réinitialisation du mot de passe admin · ademsassi.com",
       html: `<div style="font-family:sans-serif;padding:20px;">
-        <h2 style="color:#00D4FF;">Reset mot de passe admin</h2>
-        <p>Clique sur ce lien pour réinitialiser ton mot de passe :</p>
+        <h2 style="color:#00D4FF;">Réinitialisation du mot de passe admin</h2>
+        <p>Clique sur ce lien pour choisir un nouveau mot de passe :</p>
         <a href="${resetLink}" style="background:#7B2FFF;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;display:inline-block;margin:16px 0;">
           Réinitialiser le mot de passe
         </a>
-        <p style="color:#888;font-size:12px;">Ce lien expire dans 15 minutes.</p>
+        <p style="color:#888;font-size:12px;">Lien valable 15 minutes, utilisable une seule fois. Si tu n'as rien demandé, ignore ce mail.</p>
       </div>`,
     });
 
@@ -195,11 +215,21 @@ router.post("/forgot-password", async (req, res) => {
 router.post("/reset-password", async (req, res) => {
   try {
     const { token, newPassword } = req.body;
-    jwt.verify(token, process.env.JWT_SECRET);
-    process.env.ADMIN_PASSWORD = newPassword;
+    if (!newPassword || String(newPassword).length < 10) return res.status(400).json({ error: "10 caractères minimum" });
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const saved = await getResetToken();
+    if (!decoded.reset || !decoded.jti || !saved || saved.token !== decoded.jti || saved.expires < Date.now()) {
+      return res.status(400).json({ error: "Lien invalide, expiré ou déjà utilisé" });
+    }
+    await Content.findOneAndUpdate(
+      { section: "admin_auth" },
+      { section: "admin_auth", data: { ...hashPassword(String(newPassword)), updatedAt: new Date() } },
+      { upsert: true }
+    );
+    await deleteResetToken();
     res.json({ success: true, message: "Mot de passe changé!" });
   } catch (e) {
-    res.status(400).json({ error: "Token invalide ou expiré" });
+    res.status(400).json({ error: "Lien invalide ou expiré" });
   }
 });
 

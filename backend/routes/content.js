@@ -18,6 +18,9 @@ function setCache(key, data) {
   cache.set(key, { data, time: Date.now() });
 }
 
+// Sections jamais exposées publiquement
+const PRIVATE_SECTIONS = ["cv", "reset_token", "admin_auth"];
+
 // GET /api/content
 router.get("/", async (req, res) => {
   try {
@@ -27,7 +30,7 @@ router.get("/", async (req, res) => {
     const sections = await Content.find({});
     const result = {};
     sections.forEach(s => {
-      if (s.section !== "cv") result[s.section] = s.data;
+      if (!PRIVATE_SECTIONS.includes(s.section)) result[s.section] = s.data;
     });
 
     setCache("content", result);
@@ -91,6 +94,7 @@ router.get("/sitemap", async (req, res) => {
 // GET /api/content/:section
 router.get("/:section", async (req, res) => {
   try {
+    if (PRIVATE_SECTIONS.includes(req.params.section)) return res.status(404).json({ error: "Section non trouvée" });
     const doc = await Content.findOne({ section: req.params.section });
     if (!doc) return res.status(404).json({ error: "Section non trouvée" });
     res.json(doc.data);
