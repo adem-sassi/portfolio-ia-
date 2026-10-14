@@ -83,19 +83,53 @@ ${projectsList}
 === RECOMMANDATIONS ===
 ${testimonialsList}
 
-=== RÈGLES STRICTES ===
-- Réponds TOUJOURS en français
-- Sois concis et précis — pas de réponses trop longues
-- Si on te demande une info qui n'est pas dans ce profil, dis poliment que tu ne sais pas
-- Pour toute opportunité professionnelle, invite à contacter via ${contact.email || "l'email"}
-- Ne réponds pas aux questions hors sujet du portfolio
-- Formate proprement tes réponses avec des sauts de ligne clairs
-- L'École Hexagone est située à Versailles (pas Puteaux)
+=== COMMENT RÉPONDRE ===
+Tu parles d'Adem à la 3e personne, comme un collègue sympa qui le connaît bien. Tu vouvoies le visiteur. Ton naturel, chaleureux, jamais robotique.
+
+Format :
+- Réponses COURTES : 2 à 4 phrases, ou une petite liste de 6 puces maximum. Environ 80 mots, sauf si on te demande explicitement du détail.
+- JAMAIS de tableau. JAMAIS de titre (#). Pas de pavé.
+- Pour lister des projets : une puce par projet au format "**Nom** : une phrase courte". Puis propose d'en détailler un.
+- Un lien seulement s'il est utile, au format markdown [texte](url), jamais d'URL brute, jamais le même lien répété.
+- Tu peux finir par une courte question de relance, mais pas à chaque fois.
+
+Quand l'info n'est pas dans le profil :
+- N'écris JAMAIS "je ne dispose pas", "le profil fourni", "les informations fournies", "le contexte" ou "je n'ai pas accès".
+- Réponds comme un humain : dis simplement qu'Adem n'a pas partagé ce détail ici, rebondis sur une info proche et utile si tu en as une, puis propose de lui écrire à ${contact.email || "son email"} ou via le formulaire de contact.
+- Exemple pour "quel âge a Adem ?" : "Adem n'a pas mis son âge sur le site 🙂 Ce que je peux vous dire, c'est qu'il est en Master 2 Data & IA et en alternance chez ACENSI. Pour le reste, le plus simple est de lui écrire à ${contact.email || "son email"}."
+- N'invente jamais rien.
+
+Autres règles :
+- Toujours en français.
+- Hors sujet : recentre en une phrase sympa vers le parcours, les projets ou les compétences d'Adem.
+- Opportunité pro : invite à écrire à ${contact.email || "son email"}.
+- L'École Hexagone est à Versailles.
 ${blogArticles}`;
   } catch (err) {
     console.error("buildSystemPrompt error:", err);
     return "Tu es l'assistant IA d'un portfolio de développeur. Réponds en français.";
   }
+}
+
+
+// ── Nettoie la réponse : tableaux markdown -> puces, titres -> gras ──
+function tidyReply(txt = "") {
+  const out = [];
+  let head = null;
+  for (const line of String(txt).split("\n")) {
+    const t = line.trim();
+    if (/^\|.*\|$/.test(t)) {
+      const cells = t.slice(1, -1).split("|").map((c) => c.trim());
+      if (cells.every((c) => /^:?-{2,}:?$/.test(c))) continue;
+      if (!head) { head = cells; continue; }
+      const rest = cells.slice(1).filter((c) => c && c !== "–" && c !== "-" && !/^https?:\/\/\S+$/.test(c));
+      out.push(`- **${cells[0]}** : ${rest[0] || ""}`.trim());
+      continue;
+    }
+    head = null;
+    out.push(line.replace(/^#{1,6}\s+(.*)$/, "**$1**"));
+  }
+  return out.join("\n").replace(/\n{3,}/g, "\n\n").trim();
 }
 
 // ── POST /api/ai/chat ─────────────────────────────────────────────────────────
@@ -111,15 +145,15 @@ router.post("/chat", async (req, res) => {
 
     const r = await getClient().chat.completions.create({
       model: MODEL, reasoning_effort: "low",
-      max_tokens: 800,
-      temperature: 0.7,
+      max_tokens: 600,
+      temperature: 0.6,
       messages: [
         { role: "system", content: systemPrompt },
         ...messages,
       ],
     });
 
-    res.json({ reply: r.choices[0].message.content });
+    res.json({ reply: tidyReply(r.choices[0].message.content) });
   } catch (e) {
     console.error("Chat error:", e.message);
     res.status(500).json({ error: "Erreur du service IA" });
