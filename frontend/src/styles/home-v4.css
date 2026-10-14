@@ -431,3 +431,10 @@ html{scroll-behavior:smooth}
 .v4 .nowi small{font-family:"JetBrains Mono";font-size:11.5px;color:var(--mute)}
 .v4 .nowl{justify-self:start;font-family:"JetBrains Mono";font-size:12px;color:var(--blue)}
 .v4 .nowl:hover{text-decoration:underline}
+
+/* à propos : modèle 3D */
+.v4 .n3d{position:relative;height:clamp(260px,30vw,360px);border:1px solid var(--line2);border-radius:16px;overflow:hidden;background:radial-gradient(120% 90% at 50% 40%,rgba(123,47,255,.10),rgba(4,6,12,.6) 70%)}
+.v4 .n3d canvas{display:block;width:100%;height:100%;cursor:grab;touch-action:pan-y}
+.v4 .n3d canvas:active{cursor:grabbing}
+.v4 .n3d-l{position:absolute;left:16px;right:16px;bottom:12px;display:flex;justify-content:space-between;font-family:"JetBrains Mono";font-size:11px;color:var(--mute);pointer-events:none}
+.v4 .n3d-l span:first-child{color:var(--blue)}

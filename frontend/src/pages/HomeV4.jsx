@@ -142,6 +142,96 @@ function Typing() {
   return <div className="typing"><span>&gt;</span> {txt}<i className="tcur" /></div>;
 }
 
+
+/* ── modèle 3D : réseau neuronal en sphère (canvas, sans librairie) ── */
+function Neural3D() {
+  const ref = useRef(null);
+  useEffect(() => {
+    const cv = ref.current; if (!cv) return;
+    const ctx = cv.getContext("2d");
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const N = 110, pts = [], edges = [];
+    const ga = Math.PI * (3 - Math.sqrt(5));
+    for (let i = 0; i < N; i++) {
+      const y = 1 - (i / (N - 1)) * 2, r = Math.sqrt(1 - y * y), t = ga * i;
+      const j = 1 + (Math.sin(i * 12.9898) * 0.5) * 0.12;
+      pts.push([Math.cos(t) * r * j, y * j, Math.sin(t) * r * j]);
+    }
+    for (let i = 0; i < N; i++) {
+      const d = pts.map((q, k) => [k, (q[0] - pts[i][0]) ** 2 + (q[1] - pts[i][1]) ** 2 + (q[2] - pts[i][2]) ** 2]).sort((a, b) => a[1] - b[1]);
+      for (let n = 1; n <= 3; n++) { const k = d[n][0]; if (k > i || !edges.some((e) => e[0] === k && e[1] === i)) edges.push([i, k]); }
+    }
+    const core = [];
+    for (let i = 0; i < 12; i++) { const a = (i / 12) * Math.PI * 2; core.push([Math.cos(a) * 0.38, Math.sin(a * 2) * 0.12, Math.sin(a) * 0.38]); }
+    let W = 0, H = 0, raf = 0, vis = true, rx = -0.35, ry = 0, vy = reduce ? 0.0008 : 0.004, drag = null, tx = 0, ty = 0;
+    let pulses = [];
+    const size = () => {
+      const dpr = Math.min(devicePixelRatio || 1, 2), b = cv.getBoundingClientRect();
+      W = b.width; H = b.height; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    size();
+    const ro = new ResizeObserver(size); ro.observe(cv);
+    const io = new IntersectionObserver(([e]) => { vis = e.isIntersecting; if (vis && !raf) raf = requestAnimationFrame(frame); }); io.observe(cv);
+    const proj = (q) => {
+      let [x, y, z] = q;
+      const cy = Math.cos(ry), sy = Math.sin(ry); [x, z] = [x * cy - z * sy, x * sy + z * cy];
+      const cx = Math.cos(rx), sx = Math.sin(rx); [y, z] = [y * cx - z * sx, y * sx + z * cx];
+      const R = Math.min(W, H) * 0.38, f = 3 / (3 + z);
+      return [W / 2 + x * R * f, H / 2 + y * R * f, z, f];
+    };
+    const mix = (z) => { const t = (z + 1) / 2; return [Math.round(t * 123), Math.round(212 - t * 165), 255]; };
+    function frame() {
+      raf = 0; if (!vis) return;
+      if (!drag) { ry += vy + tx * 0.002; rx += (ty * 0.4 - 0.35 - rx) * 0.03; }
+      ctx.clearRect(0, 0, W, H);
+      const P = pts.map(proj), C = core.map(proj);
+      const g = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, Math.min(W, H) * 0.45);
+      g.addColorStop(0, "rgba(0,212,255,.10)"); g.addColorStop(1, "rgba(123,47,255,0)");
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+      ctx.lineWidth = 1;
+      for (const [a, b] of edges) {
+        const A = P[a], B = P[b], z = (A[2] + B[2]) / 2, [r, gg, bb] = mix(z);
+        ctx.strokeStyle = `rgba(${r},${gg},${bb},${0.08 + (1 - (z + 1) / 2) * 0.32})`;
+        ctx.beginPath(); ctx.moveTo(A[0], A[1]); ctx.lineTo(B[0], B[1]); ctx.stroke();
+      }
+      ctx.strokeStyle = "rgba(0,255,136,.35)"; ctx.beginPath();
+      C.forEach((q, i) => (i ? ctx.lineTo(q[0], q[1]) : ctx.moveTo(q[0], q[1]))); ctx.closePath(); ctx.stroke();
+      for (const q of C) { ctx.fillStyle = "rgba(0,255,136,.8)"; ctx.beginPath(); ctx.arc(q[0], q[1], 1.6 * q[3], 0, 7); ctx.fill(); }
+      const order = P.map((q, i) => i).sort((a, b) => P[b][2] - P[a][2]);
+      for (const i of order) {
+        const [x, y, z, f] = P[i], [r, gg, bb] = mix(z), a = 0.35 + (1 - (z + 1) / 2) * 0.65;
+        ctx.fillStyle = `rgba(${r},${gg},${bb},${a})`; ctx.beginPath(); ctx.arc(x, y, 2.2 * f, 0, 7); ctx.fill();
+      }
+      if (!reduce && Math.random() < 0.12 && pulses.length < 14) pulses.push({ e: edges[(Math.random() * edges.length) | 0], t: 0 });
+      pulses = pulses.filter((u) => (u.t += 0.025) < 1);
+      for (const u of pulses) {
+        const A = P[u.e[0]], B = P[u.e[1]], x = A[0] + (B[0] - A[0]) * u.t, y = A[1] + (B[1] - A[1]) * u.t;
+        ctx.shadowColor = "#00D4FF"; ctx.shadowBlur = 12; ctx.fillStyle = "#bff4ff";
+        ctx.beginPath(); ctx.arc(x, y, 2.4, 0, 7); ctx.fill(); ctx.shadowBlur = 0;
+      }
+      raf = requestAnimationFrame(frame);
+    }
+    raf = requestAnimationFrame(frame);
+    const down = (e) => { drag = [e.clientX, e.clientY, rx, ry]; cv.setPointerCapture(e.pointerId); };
+    const move = (e) => {
+      const b = cv.getBoundingClientRect();
+      tx = ((e.clientX - b.left) / b.width - 0.5) * 2; ty = ((e.clientY - b.top) / b.height - 0.5) * 2;
+      if (drag) { ry = drag[3] + (e.clientX - drag[0]) * 0.008; rx = drag[2] + (e.clientY - drag[1]) * 0.008; }
+    };
+    const up = () => { drag = null; };
+    const leave = () => { tx = 0; ty = 0; };
+    cv.addEventListener("pointerdown", down); cv.addEventListener("pointermove", move);
+    cv.addEventListener("pointerup", up); cv.addEventListener("pointerleave", leave);
+    return () => { cancelAnimationFrame(raf); ro.disconnect(); io.disconnect(); cv.removeEventListener("pointerdown", down); cv.removeEventListener("pointermove", move); cv.removeEventListener("pointerup", up); cv.removeEventListener("pointerleave", leave); };
+  }, []);
+  return (
+    <div className="n3d">
+      <canvas ref={ref} aria-label="Réseau neuronal 3D animé" />
+      <div className="n3d-l"><span>neural.net</span><span>glisse pour tourner</span></div>
+    </div>
+  );
+}
+
 function Head({ n, path, title, accent, sub }) {
   return (
     <div className="sh">
@@ -608,15 +698,7 @@ export default function HomeV4() {
             <div className="aboutc">
               {(about.paragraphs || []).map((p, i) => <p key={i}>{p}</p>)}
               {(about.tags || []).length > 0 && <div className="tags">{about.tags.map((t) => <span className="tag" key={t}>{t}</span>)}</div>}
-              {(about.timeline || []).some((t) => isNow(t.year)) && (
-                <div className="nowc">
-                  <div className="path-l"><span className="dot" /> en ce moment</div>
-                  {(about.timeline || []).filter((t) => isNow(t.year)).map((t, i) => (
-                    <div className="nowi" key={i}><b>{t.title}</b><small>{t.place} · {t.year}</small></div>
-                  ))}
-                  <a href="#contact" className="nowl">Me contacter →</a>
-                </div>
-              )}
+              <Neural3D />
               <a className="btn" href="/api/content/cv" download>Télécharger mon CV ↓</a>
             </div>
             <div>
