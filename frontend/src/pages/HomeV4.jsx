@@ -608,15 +608,13 @@ export default function HomeV4() {
             <div className="aboutc">
               {(about.paragraphs || []).map((p, i) => <p key={i}>{p}</p>)}
               {(about.tags || []).length > 0 && <div className="tags">{about.tags.map((t) => <span className="tag" key={t}>{t}</span>)}</div>}
-              {(about.languages || []).length > 0 && (
-                <div className="langs">
-                  <div className="path-l">🌍 langues</div>
-                  {about.languages.map((l) => (
-                    <div className="lang" key={l.name}>
-                      <span>{l.flag} {l.name}</span><small>{l.level}</small>
-                      <span className="lv"><i style={{ width: (+l.percent || 0) + "%" }} /></span>
-                    </div>
+              {(about.timeline || []).some((t) => isNow(t.year)) && (
+                <div className="nowc">
+                  <div className="path-l"><span className="dot" /> en ce moment</div>
+                  {(about.timeline || []).filter((t) => isNow(t.year)).map((t, i) => (
+                    <div className="nowi" key={i}><b>{t.title}</b><small>{t.place} · {t.year}</small></div>
                   ))}
+                  <a href="#contact" className="nowl">Me contacter →</a>
                 </div>
               )}
               <a className="btn" href="/api/content/cv" download>Télécharger mon CV ↓</a>
