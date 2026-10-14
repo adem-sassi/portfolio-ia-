@@ -247,19 +247,79 @@ function Head({ n, path, title, accent, sub }) {
 const SUGG = ["Quels sont ses projets ?", "Quelles sont ses compétences ?", "Comment le contacter ?", "Quels stages a-t-il effectués ?", "Sa formation ?", "Est-il disponible ?"];
 const STEPS = ["router", "retrieve", "generate", "eval"];
 
-function Rich({ text }) {
-  const lines = String(text || "").split("\n").filter((l) => l.trim());
-  const fmt = (s) => s.split(/(\*\*[^*]+\*\*)/g).map((p, i) => (p.startsWith("**") ? <b key={i}>{p.slice(2, -2)}</b> : p));
+function inlineMd(str, key = "") {
+  const re = /(\*\*[^*]+\*\*|\[[^\]]+\]\([^)\s]+\)|`[^`]+`|https?:\/\/[^\s)]+|[\w.+-]+@[\w-]+(?:\.[\w-]+)+)/g;
+  return String(str).split(re).map((p, i) => {
+    const k = key + i;
+    if (!p) return null;
+    if (/^\*\*[^*]+\*\*$/.test(p)) return <b key={k}>{p.slice(2, -2)}</b>;
+    const md = p.match(/^\[([^\]]+)\]\(([^)\s]+)\)$/);
+    if (md) return <a key={k} className="rlink" href={md[2]} target="_blank" rel="noopener noreferrer">{md[1]} ↗</a>;
+    if (/^`[^`]+`$/.test(p)) return <code key={k}>{p.slice(1, -1)}</code>;
+    if (/^https?:\/\//.test(p)) return <a key={k} className="rlink" href={p} target="_blank" rel="noopener noreferrer">{p.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")} ↗</a>;
+    if (/^[\w.+-]+@[\w-]+(?:\.[\w-]+)+$/.test(p)) return <a key={k} className="rlink mail" href={"mailto:" + p}>✉ {p}</a>;
+    return p;
+  });
+}
+
+function Rich({ text, anim }) {
+  const lines = String(text || "").split("\n").map((l) => l.trim()).filter(Boolean);
+  let n = 0;
   return (
-    <div className="rich">
+    <div className={"rich" + (anim ? " anim" : "")}>
       {lines.map((l, i) => {
+        const st = { "--d": i * 70 + "ms" };
         const clean = l.replace(/^#+\s*/, "");
-        if (/^[-•▸*]\s/.test(l)) return <div className="li" key={i}><span>▸</span><p>{fmt(clean.replace(/^[-•▸*]\s*/, ""))}</p></div>;
-        if (/^\d+\.\s/.test(l)) return <div className="li" key={i}><span>{l.match(/^\d+/)[0]}</span><p>{fmt(clean.replace(/^\d+\.\s*/, ""))}</p></div>;
-        if (/:$/.test(clean.replace(/\*\*/g, "")) && clean.length < 60) return <div className="rh" key={i}>{clean.replace(/\*\*/g, "").replace(/:$/, "")}</div>;
-        return <p key={i}>{fmt(clean)}</p>;
+        const isLi = /^[-•▸*]\s/.test(clean), isNum = /^\d+[.)]\s/.test(clean);
+        if (isLi || isNum) {
+          const body = clean.replace(/^([-•▸*]|\d+[.)])\s*/, "");
+          const m = body.match(/^\*\*([^*]+)\*\*\s*[:–-]\s*(.+)$/);
+          n += 1;
+          if (m) return (
+            <div className="rcard" key={i} style={st}>
+              <span className="rnum">{String(n).padStart(2, "0")}</span>
+              <div><b>{m[1]}</b><p>{inlineMd(m[2], i + "-")}</p></div>
+            </div>
+          );
+          return <div className="li" key={i} style={st}><span className="rdot" /><p>{inlineMd(body, i + "-")}</p></div>;
+        }
+        n = 0;
+        const plain = clean.replace(/\*\*/g, "");
+        if (/:$/.test(plain) && plain.length < 60) return <div className="rh" key={i} style={st}>{plain.replace(/:$/, "")}</div>;
+        return <p key={i} style={st}>{inlineMd(clean, i + "-")}</p>;
       })}
     </div>
+  );
+}
+
+const ACTIONS = [
+  [/projet|github|r[ée]alis/i, "Voir les projets", "#projects"],
+  [/comp[ée]tence|techno|stack|python|react/i, "Voir l'arsenal", "#skills"],
+  [/stage|parcours|formation|master|bachelor|alternance/i, "Voir le parcours", "#about"],
+  [/contact|e-?mail|[ée]crire|linkedin|opportunit/i, "Écrire à Adem", "#contact"],
+  [/\bcv\b|curriculum/i, "Télécharger le CV", "/api/content/cv"],
+];
+
+function ReplyActions({ reply, asked, onAsk }) {
+  const acts = ACTIONS.filter(([re]) => re.test(reply)).slice(0, 2);
+  const next = SUGG.filter((q) => !asked.includes(q)).slice(0, 2);
+  if (!acts.length && !next.length) return null;
+  return (
+    <div className="ractions">
+      {acts.map(([, label, href]) => (
+        <a key={href} className="ract" href={href} {...(href.startsWith("/api") ? { download: true } : {})}>{label} {href.startsWith("/api") ? "↓" : "→"}</a>
+      ))}
+      {next.map((q) => <button key={q} className="rnext" onClick={() => onAsk(q)}>{q}</button>)}
+    </div>
+  );
+}
+
+function CopyBtn({ text }) {
+  const [ok, setOk] = useState(false);
+  return (
+    <button className="rcopy" onClick={() => { navigator.clipboard?.writeText(text.replace(/\*\*/g, "")).then(() => { setOk(true); setTimeout(() => setOk(false), 1400); }).catch(() => {}); }} aria-label="Copier la réponse">
+      {ok ? "copié ✓" : "copier"}
+    </button>
   );
 }
 
@@ -291,7 +351,7 @@ function ChatBot() {
       clearInterval(iv); setStep(3);
       await new Promise((r) => setTimeout(r, 250));
       const reply = data.reply || "Désolé, une erreur s'est produite.";
-      setMsgs((p) => [...p, { role: "assistant", content: reply }]);
+      setMsgs((p) => [...p, { role: "assistant", content: reply, ms: Math.round(performance.now() - t0), fresh: true }]);
       setMeta({ ms: Math.round(performance.now() - t0), tok: Math.round(reply.length / 4) });
     } catch {
       clearInterval(iv);
@@ -314,14 +374,22 @@ function ChatBot() {
       <div className="chat-box" ref={box}>
         {msgs.map((m, i) => (
           <div key={i} className={"msg " + m.role}>
-            {m.role === "assistant" ? <span className="av">AI</span> : null}
-            <div className="bubble">{m.role === "assistant" ? <Rich text={m.content} /> : m.content}</div>
+            {m.role === "assistant" ? <span className="av"><i /></span> : null}
+            {m.role === "assistant" ? (
+              <div className="bubble">
+                <div className="rtop"><span>assistant</span>{m.ms ? <span>{(m.ms / 1000).toFixed(1)} s</span> : <span>prêt</span>}{i > 0 && <CopyBtn text={m.content} />}</div>
+                <Rich text={m.content} anim={m.fresh} />
+                {i === msgs.length - 1 && i > 0 && !loading && (
+                  <ReplyActions reply={m.content} asked={msgs.filter((x) => x.role === "user").map((x) => x.content)} onAsk={send} />
+                )}
+              </div>
+            ) : <div className="bubble">{m.content}</div>}
           </div>
         ))}
         {loading && (
           <div className="msg assistant">
-            <span className="av">AI</span>
-            <div className="bubble think">{STEPS[Math.max(0, step)]}…<i className="tcur" /></div>
+            <span className="av on"><i /></span>
+            <div className="bubble think"><span className="tdots"><i /><i /><i /></span>{STEPS[Math.max(0, step)]}…</div>
           </div>
         )}
       </div>

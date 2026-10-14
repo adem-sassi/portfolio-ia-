@@ -438,3 +438,45 @@ html{scroll-behavior:smooth}
 .v4 .n3d canvas:active{cursor:grabbing}
 .v4 .n3d-l{position:absolute;left:16px;right:16px;bottom:12px;display:flex;justify-content:space-between;font-family:"JetBrains Mono";font-size:11px;color:var(--mute);pointer-events:none}
 .v4 .n3d-l span:first-child{color:var(--blue)}
+
+/* ── chatbot : réponses stylées ── */
+.v4 .msg{max-width:92%}
+.v4 .msg .av{position:relative;overflow:hidden;background:radial-gradient(circle at 35% 30%,#bff4ff,var(--blue) 35%,var(--violet) 80%);border:0;box-shadow:0 0 14px rgba(0,212,255,.35)}
+.v4 .msg .av i{position:absolute;inset:6px;border-radius:50%;border:1px solid rgba(255,255,255,.55);border-top-color:transparent;border-left-color:transparent}
+.v4 .msg .av.on i{animation:v4spin 1s linear infinite}
+@keyframes v4spin{to{transform:rotate(360deg)}}
+.v4 .msg.assistant .bubble{position:relative;padding:12px 16px 14px;border:1px solid transparent;background:linear-gradient(rgba(10,15,26,.97),rgba(10,15,26,.97)) padding-box,linear-gradient(135deg,rgba(0,212,255,.5),rgba(123,47,255,.3) 45%,rgba(136,153,204,.12) 75%) border-box}
+.v4 .rtop{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-family:"JetBrains Mono";font-size:10.5px;color:var(--mute);letter-spacing:.04em}
+.v4 .rtop span:first-child{color:var(--blue)}
+.v4 .rtop span:first-child:before{content:"◆ ";font-size:8px}
+.v4 .rcopy{margin-left:auto;font-family:"JetBrains Mono";font-size:10.5px;color:var(--mute);padding:2px 8px;border:1px solid var(--line2);border-radius:6px;opacity:0;transition:.2s}
+.v4 .msg:hover .rcopy,.v4 .rcopy:focus-visible{opacity:1}
+.v4 .rcopy:hover{color:var(--blue);border-color:rgba(0,212,255,.4)}
+@media(hover:none){.v4 .rcopy{opacity:1}}
+.v4 .rich{gap:9px}
+.v4 .rich p{color:var(--white);opacity:.92}
+.v4 .rich .li{align-items:baseline;gap:10px}
+.v4 .rich .li p{color:var(--dim)}
+.v4 .rdot{flex:none;width:6px;height:6px;border-radius:50%;background:var(--blue);box-shadow:0 0 8px var(--blue);transform:translateY(-2px)}
+.v4 .rcard{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border-radius:10px;background:rgba(0,212,255,.04);border:1px solid rgba(0,212,255,.12);transition:border-color .2s,background .2s}
+.v4 .rcard:hover{border-color:rgba(0,212,255,.35);background:rgba(0,212,255,.07)}
+.v4 .rnum{flex:none;font-family:"JetBrains Mono";font-size:11px;color:var(--violet);padding-top:2px}
+.v4 .rcard b{display:block;font-family:Syne,system-ui,sans-serif;font-size:14.5px;font-weight:700;color:var(--white)}
+.v4 .rcard p{margin:2px 0 0;font-size:13.5px;line-height:1.55;color:var(--dim)}
+.v4 .rich code{font-family:"JetBrains Mono";font-size:12.5px;padding:1px 6px;border-radius:5px;background:rgba(123,47,255,.15);color:#c9b3ff}
+.v4 .rlink{display:inline-flex;align-items:center;gap:4px;padding:1px 8px;margin:1px 0;border-radius:999px;font-size:13px;color:var(--blue);background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.25);text-decoration:none;transition:.2s;overflow-wrap:anywhere}
+.v4 .rlink:hover{background:rgba(0,212,255,.16);box-shadow:0 0 12px rgba(0,212,255,.25)}
+.v4 .rich .rh{display:flex;align-items:center;gap:10px}
+.v4 .rich .rh:after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(0,212,255,.35),transparent)}
+.v4 .rich.anim>*{opacity:0;animation:v4rin .45s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:var(--d)}
+@keyframes v4rin{from{opacity:0;transform:translateY(6px);filter:blur(3px)}to{opacity:1;transform:none;filter:none}}
+.v4 .ractions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;padding-top:12px;border-top:1px dashed var(--line2);animation:v4rin .5s .4s both}
+.v4 .ract{font-family:"JetBrains Mono";font-size:11.5px;padding:6px 11px;border-radius:8px;color:var(--void);background:linear-gradient(135deg,var(--blue),#5aa8ff);font-weight:600;text-decoration:none}
+.v4 .ract:hover{box-shadow:0 0 16px rgba(0,212,255,.45)}
+.v4 .rnext{font-family:"JetBrains Mono";font-size:11.5px;padding:6px 11px;border-radius:8px;color:var(--dim);border:1px solid var(--line2);background:rgba(8,12,20,.6)}
+.v4 .rnext:hover{color:var(--blue);border-color:rgba(0,212,255,.4)}
+.v4 .tdots{display:inline-flex;gap:4px;margin-right:10px;vertical-align:middle}
+.v4 .tdots i{width:6px;height:6px;border-radius:50%;background:var(--blue);animation:v4dot 1s infinite}
+.v4 .tdots i:nth-child(2){animation-delay:.15s}.v4 .tdots i:nth-child(3){animation-delay:.3s}
+@keyframes v4dot{0%,100%{opacity:.25;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
+@media(prefers-reduced-motion:reduce){.v4 .rich.anim>*,.v4 .ractions{animation:none;opacity:1}}
