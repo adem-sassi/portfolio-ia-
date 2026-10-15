@@ -232,6 +232,135 @@ function Neural3D() {
   );
 }
 
+
+/* ── M2 2026-2027 (Pronote) ── */
+const M2_THEMES = [
+  ["IA & ML", "#00D4FF"],
+  ["Data & calcul", "#7B2FFF"],
+  ["IA appliquée", "#FF2FBB"],
+  ["Pro & transverse", "#FFB547"],
+];
+const M2 = [
+  ["AR/VR, Metaverse", 2, "2026-09-14", "2026-09-16", 21, 6],
+  ["Business Intelligence", 1, "2026-09-17", "2026-12-11", 28, 8],
+  ["Projet de certification", 3, "2026-09-18", "2027-05-20", 14, 4],
+  ["Deep Learning", 0, "2026-09-21", "2026-10-16", 42, 12],
+  ["Traitement et création de sons", 2, "2026-10-12", "2026-10-14", 21, 6],
+  ["Apprentissage par renforcement", 0, "2026-11-09", "2026-12-09", 28, 8],
+  ["MPI / OpenMP", 1, "2026-11-12", "2026-12-07", 21, 6],
+  ["Rapport professionnel", 3, "2026-11-16", "2027-02-22", 14, 4],
+  ["Traitement du langage naturel", 0, "2027-01-18", "2027-02-15", 21, 6],
+  ["Big Data avancé, Airflow", 1, "2027-01-20", "2027-01-22", 21, 6],
+  ["Reconnaissance émotionnelle", 0, "2027-02-16", "2027-02-22", 21, 6],
+  ["ML quantique", 0, "2027-02-19", "2027-03-23", 28, 8],
+  ["Cloud", 1, "2027-02-24", "2027-03-22", 21, 6],
+  ["IA et cybersécurité", 2, "2027-03-24", "2027-04-21", 21, 6],
+  ["IA et jeu vidéo", 2, "2027-03-26", "2027-04-23", 21, 6],
+  ["LLM, IA générative, LangChain", 0, "2027-04-20", "2027-05-21", 28, 8],
+  ["Gouvernance stratégique", 3, "2027-05-10", "2027-05-12", 21, 6],
+  ["Les grands témoins", 3, "2027-05-13", "2027-05-14", 14, 4],
+  ["Méthodes de simulation", 1, "2027-05-18", "2027-06-15", 21, 6],
+  ["Anglais", 3, "2027-06-11", "2027-06-17", 21, 6],
+].map(([name, t, a, b, h, n]) => ({ name, t, a: new Date(a + "T09:00"), b: new Date(b + "T17:00"), h, n }));
+const Y0 = new Date("2026-09-01"), Y1 = new Date("2027-07-01");
+const MONTHS = ["sept", "oct", "nov", "déc", "janv", "févr", "mars", "avr", "mai", "juin"];
+const fmtD = (d) => d.toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
+
+function Formation() {
+  const [year, setYear] = useState("m2");
+  const [theme, setTheme] = useState(-1);
+  const [hover, setHover] = useState(null);
+  const now = new Date();
+  const pos = (d) => Math.max(0, Math.min(100, ((d - Y0) / (Y1 - Y0)) * 100));
+  const state = (x) => (now > x.b ? "done" : now >= x.a ? "now" : "next");
+  const total = M2.reduce((t, x) => t + x.h, 0);
+  const seances = M2.reduce((t, x) => t + x.n, 0);
+  const doneH = M2.reduce((t, x) => t + x.h * Math.max(0, Math.min(1, (now - x.a) / (x.b - x.a))), 0);
+  const pct = Math.round((doneH / total) * 100);
+  const current = M2.filter((x) => state(x) === "now");
+  const nextOne = M2.filter((x) => state(x) === "next").sort((a, b) => a.a - b.a)[0];
+  const info = hover || current[0] || nextOne;
+  const todayX = pos(now);
+  const rows = theme < 0 ? M2 : M2.filter((x) => x.t === theme);
+
+  return (
+    <>
+      <div className="ytabs" role="tablist">
+        <button role="tab" aria-selected={year === "m2"} className={"chip" + (year === "m2" ? " sel" : "")} onClick={() => setYear("m2")}>M2 · 2026-2027<em>en cours</em></button>
+        <button role="tab" aria-selected={year === "m1"} className={"chip" + (year === "m1" ? " sel" : "")} onClick={() => setYear("m1")}>M1 · 2025-2026<em>validé</em></button>
+      </div>
+
+      {year === "m2" ? (
+        <div className="m2">
+          <div className="m2stats">
+            <div><b>{total} h</b><small>de cours</small></div>
+            <div><b>{M2.length}</b><small>matières</small></div>
+            <div><b>{seances}</b><small>séances</small></div>
+            <div className="m2prog">
+              <div className="m2bar"><i style={{ width: pct + "%" }} /></div>
+              <b>{pct} %</b><small>de l'année effectuée</small>
+            </div>
+          </div>
+
+          <div className="m2filters">
+            <button className={"chip" + (theme < 0 ? " sel" : "")} onClick={() => setTheme(-1)}>Tout<em>{M2.length}</em></button>
+            {M2_THEMES.map(([n, col], i) => (
+              <button key={n} className={"chip" + (theme === i ? " sel" : "")} style={{ "--tc": col }} onClick={() => setTheme(theme === i ? -1 : i)}>
+                <span className="tdot" />{n}<em>{M2.filter((x) => x.t === i).reduce((t, x) => t + x.h, 0)} h</em>
+              </button>
+            ))}
+          </div>
+
+          <div className="gantt-wrap">
+            <div className="gantt" onMouseLeave={() => setHover(null)}>
+              <div className="g-head">
+                <span />
+                <div className="g-months">{MONTHS.map((m) => <span key={m}>{m}</span>)}</div>
+              </div>
+              <div className="g-body">
+                <div className="g-grid" aria-hidden="true">{MONTHS.map((m) => <i key={m} />)}</div>
+                <div className="g-today" style={{ left: `calc(var(--gname) + (100% - var(--gname)) * ${todayX / 100})` }}><span>aujourd'hui</span></div>
+                {rows.map((x) => {
+                  const st = state(x), col = M2_THEMES[x.t][1];
+                  return (
+                    <div key={x.name} className={"g-row " + st + (info === x ? " on" : "")} style={{ "--tc": col }} onMouseEnter={() => setHover(x)} onFocus={() => setHover(x)} tabIndex={0}>
+                      <div className="g-name"><span>{x.name}</span><small>{x.h} h</small></div>
+                      <div className="g-track">
+                        <i className="g-bar" style={{ left: pos(x.a) + "%", width: `max(8px, ${pos(x.b) - pos(x.a)}%)` }} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {info && (
+            <div className="g-info" style={{ "--tc": M2_THEMES[info.t][1] }}>
+              <span className={"g-st " + state(info)}>{{ done: "terminé", now: "en cours", next: "à venir" }[state(info)]}</span>
+              <b>{info.name}</b>
+              <small>{fmtD(info.a)} → {fmtD(info.b)} · {info.n} séances · {info.h} h · {M2_THEMES[info.t][0]}</small>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="courses">
+          {COURSES.map((s) => (
+            <Spot className="sem" key={s.semester} style={{ "--pc": s.color }}>
+              <div className="semh"><i />{s.semester}<small>{s.subjects.length} matières</small></div>
+              <div className="subs">
+                {s.subjects.map((x) => (
+                  <div className="sub" key={x.name}><span className="ic">{x.icon}</span><div><b>{x.name}</b><small>{x.desc}</small></div></div>
+                ))}
+              </div>
+            </Spot>
+          ))}
+        </div>
+      )}
+    </>
+  );
+}
+
 function Head({ n, path, title, accent, sub }) {
   return (
     <div className="sh">
@@ -1002,19 +1131,8 @@ export default function HomeV4() {
         )}
 
         <section id="courses" className="reveal"><div className="wrap">
-          <Head n="05" path="formation" title="Master" accent="Intelligence Artificielle" sub="École Hexagone · Versailles · 2025-2026" />
-          <div className="courses">
-            {COURSES.map((s) => (
-              <Spot className="sem" key={s.semester} style={{ "--pc": s.color }}>
-                <div className="semh"><i />{s.semester}<small>{s.subjects.length} matières</small></div>
-                <div className="subs">
-                  {s.subjects.map((x) => (
-                    <div className="sub" key={x.name}><span className="ic">{x.icon}</span><div><b>{x.name}</b><small>{x.desc}</small></div></div>
-                  ))}
-                </div>
-              </Spot>
-            ))}
-          </div>
+          <Head n="05" path="formation" title="Master 2" accent="Ingénierie Data & IA" sub="École Hexagone · Versailles · 2026-2027, en alternance chez ACENSI." />
+          <Formation />
         </div></section>
 
         {testimonials.length > 0 && (
