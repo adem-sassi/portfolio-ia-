@@ -663,3 +663,10 @@ html{scroll-behavior:smooth}
 /* footer : nom en grand toujours en entier */
 .v4>footer .wrap{container-type:inline-size}
 .v4 .fbig{font-size:clamp(32px,8vw,120px);font-size:min(13cqw,170px);overflow:visible}
+
+/* ── sélecteur de langue ── */
+.v4 .lsw{display:inline-flex;padding:3px;border:1px solid var(--line2);border-radius:9px;background:rgba(8,12,20,.7)}
+.v4 .lsw button{font-family:"JetBrains Mono";font-size:11px;letter-spacing:.06em;padding:6px 9px;border-radius:6px;color:var(--mute);transition:.2s}
+.v4 .lsw button:hover{color:var(--white)}
+.v4 .lsw button.on{color:var(--void);background:var(--blue);box-shadow:0 0 12px rgba(0,212,255,.45)}
+.v4 nav .nr{display:flex;align-items:center;gap:10px}

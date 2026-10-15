@@ -1,6 +1,213 @@
 import { useEffect, useRef, useState, useMemo, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import "../styles/home-v4.css";
+import { useLang } from "../context/LangContext";
+
+/* ── Traduction FR → EN des textes fixes (le contenu de l'admin est traduit par le serveur) ── */
+let LANG = "fr";
+const EN = {
+ "À propos": "About",
+ "Arsenal": "Skills",
+ "IA Lab": "AI Lab",
+ "Projets": "Projects",
+ "Formation": "Education",
+ "Contact": "Contact",
+ "Me contacter": "Contact me",
+ "Me contacter →": "Contact me →",
+ "INGÉNIEUR IA · AGENTS LLM & RAG": "AI ENGINEER · LLM AGENTS & RAG",
+ "Bonjour, je suis": "Hi, I'm",
+ "Ingénieur IA en alternance": "AI Engineer, work-study",
+ "Développeur d'agents LLM": "LLM agent developer",
+ "Étudiant Master 2 IA": "Master's student in AI",
+ "Ingénieur IA en alternance chez ACENSI. Je conçois des agents LLM, des architectures RAG et les plateformes qui les font tourner. Étudiant en Master 2 à l'École Hexagone.": "AI engineer (work-study) at ACENSI. I design LLM agents, RAG architectures and the platforms that run them. Master's student at École Hexagone.",
+ "Voir mes projets →": "See my projects →",
+ "IA Lab →": "AI Lab →",
+ "Stages": "Internships",
+ "Ingénierie Data & IA": "Data & AI Engineering",
+ "Construire l'IA de demain": "Building tomorrow's AI",
+ "Télécharger mon CV ↓": "Download my CV ↓",
+ "parcours": "journey",
+ "glisse pour tourner": "drag to rotate",
+ "Réseau neuronal 3D animé": "Animated 3D neural network",
+ "Mon": "My",
+ "arsenal technique": "tech stack",
+ "Des outils maîtrisés à travers des projets académiques, des stages et une veille constante.": "Tools mastered through academic projects, internships and constant tech watch.",
+ "TECHNOLOGIES UTILISÉES": "TECHNOLOGIES USED",
+ "Fonctionnalités": "Features",
+ "propulsées par l'IA": "powered by AI",
+ "Ces outils interactifs démontrent mes compétences en IA appliquée. Chaque fonctionnalité appelle un LLM en temps réel.": "These interactive tools showcase my applied AI skills. Each one calls an LLM in real time.",
+ "Chatbot IA": "AI Chatbot",
+ "Discutez avec mon assistant IA": "Chat with my AI assistant",
+ "Analyseur": "Analyzer",
+ "Analyse de sentiment & ton": "Sentiment & tone analysis",
+ "Review automatique de code": "Automated code review",
+ "Bio IA": "AI Bio",
+ "Générateur de bio IA": "AI bio generator",
+ "Quiz IA": "AI Quiz",
+ "Testez vos connaissances IA": "Test your AI knowledge",
+ "chargement…": "loading…",
+ "Bonjour ! Je suis l'assistant IA d'Adem SASSI.\n\nJe peux vous renseigner sur :\n- Ses projets réalisés\n- Ses compétences techniques\n- Ses stages et expériences\n- Sa disponibilité\n- Ses informations de contact": "Hi! I'm Adem SASSI's AI assistant.\n\nI can tell you about:\n- His projects\n- His technical skills\n- His internships and experience\n- His availability\n- How to contact him",
+ "Quels sont ses projets ?": "What are his projects?",
+ "Quelles sont ses compétences ?": "What are his skills?",
+ "Comment le contacter ?": "How can I contact him?",
+ "Quels stages a-t-il effectués ?": "What internships has he done?",
+ "Sa formation ?": "What's his education?",
+ "Est-il disponible ?": "Is he available?",
+ "Désolé, une erreur s'est produite.": "Sorry, something went wrong.",
+ "Erreur de connexion au serveur.": "Server connection error.",
+ "prêt": "ready",
+ "copié ✓": "copied ✓",
+ "copier": "copy",
+ "Copier la réponse": "Copy reply",
+ "Pose une question sur Adem…": "Ask a question about Adem…",
+ "Voir les projets": "See projects",
+ "Voir l'arsenal": "See skills",
+ "Voir le parcours": "See journey",
+ "Écrire à Adem": "Write to Adem",
+ "Télécharger le CV": "Download CV",
+ "Ce que j'ai": "What I've",
+ "construit": "built",
+ "Des projets allant de la recherche fondamentale aux applications déployées en production. Clique sur un projet pour le détail.": "From fundamental research to apps deployed in production. Click a project for details.",
+ "Tous": "All",
+ "IA": "AI",
+ "Autre": "Other",
+ "projet": "project",
+ "★ projet phare · ": "★ featured project · ",
+ "en ligne": "live",
+ "Voir en live ↗": "View live ↗",
+ "Code source ↗": "Source code ↗",
+ "Détails →": "Details →",
+ "Détails": "Details",
+ "Démo ↗": "Demo ↗",
+ "Voir tous mes projets sur GitHub ↗": "See all my projects on GitHub ↗",
+ "Détail du projet ": "Project details: ",
+ "Fermer": "Close",
+ "offre": "job",
+ "École Hexagone · Versailles · 2026-2027, en alternance chez ACENSI.": "École Hexagone · Versailles · 2026-2027, work-study at ACENSI.",
+ "en cours": "in progress",
+ "validé": "completed",
+ "de cours": "of classes",
+ "matières": "subjects",
+ "séances": "sessions",
+ "de l'année effectuée": "of the year completed",
+ "Tout": "All",
+ "aujourd'hui": "today",
+ "terminé": "done",
+ "à venir": "upcoming",
+ "IA & ML": "AI & ML",
+ "Data & calcul": "Data & computing",
+ "IA appliquée": "Applied AI",
+ "Pro & transverse": "Professional skills",
+ "Projet de certification": "Certification project",
+ "Traitement et création de sons": "Sound processing & creation",
+ "Apprentissage par renforcement": "Reinforcement learning",
+ "Rapport professionnel": "Professional report",
+ "Traitement du langage naturel": "Natural language processing",
+ "Big Data avancé, Airflow": "Advanced Big Data, Airflow",
+ "Reconnaissance émotionnelle": "Emotion recognition",
+ "ML quantique": "Quantum ML",
+ "IA et cybersécurité": "AI & cybersecurity",
+ "IA et jeu vidéo": "AI & video games",
+ "LLM, IA générative, LangChain": "LLMs, generative AI, LangChain",
+ "Gouvernance stratégique": "Strategic governance",
+ "Les grands témoins": "Guest speakers",
+ "Méthodes de simulation": "Simulation methods",
+ "Anglais": "English",
+ "Semestre 1": "Semester 1",
+ "Semestre 2": "Semester 2",
+ "Algèbre linéaire": "Linear algebra",
+ "Matrices, vecteurs, transformations linéaires pour l'IA": "Matrices, vectors, linear transformations for AI",
+ "Algorithmique numérique": "Numerical algorithms",
+ "Méthodes numériques et optimisation": "Numerical methods and optimization",
+ "Electronique": "Electronics",
+ "Circuits électroniques et systèmes embarqués": "Electronic circuits and embedded systems",
+ "Langages C & C++": "C & C++",
+ "Programmation système et bas niveau": "Systems and low-level programming",
+ "Probabilités et statistiques": "Probability & statistics",
+ "Inférence statistique, distributions, tests d'hypothèses": "Statistical inference, distributions, hypothesis testing",
+ "Programmation avancée": "Advanced programming",
+ "Algorithmes avancés et structures de données": "Advanced algorithms and data structures",
+ "Programmation Logique": "Logic programming",
+ "Logique formelle et programmation déclarative": "Formal logic and declarative programming",
+ "Python avancé pour la data science et l'IA": "Advanced Python for data science and AI",
+ "Algorithmes supervisés et non-supervisés, modèles prédictifs": "Supervised and unsupervised algorithms, predictive models",
+ "Analyse des données": "Data analysis",
+ "Exploration, visualisation et traitement de données": "Data exploration, visualization and processing",
+ "Big Data, traitement distribué, PySpark": "Big Data, distributed processing, PySpark",
+ "Déploiement et monitoring de modèles ML en production": "Deploying and monitoring ML models in production",
+ "Systèmes automatiques": "Control systems",
+ "Automatisation et systèmes de contrôle": "Automation and control systems",
+ "Architecture cloud, services AWS/Azure/GCP": "Cloud architecture, AWS/Azure/GCP services",
+ "SQL et NoSQL": "SQL & NoSQL",
+ "Bases de données relationnelles et non-relationnelles": "Relational and non-relational databases",
+ "Projet individuel": "Individual project",
+ "Projet de développement personnel en IA": "Personal AI development project",
+ "Ce qu'ils disent": "What they say",
+ "de moi": "about me",
+ "stage": "internship",
+ "recommandation": "recommendation",
+ "Voir sur LinkedIn ↗": "View on LinkedIn ↗",
+ "Travaillons": "Let's work",
+ "ensemble": "together",
+ "Un projet IA, une collaboration ou simplement envie d'échanger ? Écrivez-moi, je réponds personnellement.": "An AI project, a collaboration or just want to chat? Write to me, I reply personally.",
+ "Disponible pour échanger": "Available to chat",
+ "Indisponible pour le moment": "Unavailable for now",
+ "Réponse": "Reply",
+ "Basé à": "Based in",
+ "Île-de-France": "Paris area",
+ "Langues": "Languages",
+ "email direct": "direct email",
+ "Projet IA": "AI project",
+ "Question technique": "Technical question",
+ "Nom": "Name",
+ "Sujet": "Subject",
+ "Votre message": "Your message",
+ "Message envoyé": "Message sent",
+ "Je vous réponds sous 24 h.": "I'll get back to you within 24 h.",
+ "sujet rapide": "quick topic",
+ "Envoi en cours": "Sending",
+ "Envoyer le message": "Send message",
+ "Tous les champs sont obligatoires · réponse sous 24 h": "All fields are required · reply within 24 h",
+ "Erreur d'envoi. Réessayez ou écrivez directement par email.": "Sending failed. Try again or email me directly.",
+ "~/contact/nouveau_message": "~/contact/new_message",
+ "livré à": "delivered to",
+ "accusé de réception envoyé ✓": "confirmation sent ✓",
+ "a-propos": "about",
+ "competences": "skills",
+ "ia-lab": "ai-lab",
+ "projets": "projects",
+ "formation": "education",
+ "recommandations": "testimonials",
+ "Agents LLM, RAG et les plateformes full-stack qui les font tourner.": "LLM agents, RAG and the full-stack platforms that run them.",
+ "En alternance chez ACENSI, ouvert aux échanges": "Work-study at ACENSI, open to chat",
+ "Liens": "Links",
+ "Mon CV ↓": "My CV ↓",
+ "Légal": "Legal",
+ "Mentions légales": "Legal notice",
+ "Confidentialité": "Privacy",
+ "Conditions": "Terms",
+ "Sécurité": "Security",
+ "Statut": "Status",
+ "Communauté": "Community",
+ "Ne pas partager mes données": "Do not share my data",
+ "tous droits réservés": "all rights reserved",
+ "mis à jour le": "updated on",
+ "Navigation du pied de page": "Footer navigation",
+ "Télécharger CV": "Download CV",
+ "Mon CV": "My CV",
+ "Retour en haut": "Back to top"
+};
+const T = (x) => (LANG === "en" && typeof x === "string" && EN[x]) || x;
+const LOC = () => (LANG === "en" ? "en-GB" : "fr-FR");
+
+function LangSwitch() {
+  const { lang, setLang } = useLang();
+  return (
+    <div className="lsw" role="group" aria-label="Langue / Language">
+      {["fr", "en"].map((l) => <button key={l} className={lang === l ? "on" : ""} aria-pressed={lang === l} onClick={() => setLang(l)}>{l.toUpperCase()}</button>)}
+    </div>
+  );
+}
 const TextAnalyzer = lazy(() => import("../components/ai/TextAnalyzer"));
 const CodeReviewer = lazy(() => import("../components/ai/CodeReviewer"));
 const BioGenerator = lazy(() => import("../components/ai/BioGenerator"));
@@ -53,7 +260,7 @@ const initials = (n) => String(n || "?").split(/\s+/).map((w) => w[0]).join("").
 /* En cours = "actuellement"/"présent", ou date de fin pas encore passée (année scolaire finie fin août) */
 const isNow = (y) => {
   const txt = String(y || "");
-  if (/actuel|pr[ée]sent|aujourd|en cours/i.test(txt)) return true;
+  if (/actuel|pr[ée]sent|aujourd|en cours|current|ongoing|now/i.test(txt)) return true;
   const m = [...txt.matchAll(/(?:(\d{1,2})\/)?(\d{4})/g)];
   if (!m.length) return false;
   const last = m[m.length - 1];
@@ -63,11 +270,14 @@ const isNow = (y) => {
 };
 const statsList = (s) => (!s ? [] : Array.isArray(s) ? s.map((x) => (typeof x === "object" ? [x.label || "", x.value ?? ""] : ["", x])) : Object.entries(s));
 
-function useContent() {
+function useContent(lang) {
   const [c, setC] = useState(null);
   useEffect(() => {
-    fetch("/api/content?t=" + Date.now()).then((r) => (r.ok ? r.json() : Promise.reject())).then(setC).catch(() => setC({}));
-  }, []);
+    let off = false;
+    fetch("/api/content?t=" + Date.now() + (lang === "en" ? "&lang=en" : "")).then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((d) => { if (!off) setC(d); }).catch(() => { if (!off) setC((p) => p || {}); });
+    return () => { off = true; };
+  }, [lang]);
   return c;
 }
 
@@ -131,7 +341,7 @@ function Typing() {
   useEffect(() => {
     let i = 0, j = 0, del = false, t;
     const tick = () => {
-      const target = TYPING[i];
+      const target = T(TYPING[i]);
       if (!del) { j++; setTxt(target.slice(0, j)); if (j === target.length) { del = true; t = setTimeout(tick, 1800); return; } }
       else { j--; setTxt(target.slice(0, j)); if (j === 0) { del = false; i = (i + 1) % TYPING.length; } }
       t = setTimeout(tick, del ? 40 : 75);
@@ -226,8 +436,8 @@ function Neural3D() {
   }, []);
   return (
     <div className="n3d">
-      <canvas ref={ref} aria-label="Réseau neuronal 3D animé" />
-      <div className="n3d-l"><span>neural.net</span><span>glisse pour tourner</span></div>
+      <canvas ref={ref} aria-label={T("Réseau neuronal 3D animé")} />
+      <div className="n3d-l"><span>neural.net</span><span>{T("glisse pour tourner")}</span></div>
     </div>
   );
 }
@@ -264,7 +474,7 @@ const M2 = [
 ].map(([name, t, a, b, h, n]) => ({ name, t, a: new Date(a + "T09:00"), b: new Date(b + "T17:00"), h, n }));
 const Y0 = new Date("2026-09-01"), Y1 = new Date("2027-07-01");
 const MONTHS = ["sept", "oct", "nov", "déc", "janv", "févr", "mars", "avr", "mai", "juin"];
-const fmtD = (d) => d.toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
+const fmtD = (d) => d.toLocaleDateString(LOC(), { day: "numeric", month: "short" });
 
 function Formation() {
   const [year, setYear] = useState("m2");
@@ -286,27 +496,27 @@ function Formation() {
   return (
     <>
       <div className="ytabs" role="tablist">
-        <button role="tab" aria-selected={year === "m2"} className={"chip" + (year === "m2" ? " sel" : "")} onClick={() => setYear("m2")}>M2 · 2026-2027<em>en cours</em></button>
-        <button role="tab" aria-selected={year === "m1"} className={"chip" + (year === "m1" ? " sel" : "")} onClick={() => setYear("m1")}>M1 · 2025-2026<em>validé</em></button>
+        <button role="tab" aria-selected={year === "m2"} className={"chip" + (year === "m2" ? " sel" : "")} onClick={() => setYear("m2")}>M2 · 2026-2027<em>{T("en cours")}</em></button>
+        <button role="tab" aria-selected={year === "m1"} className={"chip" + (year === "m1" ? " sel" : "")} onClick={() => setYear("m1")}>M1 · 2025-2026<em>{T("validé")}</em></button>
       </div>
 
       {year === "m2" ? (
         <div className="m2">
           <div className="m2stats">
-            <div><b>{total} h</b><small>de cours</small></div>
-            <div><b>{M2.length}</b><small>matières</small></div>
-            <div><b>{seances}</b><small>séances</small></div>
+            <div><b>{total} h</b><small>{T("de cours")}</small></div>
+            <div><b>{M2.length}</b><small>{T("matières")}</small></div>
+            <div><b>{seances}</b><small>{T("séances")}</small></div>
             <div className="m2prog">
               <div className="m2bar"><i style={{ width: pct + "%" }} /></div>
-              <b>{pct} %</b><small>de l'année effectuée</small>
+              <b>{pct} %</b><small>{T("de l'année effectuée")}</small>
             </div>
           </div>
 
           <div className="m2filters">
-            <button className={"chip" + (theme < 0 ? " sel" : "")} onClick={() => setTheme(-1)}>Tout<em>{M2.length}</em></button>
+            <button className={"chip" + (theme < 0 ? " sel" : "")} onClick={() => setTheme(-1)}>{T("Tout")}<em>{M2.length}</em></button>
             {M2_THEMES.map(([n, col], i) => (
               <button key={n} className={"chip" + (theme === i ? " sel" : "")} style={{ "--tc": col }} onClick={() => setTheme(theme === i ? -1 : i)}>
-                <span className="tdot" />{n}<em>{M2.filter((x) => x.t === i).reduce((t, x) => t + x.h, 0)} h</em>
+                <span className="tdot" />{T(n)}<em>{M2.filter((x) => x.t === i).reduce((t, x) => t + x.h, 0)} h</em>
               </button>
             ))}
           </div>
@@ -315,16 +525,16 @@ function Formation() {
             <div className="gantt" onMouseLeave={() => setHover(null)}>
               <div className="g-head">
                 <span />
-                <div className="g-months">{MONTHS.map((m) => <span key={m}>{m}</span>)}</div>
+                <div className="g-months">{MONTHS.map((m, k) => <span key={m}>{LANG === "en" ? ["sep", "oct", "nov", "dec", "jan", "feb", "mar", "apr", "may", "jun"][k] : m}</span>)}</div>
               </div>
               <div className="g-body">
                 <div className="g-grid" aria-hidden="true">{MONTHS.map((m) => <i key={m} />)}</div>
-                <div className="g-today" style={{ left: `calc(var(--gname) + (100% - var(--gname)) * ${todayX / 100})` }}><span>aujourd'hui</span></div>
+                <div className="g-today" style={{ left: `calc(var(--gname) + (100% - var(--gname)) * ${todayX / 100})` }}><span>{T("aujourd'hui")}</span></div>
                 {rows.map((x) => {
                   const st = state(x), col = M2_THEMES[x.t][1];
                   return (
                     <div key={x.name} className={"g-row " + st + (info === x ? " on" : "")} style={{ "--tc": col }} onMouseEnter={() => setHover(x)} onFocus={() => setHover(x)} tabIndex={0}>
-                      <div className="g-name"><span>{x.name}</span><small>{x.h} h</small></div>
+                      <div className="g-name"><span>{T(x.name)}</span><small>{x.h} h</small></div>
                       <div className="g-track">
                         <i className="g-bar" style={{ left: pos(x.a) + "%", width: `max(8px, ${pos(x.b) - pos(x.a)}%)` }} />
                       </div>
@@ -337,9 +547,9 @@ function Formation() {
 
           {info && (
             <div className="g-info" style={{ "--tc": M2_THEMES[info.t][1] }}>
-              <span className={"g-st " + state(info)}>{{ done: "terminé", now: "en cours", next: "à venir" }[state(info)]}</span>
-              <b>{info.name}</b>
-              <small>{fmtD(info.a)} → {fmtD(info.b)} · {info.n} séances · {info.h} h · {M2_THEMES[info.t][0]}</small>
+              <span className={"g-st " + state(info)}>{T({ done: "terminé", now: "en cours", next: "à venir" }[state(info)])}</span>
+              <b>{T(info.name)}</b>
+              <small>{fmtD(info.a)} → {fmtD(info.b)} · {info.n} {T("séances")} · {info.h} h · {T(M2_THEMES[info.t][0])}</small>
             </div>
           )}
         </div>
@@ -347,10 +557,10 @@ function Formation() {
         <div className="courses">
           {COURSES.map((s) => (
             <Spot className="sem" key={s.semester} style={{ "--pc": s.color }}>
-              <div className="semh"><i />{s.semester}<small>{s.subjects.length} matières</small></div>
+              <div className="semh"><i />{T(s.semester)}<small>{s.subjects.length} {T("matières")}</small></div>
               <div className="subs">
                 {s.subjects.map((x) => (
-                  <div className="sub" key={x.name}><span className="ic">{x.icon}</span><div><b>{x.name}</b><small>{x.desc}</small></div></div>
+                  <div className="sub" key={x.name}><span className="ic">{x.icon}</span><div><b>{T(x.name)}</b><small>{T(x.desc)}</small></div></div>
                 ))}
               </div>
             </Spot>
@@ -364,7 +574,7 @@ function Formation() {
 function Head({ n, path, title, accent, sub }) {
   return (
     <div className="sh">
-      <div className="path-l"><span className="num">{n}</span> ~/<b>{path}</b></div>
+      <div className="path-l"><span className="num">{n}</span> ~/<b>{T(path)}</b></div>
       <h2>{title} {accent && <span className="grad">{accent}</span>}</h2>
       {sub && <p>{sub}</p>}
     </div>
@@ -422,21 +632,21 @@ function Rich({ text, anim }) {
 }
 
 const ACTIONS = [
-  [/projet|github|r[ée]alis/i, "Voir les projets", "#projects"],
-  [/comp[ée]tence|techno|stack|python|react/i, "Voir l'arsenal", "#skills"],
-  [/stage|parcours|formation|master|bachelor|alternance/i, "Voir le parcours", "#about"],
-  [/contact|e-?mail|[ée]crire|linkedin|opportunit/i, "Écrire à Adem", "#contact"],
+  [/proje[ct]|github|r[ée]alis|built/i, "Voir les projets", "#projects"],
+  [/comp[ée]tence|skill|techno|stack|python|react/i, "Voir l'arsenal", "#skills"],
+  [/stage|internship|parcours|formation|education|master|bachelor|alternance|work-study/i, "Voir le parcours", "#about"],
+  [/contact|e-?mail|[ée]crire|write|linkedin|opportunit/i, "Écrire à Adem", "#contact"],
   [/\bcv\b|curriculum/i, "Télécharger le CV", "/api/content/cv"],
 ];
 
 function ReplyActions({ reply, asked, onAsk }) {
   const acts = ACTIONS.filter(([re]) => re.test(reply)).slice(0, 2);
-  const next = SUGG.filter((q) => !asked.includes(q)).slice(0, 2);
+  const next = SUGG.map(T).filter((q) => !asked.includes(q)).slice(0, 2);
   if (!acts.length && !next.length) return null;
   return (
     <div className="ractions">
       {acts.map(([, label, href]) => (
-        <a key={href} className="ract" href={href} {...(href.startsWith("/api") ? { download: true } : {})}>{label} {href.startsWith("/api") ? "↓" : "→"}</a>
+        <a key={href} className="ract" href={href} {...(href.startsWith("/api") ? { download: true } : {})}>{T(label)} {href.startsWith("/api") ? "↓" : "→"}</a>
       ))}
       {next.map((q) => <button key={q} className="rnext" onClick={() => onAsk(q)}>{q}</button>)}
     </div>
@@ -446,8 +656,8 @@ function ReplyActions({ reply, asked, onAsk }) {
 function CopyBtn({ text }) {
   const [ok, setOk] = useState(false);
   return (
-    <button className="rcopy" onClick={() => { navigator.clipboard?.writeText(text.replace(/\*\*/g, "")).then(() => { setOk(true); setTimeout(() => setOk(false), 1400); }).catch(() => {}); }} aria-label="Copier la réponse">
-      {ok ? "copié ✓" : "copier"}
+    <button className="rcopy" onClick={() => { navigator.clipboard?.writeText(text.replace(/\*\*/g, "")).then(() => { setOk(true); setTimeout(() => setOk(false), 1400); }).catch(() => {}); }} aria-label={T("Copier la réponse")}>
+      {ok ? T("copié ✓") : T("copier")}
     </button>
   );
 }
@@ -474,17 +684,17 @@ function ChatBot() {
     try {
       const res = await fetch("/api/ai/chat", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next.map((m) => ({ role: m.role, content: m.content })) }),
+        body: JSON.stringify({ lang: LANG, messages: next.slice(1).map((m) => ({ role: m.role, content: m.content })) }),
       });
       const data = await res.json();
       clearInterval(iv); setStep(3);
       await new Promise((r) => setTimeout(r, 250));
-      const reply = data.reply || "Désolé, une erreur s'est produite.";
+      const reply = data.reply || T("Désolé, une erreur s'est produite.");
       setMsgs((p) => [...p, { role: "assistant", content: reply, ms: Math.round(performance.now() - t0), fresh: true }]);
       setMeta({ ms: Math.round(performance.now() - t0), tok: Math.round(reply.length / 4) });
     } catch {
       clearInterval(iv);
-      setMsgs((p) => [...p, { role: "assistant", content: "Erreur de connexion au serveur." }]);
+      setMsgs((p) => [...p, { role: "assistant", content: T("Erreur de connexion au serveur.") }]);
     } finally {
       setLoading(false); setStep(-1);
     }
@@ -506,8 +716,8 @@ function ChatBot() {
             {m.role === "assistant" ? <span className="av"><i /></span> : null}
             {m.role === "assistant" ? (
               <div className="bubble">
-                <div className="rtop"><span>assistant</span>{m.ms ? <span>{(m.ms / 1000).toFixed(1)} s</span> : <span>prêt</span>}{i > 0 && <CopyBtn text={m.content} />}</div>
-                <Rich text={m.content} anim={m.fresh} />
+                <div className="rtop"><span>assistant</span>{m.ms ? <span>{(m.ms / 1000).toFixed(1)} s</span> : <span>{T("prêt")}</span>}{i > 0 && <CopyBtn text={m.content} />}</div>
+                <Rich text={i === 0 ? T(m.content) : m.content} anim={m.fresh} />
                 {i === msgs.length - 1 && i > 0 && !loading && (
                   <ReplyActions reply={m.content} asked={msgs.filter((x) => x.role === "user").map((x) => x.content)} onAsk={send} />
                 )}
@@ -524,12 +734,12 @@ function ChatBot() {
       </div>
       {msgs.length <= 1 && (
         <div className="ask">
-          {SUGG.map((s) => <button key={s} className="chip" onClick={() => send(s)}>{s}</button>)}
+          {SUGG.map((s) => <button key={s} className="chip" onClick={() => send(T(s))}>{T(s)}</button>)}
         </div>
       )}
       <form className="qbar" onSubmit={(e) => { e.preventDefault(); send(); }}>
         <span>&gt;</span>
-        <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Pose une question sur Adem…" maxLength={500} aria-label="Message" disabled={loading} />
+        <input value={input} onChange={(e) => setInput(e.target.value)} placeholder={T("Pose une question sur Adem…")} maxLength={500} aria-label="Message" disabled={loading} />
         <button type="submit" disabled={loading || !input.trim()}>{loading ? "…" : "run ↵"}</button>
       </form>
       <div className="trace-f">
@@ -557,15 +767,15 @@ function AILab() {
     <>
       <div className="tabs" role="tablist">
         {TABS.map(([id, l]) => (
-          <button key={id} role="tab" aria-selected={tab === id} className={"chip" + (tab === id ? " sel" : "")} onClick={() => setTab(id)}>{l}</button>
+          <button key={id} role="tab" aria-selected={tab === id} className={"chip" + (tab === id ? " sel" : "")} onClick={() => setTab(id)}>{T(l)}</button>
         ))}
       </div>
-      <p className="tabdesc">▸ {t[2]}</p>
+      <p className="tabdesc">▸ {T(t[2])}</p>
       <div className="trace lab">
         <div className="trace-h"><span className="lights"><i /><i /><i /></span><span className="ttl">ai-lab / {tab}</span><span className="live"><i /> live</span></div>
         <div className={tab === "chat" ? "" : "lab-body legacy"}>
           {tab === "chat" && <ChatBot />}
-          <Suspense fallback={<div className="lab-wait"><span className="tdots"><i /><i /><i /></span>chargement…</div>}>
+          <Suspense fallback={<div className="lab-wait"><span className="tdots"><i /><i /><i /></span>{T("chargement…")}</div>}>
             {tab === "text" && <TextAnalyzer />}
             {tab === "code" && <CodeReviewer />}
             {tab === "bio" && <BioGenerator />}
@@ -684,7 +894,7 @@ function Art({ cat, v = 0 }) {
         <circle cx="200" cy="100" r="26" className="a-node" />
         <text x="200" y="105" className="a-txt" textAnchor="middle">87%</text>
         <text x="100" y="140" className="a-txt dim" textAnchor="middle">CV</text>
-        <text x="300" y="140" className="a-txt dim" textAnchor="middle">offre</text>
+        <text x="300" y="140" className="a-txt dim" textAnchor="middle">{T("offre")}</text>
         {["extract", "score", "decide", "generate"].map((t, i) => (
           <g key={t}><rect x={40 + i * 84} y="150" width="74" height="22" rx="11" className="a-s a-step" style={{ animationDelay: i * 0.35 + "s" }} /><text x={77 + i * 84} y="165" className="a-txt sm" textAnchor="middle">{t}</text></g>
         ))}
@@ -772,29 +982,29 @@ function Projects({ projects, github }) {
         {filters.length > 2 && (
           <div className="tabs">
             {filters.map((n) => (
-              <button key={n} className={"chip" + (f === n ? " sel" : "")} onClick={() => setF(n)}>{n}<em>{n === "Tous" ? projects.length : counts[n]}</em></button>
+              <button key={n} className={"chip" + (f === n ? " sel" : "")} onClick={() => setF(n)}>{T(n)}<em>{n === "Tous" ? projects.length : counts[n]}</em></button>
             ))}
           </div>
         )}
-        <span className="pcount">{String(list.length).padStart(2, "0")} projet{list.length > 1 ? "s" : ""}</span>
+        <span className="pcount">{String(list.length).padStart(2, "0")} {T("projet")}{list.length > 1 ? "s" : ""}</span>
       </div>
 
       {f === "Tous" && heroP && (
         <article className="pfeat" style={{ "--pc": hex(heroP.color) }} onPointerMove={tilt} onPointerLeave={untilt}>
-          <button className="pf-art" onClick={() => setOpen(0)} aria-label={"Détail du projet " + heroP.title}>
+          <button className="pf-art" onClick={() => setOpen(0)} aria-label={T("Détail du projet ") + heroP.title}>
             <Cover p={heroP} big v={vOf(heroP)} />
-            {link(heroP.demo) && <span className="plive"><i />en ligne</span>}
+            {link(heroP.demo) && <span className="plive"><i />{T("en ligne")}</span>}
           </button>
           <div className="pf-body">
-            <div className="num">★ projet phare · {catsOf(heroP).join(" · ")}</div>
+            <div className="num">{T("★ projet phare · ")}{catsOf(heroP).map(T).join(" · ")}</div>
             <h3>{heroP.title}</h3>
             <p>{heroP.desc}</p>
             {specsOf(heroP).length > 0 && <div className="specs">{specsOf(heroP).map((v) => <span key={v}>{v}</span>)}</div>}
             <Tags p={heroP} max={6} />
             <div className="cta">
-              {link(heroP.demo) && <a className="btn primary" href={link(heroP.demo)} target="_blank" rel="noopener noreferrer">Voir en live ↗</a>}
-              <a className="btn" href={link(heroP.github) || github} target="_blank" rel="noopener noreferrer">Code source ↗</a>
-              <button className="pf-more" onClick={() => setOpen(0)}>Détails →</button>
+              {link(heroP.demo) && <a className="btn primary" href={link(heroP.demo)} target="_blank" rel="noopener noreferrer">{T("Voir en live ↗")}</a>}
+              <a className="btn" href={link(heroP.github) || github} target="_blank" rel="noopener noreferrer">{T("Code source ↗")}</a>
+              <button className="pf-more" onClick={() => setOpen(0)}>{T("Détails →")}</button>
             </div>
           </div>
         </article>
@@ -805,10 +1015,10 @@ function Projects({ projects, github }) {
           const idx = list.indexOf(p);
           return (
             <article key={(p.id ?? p.title) + f} className={"proj" + span(i, shown.length)} style={{ "--pc": hex(p.color), animationDelay: i * 0.06 + "s" }} onPointerMove={tilt} onPointerLeave={untilt}>
-              <button className="proj-open" onClick={() => setOpen(idx)} aria-label={"Détail du projet " + p.title}>
+              <button className="proj-open" onClick={() => setOpen(idx)} aria-label={T("Détail du projet ") + p.title}>
                 <Cover p={p} v={vOf(p)} />
                 <div className="pbody">
-                  <div className="top"><span className="num">{catsOf(p).join(" · ")}</span><span className="arrow">↗</span></div>
+                  <div className="top"><span className="num">{catsOf(p).map(T).join(" · ")}</span><span className="arrow">↗</span></div>
                   <h3>{p.title}</h3>
                   <p>{p.desc}</p>
                   {specsOf(p).length > 0 && <div className="specs">{specsOf(p).map((v) => <span key={v}>{v}</span>)}</div>}
@@ -817,29 +1027,29 @@ function Projects({ projects, github }) {
               </button>
               <div className="plinks">
                 <a href={link(p.github) || github} target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-                {link(p.demo) && <a className="demo" href={link(p.demo)} target="_blank" rel="noopener noreferrer">Démo ↗</a>}
-                <button onClick={() => setOpen(idx)}>Détails</button>
+                {link(p.demo) && <a className="demo" href={link(p.demo)} target="_blank" rel="noopener noreferrer">{T("Démo ↗")}</a>}
+                <button onClick={() => setOpen(idx)}>{T("Détails")}</button>
               </div>
             </article>
           );
         })}
       </div>
-      <div className="center"><a className="btn" href={github} target="_blank" rel="noopener noreferrer">Voir tous mes projets sur GitHub ↗</a></div>
+      <div className="center"><a className="btn" href={github} target="_blank" rel="noopener noreferrer">{T("Voir tous mes projets sur GitHub ↗")}</a></div>
 
       {cur && (
         <div className="modal-bg" onClick={(e) => e.target === e.currentTarget && setOpen(-1)}>
           <div className="modal pm" role="dialog" aria-modal="true" aria-label={cur.title} style={{ "--pc": hex(cur.color) }} key={open}>
-            <button className="x" onClick={() => setOpen(-1)} aria-label="Fermer">✕</button>
+            <button className="x" onClick={() => setOpen(-1)} aria-label={T("Fermer")}>✕</button>
             <Cover p={cur} big v={vOf(cur)} />
             <div className="mb">
-              <div className="num">{catsOf(cur).join(" · ")} · {String(open + 1).padStart(2, "0")}/{String(list.length).padStart(2, "0")}</div>
+              <div className="num">{catsOf(cur).map(T).join(" · ")} · {String(open + 1).padStart(2, "0")}/{String(list.length).padStart(2, "0")}</div>
               <h3>{cur.title}</h3>
               <p>{cur.desc}</p>
               {specsOf(cur).length > 0 && <div className="specs">{specsOf(cur).map((v) => <span key={v}>{v}</span>)}</div>}
               <div className="mstack"><small>stack</small><div className="tags">{(cur.tags || []).map((t) => <span className="tag" key={t}>{t}</span>)}</div></div>
               <div className="cta">
-                {link(cur.demo) && <a className="btn primary" href={link(cur.demo)} target="_blank" rel="noopener noreferrer">Voir en live ↗</a>}
-                <a className="btn" href={link(cur.github) || github} target="_blank" rel="noopener noreferrer">Code source ↗</a>
+                {link(cur.demo) && <a className="btn primary" href={link(cur.demo)} target="_blank" rel="noopener noreferrer">{T("Voir en live ↗")}</a>}
+                <a className="btn" href={link(cur.github) || github} target="_blank" rel="noopener noreferrer">{T("Code source ↗")}</a>
               </div>
               {list.length > 1 && (
                 <div className="pnav">
@@ -872,11 +1082,11 @@ function Testimonials({ list }) {
       <div className="rtop2">
         <Badge t={t} />
         <div className="rwho"><b>{t.name}</b><small>{role(t)}</small></div>
-        <div className="rmeta">{year(t) && <span>{year(t)}</span>}<span className={"rk " + kind(t)}>{kind(t)}</span></div>
+        <div className="rmeta">{year(t) && <span>{year(t)}</span>}<span className={"rk " + kind(t)}>{T(kind(t))}</span></div>
       </div>
       {big && <span className="qm">“</span>}
       <blockquote>{t.text}</blockquote>
-      {link(t.linkedin) && <a className="rli" href={link(t.linkedin)} target="_blank" rel="noopener noreferrer">Voir sur LinkedIn ↗</a>}
+      {link(t.linkedin) && <a className="rli" href={link(t.linkedin)} target="_blank" rel="noopener noreferrer">{T("Voir sur LinkedIn ↗")}</a>}
     </Spot>
   );
   if (!lead) return null;
@@ -921,7 +1131,7 @@ function ContactForm({ email }) {
         });
       } catch { /* notification facultative */ }
     } catch (e2) {
-      setStatus("error"); setErr(e2.message || "Erreur d'envoi. Réessayez ou écrivez directement par email.");
+      setStatus("error"); setErr(e2.message || T("Erreur d'envoi. Réessayez ou écrivez directement par email."));
       setTimeout(() => setStatus("idle"), 5000);
     }
   };
@@ -936,31 +1146,31 @@ function ContactForm({ email }) {
   );
   return (
     <form className="c2-form" onSubmit={submit}>
-      <div className="trace-h"><span className="lights"><i /><i /><i /></span><span className="ttl">~/contact/nouveau_message</span><span className="c2-prog">{filled}/4</span></div>
+      <div className="trace-h"><span className="lights"><i /><i /><i /></span><span className="ttl">{T("~/contact/nouveau_message")}</span><span className="c2-prog">{filled}/4</span></div>
       <div className="c2-bar"><i style={{ width: filled * 25 + "%" }} /></div>
       <div className="c2-body">
         {status === "success" ? (
           <div className="c2-done">
             <div className="c2-check">✓</div>
-            <h3>Message envoyé</h3>
-            <pre>{`> POST /api/admin/contact\n  200 OK · livré à ${email || "contact@ademsassi.com"}\n  accusé de réception envoyé ✓`}</pre>
-            <p>Je vous réponds sous 24 h.</p>
+            <h3>{T("Message envoyé")}</h3>
+            <pre>{`> POST /api/admin/contact\n  200 OK · ${T("livré à")} ${email || "contact@ademsassi.com"}\n  ${T("accusé de réception envoyé ✓")}`}</pre>
+            <p>{T("Je vous réponds sous 24 h.")}</p>
           </div>
         ) : (
           <>
             <div className="c2-topics">
-              <span className="path-l">sujet rapide</span>
-              <div>{TOPICS.map((t) => <button type="button" key={t} className={"chip" + (form.subject === t ? " sel" : "")} onClick={() => setForm((f) => ({ ...f, subject: t }))}>{t}</button>)}</div>
+              <span className="path-l">{T("sujet rapide")}</span>
+              <div>{TOPICS.map((t) => <button type="button" key={t} className={"chip" + (form.subject === T(t) ? " sel" : "")} onClick={() => setForm((f) => ({ ...f, subject: T(t) }))}>{T(t)}</button>)}</div>
             </div>
-            <div className="row2">{Field({ name: "name", label: "Nom" })}{Field({ name: "email", label: "Email", type: "email" })}</div>
-            {Field({ name: "subject", label: "Sujet" })}
-            {Field({ name: "message", label: "Votre message", area: true })}
+            <div className="row2">{Field({ name: "name", label: T("Nom") })}{Field({ name: "email", label: "Email", type: "email" })}</div>
+            {Field({ name: "subject", label: T("Sujet") })}
+            {Field({ name: "message", label: T("Votre message"), area: true })}
             <input type="text" name="website" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} style={{ display: "none" }} tabIndex={-1} autoComplete="off" />
             {status === "error" && <div className="note ko">✕ {err}</div>}
             <button className={"c2-send" + (status === "loading" ? " busy" : "")} type="submit" disabled={status === "loading"}>
-              <span>{status === "loading" ? "Envoi en cours" : "Envoyer le message"}</span><b>{status === "loading" ? "…" : "→"}</b>
+              <span>{status === "loading" ? T("Envoi en cours") : T("Envoyer le message")}</span><b>{status === "loading" ? "…" : "→"}</b>
             </button>
-            <p className="fine">Tous les champs sont obligatoires · réponse sous 24 h</p>
+            <p className="fine">{T("Tous les champs sont obligatoires · réponse sous 24 h")}</p>
           </>
         )}
       </div>
@@ -971,7 +1181,13 @@ function ContactForm({ email }) {
 /* ─────────────────────────── Page ─────────────────────────── */
 
 export default function HomeV4() {
-  const C = useContent() || {};
+  const { lang } = useLang();
+  LANG = lang;
+  const C = useContent(lang) || {};
+  useEffect(() => {
+    document.documentElement.lang = lang;
+    document.title = lang === "en" ? "Adem SASSI - AI Engineer, LLM Agents & RAG | Full-Stack" : "Adem SASSI - Ingénieur IA, Agents LLM & RAG | Full-Stack";
+  }, [lang]);
   const stars = useRef(null), spot = useRef(null), progress = useRef(null);
   const [active, setActive] = useState("");
   const [menu, setMenu] = useState(false);
@@ -990,7 +1206,7 @@ export default function HomeV4() {
   const stats = hero.stats || [{ value: "3", label: "Stages" }, { value: "5+", label: "Projets" }, { value: "M2", label: "Ingénierie Data & IA" }];
   const name = hero.name || "Adem SASSI";
   const GITHUB = link(contact.github) || "https://github.com/ADEM-SASSI";
-  const aboutTitle = about.title || "Construire l'IA de demain";
+  const aboutTitle = about.title || T("Construire l'IA de demain");
   const aw = aboutTitle.split(" ");
 
   useEffect(() => {
@@ -1030,17 +1246,18 @@ export default function HomeV4() {
       <nav className={scrolled ? "scrolled" : ""}><div className="wrap">
         <a className="logo" href="#top"><span className="mark">AS</span>ADEM<b>.</b>SASSI</a>
         <div className="links">
-          {NAV.map(([id, l]) => <a key={id} href={"#" + id} className={active === id ? "act" : ""}>{l}</a>)}
+          {NAV.map(([id, l]) => <a key={id} href={"#" + id} className={active === id ? "act" : ""}>{T(l)}</a>)}
           <Link to="/blog" className="blog">Blog ↗</Link>
         </div>
         <div className="nr">
-          <a className="btn primary sm" href="#contact">Me contacter</a>
+          <LangSwitch />
+          <a className="btn primary sm" href="#contact">{T("Me contacter")}</a>
           <button className="burger" aria-label="Menu" onClick={() => setMenu((m) => !m)}><i /></button>
         </div>
       </div></nav>
       {menu && (
         <div className="mnav" onClick={() => setMenu(false)}>
-          {NAV.map(([id, l], i) => <a key={id} href={"#" + id}><span>0{i + 1}</span> {l}</a>)}
+          {NAV.map(([id, l], i) => <a key={id} href={"#" + id}><span>0{i + 1}</span> {T(l)}</a>)}
           <Link to="/blog"><span>→</span> Blog</Link>
         </div>
       )}
@@ -1048,21 +1265,21 @@ export default function HomeV4() {
       <main id="top">
         <section id="home" className="hero wrap">
           <div className="hc enter">
-            <div className="badge"><span className="dot" />INGÉNIEUR IA · AGENTS LLM &amp; RAG</div>
+            <div className="badge"><span className="dot" />{T("INGÉNIEUR IA · AGENTS LLM & RAG")}</div>
             <div className="avatar">
               {photoOk ? <img src={PHOTO} alt={name} width="150" height="150" fetchpriority="high" onError={() => setPhotoOk(false)} /> : <div className="ini">{initials(name)}</div>}
               <span className="on" />
             </div>
-            <h1><span className="hi">Bonjour, je suis</span><span className="grad">{name}</span></h1>
+            <h1><span className="hi">{T("Bonjour, je suis")}</span><span className="grad">{name}</span></h1>
             <Typing />
-            <p className="lede">{hero.description || "Ingénieur IA en alternance chez ACENSI. Je conçois des agents LLM, des architectures RAG et les plateformes qui les font tourner. Étudiant en Master 2 à l'École Hexagone."}</p>
+            <p className="lede">{hero.description || T("Ingénieur IA en alternance chez ACENSI. Je conçois des agents LLM, des architectures RAG et les plateformes qui les font tourner. Étudiant en Master 2 à l'École Hexagone.")}</p>
             <div className="cta">
-              <a className="btn primary" href="#projects">Voir mes projets →</a>
-              <a className="btn" href="#ai-features">IA Lab →</a>
+              <a className="btn primary" href="#projects">{T("Voir mes projets →")}</a>
+              <a className="btn" href="#ai-features">{T("IA Lab →")}</a>
               <a className="btn ghost" href="/api/content/cv" download>CV ↓</a>
             </div>
             <div className="hstats">
-              {stats.map((s, i) => <span key={i}><Counter value={s.value} /> {s.label}</span>)}
+              {stats.map((s, i) => <span key={i}><Counter value={s.value} /> {T(s.label)}</span>)}
             </div>
           </div>
           <a className="scroll" href="#about">SCROLL ↓</a>
@@ -1075,10 +1292,10 @@ export default function HomeV4() {
               {(about.paragraphs || []).map((p, i) => <p key={i}>{p}</p>)}
               {(about.tags || []).length > 0 && <div className="tags">{about.tags.map((t) => <span className="tag" key={t}>{t}</span>)}</div>}
               <Neural3D />
-              <a className="btn" href="/api/content/cv" download>Télécharger mon CV ↓</a>
+              <a className="btn" href="/api/content/cv" download>{T("Télécharger mon CV ↓")}</a>
             </div>
             <div>
-              <div className="path-l">parcours</div>
+              <div className="path-l">{T("parcours")}</div>
               <div className="path">
                 {(about.timeline || []).map((t, i) => (
                   <div className={"step" + (isNow(t.year) ? " now" : "")} key={i}>
@@ -1092,7 +1309,7 @@ export default function HomeV4() {
         </div></section>
 
         <section id="skills" className="reveal"><div className="wrap">
-          <Head n="02" path="competences" title="Mon" accent="arsenal technique" sub="Des outils maîtrisés à travers des projets académiques, des stages et une veille constante." />
+          <Head n="02" path="competences" title={T("Mon")} accent={T("arsenal technique")} sub={T("Des outils maîtrisés à travers des projets académiques, des stages et une veille constante.")} />
           <div className="skills">
             {skills.map((cat) => {
               const c = hex(cat.color);
@@ -1109,7 +1326,7 @@ export default function HomeV4() {
           </div>
           {techs.length > 0 && (
             <>
-              <div className="divider"><span>TECHNOLOGIES UTILISÉES</span></div>
+              <div className="divider"><span>{T("TECHNOLOGIES UTILISÉES")}</span></div>
               <div className="techs">
                 {techs.map((t, i) => (
                   <span className="tech" key={i} style={{ "--tc": t.bg || "#00D4FF" }}>
@@ -1122,51 +1339,51 @@ export default function HomeV4() {
         </div></section>
 
         <section id="ai-features" className="reveal"><div className="wrap">
-          <Head n="03" path="ia-lab" title="Fonctionnalités" accent="propulsées par l'IA" sub="Ces outils interactifs démontrent mes compétences en IA appliquée. Chaque fonctionnalité appelle un LLM en temps réel." />
+          <Head n="03" path="ia-lab" title={T("Fonctionnalités")} accent={T("propulsées par l'IA")} sub={T("Ces outils interactifs démontrent mes compétences en IA appliquée. Chaque fonctionnalité appelle un LLM en temps réel.")} />
           <AILab />
         </div></section>
 
         {projects.length > 0 && (
           <section id="projects" className="reveal"><div className="wrap">
-            <Head n="04" path="projets" title="Ce que j'ai" accent="construit" sub="Des projets allant de la recherche fondamentale aux applications déployées en production. Clique sur un projet pour le détail." />
+            <Head n="04" path="projets" title={T("Ce que j'ai")} accent={T("construit")} sub={T("Des projets allant de la recherche fondamentale aux applications déployées en production. Clique sur un projet pour le détail.")} />
             <Projects projects={projects} github={GITHUB} />
           </div></section>
         )}
 
         <section id="courses" className="reveal"><div className="wrap">
-          <Head n="05" path="formation" title="Master 2" accent="Ingénierie Data & IA" sub="École Hexagone · Versailles · 2026-2027, en alternance chez ACENSI." />
+          <Head n="05" path="formation" title="Master 2" accent={T("Ingénierie Data & IA")} sub={T("École Hexagone · Versailles · 2026-2027, en alternance chez ACENSI.")} />
           <Formation />
         </div></section>
 
         {testimonials.length > 0 && (
           <section id="recommandations" className="reveal"><div className="wrap">
-            <Head n="06" path="recommandations" title="Ce qu'ils disent" accent="de moi" />
+            <Head n="06" path="recommandations" title={T("Ce qu'ils disent")} accent={T("de moi")} />
             <Testimonials list={testimonials} />
           </div></section>
         )}
 
         <section id="contact" className="reveal"><div className="wrap">
-          <Head n="07" path="contact" title="Travaillons" accent="ensemble" sub="Un projet IA, une collaboration ou simplement envie d'échanger ? Écrivez-moi, je réponds personnellement." />
+          <Head n="07" path="contact" title={T("Travaillons")} accent={T("ensemble")} sub={T("Un projet IA, une collaboration ou simplement envie d'échanger ? Écrivez-moi, je réponds personnellement.")} />
           <div className="c2">
             <aside className="c2-side">
               <Spot className="c2-card">
                 <div className="c2-me">
                   <div className="c2-av">{photoOk ? <img src={PHOTO} alt={name} width="64" height="64" loading="lazy" /> : <span>{initials(name)}</span>}<i className={contact.available ? "" : "off"} /></div>
-                  <div><b>{name}</b><small>{hero.title || "Ingénieur IA en alternance"}</small></div>
+                  <div><b>{name}</b><small>{hero.title || T("Ingénieur IA en alternance")}</small></div>
                 </div>
-                <div className={"c2-status" + (contact.available ? "" : " off")}><span className="dot" />{contact.available ? "Disponible pour échanger" : "Indisponible pour le moment"}</div>
+                <div className={"c2-status" + (contact.available ? "" : " off")}><span className="dot" />{contact.available ? T("Disponible pour échanger") : T("Indisponible pour le moment")}</div>
                 {contact.availabilityText && <p className="c2-av-t">{contact.availabilityText}</p>}
                 <div className="c2-meta">
-                  <div><small>Réponse</small><b>&lt; 24 h</b></div>
-                  <div><small>Basé à</small><b>Île-de-France</b></div>
-                  <div><small>Langues</small><b>FR · EN · AR</b></div>
+                  <div><small>{T("Réponse")}</small><b>&lt; 24 h</b></div>
+                  <div><small>{T("Basé à")}</small><b>{T("Île-de-France")}</b></div>
+                  <div><small>{T("Langues")}</small><b>FR · EN · AR</b></div>
                 </div>
               </Spot>
               {contact.email && (
                 <div className="c2-mail">
-                  <small>email direct</small>
+                  <small>{T("email direct")}</small>
                   <a href={"mailto:" + contact.email}>{contact.email}</a>
-                  <button type="button" onClick={() => { try { navigator.clipboard.writeText(contact.email); } catch { /* */ } setCopied(true); setTimeout(() => setCopied(false), 1600); }}>{copied ? "copié ✓" : "copier"}</button>
+                  <button type="button" onClick={() => { try { navigator.clipboard.writeText(contact.email); } catch { /* */ } setCopied(true); setTimeout(() => setCopied(false), 1600); }}>{copied ? T("copié ✓") : T("copier")}</button>
                 </div>
               )}
               <div className="c2-soc">
@@ -1184,31 +1401,31 @@ export default function HomeV4() {
         <div className="ftop">
           <div className="fbrand">
             <a className="logo" href="#top"><span className="mark">AS</span>ADEM<b>.</b>SASSI</a>
-            <p>{hero.title || "Ingénieur IA en alternance"}. Agents LLM, RAG et les plateformes full-stack qui les font tourner.</p>
-            <div className="fstatus"><span className="dot" />{contact.availabilityText || "En alternance chez ACENSI, ouvert aux échanges"}</div>
-            <a className="btn primary sm" href="#contact">Me contacter →</a>
+            <p>{hero.title || T("Ingénieur IA en alternance")}. {T("Agents LLM, RAG et les plateformes full-stack qui les font tourner.")}</p>
+            <div className="fstatus"><span className="dot" />{contact.availabilityText || T("En alternance chez ACENSI, ouvert aux échanges")}</div>
+            <a className="btn primary sm" href="#contact">{T("Me contacter →")}</a>
           </div>
-          <nav className="fcol" aria-label="Navigation du pied de page">
+          <nav className="fcol" aria-label={T("Navigation du pied de page")}>
             <h4>Navigation</h4>
-            {NAV.map(([id, l]) => <a key={id} href={"#" + id}>{l}</a>)}
+            {NAV.map(([id, l]) => <a key={id} href={"#" + id}>{T(l)}</a>)}
             <Link to="/blog">Blog</Link>
           </nav>
           <div className="fcol">
-            <h4>Liens</h4>
+            <h4>{T("Liens")}</h4>
             {socials.map(([l, h]) => <a key={l} href={h} target="_blank" rel="noopener noreferrer">{l} ↗</a>)}
             {contact.email && <a href={"mailto:" + contact.email}>{contact.email}</a>}
-            <a href="/api/content/cv" download>Mon CV ↓</a>
+            <a href="/api/content/cv" download>{T("Mon CV ↓")}</a>
           </div>
           <div className="fcol">
-            <h4>Légal</h4>
-            <Link to="/mentions-legales">Mentions légales</Link>
-            {[["Confidentialité", "/privacy"], ["Cookies", "/cookies"], ["Conditions", "/terms"], ["Sécurité", "/security"], ["Statut", "/status"], ["Docs", "/docs"], ["Communauté", "/community"], ["Ne pas partager mes données", "/do-not-share"]].map(([l, h]) => <Link key={h} to={h}>{l}</Link>)}
+            <h4>{T("Légal")}</h4>
+            <Link to="/mentions-legales">{T("Mentions légales")}</Link>
+            {[["Confidentialité", "/privacy"], ["Cookies", "/cookies"], ["Conditions", "/terms"], ["Sécurité", "/security"], ["Statut", "/status"], ["Docs", "/docs"], ["Communauté", "/community"], ["Ne pas partager mes données", "/do-not-share"]].map(([l, h]) => <Link key={h} to={h}>{T(l)}</Link>)}
           </div>
         </div>
         <div className="fbig" aria-hidden="true">ADEM SASSI</div>
         <div className="fbot">
-          <span>© {new Date().getFullYear()} {name}, tous droits réservés</span>
-          <span>mis à jour le {new Date(typeof __BUILD_DATE__ !== "undefined" ? __BUILD_DATE__ : Date.now()).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}</span>
+          <span>© {new Date().getFullYear()} {name}, {T("tous droits réservés")}</span>
+          <span>{T("mis à jour le")} {new Date(typeof __BUILD_DATE__ !== "undefined" ? __BUILD_DATE__ : Date.now()).toLocaleDateString(LOC(), { day: "numeric", month: "long", year: "numeric" })}</span>
           <span>React · Node.js · MongoDB · Groq · Vercel</span>
         </div>
       </div></footer>
@@ -1227,8 +1444,8 @@ function Floating() {
   }, []);
   return (
     <div className={"floating" + (show ? " show" : "")}>
-      <a href="/api/content/cv" download title="Télécharger CV" className="fcv">↓<span>Mon CV</span></a>
-      <button onClick={() => scrollTo({ top: 0, behavior: "smooth" })} title="Retour en haut" aria-label="Retour en haut">↑</button>
+      <a href="/api/content/cv" download title={T("Télécharger CV")} className="fcv">↓<span>{T("Mon CV")}</span></a>
+      <button onClick={() => scrollTo({ top: 0, behavior: "smooth" })} title={T("Retour en haut")} aria-label={T("Retour en haut")}>↑</button>
     </div>
   );
 }

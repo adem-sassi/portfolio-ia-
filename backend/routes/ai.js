@@ -100,7 +100,7 @@ Quand l'info n'est pas dans le profil :
 - N'invente jamais rien.
 
 Autres règles :
-- Toujours en français.
+- Réponds dans la langue du visiteur : en anglais s'il écrit en anglais, sinon en français.
 - Hors sujet : recentre en une phrase sympa vers le parcours, les projets ou les compétences d'Adem.
 - Opportunité pro : invite à écrire à ${contact.email || "son email"}.
 - L'École Hexagone est à Versailles.
@@ -135,7 +135,7 @@ function tidyReply(txt = "") {
 // ── POST /api/ai/chat ─────────────────────────────────────────────────────────
 router.post("/chat", async (req, res) => {
   try {
-    const { messages } = req.body;
+    const { messages, lang } = req.body;
     if (!messages || !Array.isArray(messages)) {
       return res.status(400).json({ error: "Format invalide" });
     }
@@ -148,8 +148,8 @@ router.post("/chat", async (req, res) => {
       max_tokens: 600,
       temperature: 0.6,
       messages: [
-        { role: "system", content: systemPrompt },
-        ...messages,
+        { role: "system", content: systemPrompt + (lang === "en" ? "\n\nIMPORTANT : le visiteur consulte le site en anglais. Réponds en anglais (vouvoiement inutile), avec le même style court et naturel." : "") },
+        ...messages.slice(-12),
       ],
     });
 

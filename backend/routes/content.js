@@ -1,12 +1,14 @@
 import express from "express";
 import Content from "../models/Content.js";
 import Article from "../models/Article.js";
+import crypto from "crypto";
+import Groq from "groq-sdk";
 
 const router = express.Router();
 
 const cache = new Map();
 const TTL = 30 * 1000; // 30 secondes
-export function clearCache(key) { if(key) cache.delete(key); else cache.clear(); }
+export function clearCache(key) { if(key) { cache.delete(key); cache.delete(key + "_en"); } else cache.clear(); }
 
 function getCache(key) {
   const c = cache.get(key);
@@ -19,22 +21,89 @@ function setCache(key, data) {
 }
 
 // Sections jamais exposées publiquement
-const PRIVATE_SECTIONS = ["cv", "reset_token", "admin_auth"];
+const PRIVATE_SECTIONS = ["cv", "reset_token", "admin_auth", "i18n_en"];
+
+// ── Version anglaise : les textes de l'admin sont traduits une fois par l'IA, puis gardés en base ──
+const TR_SECTIONS = ["hero", "about", "projects", "skills", "contact", "testimonials"];
+const TR_KEYS = new Set(["title", "description", "desc", "text", "role", "label", "availabilityText", "category", "year", "quote", "school"]);
+const worthIt = (v) => typeof v === "string" && /[a-zà-ÿ]{3,}/i.test(v) && !/^(https?:|mailto:|#|\/)/.test(v) && !/@/.test(v);
+const hashOf = (t) => crypto.createHash("sha1").update(t).digest("hex");
+
+function collectTexts(node, out, key = "", parent = "") {
+  if (Array.isArray(node)) { node.forEach((v) => (typeof v === "string" ? (key === "paragraphs" && worthIt(v) && out.add(v)) : collectTexts(v, out, key, parent))); return; }
+  if (!node || typeof node !== "object") return;
+  for (const [k, v] of Object.entries(node)) {
+    if (typeof v === "string") { if ((TR_KEYS.has(k) || parent === "stats") && worthIt(v)) out.add(v); }
+    else collectTexts(v, out, k, k);
+  }
+}
+function applyTexts(node, map, key = "", parent = "") {
+  if (Array.isArray(node)) return node.map((v) => (typeof v === "string" ? (key === "paragraphs" ? map.get(v) || v : v) : applyTexts(v, map, key, parent)));
+  if (!node || typeof node !== "object") return node;
+  const o = {};
+  for (const [k, v] of Object.entries(node)) {
+    if (typeof v === "string") o[k] = (TR_KEYS.has(k) || parent === "stats") ? map.get(v) || v : v;
+    else o[k] = applyTexts(v, map, k, k);
+  }
+  return o;
+}
+async function translateBatch(list) {
+  const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+  const r = await groq.chat.completions.create({
+    model: "openai/gpt-oss-120b", reasoning_effort: "low", temperature: 0.2, max_tokens: 6000,
+    response_format: { type: "json_object" },
+    messages: [
+      { role: "system", content: "You translate French portfolio content into natural, professional English for recruiters. Keep proper nouns, company and school names (ACENSI, École Hexagone, NetData Innovation, Dynamix), technology names, numbers, dates and emojis unchanged. 'Actuellement' means 'Present'. 'Alternance' means 'work-study'. Reply ONLY with JSON: {\"t\": [translations]} with exactly the same number of items, in the same order." },
+      { role: "user", content: JSON.stringify(list) },
+    ],
+  });
+  const txt = r.choices[0].message.content || "";
+  const json = JSON.parse(txt.slice(txt.indexOf("{"), txt.lastIndexOf("}") + 1));
+  if (!Array.isArray(json.t) || json.t.length !== list.length) throw new Error("traduction incomplète");
+  return json.t.map(String);
+}
+async function translateContent(result) {
+  const texts = new Set();
+  TR_SECTIONS.forEach((k) => result[k] && collectTexts(result[k], texts));
+  const doc = await Content.findOne({ section: "i18n_en" });
+  const memo = { ...(doc?.data || {}) };
+  const missing = [...texts].filter((t) => !memo[hashOf(t)]);
+  let added = 0;
+  const chunks = [];
+  for (let i = 0; i < missing.length; i += 15) chunks.push(missing.slice(i, i + 15));
+  await Promise.all(chunks.map(async (chunk) => {
+    try { const out = await translateBatch(chunk); chunk.forEach((t, j) => { memo[hashOf(t)] = out[j]; added++; }); }
+    catch (e) { console.error("translate:", e.message); }
+  }));
+  if (added) await Content.findOneAndUpdate({ section: "i18n_en" }, { section: "i18n_en", data: memo }, { upsert: true });
+  const map = new Map([...texts].map((t) => [t, memo[hashOf(t)] || t]));
+  const en = { ...result };
+  TR_SECTIONS.forEach((k) => { if (en[k]) en[k] = applyTexts(en[k], map); });
+  return en;
+}
 
 // GET /api/content
 router.get("/", async (req, res) => {
   try {
-    const cached = getCache("content");
+    const en = req.query.lang === "en";
+    const cached = getCache(en ? "content_en" : "content");
     if (cached) return res.json(cached);
 
-    const sections = await Content.find({});
-    const result = {};
-    sections.forEach(s => {
-      if (!PRIVATE_SECTIONS.includes(s.section)) result[s.section] = s.data;
-    });
+    let result = getCache("content");
+    if (!result) {
+      const sections = await Content.find({});
+      result = {};
+      sections.forEach(s => {
+        if (!PRIVATE_SECTIONS.includes(s.section)) result[s.section] = s.data;
+      });
+      setCache("content", result);
+    }
+    if (!en) return res.json(result);
 
-    setCache("content", result);
-    res.json(result);
+    let translated = result;
+    try { translated = await translateContent(result); } catch (e) { console.error("content en:", e.message); }
+    setCache("content_en", translated);
+    res.json(translated);
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 

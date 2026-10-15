@@ -20,7 +20,11 @@ export const translations = {
 };
 
 export function LangProvider({ children }) {
-  const [lang, setLang] = useState("fr");
+  const [lang, setLangRaw] = useState(() => {
+    try { const v = localStorage.getItem("lang"); if (v === "fr" || v === "en") return v; } catch { /* */ }
+    return /^fr/i.test(navigator.language || "fr") ? "fr" : "en";
+  });
+  const setLang = (v) => { setLangRaw(v); try { localStorage.setItem("lang", v); } catch { /* */ } };
   const t = translations[lang];
   return (
     <LangContext.Provider value={{ lang, setLang, t }}>
