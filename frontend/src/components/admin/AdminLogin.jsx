@@ -1,6 +1,6 @@
-const API_URL = "";
 import { useState } from "react";
-import { Lock, Eye, EyeOff, Loader2, ShieldCheck, Mail } from "lucide-react";
+import { Lock, Eye, EyeOff, Loader2, ShieldCheck, Mail, ArrowRight } from "lucide-react";
+import "../../styles/admin.css";
 
 export default function AdminLogin({ onLogin }) {
   const [password, setPassword] = useState("");
@@ -12,136 +12,86 @@ export default function AdminLogin({ onLogin }) {
   const [otp, setOtp] = useState("");
   const [resetSent, setResetSent] = useState(false);
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e?.preventDefault();
     if (!password || loading) return;
     setLoading(true); setError("");
     try {
-      const res = await fetch(`${API_URL}/api/admin/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
-      });
+      const res = await fetch("/api/admin/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ password }) });
       const data = await res.json();
-      if (!res.ok) {
-        setError(data.error || "Mot de passe incorrect");
-        setPassword("");
-      } else if (data.requires2FA) {
-        setOtpToken(data.otpToken);
-        setStep("otp");
-      } else {
-        localStorage.setItem("admin_token", data.token);
-        onLogin(data.token);
-      }
+      if (!res.ok) { setError(data.error || "Mot de passe incorrect"); setPassword(""); }
+      else if (data.requires2FA) { setOtpToken(data.otpToken); setStep("otp"); }
+      else { localStorage.setItem("admin_token", data.token); onLogin(data.token); }
     } catch { setError("Erreur de connexion"); }
     setLoading(false);
   };
 
-  const handleOTP = async () => {
-    if (!otp || loading) return;
+  const handleOTP = async (e) => {
+    e?.preventDefault();
+    if (otp.length !== 6 || loading) return;
     setLoading(true); setError("");
     try {
-      const res = await fetch(`${API_URL}/api/admin/verify-2fa`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ otpToken, otp }),
-      });
+      const res = await fetch("/api/admin/verify-2fa", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ otpToken, otp }) });
       const data = await res.json();
-      if (!res.ok) {
-        setError(data.error || "Code incorrect");
-        setOtp("");
-      } else {
-        localStorage.setItem("admin_token", data.token);
-        onLogin(data.token);
-      }
+      if (!res.ok) { setError(data.error || "Code incorrect"); setOtp(""); }
+      else { localStorage.setItem("admin_token", data.token); onLogin(data.token); }
     } catch { setError("Erreur de connexion"); }
     setLoading(false);
   };
 
   const handleForgot = async () => {
+    setError("");
     try {
-      const res = await fetch(`${API_URL}/api/admin/forgot-password`, { method: "POST" });
+      const res = await fetch("/api/admin/forgot-password", { method: "POST" });
       const data = await res.json();
-      if (data.success) setResetSent(true);
-      else setError(data.error || "Erreur");
+      if (data.success) setResetSent(true); else setError(data.error || "Erreur");
     } catch { setError("Erreur de connexion"); }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6" style={{ background: "var(--void)" }}>
-      <div className="blob fixed w-96 h-96 opacity-10 pointer-events-none" style={{ background: "var(--neural-blue)", top: "-5%", left: "-10%" }}/>
-      <div className="blob fixed w-80 h-80 opacity-10 pointer-events-none" style={{ background: "var(--neural-violet)", bottom: "0%", right: "-5%", animationDelay: "-4s" }}/>
-
-      <div className="relative z-10 w-full max-w-md">
-        <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl glass-card border border-neural-blue/30 mb-4 neural-glow">
-            {step === "otp" ? <Mail size={28} className="text-neural-blue"/> : <ShieldCheck size={28} className="text-neural-blue"/>}
-          </div>
-          <h1 className="font-display text-2xl font-black text-star-white mb-1">
-            {step === "otp" ? "Vérification 2FA" : "ADMIN PANEL"}
-          </h1>
-          <p className="text-dim-star text-sm font-mono tracking-widest">
-            {step === "otp" ? "Code envoyé par email" : "Accès restreint — Portfolio IA"}
-          </p>
+    <div className="alog">
+      <div className="alog-box">
+        <div className="alog-h">
+          <div className="alog-ic">{step === "otp" ? <Mail size={26} /> : <ShieldCheck size={26} />}</div>
+          <h1>ADEM<i>.</i>SASSI</h1>
+          <p>{step === "otp" ? "vérification en 2 étapes · code envoyé par email" : "espace admin · accès restreint"}</p>
         </div>
 
-        <div className="glass-card rounded-3xl p-8 border border-neural-blue/20">
+        <div className="alog-card">
           {resetSent ? (
-            <div className="text-center py-4">
-              <p className="text-neural-green font-mono text-sm">✅ Lien envoyé par email !</p>
-              <button aria-label="Action" onClick={() => setResetSent(false)} className="mt-4 text-neural-blue text-xs font-mono hover:underline">← Retour</button>
-            </div>
+            <>
+              <div className="alog-ok">✓ Lien de réinitialisation envoyé par email. Il est valable 15 minutes.</div>
+              <button className="alog-sub" onClick={() => setResetSent(false)}>← Retour</button>
+            </>
           ) : step === "password" ? (
-            <>
-              <div className="mb-6">
-                <label className="font-mono text-xs text-dim-star tracking-widest mb-3 block">MOT DE PASSE ADMIN</label>
-                <div className="relative">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2"><Lock size={15} className="text-dim-star"/></div>
-                  <input type={show ? "text" : "password"} value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    onKeyDown={e => e.key === "Enter" && handleLogin()}
-                    placeholder="Entrez votre mot de passe..."
-                    className="ai-input w-full pl-10 pr-12 py-4 rounded-xl text-sm"/>
-                  <button aria-label="Action" type="button" onClick={() => setShow(!show)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-dim-star hover:text-neural-blue transition-colors">
-                    {show ? <EyeOff size={15}/> : <Eye size={15}/>}
-                  </button>
-                </div>
+            <form onSubmit={handleLogin} style={{ display: "grid", gap: 14 }}>
+              <label htmlFor="apw">Mot de passe</label>
+              <div className="alog-in">
+                <Lock size={15} />
+                <input id="apw" type={show ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••••" autoFocus autoComplete="current-password" />
+                <button type="button" onClick={() => setShow(!show)} aria-label={show ? "Masquer" : "Afficher"}>{show ? <EyeOff size={15} /> : <Eye size={15} />}</button>
               </div>
-              {error && <div className="mb-4 px-4 py-3 rounded-xl bg-neural-pink/10 border border-neural-pink/30 text-neural-pink text-sm font-mono">⚠ {error}</div>}
-              <button aria-label="Action" type="button" onClick={handleLogin} disabled={!password || loading}
-                className="ai-btn w-full py-4 rounded-xl flex items-center justify-center gap-2 mb-3">
-                {loading ? <><Loader2 size={15} className="animate-spin"/>Vérification...</> : <><Lock size={15}/>Accéder au panneau admin</>}
+              {error && <div className="alog-err">⚠ {error}</div>}
+              <button className="alog-go" type="submit" disabled={!password || loading}>
+                {loading ? <><Loader2 size={15} className="spin" />Vérification…</> : <>Se connecter<ArrowRight size={15} /></>}
               </button>
-              <button aria-label="Action" type="button" onClick={handleForgot}
-                className="w-full text-center text-dim-star hover:text-neural-blue text-xs font-mono py-2 transition-colors">
-                Mot de passe oublié ?
-              </button>
-            </>
+              <button type="button" className="alog-sub" onClick={handleForgot}>Mot de passe oublié ?</button>
+            </form>
           ) : (
-            <>
-              <div className="mb-6">
-                <label className="font-mono text-xs text-dim-star tracking-widest mb-3 block">CODE À 6 CHIFFRES</label>
-                <input type="text" value={otp} onChange={e => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
-                  onKeyDown={e => e.key === "Enter" && handleOTP()}
-                  placeholder="000000" maxLength={6}
-                  className="ai-input w-full px-4 py-4 rounded-xl text-sm text-center font-mono text-2xl tracking-widest"/>
-                <p className="text-dim-star text-xs font-mono text-center mt-2">Code envoyé à votre email</p>
+            <form onSubmit={handleOTP} style={{ display: "grid", gap: 14 }}>
+              <label htmlFor="aotp">Code à 6 chiffres</label>
+              <div className="alog-in">
+                <input id="aotp" className="otp" inputMode="numeric" autoComplete="one-time-code" value={otp} onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))} placeholder="000000" maxLength={6} autoFocus />
               </div>
-              {error && <div className="mb-4 px-4 py-3 rounded-xl bg-neural-pink/10 border border-neural-pink/30 text-neural-pink text-sm font-mono">⚠ {error}</div>}
-              <button aria-label="Action" type="button" onClick={handleOTP} disabled={otp.length !== 6 || loading}
-                className="ai-btn w-full py-4 rounded-xl flex items-center justify-center gap-2 mb-3">
-                {loading ? <><Loader2 size={15} className="animate-spin"/>Vérification...</> : <><ShieldCheck size={15}/>Valider le code</>}
+              {error && <div className="alog-err">⚠ {error}</div>}
+              <button className="alog-go" type="submit" disabled={otp.length !== 6 || loading}>
+                {loading ? <><Loader2 size={15} className="spin" />Vérification…</> : <><ShieldCheck size={15} />Valider le code</>}
               </button>
-              <button aria-label="Action" type="button" onClick={() => { setStep("password"); setOtp(""); setError(""); }}
-                className="w-full text-center text-dim-star hover:text-neural-blue text-xs font-mono py-2 transition-colors">
-                ← Retour
-              </button>
-            </>
+              <button type="button" className="alog-sub" onClick={() => { setStep("password"); setOtp(""); setError(""); }}>← Retour</button>
+            </form>
           )}
         </div>
-        <div className="text-center mt-6">
-          <a href="/" className="text-dim-star hover:text-neural-blue transition-colors text-sm font-mono">← Retour au portfolio</a>
-        </div>
+        <a href="/" className="alog-back">← Retour au portfolio</a>
       </div>
     </div>
   );
