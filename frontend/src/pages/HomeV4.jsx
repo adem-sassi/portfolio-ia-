@@ -462,84 +462,260 @@ const catsOf = (p) => {
 };
 const GLYPH = { IA: "◈", Web: "</>", IoT: "◎", Mobile: "▣", Cloud: "☁", Autre: "✦" };
 
-function Cover({ p, big }) {
-  const cat = catsOf(p)[0];
-  if (p.image) return <img className={"pimg" + (big ? " big" : "")} src={p.image} alt={p.title} loading="lazy" decoding="async" />;
+const slug = (t) => String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 26);
+const specsOf = (p) => statsList(p.stats).map(([, v]) => String(v)).filter((v) => v && v !== "#");
+
+/* illustration générée selon la catégorie du projet */
+function Art({ cat, v = 0 }) {
+  const common = (
+    <>
+      <defs>
+        <pattern id="pgrid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" className="a-grid" /></pattern>
+      </defs>
+      <rect width="400" height="220" fill="url(#pgrid)" />
+    </>
+  );
+  const draw = {
+    IoT: [(
+      <g>
+        {["M0 60H120V100H170", "M0 170H90V130H170", "M400 50H300V95H230", "M400 180H320V130H230", "M200 0V80", "M200 220V140"].map((d, i) => (
+          <path key={i} d={d} className="a-s a-flow" style={{ animationDelay: i * 0.3 + "s" }} />
+        ))}
+        {[[120, 60], [90, 170], [300, 50], [320, 180]].map(([x, y], i) => <circle key={i} cx={x} cy={y} r="4" className="a-f" />)}
+        <rect x="165" y="80" width="70" height="60" rx="8" className="a-chip" />
+        {[0, 1, 2, 3].map((i) => <line key={i} x1={175 + i * 17} y1="80" x2={175 + i * 17} y2="72" className="a-s" />)}
+        <circle cx="200" cy="110" r="10" className="a-f a-pulse" />
+      </g>
+    ), (
+      <g>
+        {[60, 110, 160].map((y) => <line key={y} x1="20" y1={y} x2="380" y2={y} className="a-s a-syn" />)}
+        <path d={"M20 110" + Array.from({ length: 36 }, (_, i) => ` L${30 + i * 10} ${110 - Math.sin(i / 2.2) * 38 * Math.sin(i / 11 + 0.4)}`).join("")} className="a-s a-sig" />
+        <rect x="292" y="26" width="84" height="28" rx="6" className="a-chip" />
+        <text x="334" y="45" className="a-txt" textAnchor="middle">23.4 °C</text>
+        <circle cx="30" cy="110" r="5" className="a-f a-pulse" style={{ transformOrigin: "30px 110px" }} />
+      </g>
+    ), (
+      <g>
+        {[30, 60, 90].map((r) => <circle key={r} cx="200" cy="110" r={r} className="a-s a-syn" />)}
+        <line x1="110" y1="110" x2="290" y2="110" className="a-s a-syn" /><line x1="200" y1="20" x2="200" y2="200" className="a-s a-syn" />
+        <g className="a-sweep"><path d="M200 110 L290 110 A90 90 0 0 0 263.6 46.4 Z" className="a-cone" /></g>
+        {[[240, 80], [160, 140], [225, 160]].map(([x, y], i) => <circle key={i} cx={x} cy={y} r="5" className="a-f a-pulse" style={{ transformOrigin: `${x}px ${y}px`, animationDelay: i * 0.5 + "s" }} />)}
+        <circle cx="200" cy="110" r="6" className="a-chip" />
+      </g>
+    ), (
+      <g>
+        <path d="M110 160 A90 90 0 0 1 290 160" className="a-s a-syn" style={{ strokeWidth: 10 }} />
+        <path d="M110 160 A90 90 0 0 1 262 96" className="a-s" style={{ strokeWidth: 10 }} />
+        <line x1="200" y1="160" x2="252" y2="112" className="a-s a-needle" style={{ strokeWidth: 3 }} />
+        <circle cx="200" cy="160" r="9" className="a-chip" />
+        <text x="200" y="198" className="a-txt" textAnchor="middle">68 %</text>
+      </g>
+    )],
+    Mobile: (
+      <g>
+        <rect x="160" y="22" width="80" height="176" rx="14" className="a-chip" />
+        <rect x="170" y="40" width="60" height="120" rx="4" className="a-s" />
+        {[30, 55, 40, 70, 48].map((h, i) => <rect key={i} x={176 + i * 10} y={150 - h} width="6" height={h} rx="2" className="a-f a-bar" style={{ animationDelay: i * 0.12 + "s" }} />)}
+        <circle cx="200" cy="180" r="5" className="a-s" />
+        {[30, 50, 70].map((r, i) => <path key={i} d={`M${270} ${110 - r} A${r} ${r} 0 0 1 ${270} ${110 + r}`} className="a-s a-wave" style={{ animationDelay: i * 0.25 + "s" }} />)}
+        {[30, 50, 70].map((r, i) => <path key={"l" + i} d={`M${130} ${110 - r} A${r} ${r} 0 0 0 ${130} ${110 + r}`} className="a-s a-wave" style={{ animationDelay: i * 0.25 + "s" }} />)}
+      </g>
+    ),
+    Web: (
+      <g>
+        <rect x="70" y="30" width="260" height="160" rx="10" className="a-chip" />
+        <line x1="70" y1="54" x2="330" y2="54" className="a-s" />
+        {[0, 1, 2].map((i) => <circle key={i} cx={86 + i * 12} cy="42" r="3.5" className="a-f" />)}
+        {[[90, 120], [110, 160], [110, 90], [90, 60], [110, 140], [130, 70]].map(([x, w], i) => (
+          <rect key={i} x={x} y={70 + i * 18} width={w} height="7" rx="3.5" className={"a-f a-code" + (i % 3 === 1 ? " hi" : "")} style={{ animationDelay: i * 0.1 + "s" }} />
+        ))}
+        <rect x="250" y="70" width="64" height="100" rx="6" className="a-s" />
+      </g>
+    ),
+    IA: [(
+      <g>
+        {(() => {
+          const L = [[110, [60, 110, 160]], [200, [40, 85, 135, 180]], [290, [75, 145]]];
+          const lines = [];
+          L.slice(0, -1).forEach(([x, ys], li) => ys.forEach((y) => L[li + 1][1].forEach((y2) => lines.push(<line key={`${x}${y}${y2}`} x1={x} y1={y} x2={L[li + 1][0]} y2={y2} className="a-s a-syn" />))));
+          return [...lines, ...L.flatMap(([x, ys]) => ys.map((y) => <circle key={`n${x}${y}`} cx={x} cy={y} r="7" className="a-node" />))];
+        })()}
+      </g>
+    ), (
+      <g>
+        {[70, 270].map((x, k) => (
+          <g key={x}>
+            <rect x={x} y="40" width="60" height="78" rx="6" className="a-chip" />
+            {[0, 1, 2, 3, 4].map((i) => <rect key={i} x={x + 10} y={54 + i * 12} width={[40, 30, 36, 24, 34][(i + k) % 5]} height="5" rx="2.5" className="a-f a-code" />)}
+          </g>
+        ))}
+        <path d="M130 80 C170 80 170 100 200 100 C230 100 230 80 270 80" className="a-s a-flow" />
+        <circle cx="200" cy="100" r="26" className="a-node" />
+        <text x="200" y="105" className="a-txt" textAnchor="middle">87%</text>
+        <text x="100" y="140" className="a-txt dim" textAnchor="middle">CV</text>
+        <text x="300" y="140" className="a-txt dim" textAnchor="middle">offre</text>
+        {["extract", "score", "decide", "generate"].map((t, i) => (
+          <g key={t}><rect x={40 + i * 84} y="150" width="74" height="22" rx="11" className="a-s a-step" style={{ animationDelay: i * 0.35 + "s" }} /><text x={77 + i * 84} y="165" className="a-txt sm" textAnchor="middle">{t}</text></g>
+        ))}
+      </g>
+    )],
+    Cloud: (
+      <g>
+        <path d="M130 110a40 40 0 0 1 60-50a50 50 0 0 1 90 20a32 32 0 0 1 0 64H140a34 34 0 0 1-10-34z" className="a-chip" />
+        {[0, 1, 2].map((i) => <rect key={i} x={160 + i * 30} y="160" width="22" height="22" rx="4" className="a-s" />)}
+      </g>
+    ),
+  };
   return (
-    <div className={"cover" + (big ? " big" : "")} style={{ "--pc": hex(p.color) }} aria-hidden="true">
-      <span className="g">{GLYPH[cat]}</span>
-      <span className="cl">{cat.toLowerCase()}/{String(p.title || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 24)}</span>
-      {p.featured && <span className="feat">★ FEATURED</span>}
+    <svg className="art" viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      {common}
+      {(Array.isArray(draw[cat]) ? draw[cat][v % draw[cat].length] : draw[cat]) || <g>{[30, 55, 80].map((r) => <circle key={r} cx="200" cy="110" r={r} className="a-s" />)}</g>}
+    </svg>
+  );
+}
+
+const ART_ORDER = ["Mobile", "IA", "Cloud", "IoT", "Web"];
+const artCat = (p) => { const c = catsOf(p); return ART_ORDER.find((x) => c.includes(x)) || c[0]; };
+
+function Cover({ p, big, v = 0 }) {
+  const cat = artCat(p);
+  if (p.image) return <div className={"cover img" + (big ? " big" : "")}><img src={p.image} alt={p.title} loading="lazy" decoding="async" /></div>;
+  return (
+    <div className={"cover" + (big ? " big" : "")} aria-hidden="true">
+      <Art cat={cat} v={v} />
+      <span className="cl">~/{cat.toLowerCase()}/{slug(p.title)}</span>
     </div>
   );
 }
 
+const tilt = (e) => {
+  if (matchMedia("(hover: none)").matches) return;
+  const el = e.currentTarget, r = el.getBoundingClientRect();
+  el.style.setProperty("--ry", ((e.clientX - r.left) / r.width - 0.5) * 6 + "deg");
+  el.style.setProperty("--rx", (0.5 - (e.clientY - r.top) / r.height) * 6 + "deg");
+};
+const untilt = (e) => { e.currentTarget.style.setProperty("--rx", "0deg"); e.currentTarget.style.setProperty("--ry", "0deg"); };
+
 function Projects({ projects, github }) {
   const [f, setF] = useState("Tous");
-  const [open, setOpen] = useState(null);
+  const [open, setOpen] = useState(-1);
   const counts = useMemo(() => {
     const m = {}; projects.forEach((p) => catsOf(p).forEach((c) => (m[c] = (m[c] || 0) + 1))); return m;
   }, [projects]);
   const filters = ["Tous", ...CATS.map(([n]) => n).filter((n) => counts[n]), ...(counts.Autre ? ["Autre"] : [])];
-  const shown = f === "Tous" ? projects : projects.filter((p) => catsOf(p).includes(f));
+  const heroP = useMemo(() => projects.find((p) => p.featured && link(p.demo)) || projects.find((p) => p.featured) || null, [projects]);
+  const shown = f === "Tous" ? projects.filter((p) => p !== heroP) : projects.filter((p) => catsOf(p).includes(f));
+  const list = f === "Tous" && heroP ? [heroP, ...shown] : shown;
+  const cur = open >= 0 ? list[open] : null;
+  const vOf = useMemo(() => {
+    const seen = {}, m = new Map();
+    projects.forEach((p) => {
+      const c = artCat(p);
+      if (c === "IA") return m.set(p, /match|recrut/i.test(p.title) ? 1 : 0);
+      m.set(p, (seen[c] = (seen[c] ?? -1) + 1));
+    });
+    return (p) => m.get(p) || 0;
+  }, [projects]);
+  const span = (i, n) => ((n % 3 === 2 && i >= n - 2) || (n % 3 === 1 && n > 3 && i >= n - 4) ? " wide" : "");
+
   useEffect(() => {
-    if (!open) return;
-    const k = (e) => e.key === "Escape" && setOpen(null);
-    addEventListener("keydown", k); document.body.style.overflow = "hidden";
-    return () => { removeEventListener("keydown", k); document.body.style.overflow = ""; };
-  }, [open]);
+    if (!cur) return;
+    const k = (e) => {
+      if (e.key === "Escape") setOpen(-1);
+      if (e.key === "ArrowRight") setOpen((o) => (o + 1) % list.length);
+      if (e.key === "ArrowLeft") setOpen((o) => (o - 1 + list.length) % list.length);
+    };
+    const root = document.querySelector(".v4");
+    addEventListener("keydown", k); document.body.style.overflow = "hidden"; root?.classList.add("mopen");
+    return () => { removeEventListener("keydown", k); document.body.style.overflow = ""; root?.classList.remove("mopen"); };
+  }, [cur, list.length]);
+
+  const Tags = ({ p, max = 4 }) => {
+    const t = p.tags || [];
+    return <div className="tags">{t.slice(0, max).map((x) => <span className="tag" key={x}>{x}</span>)}{t.length > max && <span className="tag more">+{t.length - max}</span>}</div>;
+  };
 
   return (
     <>
-      {filters.length > 2 && (
-        <div className="tabs">
-          {filters.map((n) => (
-            <button key={n} className={"chip" + (f === n ? " sel" : "")} onClick={() => setF(n)}>{n}<em>{n === "Tous" ? projects.length : counts[n]}</em></button>
-          ))}
-        </div>
+      <div className="pbar">
+        {filters.length > 2 && (
+          <div className="tabs">
+            {filters.map((n) => (
+              <button key={n} className={"chip" + (f === n ? " sel" : "")} onClick={() => setF(n)}>{n}<em>{n === "Tous" ? projects.length : counts[n]}</em></button>
+            ))}
+          </div>
+        )}
+        <span className="pcount">{String(list.length).padStart(2, "0")} projet{list.length > 1 ? "s" : ""}</span>
+      </div>
+
+      {f === "Tous" && heroP && (
+        <article className="pfeat" style={{ "--pc": hex(heroP.color) }} onPointerMove={tilt} onPointerLeave={untilt}>
+          <button className="pf-art" onClick={() => setOpen(0)} aria-label={"Détail du projet " + heroP.title}>
+            <Cover p={heroP} big v={vOf(heroP)} />
+            {link(heroP.demo) && <span className="live"><i />en ligne</span>}
+          </button>
+          <div className="pf-body">
+            <div className="num">★ projet phare · {catsOf(heroP).join(" · ")}</div>
+            <h3>{heroP.title}</h3>
+            <p>{heroP.desc}</p>
+            {specsOf(heroP).length > 0 && <div className="specs">{specsOf(heroP).map((v) => <span key={v}>{v}</span>)}</div>}
+            <Tags p={heroP} max={6} />
+            <div className="cta">
+              {link(heroP.demo) && <a className="btn primary" href={link(heroP.demo)} target="_blank" rel="noopener noreferrer">Voir en live ↗</a>}
+              <a className="btn" href={link(heroP.github) || github} target="_blank" rel="noopener noreferrer">Code source ↗</a>
+              <button className="pf-more" onClick={() => setOpen(0)}>Détails →</button>
+            </div>
+          </div>
+        </article>
       )}
+
       <div className="projects">
         {shown.map((p, i) => {
-          const c = hex(p.color);
-          const st = statsList(p.stats);
+          const idx = list.indexOf(p);
           return (
-            <Spot as="article" key={(p.id ?? p.title) + f} className="proj" style={{ "--pc": c, animationDelay: i * 0.06 + "s" }}>
-              <button className="proj-open" onClick={() => setOpen(p)} aria-label={"Détail du projet " + p.title}>
-                <Cover p={p} />
+            <article key={(p.id ?? p.title) + f} className={"proj" + span(i, shown.length)} style={{ "--pc": hex(p.color), animationDelay: i * 0.06 + "s" }} onPointerMove={tilt} onPointerLeave={untilt}>
+              <button className="proj-open" onClick={() => setOpen(idx)} aria-label={"Détail du projet " + p.title}>
+                <Cover p={p} v={vOf(p)} />
                 <div className="pbody">
-                  <div className="top"><span className="num">{catsOf(p).join(" · ").toUpperCase()}</span><span className="arrow">↗</span></div>
+                  <div className="top"><span className="num">{catsOf(p).join(" · ")}</span><span className="arrow">↗</span></div>
                   <h3>{p.title}</h3>
                   <p>{p.desc}</p>
-                  {st.length > 0 && (
-                    <div className="pstats">{st.map(([k, v]) => <div key={k + v}><b>{String(v)}</b>{k && <small>{k}</small>}</div>)}</div>
-                  )}
-                  <div className="tags">{(p.tags || []).map((t) => <span className="tag" key={t}>{t}</span>)}</div>
+                  {specsOf(p).length > 0 && <div className="specs">{specsOf(p).map((v) => <span key={v}>{v}</span>)}</div>}
+                  <Tags p={p} />
                 </div>
               </button>
               <div className="plinks">
                 <a href={link(p.github) || github} target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-                {link(p.demo) && <a className="demo" href={link(p.demo)} target="_blank" rel="noopener noreferrer">Démo Live ↗</a>}
+                {link(p.demo) && <a className="demo" href={link(p.demo)} target="_blank" rel="noopener noreferrer">Démo ↗</a>}
+                <button onClick={() => setOpen(idx)}>Détails</button>
               </div>
-            </Spot>
+            </article>
           );
         })}
       </div>
       <div className="center"><a className="btn" href={github} target="_blank" rel="noopener noreferrer">Voir tous mes projets sur GitHub ↗</a></div>
-      {open && (
-        <div className="modal-bg" onClick={(e) => e.target === e.currentTarget && setOpen(null)}>
-          <div className="modal" role="dialog" aria-modal="true" aria-label={open.title}>
-            <button className="x" onClick={() => setOpen(null)} aria-label="Fermer">✕</button>
-            <Cover p={open} big />
+
+      {cur && (
+        <div className="modal-bg" onClick={(e) => e.target === e.currentTarget && setOpen(-1)}>
+          <div className="modal pm" role="dialog" aria-modal="true" aria-label={cur.title} style={{ "--pc": hex(cur.color) }} key={open}>
+            <button className="x" onClick={() => setOpen(-1)} aria-label="Fermer">✕</button>
+            <Cover p={cur} big v={vOf(cur)} />
             <div className="mb">
-              <div className="num">{catsOf(open).join(" · ").toUpperCase()}</div>
-              <h3>{open.title}</h3>
-              <p>{open.desc}</p>
-              {statsList(open.stats).length > 0 && <div className="pstats">{statsList(open.stats).map(([k, v]) => <div key={k + v}><b>{String(v)}</b>{k && <small>{k}</small>}</div>)}</div>}
-              <div className="tags">{(open.tags || []).map((t) => <span className="tag" key={t}>{t}</span>)}</div>
+              <div className="num">{catsOf(cur).join(" · ")} · {String(open + 1).padStart(2, "0")}/{String(list.length).padStart(2, "0")}</div>
+              <h3>{cur.title}</h3>
+              <p>{cur.desc}</p>
+              {specsOf(cur).length > 0 && <div className="specs">{specsOf(cur).map((v) => <span key={v}>{v}</span>)}</div>}
+              <div className="mstack"><small>stack</small><div className="tags">{(cur.tags || []).map((t) => <span className="tag" key={t}>{t}</span>)}</div></div>
               <div className="cta">
-                {link(open.demo) && <a className="btn primary" href={link(open.demo)} target="_blank" rel="noopener noreferrer">Démo Live ↗</a>}
-                <a className="btn" href={link(open.github) || github} target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+                {link(cur.demo) && <a className="btn primary" href={link(cur.demo)} target="_blank" rel="noopener noreferrer">Voir en live ↗</a>}
+                <a className="btn" href={link(cur.github) || github} target="_blank" rel="noopener noreferrer">Code source ↗</a>
               </div>
+              {list.length > 1 && (
+                <div className="pnav">
+                  <button onClick={() => setOpen((open - 1 + list.length) % list.length)}>← {list[(open - 1 + list.length) % list.length].title}</button>
+                  <button onClick={() => setOpen((open + 1) % list.length)}>{list[(open + 1) % list.length].title} →</button>
+                </div>
+              )}
             </div>
           </div>
         </div>
