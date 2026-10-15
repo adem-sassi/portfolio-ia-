@@ -55,6 +55,24 @@ app.use("/api/security", securityRoutes);
 app.use("/api/stats", statsRoutes);
 app.use("/api/pulse", statsRoutes);
 
+// Sitemap dynamique : pages fixes + articles publiés
+app.get("/sitemap.xml", async (req, res) => {
+  const esc = (x) => String(x).replace(/[<>&'"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", "'": "&apos;", '"': "&quot;" }[c]));
+  const day = (d) => new Date(d || Date.now()).toISOString().slice(0, 10);
+  let arts = [];
+  try { arts = await Article.find({ published: true }, "slug updatedAt createdAt").sort({ createdAt: -1 }).lean(); } catch {}
+  const last = arts[0] ? day(arts[0].updatedAt || arts[0].createdAt) : day();
+  const urls = [
+    ["https://ademsassi.com/", day(), "1.0"],
+    ["https://ademsassi.com/blog", last, "0.8"],
+    ...arts.map((x) => ["https://ademsassi.com/blog/" + encodeURIComponent(x.slug), day(x.updatedAt || x.createdAt), "0.7"]),
+    ["https://ademsassi.com/mentions-legales", "2026-04-06", "0.3"],
+  ];
+  res.set("Content-Type", "application/xml; charset=utf-8").set("Cache-Control", "public, max-age=3600");
+  res.send('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+    urls.map(([u, d, p]) => `  <url><loc>${esc(u)}</loc><lastmod>${d}</lastmod><priority>${p}</priority></url>`).join("\n") + "\n</urlset>\n");
+});
+
 app.get("/api/health", (req, res) => res.json({ status: "OK", host: "vercel" }));
 
 app.use((req, res) => res.status(404).json({ error: "Route introuvable" }));
