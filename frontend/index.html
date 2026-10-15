@@ -44,65 +44,83 @@
     <meta name="apple-mobile-web-app-title" content="Adem SASSI"/>
   
     <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
     {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "Person",
-          "name": "Adem SASSI",
-          "url": "https://ademsassi.com",
-          "email": "contact@ademsassi.com",
-          "image": "https://ademsassi.com/photo.jpg",
-          "jobTitle": "Ingénieur IA en alternance, développement d'agents LLM",
-          "alumniOf": {
-            "@type": "EducationalOrganization",
-            "name": "École Hexagone",
-            "address": "Versailles, France"
-          },
-          "knowsAbout": ["Intelligence Artificielle", "Machine Learning", "React.js", "Node.js", "IoT", "Python", "MongoDB"],
-          "sameAs": [
-            "https://github.com/ADEM-SASSI",
-            "https://linkedin.com/in/adem-sassi"
-          ]
-        },
-        {
-          "@type": "JobPosting",
-          "title": "Développeur IA & Full-Stack — Contrat d'apprentissage",
-          "description": "Adem SASSI, ingénieur IA en alternance chez ACENSI et étudiant en Master 2 Ingénierie Data & IA à l'École Hexagone de Versailles. Spécialisé agents LLM, LangGraph, RAG et développement Full-Stack.",
-          "datePosted": "2026-01-01",
-          "validThrough": "2026-12-31",
-          "employmentType": "OTHER",
-          "hiringOrganization": {
-            "@type": "Organization",
-            "name": "École Hexagone",
-            "sameAs": "https://www.ecole-hexagone.com"
-          },
-          "jobLocation": {
-            "@type": "Place",
-            "address": {
-              "@type": "PostalAddress",
-              "addressLocality": "Versailles",
-              "addressRegion": "Île-de-France",
-              "addressCountry": "FR"
-            }
-          },
-          "applicantLocationRequirements": {
-            "@type": "Country",
-            "name": "France"
-          },
-          "jobLocationType": "TELECOMMUTE",
-          "baseSalary": {
-            "@type": "MonetaryAmount",
-            "currency": "EUR",
-            "value": {
-              "@type": "QuantitativeValue",
-              "value": "Selon grille alternance",
-              "unitText": "MONTH"
-            }
-          }
-        }
+      "@type": "WebSite",
+      "@id": "https://ademsassi.com/#site",
+      "url": "https://ademsassi.com",
+      "name": "Adem SASSI",
+      "alternateName": [
+        "Adem Sassi",
+        "ademsassi.com"
+      ],
+      "inLanguage": [
+        "fr",
+        "en"
+      ],
+      "publisher": {
+        "@id": "https://ademsassi.com/#adem"
+      }
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": "https://ademsassi.com/#page",
+      "url": "https://ademsassi.com",
+      "name": "Adem SASSI, Ingénieur IA",
+      "isPartOf": {
+        "@id": "https://ademsassi.com/#site"
+      },
+      "mainEntity": {
+        "@id": "https://ademsassi.com/#adem"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://ademsassi.com/#adem",
+      "name": "Adem SASSI",
+      "alternateName": "Adem Sassi",
+      "givenName": "Adem",
+      "familyName": "Sassi",
+      "url": "https://ademsassi.com",
+      "image": "https://ademsassi.com/photo.jpg",
+      "email": "mailto:contact@ademsassi.com",
+      "jobTitle": "Ingénieur IA en alternance, agents LLM et RAG",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "ACENSI",
+        "url": "https://www.acensi.fr"
+      },
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "École Hexagone",
+        "url": "https://www.ecole-hexagone.com"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressRegion": "Île-de-France",
+        "addressCountry": "FR"
+      },
+      "knowsAbout": [
+        "Intelligence Artificielle",
+        "Agents LLM",
+        "LangGraph",
+        "LangChain",
+        "RAG",
+        "Python",
+        "React",
+        "Node.js",
+        "MongoDB",
+        "Machine Learning"
+      ],
+      "sameAs": [
+        "https://www.linkedin.com/in/adem-sassi",
+        "https://github.com/ADEM-SASSI"
       ]
     }
+  ]
+}
     </script>
   
     <!-- Prefetch pages importantes -->
