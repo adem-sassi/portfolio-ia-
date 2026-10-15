@@ -331,7 +331,7 @@ export default function AdminDashboard({ token, onLogout }) {
                 <span className="text-neural-violet text-xs font-mono">TÉMOIGNAGE {i+1}</span>
                 <button aria-label="Précédent" onClick={()=>{const ts=data.testimonials.filter((_,j)=>j!==i);setData(prev=>({...prev,testimonials:ts}));}} className="text-neural-pink hover:opacity-70"><Trash2 size={14}/></button>
               </div>
-              {["name","role","text"].map(field=>(
+              {["name","role","text","linkedin","logo"].map(field=>(
                 <div key={field}>
                   <label className="text-dim-star text-xs font-mono mb-1 block">{field.toUpperCase()}</label>
                   {field==="text"

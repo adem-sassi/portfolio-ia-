@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useEffect, useRef, useState, useMemo, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import "../styles/home-v4.css";
-import TextAnalyzer from "../components/ai/TextAnalyzer";
-import CodeReviewer from "../components/ai/CodeReviewer";
-import BioGenerator from "../components/ai/BioGenerator";
-import AIQuiz from "../components/ai/AIQuiz";
+const TextAnalyzer = lazy(() => import("../components/ai/TextAnalyzer"));
+const CodeReviewer = lazy(() => import("../components/ai/CodeReviewer"));
+const BioGenerator = lazy(() => import("../components/ai/BioGenerator"));
+const AIQuiz = lazy(() => import("../components/ai/AIQuiz"));
 
 /* Tous les textes viennent de /api/content (modifiables depuis l'admin). */
 
@@ -565,10 +565,12 @@ function AILab() {
         <div className="trace-h"><span className="lights"><i /><i /><i /></span><span className="ttl">ai-lab / {tab}</span><span className="live"><i /> live</span></div>
         <div className={tab === "chat" ? "" : "lab-body legacy"}>
           {tab === "chat" && <ChatBot />}
-          {tab === "text" && <TextAnalyzer />}
-          {tab === "code" && <CodeReviewer />}
-          {tab === "bio" && <BioGenerator />}
-          {tab === "quiz" && <AIQuiz />}
+          <Suspense fallback={<div className="lab-wait"><span className="tdots"><i /><i /><i /></span>chargement…</div>}>
+            {tab === "text" && <TextAnalyzer />}
+            {tab === "code" && <CodeReviewer />}
+            {tab === "bio" && <BioGenerator />}
+            {tab === "quiz" && <AIQuiz />}
+          </Suspense>
         </div>
       </div>
     </>
@@ -781,7 +783,7 @@ function Projects({ projects, github }) {
         <article className="pfeat" style={{ "--pc": hex(heroP.color) }} onPointerMove={tilt} onPointerLeave={untilt}>
           <button className="pf-art" onClick={() => setOpen(0)} aria-label={"Détail du projet " + heroP.title}>
             <Cover p={heroP} big v={vOf(heroP)} />
-            {link(heroP.demo) && <span className="live"><i />en ligne</span>}
+            {link(heroP.demo) && <span className="plive"><i />en ligne</span>}
           </button>
           <div className="pf-body">
             <div className="num">★ projet phare · {catsOf(heroP).join(" · ")}</div>
@@ -856,31 +858,32 @@ function Projects({ projects, github }) {
 /* ─────────────────────────── Recommandations ─────────────────────────── */
 
 function Testimonials({ list }) {
-  const [i, setI] = useState(0);
-  const [pause, setPause] = useState(false);
-  useEffect(() => {
-    if (list.length < 2 || pause) return;
-    const t = setInterval(() => setI((x) => (x + 1) % list.length), 6000);
-    return () => clearInterval(t);
-  }, [list.length, pause]);
-  const t = list[i]; const c = hex(t.color);
+  const sorted = [...list].sort((a, b) => String(b.text || "").length - String(a.text || "").length);
+  const [lead, ...rest] = sorted;
+  const year = (t) => (String(t.role || "").match(/\b(20\d\d)\b/) || [])[1];
+  const kind = (t) => (/stage|alternance/i.test(t.role || "") ? "stage" : "recommandation");
+  const role = (t) => String(t.role || "").replace(/\s*[-–·,]?\s*\b20\d\d\b\s*$/, "").trim();
+  const Badge = ({ t }) => (
+    t.logo ? <img className="rlogo img" src={t.logo} alt="" loading="lazy" />
+      : <span className="rlogo">{t.avatar && t.avatar.length >= 2 && t.avatar.length <= 3 ? t.avatar : initials(t.name)}</span>
+  );
+  const Card = ({ t, big, i }) => (
+    <Spot as="article" className={"rec" + (big ? " lead" : "")} style={{ "--pc": hex(t.color, ["#00D4FF", "#7B2FFF", "#FF2FBB", "#00FF88"][i % 4]), animationDelay: i * 0.08 + "s" }}>
+      <div className="rtop2">
+        <Badge t={t} />
+        <div className="rwho"><b>{t.name}</b><small>{role(t)}</small></div>
+        <div className="rmeta">{year(t) && <span>{year(t)}</span>}<span className={"rk " + kind(t)}>{kind(t)}</span></div>
+      </div>
+      {big && <span className="qm">“</span>}
+      <blockquote>{t.text}</blockquote>
+      {link(t.linkedin) && <a className="rli" href={link(t.linkedin)} target="_blank" rel="noopener noreferrer">Voir sur LinkedIn ↗</a>}
+    </Spot>
+  );
+  if (!lead) return null;
   return (
-    <div className="testi" onMouseEnter={() => setPause(true)} onMouseLeave={() => setPause(false)}>
-      <Spot className="tcard" style={{ "--pc": c }} key={i}>
-        <span className="qm">“</span>
-        <blockquote>{t.text}</blockquote>
-        <div className="who-t">
-          <span className="av">{t.avatar && t.avatar.length >= 2 && t.avatar.length <= 3 ? t.avatar : initials(t.name)}</span>
-          <span><b>{t.name}</b><small>{t.role}</small></span>
-        </div>
-      </Spot>
-      {list.length > 1 && (
-        <div className="tnav">
-          <button aria-label="Précédent" onClick={() => setI((i - 1 + list.length) % list.length)}>←</button>
-          <div className="dots">{list.map((_, k) => <button key={k} aria-label={"Avis " + (k + 1)} className={k === i ? "on" : ""} onClick={() => setI(k)} />)}</div>
-          <button aria-label="Suivant" onClick={() => setI((i + 1) % list.length)}>→</button>
-        </div>
-      )}
+    <div className={"recs" + (rest.length ? "" : " solo")}>
+      <Card t={lead} big i={0} />
+      {rest.length > 0 && <div className="rec-side">{rest.map((t, i) => <Card t={t} i={i + 1} key={t.id ?? t.name} />)}</div>}
     </div>
   );
 }
@@ -1136,7 +1139,7 @@ export default function HomeV4() {
         </div></section>
 
         {testimonials.length > 0 && (
-          <section id="recommandations" className="reveal"><div className="wrap narrow">
+          <section id="recommandations" className="reveal"><div className="wrap">
             <Head n="06" path="recommandations" title="Ce qu'ils disent" accent="de moi" />
             <Testimonials list={testimonials} />
           </div></section>
@@ -1178,13 +1181,36 @@ export default function HomeV4() {
       </main>
 
       <footer><div className="wrap">
-        <a className="logo" href="#top"><span className="mark">AS</span>ADEM<b>.</b>SASSI</a>
-        <div className="flinks">
-          {[["Terms", "/terms"], ["Privacy", "/privacy"], ["Security", "/security"], ["Status", "/status"], ["Community", "/community"], ["Docs", "/docs"], ["Contact", "#contact"], ["Manage cookies", "/cookies"], ["Do not share my personal information", "/do-not-share"]].map(([l, h]) => <a key={l} href={h}>{l}</a>)}
+        <div className="ftop">
+          <div className="fbrand">
+            <a className="logo" href="#top"><span className="mark">AS</span>ADEM<b>.</b>SASSI</a>
+            <p>{hero.title || "Ingénieur IA en alternance"}. Agents LLM, RAG et les plateformes full-stack qui les font tourner.</p>
+            <div className="fstatus"><span className="dot" />{contact.availabilityText || "En alternance chez ACENSI, ouvert aux échanges"}</div>
+            <a className="btn primary sm" href="#contact">Me contacter →</a>
+          </div>
+          <nav className="fcol" aria-label="Navigation du pied de page">
+            <h4>Navigation</h4>
+            {NAV.map(([id, l]) => <a key={id} href={"#" + id}>{l}</a>)}
+            <Link to="/blog">Blog</Link>
+          </nav>
+          <div className="fcol">
+            <h4>Liens</h4>
+            {socials.map(([l, h]) => <a key={l} href={h} target="_blank" rel="noopener noreferrer">{l} ↗</a>)}
+            {contact.email && <a href={"mailto:" + contact.email}>{contact.email}</a>}
+            <a href="/api/content/cv" download>Mon CV ↓</a>
+          </div>
+          <div className="fcol">
+            <h4>Légal</h4>
+            <Link to="/mentions-legales">Mentions légales</Link>
+            {[["Confidentialité", "/privacy"], ["Cookies", "/cookies"], ["Conditions", "/terms"], ["Sécurité", "/security"], ["Statut", "/status"], ["Docs", "/docs"], ["Communauté", "/community"], ["Ne pas partager mes données", "/do-not-share"]].map(([l, h]) => <Link key={h} to={h}>{l}</Link>)}
+          </div>
         </div>
-        <p>© {new Date().getFullYear()} {name}, tous droits réservés · <Link to="/mentions-legales">Mentions légales</Link></p>
-        <p>Ingénieur IA en alternance · ACENSI · Master 2 École Hexagone</p>
-        <p className="live-l"><span className="dot" />En alternance chez <b>ACENSI</b> sur le développement d'agents IA</p>
+        <div className="fbig" aria-hidden="true">ADEM SASSI</div>
+        <div className="fbot">
+          <span>© {new Date().getFullYear()} {name}, tous droits réservés</span>
+          <span>mis à jour le {new Date(typeof __BUILD_DATE__ !== "undefined" ? __BUILD_DATE__ : Date.now()).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}</span>
+          <span>React · Node.js · MongoDB · Groq · Vercel</span>
+        </div>
       </div></footer>
 
       <Floating />

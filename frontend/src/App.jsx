@@ -1,90 +1,57 @@
-import VisitTracker from "./components/VisitTracker";
-import HomeV4 from "./pages/HomeV4";
+import { lazy, Suspense } from "react";
+import { Routes, Route } from "react-router-dom";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
-import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import VisitTracker from "./components/VisitTracker";
 import { LangProvider } from "./context/LangContext";
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import About from "./components/About";
-import Skills from "./components/Skills";
-import AIFeatures from "./components/AIFeatures";
-import Courses from "./components/Courses";
-import Projects from "./components/Projects";
-import Testimonials from "./components/Testimonials";
-import Contact from "./components/Contact";
-import Footer from "./components/Footer";
-import ParticleBackground from "./components/ParticleBackground";
-import LoadingScreen from "./components/LoadingScreen";
-import ScrollProgress from "./components/ScrollProgress";
-import SpotlightEffect from "./components/SpotlightEffect";
-import FloatingActions from "./components/FloatingActions";
-import AdminPage from "./pages/AdminPage";
-import MentionsLegales from "./pages/MentionsLegales";
-import NotFound from "./pages/NotFound";
-import BlogPage from "./pages/BlogPage";
-import ArticlePage from "./pages/ArticlePage";
-import ResetPassword from "./pages/ResetPassword";
-import { TermsPage, PrivacyPage, SecurityPage, StatusPage, CommunityPage, DocsPage, CookiesPage, DoNotSharePage } from "./pages/LegalPages";
-
-function Portfolio() {
-  const [loaded, setLoaded] = useState(false);
-  if (!loaded) return <LoadingScreen onDone={() => setLoaded(true)}/>;
-  return (
-    <>
-      <ScrollProgress/>
-      <SpotlightEffect/>
-      <ParticleBackground/>
-      <Navbar/>
-      <main>
-        <Hero/>
-        <About/>
-        <Skills/>
-        <AIFeatures/>
-        <Projects/>
-          <Courses/>
-        <Testimonials/>
-        <Contact/>
-      </main>
-      <Footer/>
-      <FloatingActions/>
-    </>
-  );
-}
-
+import HomeV4 from "./pages/HomeV4";
 import MaintenancePage from "./pages/MaintenancePage";
+
+// Les pages secondaires ne sont chargées que si on les ouvre
+const Portfolio = lazy(() => import("./pages/OldPortfolio"));
+const AdminPage = lazy(() => import("./pages/AdminPage"));
+const MentionsLegales = lazy(() => import("./pages/MentionsLegales"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const BlogPage = lazy(() => import("./pages/BlogPage"));
+const ArticlePage = lazy(() => import("./pages/ArticlePage"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
+const legal = (k) => lazy(() => import("./pages/LegalPages").then((m) => ({ default: m[k] })));
+const TermsPage = legal("TermsPage"), PrivacyPage = legal("PrivacyPage"), SecurityPage = legal("SecurityPage"), StatusPage = legal("StatusPage");
+const CommunityPage = legal("CommunityPage"), DocsPage = legal("DocsPage"), CookiesPage = legal("CookiesPage"), DoNotSharePage = legal("DoNotSharePage");
 
 // ⚠️ Mettre à false quand le backend est repayé
 const MAINTENANCE_MODE = false;
 
+const Wait = () => <div style={{ minHeight: "100vh", background: "#03050A" }} />;
+
 export default function App() {
   if (MAINTENANCE_MODE) return <MaintenancePage />;
-
   return (
-      <LangProvider>
-        <VisitTracker />
-      <Routes>
-          <Route path="/" element={<HomeV4 />}/>
-          <Route path="/v4" element={<HomeV4 />}/>
-          <Route path="/ancien" element={<Portfolio/>}/>
-          <Route path="/admin" element={<AdminPage/>}/>
-          <Route path="/mentions-legales" element={<MentionsLegales/>}/>
-          <Route path="/blog" element={<BlogPage/>}/>
-          <Route path="/blog/:slug" element={<ArticlePage/>}/>
-          <Route path="/admin/reset-password" element={<ResetPassword/>}/>
-        <Route path="/terms" element={<TermsPage/>}/>
-        <Route path="/privacy" element={<PrivacyPage/>}/>
-        <Route path="/security" element={<SecurityPage/>}/>
-        <Route path="/status" element={<StatusPage/>}/>
-        <Route path="/community" element={<CommunityPage/>}/>
-        <Route path="/docs" element={<DocsPage/>}/>
-        <Route path="/cookies" element={<CookiesPage/>}/>
-        <Route path="/do-not-share" element={<DoNotSharePage/>}/>
-        <Route path="*" element={<NotFound/>}/>
+    <LangProvider>
+      <VisitTracker />
+      <Suspense fallback={<Wait />}>
+        <Routes>
+          <Route path="/" element={<HomeV4 />} />
+          <Route path="/v4" element={<HomeV4 />} />
+          <Route path="/ancien" element={<Portfolio />} />
+          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/mentions-legales" element={<MentionsLegales />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:slug" element={<ArticlePage />} />
+          <Route path="/admin/reset-password" element={<ResetPassword />} />
+          <Route path="/terms" element={<TermsPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/security" element={<SecurityPage />} />
+          <Route path="/status" element={<StatusPage />} />
+          <Route path="/community" element={<CommunityPage />} />
+          <Route path="/docs" element={<DocsPage />} />
+          <Route path="/cookies" element={<CookiesPage />} />
+          <Route path="/do-not-share" element={<DoNotSharePage />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
-        <Analytics/>
-        <SpeedInsights/>
-      </LangProvider>
+      </Suspense>
+      <Analytics />
+      <SpeedInsights />
+    </LangProvider>
   );
 }
