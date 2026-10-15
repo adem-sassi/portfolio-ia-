@@ -1279,6 +1279,7 @@ export default function HomeV4() {
         <div className="mnav" onClick={() => setMenu(false)}>
           {NAV.map(([id, l], i) => <a key={id} href={"#" + id}><span>0{i + 1}</span> {T(l)}</a>)}
           <Link to="/blog"><span>→</span> Blog</Link>
+          <a href="#contact" className="mcta">{T("Me contacter")}</a>
         </div>
       )}
 
