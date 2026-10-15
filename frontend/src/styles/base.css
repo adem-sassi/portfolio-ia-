@@ -1,0 +1,10 @@
+@tailwind base;
+
+:root{--void:#03050a;--deep-space:#080c14;--neural-blue:#00d4ff;--neural-violet:#7b2fff;--neural-pink:#ff2fbb;--neural-green:#00ff88;--star-white:#e8f0ff;--dim-star:#a8b8dc;--glass:rgba(0,212,255,.05);--glass-border:rgba(0,212,255,.15)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background-color:var(--void);color:var(--star-white);font-family:"Syne",sans-serif;overflow-x:hidden;cursor:auto}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--void)}
+::-webkit-scrollbar-thumb{background:var(--neural-blue);border-radius:2px}
+section{position:relative}

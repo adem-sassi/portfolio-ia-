@@ -24,12 +24,12 @@ function setCache(key, data) {
 const PRIVATE_SECTIONS = ["cv", "reset_token", "admin_auth", "i18n_en"];
 
 // ── Version anglaise : les textes de l'admin sont traduits une fois par l'IA, puis gardés en base ──
-const TR_SECTIONS = ["hero", "about", "projects", "skills", "contact", "testimonials"];
+export const TR_SECTIONS = ["hero", "about", "projects", "skills", "contact", "testimonials"];
 const TR_KEYS = new Set(["title", "description", "desc", "text", "role", "label", "availabilityText", "category", "year", "quote", "school"]);
 const worthIt = (v) => typeof v === "string" && /[a-zà-ÿ]{3,}/i.test(v) && !/^(https?:|mailto:|#|\/)/.test(v) && !/@/.test(v);
-const hashOf = (t) => crypto.createHash("sha1").update(t).digest("hex");
+export const hashOf = (t) => crypto.createHash("sha1").update(t).digest("hex");
 
-function collectTexts(node, out, key = "", parent = "") {
+export function collectTexts(node, out, key = "", parent = "") {
   if (Array.isArray(node)) { node.forEach((v) => (typeof v === "string" ? (key === "paragraphs" && worthIt(v) && out.add(v)) : collectTexts(v, out, key, parent))); return; }
   if (!node || typeof node !== "object") return;
   for (const [k, v] of Object.entries(node)) {

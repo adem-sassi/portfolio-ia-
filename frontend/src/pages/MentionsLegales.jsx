@@ -1,3 +1,4 @@
+import "../styles/globals.css";
 export default function MentionsLegales() {
   return (
     <div className="min-h-screen py-32 px-6 max-w-3xl mx-auto">

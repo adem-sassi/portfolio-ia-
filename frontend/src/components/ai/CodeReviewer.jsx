@@ -1,3 +1,4 @@
+import "../../styles/globals.css";
 import { useState } from "react";
 import { Loader2, Code2, AlertTriangle, Info, XCircle, CheckCircle } from "lucide-react";
 

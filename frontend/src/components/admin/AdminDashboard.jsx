@@ -5,6 +5,7 @@ import SkillsEditor from "./SkillsEditor";
 import TechEditor from "./TechEditor";
 import BlogEditor from "./BlogEditor";
 import SecurityDashboard from "./SecurityDashboard";
+import { StatsPanel, TranslationsPanel } from "./InsightsPanels";
 
 const API_URL = "";
 
@@ -80,6 +81,7 @@ function ChangeLog({ token }) {
 
 const NAV = [
   {id:"dashboard",label:"Dashboard",icon:BarChart2,group:"Aperçu"},
+  {id:"stats",label:"Statistiques",icon:Eye,group:"Aperçu"},
   {id:"hero",label:"Hero",icon:Home,group:"Contenu"},
   {id:"about",label:"À Propos",icon:User,group:"Contenu"},
   {id:"skills",label:"Compétences",icon:Cpu,group:"Contenu"},
@@ -89,6 +91,7 @@ const NAV = [
   {id:"contact",label:"Contact",icon:Mail,group:"Contenu"},
   {id:"blog",label:"Blog",icon:BookOpen,group:"Outils"},
   {id:"cv",label:"CV PDF",icon:Upload,group:"Outils"},
+  {id:"i18n",label:"Traductions EN",icon:Settings,group:"Outils"},
   {id:"security",label:"Sécurité",icon:Shield,group:"Outils"},
   {id:"changelog",label:"Historique",icon:History,group:"Outils"},
 ];
@@ -372,6 +375,20 @@ export default function AdminDashboard({ token, onLogout }) {
         <div className="space-y-5">
           <h2 className="font-display text-2xl font-black text-star-white">CV PDF</h2>
           <CVUpload token={token}/>
+        </div>
+      );
+
+      case "stats": return (
+        <div className="space-y-5">
+          <h2 className="font-display text-2xl font-black text-star-white">Statistiques</h2>
+          <StatsPanel token={token}/>
+        </div>
+      );
+
+      case "i18n": return (
+        <div className="space-y-5">
+          <h2 className="font-display text-2xl font-black text-star-white">Traductions anglaises</h2>
+          <TranslationsPanel token={token}/>
         </div>
       );
 

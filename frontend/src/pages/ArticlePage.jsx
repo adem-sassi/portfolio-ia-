@@ -1,3 +1,4 @@
+import "../styles/globals.css";
 import { marked } from "marked";
 import { useState, useEffect, useRef, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";

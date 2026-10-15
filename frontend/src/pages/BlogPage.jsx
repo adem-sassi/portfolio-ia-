@@ -1,3 +1,4 @@
+import "../styles/globals.css";
 import { useState, useEffect, useMemo, useRef } from "react";
 import { Link } from "react-router-dom";
 import "../styles/home-v4.css";

@@ -1,3 +1,4 @@
+import "../styles/globals.css";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Lock, Loader2, CheckCircle } from "lucide-react";

@@ -1,3 +1,4 @@
+import "../styles/globals.css";
 import { useEffect, useState } from "react";
 import { Home, ArrowLeft } from "lucide-react";
 

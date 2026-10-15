@@ -5,9 +5,9 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import VisitTracker from "./components/VisitTracker";
 import { LangProvider } from "./context/LangContext";
 import HomeV4 from "./pages/HomeV4";
-import MaintenancePage from "./pages/MaintenancePage";
 
 // Les pages secondaires ne sont chargées que si on les ouvre
+const MaintenancePage = lazy(() => import("./pages/MaintenancePage"));
 const Portfolio = lazy(() => import("./pages/OldPortfolio"));
 const AdminPage = lazy(() => import("./pages/AdminPage"));
 const MentionsLegales = lazy(() => import("./pages/MentionsLegales"));
@@ -25,7 +25,7 @@ const MAINTENANCE_MODE = false;
 const Wait = () => <div style={{ minHeight: "100vh", background: "#03050A" }} />;
 
 export default function App() {
-  if (MAINTENANCE_MODE) return <MaintenancePage />;
+  if (MAINTENANCE_MODE) return <Suspense fallback={null}><MaintenancePage /></Suspense>;
   return (
     <LangProvider>
       <VisitTracker />

@@ -200,11 +200,18 @@ const EN = {
 const T = (x) => (LANG === "en" && typeof x === "string" && EN[x]) || x;
 const LOC = () => (LANG === "en" ? "en-GB" : "fr-FR");
 
+/* suivi anonyme (aucune donnée perso) → statistiques de l'admin */
+function track(type, value = "") {
+  try {
+    fetch("/api/stats/event", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type, value: String(value).slice(0, 200), lang: LANG }), keepalive: true }).catch(() => {});
+  } catch { /* */ }
+}
+
 function LangSwitch() {
   const { lang, setLang } = useLang();
   return (
     <div className="lsw" role="group" aria-label="Langue / Language">
-      {["fr", "en"].map((l) => <button key={l} className={lang === l ? "on" : ""} aria-pressed={lang === l} onClick={() => setLang(l)}>{l.toUpperCase()}</button>)}
+      {["fr", "en"].map((l) => <button key={l} className={lang === l ? "on" : ""} aria-pressed={lang === l} onClick={() => { if (l !== lang) track("lang", l); setLang(l); }}>{l.toUpperCase()}</button>)}
     </div>
   );
 }
@@ -677,7 +684,7 @@ function ChatBot() {
     if (!msg || loading) return;
     setInput("");
     const next = [...msgs, { role: "user", content: msg }];
-    setMsgs(next); setLoading(true); setMeta(null);
+    setMsgs(next); setLoading(true); setMeta(null); track("chat", msg);
     const t0 = performance.now();
     let k = 0; setStep(0);
     const iv = setInterval(() => { k = Math.min(k + 1, 2); setStep(k); }, 450);
@@ -959,6 +966,7 @@ function Projects({ projects, github }) {
   }, [projects]);
   const span = (i, n) => ((n % 3 === 2 && i >= n - 2) || (n % 3 === 1 && n > 3 && i >= n - 4) ? " wide" : "");
 
+  useEffect(() => { if (cur) track("project", cur.title); }, [cur]);
   useEffect(() => {
     if (!cur) return;
     const k = (e) => {
@@ -1120,7 +1128,7 @@ function ContactForm({ email }) {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Erreur serveur");
-      setStatus("success");
+      setStatus("success"); track("contact");
       const sent = form;
       setForm({ name: "", email: "", subject: "", message: "" });
       setTimeout(() => setStatus("idle"), 6000);
@@ -1184,6 +1192,18 @@ export default function HomeV4() {
   const { lang } = useLang();
   LANG = lang;
   const C = useContent(lang) || {};
+  useEffect(() => {
+    try { if (!sessionStorage.getItem("v4seen")) { sessionStorage.setItem("v4seen", "1"); track("view", location.pathname); } } catch { /* */ }
+    const onClick = (e) => {
+      const a = e.target.closest && e.target.closest("a"); if (!a) return;
+      const h = a.getAttribute("href") || "";
+      if (h.includes("/api/content/cv")) track("cv");
+      else if (h.startsWith("mailto:")) track("email");
+      else if (/^https?:/.test(h) && !h.includes("ademsassi.com")) track("link", h.replace(/^https?:\/\/(www\.)?/, "").slice(0, 80));
+    };
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
+  }, []);
   useEffect(() => {
     document.documentElement.lang = lang;
     document.title = lang === "en" ? "Adem SASSI - AI Engineer, LLM Agents & RAG | Full-Stack" : "Adem SASSI - Ingénieur IA, Agents LLM & RAG | Full-Stack";
@@ -1406,18 +1426,18 @@ export default function HomeV4() {
             <a className="btn primary sm" href="#contact">{T("Me contacter →")}</a>
           </div>
           <nav className="fcol" aria-label={T("Navigation du pied de page")}>
-            <h4>Navigation</h4>
+            <h3 className="fh">Navigation</h3>
             {NAV.map(([id, l]) => <a key={id} href={"#" + id}>{T(l)}</a>)}
             <Link to="/blog">Blog</Link>
           </nav>
           <div className="fcol">
-            <h4>{T("Liens")}</h4>
+            <h3 className="fh">{T("Liens")}</h3>
             {socials.map(([l, h]) => <a key={l} href={h} target="_blank" rel="noopener noreferrer">{l} ↗</a>)}
             {contact.email && <a href={"mailto:" + contact.email}>{contact.email}</a>}
             <a href="/api/content/cv" download>{T("Mon CV ↓")}</a>
           </div>
           <div className="fcol">
-            <h4>{T("Légal")}</h4>
+            <h3 className="fh">{T("Légal")}</h3>
             <Link to="/mentions-legales">{T("Mentions légales")}</Link>
             {[["Confidentialité", "/privacy"], ["Cookies", "/cookies"], ["Conditions", "/terms"], ["Sécurité", "/security"], ["Statut", "/status"], ["Docs", "/docs"], ["Communauté", "/community"], ["Ne pas partager mes données", "/do-not-share"]].map(([l, h]) => <Link key={h} to={h}>{T(l)}</Link>)}
           </div>

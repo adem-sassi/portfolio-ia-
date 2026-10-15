@@ -13,6 +13,7 @@ import adminRoutes from "./routes/admin.js";
 import contentRoutes from "./routes/content.js";
 import blogRoutes from "./routes/blog.js";
 import securityRoutes from "./routes/security.js";
+import statsRoutes from "./routes/stats.js";
 
 const app = express();
 app.set("trust proxy", 1);
@@ -51,6 +52,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/content", contentRoutes);
 app.use("/api/blog", blogRoutes);
 app.use("/api/security", securityRoutes);
+app.use("/api/stats", statsRoutes);
 
 app.get("/api/health", (req, res) => res.json({ status: "OK", host: "vercel" }));
 

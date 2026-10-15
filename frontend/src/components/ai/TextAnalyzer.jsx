@@ -1,3 +1,4 @@
+import "../../styles/globals.css";
 import { useState } from "react";
 import { Loader2, Zap, TrendingUp, TrendingDown, Minus } from "lucide-react";
 

@@ -1,3 +1,4 @@
+import "../styles/globals.css";
 import { useState, useEffect } from "react";
 
 /* ── Contenu SVG de l'hologramme (réutilisé pour le calque fantôme) ── */

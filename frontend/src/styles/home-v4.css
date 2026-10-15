@@ -670,3 +670,7 @@ html{scroll-behavior:smooth}
 .v4 .lsw button:hover{color:var(--white)}
 .v4 .lsw button.on{color:var(--void);background:var(--blue);box-shadow:0 0 12px rgba(0,212,255,.45)}
 .v4 nav .nr{display:flex;align-items:center;gap:10px}
+
+/* titres footer (h3) */
+.v4 .fcol .fh{margin:0 0 4px;font-family:"JetBrains Mono";font-weight:400;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+@media(max-width:480px){.v4 .fcol:last-child .fh{grid-column:1/-1}}

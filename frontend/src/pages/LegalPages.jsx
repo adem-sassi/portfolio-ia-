@@ -1,3 +1,4 @@
+import "../styles/globals.css";
 import { ArrowLeft } from "lucide-react";
 
 function LegalPage({ title, children }) {

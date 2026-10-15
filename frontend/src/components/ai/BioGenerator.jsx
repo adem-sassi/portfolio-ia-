@@ -1,3 +1,4 @@
+import "../../styles/globals.css";
 import { useState } from "react";
 import { Loader2, User, Copy, Check, Sparkles } from "lucide-react";
 
