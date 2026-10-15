@@ -10,7 +10,7 @@ const TYPES = ["view", "chat", "project", "lang", "cv", "email", "contact", "lin
 const eventLimiter = rateLimit({ windowMs: 10 * 60 * 1000, max: 80, standardHeaders: true, legacyHeaders: false });
 
 // POST /api/stats/event : enregistre un événement anonyme
-router.post("/event", eventLimiter, async (req, res) => {
+router.post(["/event", "/e"], eventLimiter, async (req, res) => {
   try {
     const { type, value = "", lang = "fr" } = req.body || {};
     if (!TYPES.includes(type)) return res.status(400).json({ error: "type inconnu" });

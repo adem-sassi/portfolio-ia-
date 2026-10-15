@@ -203,7 +203,7 @@ const LOC = () => (LANG === "en" ? "en-GB" : "fr-FR");
 /* suivi anonyme (aucune donnée perso) → statistiques de l'admin */
 function track(type, value = "") {
   try {
-    fetch("/api/stats/event", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type, value: String(value).slice(0, 200), lang: LANG }), keepalive: true }).catch(() => {});
+    fetch("/api/pulse/e", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type, value: String(value).slice(0, 200), lang: LANG }), keepalive: true }).catch(() => {});
   } catch { /* */ }
 }
 

@@ -53,6 +53,7 @@ app.use("/api/content", contentRoutes);
 app.use("/api/blog", blogRoutes);
 app.use("/api/security", securityRoutes);
 app.use("/api/stats", statsRoutes);
+app.use("/api/pulse", statsRoutes);
 
 app.get("/api/health", (req, res) => res.json({ status: "OK", host: "vercel" }));
 
