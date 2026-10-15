@@ -684,3 +684,6 @@ html{scroll-behavior:smooth}
 
 /* footer mobile compact */
 @media(max-width:480px){.v4 .ftop{gap:28px}.v4 .fcol{gap:8px}.v4 nav.fcol{grid-template-columns:1fr 1fr;column-gap:16px}.v4 nav.fcol .fh,.v4 nav.fcol h4{grid-column:1/-1}}
+
+/* liens mobile compact */
+@media(max-width:480px){.v4 .ftop>.fcol:nth-child(3){grid-template-columns:1fr 1fr;column-gap:16px}.v4 .ftop>.fcol:nth-child(3) .fh,.v4 .ftop>.fcol:nth-child(3) a[href^="mailto:"]{grid-column:1/-1}.v4 .ftop>.fcol:nth-child(3) a[href^="mailto:"]{order:9}}
