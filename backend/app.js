@@ -80,10 +80,10 @@ app.get("/photo.jpg", async (req, res) => {
   try {
     const doc = await Content.findOne({ section: "photo" }).lean();
     if (doc?.data?.file) {
-      return res.set("Content-Type", "image/jpeg").set("Cache-Control", "public, max-age=0, s-maxage=60, stale-while-revalidate=300").send(Buffer.from(doc.data.file, "base64"));
+      return res.set("Content-Type", "image/jpeg").set("Cache-Control", "no-cache").send(Buffer.from(doc.data.file, "base64"));
     }
   } catch {}
-  res.set("Cache-Control", "public, max-age=0, s-maxage=60").redirect(302, "/photo-default.jpg");
+  res.set("Cache-Control", "no-store").redirect(302, "/photo-default.jpg");
 });
 
 app.get("/blog", blogList);
