@@ -1466,16 +1466,33 @@ export default function HomeV4() {
 }
 
 function Floating() {
-  const [show, setShow] = useState(false);
+  const [st, setSt] = useState({ show: false, end: false, p: 0 });
   useEffect(() => {
-    const on = () => setShow(scrollY > 400);
+    let raf = 0;
+    const on = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const max = document.documentElement.scrollHeight - innerHeight;
+        const f = document.querySelector(".v4 footer");
+        setSt({ show: scrollY > 500, end: !!f && f.getBoundingClientRect().top < innerHeight - 80, p: max > 0 ? Math.min(1, scrollY / max) : 0 });
+      });
+    };
+    on();
     addEventListener("scroll", on, { passive: true });
-    return () => removeEventListener("scroll", on);
+    addEventListener("resize", on);
+    return () => { removeEventListener("scroll", on); removeEventListener("resize", on); cancelAnimationFrame(raf); };
   }, []);
+  const C = 2 * Math.PI * 17;
   return (
-    <div className={"floating" + (show ? " show" : "")}>
-      <a href="/api/content/cv" download title={T("Télécharger CV")} className="fcv">↓<span>{T("Mon CV")}</span></a>
-      <button onClick={() => scrollTo({ top: 0, behavior: "smooth" })} title={T("Retour en haut")} aria-label={T("Retour en haut")}>↑</button>
+    <div className={"fdock" + (st.show && !st.end ? " show" : "")} aria-hidden={!st.show || st.end}>
+      <a href="/api/content/cv" download className="fd-cv" title={T("Télécharger CV")} tabIndex={st.show ? 0 : -1}>
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" /><path d="M14 3v5h5M12 11v6m-3-3 3 3 3-3" /></svg>
+        <span>{T("CV")}</span>
+      </a>
+      <button className="fd-top" onClick={() => scrollTo({ top: 0, behavior: "smooth" })} aria-label={T("Retour en haut")} title={T("Retour en haut")} tabIndex={st.show ? 0 : -1}>
+        <svg className="ring" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="17" /><circle cx="20" cy="20" r="17" style={{ strokeDasharray: C, strokeDashoffset: C * (1 - st.p) }} /></svg>
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M12 19V5m-6 6 6-6 6 6" /></svg>
+      </button>
     </div>
   );
 }
