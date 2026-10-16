@@ -5,6 +5,7 @@
   "functions": {
     "api/index.js": { "maxDuration": 30 }
   },
+  "crons": [{ "path": "/api/backup/cron", "schedule": "0 4 * * 1" }],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api" },
     { "source": "/sitemap.xml", "destination": "/api" },

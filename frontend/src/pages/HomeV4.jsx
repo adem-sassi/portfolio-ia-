@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useMemo, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
+import { createPortal } from "react-dom";
 import "../styles/home-v4.css";
 import { useLang } from "../context/LangContext";
 
@@ -23,6 +24,36 @@ const EN = {
  "Voir mes projets →": "See my projects →",
  "IA Lab →": "AI Lab →",
  "Stages": "Internships",
+ "Laisser une recommandation": "Leave a recommendation",
+ "Vous avez travaillé avec Adem ?": "Worked with Adem?",
+ "Vous avez travaillé ou étudié avec Adem ? Votre avis sera publié après validation.": "Have you worked or studied with Adem? Your review will be published after approval.",
+ "Nom et prénom": "Full name",
+ "Poste": "Position",
+ "ex : Chef de projet": "e.g. Project manager",
+ "Entreprise ou école": "Company or school",
+ "Email": "Email",
+ "non publié": "not published",
+ "Vous êtes": "You are",
+ "Professeur": "Teacher",
+ "Manager": "Manager",
+ "Collègue": "Colleague",
+ "Camarade de promo": "Classmate",
+ "Client": "Client",
+ "Autre": "Other",
+ "optionnel": "optional",
+ "Votre recommandation": "Your recommendation",
+ "Comment avez-vous travaillé avec Adem ? Qu'est-ce qui vous a marqué ?": "How did you work with Adem? What stood out to you?",
+ "J'accepte que mon nom, mon poste et ma recommandation soient publiés sur ademsassi.com après validation. Mon email n'est jamais affiché.": "I agree that my name, position and recommendation may be published on ademsassi.com after approval. My email is never shown.",
+ "Envoi…": "Sending…",
+ "Envoyer ma recommandation": "Send my recommendation",
+ "Merci beaucoup !": "Thank you so much!",
+ "Ta recommandation est bien reçue. Adem la relit avant de la publier sur le site.": "Your recommendation has been received. Adem will review it before publishing it.",
+ "Fermer": "Close",
+ "Ta recommandation doit faire au moins 60 caractères.": "Your recommendation must be at least 60 characters.",
+ "Coche la case d'accord pour publier.": "Please tick the consent box.",
+ "Erreur, réessaie plus tard.": "Error, please try again later.",
+ "Voir mon CV": "View my CV",
+ "Voir le CV": "View CV",
  "Niveau IA": "AI Master's",
  "Voir mes projets": "See my projects",
  "IA Lab": "AI Lab",
@@ -653,7 +684,7 @@ const ACTIONS = [
   [/comp[ée]tence|skill|techno|stack|python|react/i, "Voir l'arsenal", "#skills"],
   [/stage|internship|parcours|formation|education|master|bachelor|alternance|work-study/i, "Voir le parcours", "#about"],
   [/contact|e-?mail|[ée]crire|write|linkedin|opportunit/i, "Écrire à Adem", "#contact"],
-  [/\bcv\b|curriculum/i, "Télécharger le CV", "/api/content/cv"],
+  [/\bcv\b|curriculum/i, "Voir le CV", "/cv"],
 ];
 
 function ReplyActions({ reply, asked, onAsk }) {
@@ -1085,6 +1116,88 @@ function Projects({ projects, github }) {
 
 /* ─────────────────────────── Recommandations ─────────────────────────── */
 
+/* ── Formulaire « Laisser une recommandation » (modéré dans l'admin) ── */
+const RELS = [["prof", "Professeur"], ["manager", "Manager"], ["collegue", "Collègue"], ["camarade", "Camarade de promo"], ["client", "Client"], ["autre", "Autre"]];
+
+function RecoForm({ onClose }) {
+  const [f, setF] = useState({ name: "", role: "", company: "", relation: "", email: "", linkedin: "", text: "", consent: false, website: "" });
+  const [st, setSt] = useState("idle");
+  const [err, setErr] = useState("");
+  const t0 = useRef(Date.now());
+  const first = useRef(null);
+  const on = (k) => (e) => setF((x) => ({ ...x, [k]: e.target.type === "checkbox" ? e.target.checked : e.target.value }));
+  useEffect(() => {
+    const root = document.querySelector(".v4");
+    const k = (e) => e.key === "Escape" && onClose();
+    addEventListener("keydown", k); document.body.style.overflow = "hidden"; root?.classList.add("mopen");
+    setTimeout(() => first.current?.focus(), 50);
+    return () => { removeEventListener("keydown", k); document.body.style.overflow = ""; root?.classList.remove("mopen"); };
+  }, []);
+  const n = f.text.trim().length;
+  const submit = async (e) => {
+    e.preventDefault(); setErr("");
+    if (n < 60) return setErr(T("Ta recommandation doit faire au moins 60 caractères."));
+    if (!f.consent) return setErr(T("Coche la case d'accord pour publier."));
+    setSt("loading");
+    try {
+      const r = await fetch("/api/recos", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...f, t: t0.current }) });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.error || T("Erreur, réessaie plus tard."));
+      setSt("done");
+    } catch (x) { setErr(x.message); setSt("idle"); }
+  };
+  const host = document.querySelector(".v4") || document.body;
+  return createPortal(
+    <div className="rf-ov" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
+      <div className="rf" role="dialog" aria-modal="true" aria-labelledby="rf-t">
+        <button className="rf-x" onClick={onClose} aria-label={T("Fermer")}>×</button>
+        {st === "done" ? (
+          <div className="rf-ok">
+            <span>✓</span>
+            <h3>{T("Merci beaucoup !")}</h3>
+            <p>{T("Ta recommandation est bien reçue. Adem la relit avant de la publier sur le site.")}</p>
+            <button className="hbtn primary" onClick={onClose}><span>{T("Fermer")}</span></button>
+          </div>
+        ) : (
+          <form onSubmit={submit} noValidate>
+            <p className="rf-k">~/recommandations/nouvelle</p>
+            <h3 id="rf-t">{T("Laisser une recommandation")}</h3>
+            <p className="rf-s">{T("Vous avez travaillé ou étudié avec Adem ? Votre avis sera publié après validation.")}</p>
+            <div className="rf-g">
+              <label><span>{T("Nom et prénom")} *</span><input ref={first} value={f.name} onChange={on("name")} maxLength={80} required autoComplete="name" /></label>
+              <label><span>{T("Poste")}</span><input value={f.role} onChange={on("role")} maxLength={100} placeholder={T("ex : Chef de projet")} /></label>
+              <label><span>{T("Entreprise ou école")}</span><input value={f.company} onChange={on("company")} maxLength={80} /></label>
+              <label><span>{T("Email")} * <em>{T("non publié")}</em></span><input type="email" value={f.email} onChange={on("email")} maxLength={120} required autoComplete="email" /></label>
+            </div>
+            <div className="rf-rel">
+              <span>{T("Vous êtes")}</span>
+              <div>{RELS.map(([k, l]) => <button type="button" key={k} className={f.relation === k ? "on" : ""} onClick={() => setF((x) => ({ ...x, relation: k }))}>{T(l)}</button>)}</div>
+            </div>
+            <label className="rf-full"><span>LinkedIn <em>{T("optionnel")}</em></span><input value={f.linkedin} onChange={on("linkedin")} maxLength={200} placeholder="linkedin.com/in/..." /></label>
+            <label className="rf-full"><span>{T("Votre recommandation")} * <em className={n > 0 && n < 60 ? "bad" : ""}>{n}/1200</em></span><textarea rows={5} value={f.text} onChange={on("text")} maxLength={1200} required placeholder={T("Comment avez-vous travaillé avec Adem ? Qu'est-ce qui vous a marqué ?")} /></label>
+            <input className="rf-hp" tabIndex={-1} autoComplete="off" value={f.website} onChange={on("website")} aria-hidden="true" placeholder="website" />
+            <label className="rf-c"><input type="checkbox" checked={f.consent} onChange={on("consent")} /><span>{T("J'accepte que mon nom, mon poste et ma recommandation soient publiés sur ademsassi.com après validation. Mon email n'est jamais affiché.")}</span></label>
+            {err && <p className="rf-err">{err}</p>}
+            <button className="hbtn primary rf-go" disabled={st === "loading"}><span>{st === "loading" ? T("Envoi…") : T("Envoyer ma recommandation")}</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg></button>
+          </form>
+        )}
+      </div>
+    </div>,
+    host
+  );
+}
+
+function RecoCTA() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="rf-cta">
+      <p>{T("Vous avez travaillé avec Adem ?")}</p>
+      <button className="hbtn" onClick={() => setOpen(true)}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16zM14 6l4 4" /></svg><span>{T("Laisser une recommandation")}</span></button>
+      {open && <RecoForm onClose={() => setOpen(false)} />}
+    </div>
+  );
+}
+
 function Testimonials({ list }) {
   const sorted = [...list].sort((a, b) => String(b.text || "").length - String(a.text || "").length);
   const [lead, ...rest] = sorted;
@@ -1207,7 +1320,7 @@ export default function HomeV4() {
     const onClick = (e) => {
       const a = e.target.closest && e.target.closest("a"); if (!a) return;
       const h = a.getAttribute("href") || "";
-      if (h.includes("/api/content/cv")) track("cv");
+      if (h.includes("/api/content/cv") || h === "/cv") track("cv");
       else if (h.startsWith("mailto:")) track("email");
       else if (/^https?:/.test(h) && !h.includes("ademsassi.com")) track("link", h.replace(/^https?:\/\/(www\.)?/, "").slice(0, 80));
     };
@@ -1311,7 +1424,7 @@ export default function HomeV4() {
             <div className="cta">
               <a className="hbtn primary" href="#projects"><span>{T("Voir mes projets")}</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg></a>
               <a className="hbtn" href="#ai-features"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 4.9L19 9.7l-4.2 3 1.4 5.3L12 15l-4.2 3 1.4-5.3L5 9.7l5.2-1.8z" /></svg><span>{T("IA Lab")}</span></a>
-              <a className="hbtn" href="/api/content/cv" download><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" /><path d="M14 3v5h5M12 11v6m-3-3 3 3 3-3" /></svg><span>CV</span></a>
+              <a className="hbtn" href="/cv"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" /><path d="M14 3v5h5M12 11v6m-3-3 3 3 3-3" /></svg><span>CV</span></a>
             </div>
             <div className="hstats">
               {stats.map((s, i) => <span key={i}><Counter value={s.value} /> {T(s.label)}</span>)}
@@ -1327,7 +1440,7 @@ export default function HomeV4() {
               {(about.paragraphs || []).map((p, i) => <p key={i}>{p}</p>)}
               {(about.tags || []).length > 0 && <div className="tags">{about.tags.map((t) => <span className="tag" key={t}>{t}</span>)}</div>}
               <Neural3D />
-              <a className="btn" href="/api/content/cv" download>{T("Télécharger mon CV ↓")}</a>
+              <a className="btn" href="/cv">{T("Voir mon CV")} →</a>
             </div>
             <div>
               <div className="path-l">{T("parcours")}</div>
@@ -1394,6 +1507,7 @@ export default function HomeV4() {
           <section id="recommandations" className="reveal"><div className="wrap">
             <Head n="06" path="recommandations" title={T("Ce qu'ils disent")} accent={T("de moi")} />
             <Testimonials list={testimonials} />
+            <RecoCTA />
           </div></section>
         )}
 
@@ -1450,7 +1564,7 @@ export default function HomeV4() {
             <h3 className="fh">{T("Liens")}</h3>
             {socials.map(([l, h]) => <a key={l} href={h} target="_blank" rel="noopener noreferrer">{l} ↗</a>)}
             {contact.email && <a href={"mailto:" + contact.email}>{contact.email}</a>}
-            <a href="/api/content/cv" download>{T("Mon CV ↓")}</a>
+            <a href="/cv">{T("Mon CV")} →</a>
           </div>
           <div className="fcol">
             <h3 className="fh">{T("Légal")}</h3>
@@ -1491,7 +1605,7 @@ function Floating() {
   const C = 2 * Math.PI * 17;
   return (
     <div className={"fdock" + (st.show && !st.end ? " show" : "")} aria-hidden={!st.show || st.end}>
-      <a href="/api/content/cv" download className="fd-cv" title={T("Télécharger CV")} tabIndex={st.show ? 0 : -1}>
+      <a href="/cv" className="fd-cv" title={T("Télécharger CV")} tabIndex={st.show ? 0 : -1}>
         <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" /><path d="M14 3v5h5M12 11v6m-3-3 3 3 3-3" /></svg>
         <span>{T("CV")}</span>
       </a>

@@ -15,6 +15,8 @@ import contentRoutes from "./routes/content.js";
 import blogRoutes from "./routes/blog.js";
 import securityRoutes from "./routes/security.js";
 import statsRoutes from "./routes/stats.js";
+import recosRoutes from "./routes/recos.js";
+import backupRoutes from "./routes/backup.js";
 import { blogList, blogArticle } from "./routes/seo.js";
 
 const app = express();
@@ -56,6 +58,8 @@ app.use("/api/blog", blogRoutes);
 app.use("/api/security", securityRoutes);
 app.use("/api/stats", statsRoutes);
 app.use("/api/pulse", statsRoutes);
+app.use("/api/recos", recosRoutes);
+app.use("/api/backup", backupRoutes);
 
 // Sitemap dynamique : pages fixes + articles publiés
 app.get("/sitemap.xml", async (req, res) => {
@@ -67,6 +71,7 @@ app.get("/sitemap.xml", async (req, res) => {
   const urls = [
     ["https://ademsassi.com/", day(), "1.0"],
     ["https://ademsassi.com/blog", last, "0.8"],
+    ["https://ademsassi.com/cv", day(), "0.6"],
     ...arts.map((x) => ["https://ademsassi.com/blog/" + encodeURIComponent(x.slug), day(x.updatedAt || x.createdAt), "0.7"]),
     ["https://ademsassi.com/mentions-legales", "2026-04-06", "0.3"],
   ];

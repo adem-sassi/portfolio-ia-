@@ -238,3 +238,37 @@
 .adm .aphoto-m.ok{color:#00ff88}
 .adm .aphoto-m.err{color:#ff5470}
 @media(max-width:520px){.adm .aphoto{flex-direction:column;text-align:center}.adm .aphoto-b{justify-content:center}}
+
+/* CV web / recos / sauvegardes */
+.adm .aseed{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px;border:1px dashed rgba(0,212,255,.4);border-radius:12px;background:rgba(0,212,255,.05)}
+.adm .aseed p{margin:0;font-size:13px;color:var(--dim)}
+.adm .aseed.s{padding:0;border:0;background:none;justify-content:flex-end}
+.adm .acv-b+.acv-b{padding-top:14px;border-top:1px solid var(--l2)}
+.adm .acv-2{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;align-items:start}
+@media(max-width:900px){.adm .acv-2{grid-template-columns:1fr}}
+.adm .acvp{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.adm .acvp-i{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--l2);border-radius:10px;text-align:left;font-size:13px;color:var(--dim);transition:.15s}
+.adm .acvp-i i{width:18px;height:18px;flex:none;display:grid;place-items:center;border-radius:5px;border:1px solid var(--l);font-style:normal;font-size:11px;color:var(--blue)}
+.adm .acvp-i.on{border-color:rgba(0,212,255,.45);background:rgba(0,212,255,.07);color:var(--white)}
+.adm .af3b{display:grid;grid-template-columns:2fr 1.3fr .7fr;gap:12px;align-items:start}
+.adm .atabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+.adm .atabs button{display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:99px;border:1px solid var(--l2);font-size:12.5px;color:var(--dim)}
+.adm .atabs button.on{border-color:var(--blue);color:var(--white);background:rgba(0,212,255,.08)}
+.adm .atabs em{font-style:normal;font-family:var(--mono);font-size:11px;opacity:.7}
+.adm .areco{display:grid;gap:10px;padding:16px;border:1px solid var(--l2);border-radius:12px;background:rgba(255,255,255,.015)}
+.adm .areco+.areco{margin-top:10px}
+.adm .areco-h{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.adm .areco-h div{display:grid}
+.adm .areco-h span,.adm .areco-h small,.adm .areco-m{font-size:12px;color:var(--mute)}
+.adm .areco blockquote{margin:0;padding:10px 14px;border-left:2px solid var(--blue);background:rgba(0,212,255,.04);color:var(--dim);font-size:14px;line-height:1.6;white-space:pre-wrap}
+.adm .areco-m{display:flex;gap:12px;flex-wrap:wrap}
+.adm .areco-m a{color:var(--blue)}
+.adm .areco-a{display:flex;gap:8px;flex-wrap:wrap}
+.adm .abk{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.adm .abk>div{display:grid;gap:4px;padding:12px;border:1px solid var(--l2);border-radius:10px}
+.adm .abk small{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--mute)}
+.adm .abk b{font-size:15px}
+.adm .abk-c{margin:0;font-family:var(--mono);font-size:11.5px;color:var(--mute)}
+.adm .awarn{display:flex;align-items:center;gap:8px;margin:0;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,181,71,.35);background:rgba(255,181,71,.07);color:#ffcf85;font-size:13px}
+.adm .awarn code{font-family:var(--mono)}
+@media(max-width:640px){.adm .af3b,.adm .abk{grid-template-columns:1fr}}

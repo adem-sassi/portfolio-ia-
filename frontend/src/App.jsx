@@ -12,6 +12,7 @@ const Portfolio = lazy(() => import("./pages/OldPortfolio"));
 const AdminPage = lazy(() => import("./pages/AdminPage"));
 const MentionsLegales = lazy(() => import("./pages/MentionsLegales"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const CvPage = lazy(() => import("./pages/CvPage"));
 const BlogPage = lazy(() => import("./pages/BlogPage"));
 const ArticlePage = lazy(() => import("./pages/ArticlePage"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
@@ -37,6 +38,7 @@ export default function App() {
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/mentions-legales" element={<MentionsLegales />} />
           <Route path="/blog" element={<BlogPage />} />
+          <Route path="/cv" element={<CvPage />} />
           <Route path="/blog/:slug" element={<ArticlePage />} />
           <Route path="/admin/reset-password" element={<ResetPassword />} />
           <Route path="/terms" element={<TermsPage />} />

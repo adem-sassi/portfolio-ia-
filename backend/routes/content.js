@@ -21,10 +21,10 @@ function setCache(key, data) {
 }
 
 // Sections jamais exposées publiquement
-const PRIVATE_SECTIONS = ["photo", "cv", "reset_token", "admin_auth", "i18n_en"];
+const PRIVATE_SECTIONS = ["backup_meta", "photo", "cv", "reset_token", "admin_auth", "i18n_en"];
 
 // ── Version anglaise : les textes de l'admin sont traduits une fois par l'IA, puis gardés en base ──
-export const TR_SECTIONS = ["hero", "about", "projects", "skills", "contact", "testimonials"];
+export const TR_SECTIONS = ["hero", "about", "projects", "skills", "contact", "testimonials", "cvpage"];
 const TR_KEYS = new Set(["title", "description", "desc", "text", "role", "label", "availabilityText", "category", "year", "quote", "school"]);
 const worthIt = (v) => typeof v === "string" && /[a-zà-ÿ]{3,}/i.test(v) && !/^(https?:|mailto:|#|\/)/.test(v) && !/@/.test(v);
 export const hashOf = (t) => crypto.createHash("sha1").update(t).digest("hex");
