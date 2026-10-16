@@ -14,6 +14,7 @@ import contentRoutes from "./routes/content.js";
 import blogRoutes from "./routes/blog.js";
 import securityRoutes from "./routes/security.js";
 import statsRoutes from "./routes/stats.js";
+import { blogList, blogArticle } from "./routes/seo.js";
 
 const app = express();
 app.set("trust proxy", 1);
@@ -72,6 +73,9 @@ app.get("/sitemap.xml", async (req, res) => {
   res.send('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
     urls.map(([u, d, p]) => `  <url><loc>${esc(u)}</loc><lastmod>${d}</lastmod><priority>${p}</priority></url>`).join("\n") + "\n</urlset>\n");
 });
+
+app.get("/blog", blogList);
+app.get("/blog/:slug", blogArticle);
 
 app.get("/api/health", (req, res) => res.json({ status: "OK", host: "vercel" }));
 
