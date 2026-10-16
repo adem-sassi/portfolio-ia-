@@ -713,3 +713,21 @@ html{scroll-behavior:smooth}
 .v4 .fdock a:focus-visible,.v4 .fdock button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 @media(max-width:640px){.v4 .fdock{right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));padding:3px}.v4 .fd-cv{height:36px;padding:0 11px 0 10px;font-size:11px}.v4 .fd-top,.v4 .fd-top .ring{width:36px;height:36px}}
 @media(prefers-reduced-motion:reduce){.v4 .fdock{transition:opacity .2s}}
+
+/* hero buttons */
+.v4 .hbtn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:9px;height:48px;padding:0 22px;border-radius:99px;border:1px solid var(--line2);background:rgba(8,12,20,.62);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font-family:"JetBrains Mono";font-size:13px;letter-spacing:.02em;color:var(--dim);transition:color .2s,border-color .2s,background .2s,box-shadow .25s,transform .2s;overflow:hidden;white-space:nowrap}
+.v4 .hbtn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none;transition:transform .25s}
+.v4 .hbtn:not(.primary) svg{color:var(--blue)}
+.v4 .hbtn:nth-child(3) svg{color:var(--violet)}
+.v4 .hbtn:hover{color:var(--white);border-color:rgba(0,212,255,.5);background:rgba(0,212,255,.08);transform:translateY(-1px)}
+.v4 .hbtn:nth-child(3):hover{border-color:rgba(123,47,255,.6);background:rgba(123,47,255,.1)}
+.v4 .hbtn.primary{color:var(--void);font-weight:600;border-color:transparent;background:linear-gradient(90deg,var(--blue),#4f9dff 60%,#7d7bff);box-shadow:0 8px 28px -10px rgba(0,212,255,.6)}
+.v4 .hbtn.primary:hover{box-shadow:0 10px 34px -8px rgba(0,212,255,.75);background:linear-gradient(90deg,var(--blue),#4f9dff 60%,#7d7bff)}
+.v4 .hbtn.primary:hover svg{transform:translateX(3px)}
+.v4 .hbtn.primary:after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);transform:translateX(-120%);transition:transform .7s}
+.v4 .hbtn.primary:hover:after{transform:translateX(120%)}
+.v4 .hbtn:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+.v4 .hbtn:active{transform:translateY(0) scale(.98)}
+@media(max-width:700px){.v4 .hero .cta{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:420px;margin-inline:auto}.v4 .hero .cta .hbtn.primary{grid-column:1/-1}.v4 .hbtn{height:46px;padding:0 16px}}
+/* animations en pause hors écran */
+.v4 .v4-idle *,.v4 .v4-idle *:before,.v4 .v4-idle *:after{animation-play-state:paused!important}

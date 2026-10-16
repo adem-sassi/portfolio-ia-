@@ -23,6 +23,9 @@ const EN = {
  "Voir mes projets →": "See my projects →",
  "IA Lab →": "AI Lab →",
  "Stages": "Internships",
+ "Niveau IA": "AI Master's",
+ "Voir mes projets": "See my projects",
+ "IA Lab": "AI Lab",
  "Ingénierie Data & IA": "Data & AI Engineering",
  "Construire l'IA de demain": "Building tomorrow's AI",
  "Télécharger mon CV ↓": "Download my CV ↓",
@@ -1256,7 +1259,10 @@ export default function HomeV4() {
     document.querySelectorAll(".v4 .reveal:not(.in)").forEach((el) => io.observe(el));
     const so = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && setActive(e.target.id)), { rootMargin: "-45% 0px -50% 0px" });
     document.querySelectorAll(".v4 section[id]").forEach((s) => so.observe(s));
-    return () => { io.disconnect(); so.disconnect(); };
+    // met en pause les animations des sections hors écran (gros gain sur mobile)
+    const po = new IntersectionObserver((es) => es.forEach((e) => e.target.classList.toggle("v4-idle", !e.isIntersecting)), { rootMargin: "200px 0px" });
+    document.querySelectorAll(".v4 main > section, .v4 footer").forEach((s) => po.observe(s));
+    return () => { io.disconnect(); so.disconnect(); po.disconnect(); };
   }, [C.hero, C.projects, testimonials.length]);
 
   const socials = [
@@ -1303,9 +1309,9 @@ export default function HomeV4() {
             <Typing />
             <p className="lede">{hero.description || T("Ingénieur IA en alternance chez ACENSI. Je conçois des agents LLM, des architectures RAG et les plateformes qui les font tourner. Étudiant en Master 2 à l'École Hexagone.")}</p>
             <div className="cta">
-              <a className="btn primary" href="#projects">{T("Voir mes projets →")}</a>
-              <a className="btn" href="#ai-features">{T("IA Lab →")}</a>
-              <a className="btn ghost" href="/api/content/cv" download>CV ↓</a>
+              <a className="hbtn primary" href="#projects"><span>{T("Voir mes projets")}</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg></a>
+              <a className="hbtn" href="#ai-features"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 4.9L19 9.7l-4.2 3 1.4 5.3L12 15l-4.2 3 1.4-5.3L5 9.7l5.2-1.8z" /></svg><span>{T("IA Lab")}</span></a>
+              <a className="hbtn" href="/api/content/cv" download><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" /><path d="M14 3v5h5M12 11v6m-3-3 3 3 3-3" /></svg><span>CV</span></a>
             </div>
             <div className="hstats">
               {stats.map((s, i) => <span key={i}><Counter value={s.value} /> {T(s.label)}</span>)}
