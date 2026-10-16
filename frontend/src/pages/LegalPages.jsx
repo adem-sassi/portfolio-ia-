@@ -137,7 +137,7 @@ export function CommunityPage() {
       <section>
         <h2 className="text-neural-blue font-bold text-lg mb-3">LinkedIn</h2>
         <p>Suivez mon parcours professionnel et connectons-nous sur LinkedIn. Je partage régulièrement mes apprentissages en IA et développement.</p>
-        <a href="https://linkedin.com/in/adem-sassi" target="_blank" rel="noopener noreferrer" className="inline-block mt-3 text-neural-blue hover:underline font-mono text-sm">→ linkedin.com/in/adem-sassi</a>
+        <a href="https://linkedin.com/in/sassi-adem" target="_blank" rel="noopener noreferrer" className="inline-block mt-3 text-neural-blue hover:underline font-mono text-sm">→ linkedin.com/in/sassi-adem</a>
       </section>
       <section>
         <h2 className="text-neural-blue font-bold text-lg mb-3">Blog</h2>
