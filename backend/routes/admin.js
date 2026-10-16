@@ -156,6 +156,24 @@ router.post("/upload-cv", authMiddleware, async (req, res) => {
   }
 });
 
+// ── Photo de profil (stockée en base, servie sur /photo.jpg) ─────────────────
+router.post("/upload-photo", authMiddleware, async (req, res) => {
+  try {
+    const { file } = req.body;
+    if (!file) return res.status(400).json({ error: "Aucune image reçue" });
+    const buf = Buffer.from(file, "base64");
+    if (buf.length > 1.5 * 1024 * 1024) return res.status(400).json({ error: "Image trop lourde (max 1,5 Mo)" });
+    if (buf[0] !== 0xff || buf[1] !== 0xd8) return res.status(400).json({ error: "Format invalide (JPEG attendu)" });
+    await Content.findOneAndUpdate({ section: "photo" }, { section: "photo", data: { file, updatedAt: new Date() } }, { upsert: true });
+    res.json({ success: true, v: Date.now() });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.delete("/delete-photo", authMiddleware, async (req, res) => {
+  try { await Content.deleteOne({ section: "photo" }); res.json({ success: true }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+
 router.delete("/delete-cv", authMiddleware, async (req, res) => {
   try {
     await Content.deleteOne({ section: "cv" });

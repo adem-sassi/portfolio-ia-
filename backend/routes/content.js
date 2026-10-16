@@ -21,7 +21,7 @@ function setCache(key, data) {
 }
 
 // Sections jamais exposées publiquement
-const PRIVATE_SECTIONS = ["cv", "reset_token", "admin_auth", "i18n_en"];
+const PRIVATE_SECTIONS = ["photo", "cv", "reset_token", "admin_auth", "i18n_en"];
 
 // ── Version anglaise : les textes de l'admin sont traduits une fois par l'IA, puis gardés en base ──
 export const TR_SECTIONS = ["hero", "about", "projects", "skills", "contact", "testimonials"];

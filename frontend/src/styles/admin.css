@@ -226,3 +226,15 @@
 .alog-back{justify-self:center;font-family:"JetBrains Mono",monospace;font-size:12px;color:#6b7aa3;text-decoration:none}
 .alog-back:hover{color:#00D4FF}
 .alog .spin{animation:aspin 1s linear infinite}
+
+/* photo */
+.adm .aphoto{display:flex;align-items:center;gap:18px;padding:14px;border:1px dashed var(--l);border-radius:12px;transition:.15s}
+.adm .aphoto.drag{border-color:var(--blue);background:rgba(0,212,255,.06)}
+.adm .aphoto img{width:96px;height:96px;border-radius:50%;object-fit:cover;flex:none;border:2px solid rgba(0,212,255,.45);box-shadow:0 0 22px -6px rgba(0,212,255,.6)}
+.adm .aphoto-r{display:grid;gap:8px;min-width:0}
+.adm .aphoto-b{display:flex;flex-wrap:wrap;gap:8px}
+.adm .aphoto small{font-size:12px;opacity:.6}
+.adm .aphoto-m{margin:0;font-size:12.5px}
+.adm .aphoto-m.ok{color:#00ff88}
+.adm .aphoto-m.err{color:#ff5470}
+@media(max-width:520px){.adm .aphoto{flex-direction:column;text-align:center}.adm .aphoto-b{justify-content:center}}

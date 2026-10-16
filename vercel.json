@@ -8,6 +8,7 @@
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api" },
     { "source": "/sitemap.xml", "destination": "/api" },
+    { "source": "/photo.jpg", "destination": "/api" },
     { "source": "/blog", "destination": "/api" },
     { "source": "/blog/:slug", "destination": "/api" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }

@@ -225,11 +225,77 @@ function Dashboard({ token, data, go, addProject }) {
 
 /* ─────────────────────────── Éditeurs de contenu ─────────────────────────── */
 
-function HeroEditor({ v, set }) {
+function PhotoCard({ token }) {
+  const ref = useRef(null);
+  const [v, setV] = useState(Date.now());
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState(null);
+  const [drag, setDrag] = useState(false);
+
+  // recadrage carré centré + compression JPEG 720 px dans le navigateur
+  const toJpeg = (file) => new Promise((ok, ko) => {
+    const url = URL.createObjectURL(file), img = new Image();
+    img.onload = () => {
+      const side = Math.min(img.naturalWidth, img.naturalHeight), S = Math.min(720, side);
+      const c = document.createElement("canvas"); c.width = c.height = S;
+      const g = c.getContext("2d"); g.imageSmoothingQuality = "high";
+      g.drawImage(img, (img.naturalWidth - side) / 2, (img.naturalHeight - side) / 2, side, side, 0, 0, S, S);
+      URL.revokeObjectURL(url);
+      ok(c.toDataURL("image/jpeg", 0.86).split(",")[1]);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); ko(new Error("Image illisible (essaie un JPG ou PNG)")); };
+    img.src = url;
+  });
+
+  const upload = async (f) => {
+    if (!f) return;
+    if (!f.type.startsWith("image/")) return setMsg({ k: "err", t: "Choisis une image (JPG, PNG, WebP)." });
+    setBusy(true); setMsg(null);
+    try {
+      const file = await toJpeg(f);
+      const r = await fetch("/api/admin/upload-photo", { method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` }, body: JSON.stringify({ file }) });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.error || "Erreur d'envoi");
+      setV(Date.now()); setMsg({ k: "ok", t: "Photo mise à jour. Visible sur le site d'ici une minute." });
+    } catch (e) { setMsg({ k: "err", t: e.message }); }
+    setBusy(false);
+  };
+
+  const reset = async () => {
+    setBusy(true); setMsg(null);
+    try {
+      await fetch("/api/admin/delete-photo", { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
+      setV(Date.now()); setMsg({ k: "ok", t: "Photo par défaut remise." });
+    } catch { setMsg({ k: "err", t: "Erreur." }); }
+    setBusy(false);
+  };
+
+  return (
+    <Card title="Photo de profil" sub="Recadrée en carré automatiquement. Utilisée en haut de page, dans la carte contact et sur le blog.">
+      <div className={"aphoto" + (drag ? " drag" : "")}
+        onDragOver={(e) => { e.preventDefault(); setDrag(true); }} onDragLeave={() => setDrag(false)}
+        onDrop={(e) => { e.preventDefault(); setDrag(false); upload(e.dataTransfer.files[0]); }}>
+        <img src={`/photo.jpg?v=${v}`} alt="Photo actuelle" width="96" height="96" onError={(e) => { e.currentTarget.src = "/photo-default.jpg"; }} />
+        <div className="aphoto-r">
+          <div className="aphoto-b">
+            <button className="abtn" disabled={busy} onClick={() => ref.current?.click()}>{busy ? <Loader2 size={14} className="spin" /> : <Upload size={14} />}Changer la photo</button>
+            <button className="abtn ghost" disabled={busy} onClick={reset}><RefreshCw size={14} />Photo par défaut</button>
+          </div>
+          <small>Ou glisse une image ici · JPG, PNG, WebP</small>
+          {msg && <p className={"aphoto-m " + msg.k}>{msg.t}</p>}
+        </div>
+        <input ref={ref} type="file" accept="image/*" hidden onChange={(e) => { upload(e.target.files[0]); e.target.value = ""; }} />
+      </div>
+    </Card>
+  );
+}
+
+function HeroEditor({ v, set, token }) {
   const stats = v.stats || [];
   const s = (k, val) => set({ ...v, [k]: val });
   return (
     <div className="aeditor">
+      <PhotoCard token={token} />
       <Card title="Identité" sub="Le haut de la page d'accueil">
         <div className="af2">
           <Field label="Nom complet" value={v.name} onChange={(x) => s("name", x)} />
@@ -562,7 +628,7 @@ export default function AdminDashboard({ token, onLogout }) {
     switch (active) {
       case "dashboard": return <Dashboard token={token} data={data} go={go} addProject={addProject} />;
       case "stats": return <div className="legacy"><StatsPanel token={token} /></div>;
-      case "hero": return <HeroEditor v={data.hero || {}} set={set("hero")} />;
+      case "hero": return <HeroEditor v={data.hero || {}} set={set("hero")} token={token} />;
       case "about": return <AboutEditor v={data.about || {}} set={set("about")} />;
       case "skills": return <SkillsEditor2 v={data.skills} set={set("skills")} />;
       case "techs": return <Card title="Technologies utilisées" sub="Les pastilles sous l'arsenal technique"><div className="legacy">{data.techs && <TechEditor techs={data.techs} onChange={set("techs")} />}</div></Card>;
