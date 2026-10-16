@@ -273,3 +273,8 @@
 .adm .awarn code{font-family:var(--mono)}
 @media(max-width:640px){.adm .af3b,.adm .abk{grid-template-columns:1fr}}
 .adm .areco-r{margin-left:8px;font-style:normal;font-family:var(--mono);font-size:10.5px;padding:1px 7px;border-radius:99px;border:1px solid rgba(255,181,71,.4);color:#ffcf85}
+.adm .acv-r{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.adm .acv-sync{display:flex;align-items:flex-start;gap:8px;margin:0;padding:12px 14px;border-radius:10px;border:1px solid rgba(0,212,255,.25);background:rgba(0,212,255,.05);font-size:13px;color:var(--dim);line-height:1.5}
+.adm .acv-sync svg{flex:none;margin-top:2px;color:var(--blue)}
+.adm .acv-sync b{color:var(--white)}
+.adm .acv-help{margin:0;font-size:13px;color:var(--dim);line-height:1.6}

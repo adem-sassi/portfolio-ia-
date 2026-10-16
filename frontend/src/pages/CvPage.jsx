@@ -6,6 +6,8 @@ import { useLang } from "../context/LangContext";
 // CV web : même design que le CV PDF, contenu lu depuis l'admin (section « CV web »), donc toujours à jour.
 const BIRTH = "2003-06-01";
 const ageOf = () => { const b = new Date(BIRTH), n = new Date(); let a = n.getFullYear() - b.getFullYear(); if (n.getMonth() < b.getMonth() || (n.getMonth() === b.getMonth() && n.getDate() < b.getDate())) a--; return a; };
+// par défaut : expériences, projet phare et formation en version CV ; projets, stack et langues synchronisés
+const SYNC_DEF = { experiences: false, featured: false, education: false, projects: true, stack: true, languages: true };
 const EDU = /master|bachelor|licence|bac\b|baccalaur|bts|but\b|dut|école|ecole|school|université|university|formation|degree/i;
 const L = {
   fr: { back: "Retour au site", pdf: "Télécharger en PDF", gen: "Création du PDF…", hint: "PDF d'une page, toujours à jour.", locale: "fr-FR", contact: "Contact", stack: "Stack", tech: "tech", langs: "Langues", quals: "Qualités", exp: "Expériences", expS: "parcours pro", proj: "Projets", projS: "réalisations", edu: "Formation", eduS: "diplômes", feat: "Projet phare", age: "ans", updated: "Mis à jour le" },
@@ -51,16 +53,22 @@ export default function CvPage() {
     if (!C) return null;
     const hero = C.hero || {}, about = C.about || {}, contact = C.contact || {}, cv = C.cvpage || {};
     const tl = arr(about.timeline);
-    const exp = arr(cv.experiences).length ? arr(cv.experiences)
-      : tl.filter((x) => !EDU.test(x.title || "")).map((x) => ({ ...x, bullets: x.desc ? [{ text: x.desc }] : [] }));
-    const edu = arr(cv.education).length ? arr(cv.education) : tl.filter((x) => EDU.test(x.title || ""));
     const projects = arr(C.projects);
-    const feat = cv.featured?.title ? cv.featured : (() => { const p = projects.find((x) => x.featured) || projects[0]; return p ? { title: p.title, link: p.demo, bullets: [{ text: p.desc }] } : null; })();
-    const others = arr(cv.projects).length ? arr(cv.projects) : projects.filter((p) => !feat || p.title !== feat.title).slice(0, 4).map((p) => ({ title: p.title, desc: p.desc }));
-    const stack = arr(cv.stack).length ? arr(cv.stack).map((g) => ({ label: g.label, items: arr(g.items).map(txt) }))
+    // « synchronisé » (par défaut) = la partie suit le portfolio ; sinon on garde la version écrite dans Admin → CV web
+    const sync = (k) => { const v = (cv.sync || {})[k]; return v === undefined ? SYNC_DEF[k] !== false : v !== false; };
+    const own = (k) => (!sync(k) && arr(cv[k]).length ? arr(cv[k]) : null);
+    const sentences = (t) => String(t || "").split(/(?<=[.!?])\s+(?=[A-ZÀ-Ý0-9])/).map((x) => x.trim()).filter(Boolean).map((text) => ({ text }));
+    const cut = (t, n) => { t = String(t || ""); return t.length > n ? t.slice(0, n).replace(/\s+\S*$/, "") + "…" : t; };
+    const exp = own("experiences") || tl.filter((x) => !EDU.test(x.title || "")).map((x) => ({ ...x, bullets: sentences(x.desc) }));
+    const edu = own("education") || tl.filter((x) => EDU.test(x.title || ""));
+    const pf = projects.find((x) => x.featured) || projects[0];
+    const feat = !sync("featured") && cv.featured?.title ? cv.featured : pf ? { title: pf.title, link: pf.demo, bullets: sentences(pf.desc).slice(0, 4) } : null;
+    const others = own("projects") || projects.filter((p) => !feat || p.title !== feat.title).slice(0, 4).map((p) => ({ title: p.title, desc: cut(p.desc, 170) }));
+    const stack = own("stack") ? own("stack").map((g) => ({ label: g.label, items: arr(g.items).map(txt) }))
       : arr(C.skills).map((s) => ({ label: s.category, items: arr(s.items).map((i) => (typeof i === "string" ? i : i.name)) }));
-    const langs = arr(cv.languages).length ? arr(cv.languages).map((x) => ({ name: x.label, pct: +x.percent || 0, lvl: x.desc }))
-      : arr(about.languages).map((x) => ({ name: x.name, pct: +x.percent || 0, lvl: x.level }));
+    const pfLangs = arr(about.languages).map((x) => ({ name: x.name, pct: +x.percent || 0, lvl: x.level }));
+    const cvLangs = arr(cv.languages).map((x) => ({ name: x.label, pct: +x.percent || 0, lvl: x.desc }));
+    const langs = (sync("languages") && pfLangs.length) || !cvLangs.length ? pfLangs : cvLangs;
     return {
       name: hero.name || "Adem SASSI", title: cv.title || hero.title || "",
       intro: cv.description || arr(about.paragraphs).join(" "), objective: cv.text || "",

@@ -4,7 +4,7 @@ import { Document, Page, View, Text, Image, Link, Svg, Path, Circle, Rect, Style
 const C = { side: "#0f1626", side2: "#0b111d", main: "#0a0e1a", cy: "#00D4FF", cy2: "#2bd9ff", tx: "#E8EEF8", dim: "#aab6cc", mute: "#7f8aa3", line: "#1c2638", tagb: "#12324a", tagbg: "#0d1d2e", feat: "#0e1628" };
 // police standard PDF : on remplace les rares caractères hors Latin-1
 const clean = (s) => String(s ?? "").replace(/[→⇒➜]/g, "›").replace(/[←]/g, "‹").replace(/[✓✔]/g, "•").replace(/[▹▸]/g, "›").replace(/[^\u0000-ÿŒœŠšŸŽžƒˆ˜–—‘’‚“”„†‡•…‰‹›€™]/g, "");
-const s = StyleSheet.create({
+const BASE = {
   page: { flexDirection: "row", backgroundColor: C.main, fontFamily: "Helvetica", fontSize: 8.6, color: C.dim, lineHeight: 1.42 },
   side: { width: 186, backgroundColor: C.side, paddingTop: 24, paddingHorizontal: 17, paddingBottom: 16, borderRightWidth: 0.6, borderRightColor: C.line },
   main: { flex: 1, paddingTop: 22, paddingHorizontal: 22, paddingBottom: 14 },
@@ -51,7 +51,11 @@ const s = StyleSheet.create({
   cellP: { fontSize: 7.7, color: C.mute, lineHeight: 1.4 },
   eduP: { fontSize: 8.3, color: C.dim, marginTop: 1.5 },
   foot: { position: "absolute", bottom: 9, left: 210, right: 22, textAlign: "right", fontSize: 6, color: "#4f5a72" },
-});
+};
+// mise à l'échelle des tailles de texte et des espacements, pour que tout tienne sur une page
+const SCALE = new Set(["fontSize", "marginTop", "marginBottom", "paddingTop", "paddingBottom", "paddingVertical", "paddingHorizontal", "paddingLeft", "marginRight", "marginLeft", "width", "height", "borderRadius", "letterSpacing"]);
+const mk = (k) => StyleSheet.create(Object.fromEntries(Object.entries(BASE).map(([n, st]) => [n, Object.fromEntries(Object.entries(st).map(([a, v]) => [a, typeof v === "number" && SCALE.has(a) && !(n === "side" && a === "width") ? +(v * k).toFixed(2) : v]))])));
+let s = mk(1);
 
 const Rich = ({ children, style, bold = "#E8EEF8" }) => (
   <Text style={style}>{clean(children).split(/(\*\*[^*]+\*\*)/g).map((p, i) => (p.startsWith("**") && p.endsWith("**") ? <Text key={i} style={{ fontFamily: "Helvetica-Bold", color: bold }}>{p.slice(2, -2)}</Text> : p))}</Text>
@@ -163,7 +167,13 @@ async function photoData(url) {
 
 export async function downloadCvPdf({ d, t, age, short, filename }) {
   const photo = await photoData("/photo.jpg?v=" + Date.now());
-  const blob = await pdf(<CvDoc d={d} t={t} photo={photo} age={age} short={short} />).toBlob();
+  let blob;
+  for (const k of [1, 0.95, 0.9, 0.86, 0.82, 0.78]) {
+    s = mk(k);
+    blob = await pdf(<CvDoc d={d} t={t} photo={photo} age={age} short={short} />).toBlob();
+    const pages = ((await blob.text()).match(/\/Type\s*\/Page[^s]/g) || []).length;
+    if (pages <= 1) break;
+  }
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();

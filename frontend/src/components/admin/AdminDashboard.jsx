@@ -330,6 +330,8 @@ const CV_SEED = {
   qualities: [{ label: "Curieux & autonome" }, { label: "Apprentissage rapide" }, { label: "Ponctuel & adaptable" }, { label: "Prise de décision" }],
 };
 
+const SYNC_DEF = { experiences: false, featured: false, education: false, projects: true, stack: true, languages: true };
+
 function CvPageEditor({ v, set }) {
   const s = (k, val) => set({ ...v, [k]: val });
   const list = (k) => (Array.isArray(v[k]) ? v[k] : []);
@@ -341,6 +343,13 @@ function CvPageEditor({ v, set }) {
   const empty = !Object.keys(v || {}).length;
   const [ask, setAsk] = useState(false);
   const feat = v.featured || {};
+  const KEYS = ["experiences", "featured", "projects", "education", "stack", "languages"];
+  const sync = (k) => { const x = (v.sync || {})[k]; return x === undefined ? SYNC_DEF[k] !== false : x !== false; };
+  const setSync = (k, x) => s("sync", { ...(v.sync || {}), [k]: x });
+  const setAll = (x) => s("sync", Object.fromEntries(KEYS.map((k) => [k, x])));
+  const nSync = KEYS.filter(sync).length;
+  const SyncT = ({ k }) => <Toggle on={sync(k)} onChange={(x) => setSync(k, x)} label={sync(k) ? "Synchro portfolio" : "Version CV"} />;
+  const Note = ({ src }) => <p className="acv-sync"><RefreshCw size={13} />Synchronisé avec <b>{src}</b> : tout changement sur le portfolio apparaît sur le CV. Désactive la synchro pour écrire une version propre au CV.</p>;
   return (
     <div className="aeditor">
       <Card title="CV en ligne" sub="Même design que ton CV PDF. Chaque modification ici met à jour ademsassi.com/cv (FR + EN). Mets du texte entre **deux étoiles** pour le mettre en gras."
@@ -364,8 +373,13 @@ function CvPageEditor({ v, set }) {
         </div>
       </Card>
 
-      <Card title="Expériences" sub="Une ligne = une puce" right={<button className="abtn sm" onClick={() => s("experiences", [{ title: "", place: "", year: "", bullets: [] }, ...list("experiences")])}><Plus size={13} />Ajouter</button>}>
-        {list("experiences").length ? list("experiences").map((x, i) => (
+      <Card title="Synchronisation" sub={`${nSync}/${KEYS.length} parties suivent ton portfolio automatiquement`}
+        right={<div className="acv-r"><button className="abtn sm" onClick={() => setAll(true)}><RefreshCw size={13} />Tout synchroniser</button><button className="abtn sm ghost" onClick={() => setAll(false)}>Tout en version CV</button></div>}>
+        <p className="acv-help">Synchro activée : la partie reprend ce que tu as mis dans Accueil, À propos, Projets et Compétences. Ajoute un projet ou une expérience sur le site, il apparaît sur le CV. Version CV : tu écris un texte propre au CV (missions en puces, projets choisis…).</p>
+      </Card>
+
+      <Card title="Expériences" sub={sync("experiences") ? "Timeline de la section À propos (hors diplômes)" : "Une ligne = une puce"} right={<div className="acv-r"><SyncT k="experiences" />{!sync("experiences") && <button className="abtn sm" onClick={() => s("experiences", [{ title: "", place: "", year: "", bullets: [] }, ...list("experiences")])}><Plus size={13} />Ajouter</button>}</div>}>
+        {sync("experiences") ? <Note src="À propos & parcours" /> : list("experiences").length ? list("experiences").map((x, i) => (
           <div className="arow top acv-b" key={i}>
             <div className="grow">
               <div className="af3b"><Field label="Poste" value={x.title} onChange={(val) => upd("experiences", i, "title", val)} /><Field label="Entreprise" value={x.place} onChange={(val) => upd("experiences", i, "place", val)} /><Field label="Dates" value={x.year} onChange={(val) => upd("experiences", i, "year", val)} mono /></div>
@@ -376,16 +390,18 @@ function CvPageEditor({ v, set }) {
         )) : <Empty text="Vide : le parcours de la section À propos est utilisé." />}
       </Card>
 
-      <Card title="Projet phare">
+      <Card title="Projet phare" right={<SyncT k="featured" />}>
+        {sync("featured") ? <Note src="Projets (projet marqué « phare »)" /> : <>
         <div className="af2">
           <Field label="Nom" value={feat.title} onChange={(x) => s("featured", { ...feat, title: x })} />
           <Field label="Lien" value={feat.link} onChange={(x) => s("featured", { ...feat, link: x })} placeholder="ademsassi.com" />
         </div>
         <Field label="Points clés" area rows={4} value={lines(feat.bullets)} onChange={(x) => s("featured", { ...feat, bullets: toBullets(x) })} hint="Une ligne = une puce" />
+        </>}
       </Card>
 
-      <Card title="Autres projets" sub="Affichés en grille de 2" right={<button className="abtn sm" onClick={() => s("projects", [...list("projects"), { title: "", desc: "" }])}><Plus size={13} />Ajouter</button>}>
-        {list("projects").length ? list("projects").map((x, i) => (
+      <Card title="Autres projets" sub={sync("projects") ? "Les 4 premiers projets du site (hors projet phare)" : "Affichés en grille de 2"} right={<div className="acv-r"><SyncT k="projects" />{!sync("projects") && <button className="abtn sm" onClick={() => s("projects", [...list("projects"), { title: "", desc: "" }])}><Plus size={13} />Ajouter</button>}</div>}>
+        {sync("projects") ? <Note src="Projets" /> : list("projects").length ? list("projects").map((x, i) => (
           <div className="arow top" key={i}>
             <div className="grow"><Field label="Nom" value={x.title} onChange={(val) => upd("projects", i, "title", val)} /><Field label="Description" area rows={2} max={170} value={x.desc} onChange={(val) => upd("projects", i, "desc", val)} /></div>
             <RowTools i={i} n={list("projects").length} onMove={mv("projects")} onDel={del("projects")} />
@@ -393,8 +409,8 @@ function CvPageEditor({ v, set }) {
         )) : <Empty text="Vide : tes projets du site sont utilisés." />}
       </Card>
 
-      <Card title="Formation" right={<button className="abtn sm" onClick={() => s("education", [{ title: "", place: "", year: "", desc: "" }, ...list("education")])}><Plus size={13} />Ajouter</button>}>
-        {list("education").length ? list("education").map((x, i) => (
+      <Card title="Formation" right={<div className="acv-r"><SyncT k="education" />{!sync("education") && <button className="abtn sm" onClick={() => s("education", [{ title: "", place: "", year: "", desc: "" }, ...list("education")])}><Plus size={13} />Ajouter</button>}</div>}>
+        {sync("education") ? <Note src="À propos & parcours (diplômes)" /> : list("education").length ? list("education").map((x, i) => (
           <div className="arow top acv-b" key={i}>
             <div className="grow">
               <div className="af3b"><Field label="Diplôme" value={x.title} onChange={(val) => upd("education", i, "title", val)} /><Field label="École" value={x.place} onChange={(val) => upd("education", i, "place", val)} /><Field label="Dates" value={x.year} onChange={(val) => upd("education", i, "year", val)} mono /></div>
@@ -405,19 +421,19 @@ function CvPageEditor({ v, set }) {
         )) : <Empty text="Vide : les diplômes de ton parcours sont utilisés." />}
       </Card>
 
-      <Card title="Stack tech" sub="Colonne de gauche" right={<button className="abtn sm" onClick={() => s("stack", [...list("stack"), { label: "", items: [] }])}><Plus size={13} />Ajouter</button>}>
-        {list("stack").map((g, i) => (
+      <Card title="Stack tech" sub="Colonne de gauche" right={<div className="acv-r"><SyncT k="stack" />{!sync("stack") && <button className="abtn sm" onClick={() => s("stack", [...list("stack"), { label: "", items: [] }])}><Plus size={13} />Ajouter</button>}</div>}>
+        {sync("stack") ? <Note src="Compétences" /> : list("stack").map((g, i) => (
           <div className="arow top" key={i}>
             <div className="grow"><Field label="Catégorie" value={g.label} onChange={(val) => upd("stack", i, "label", val)} /><Chips value={Array.isArray(g.items) ? g.items : []} onChange={(val) => upd("stack", i, "items", val)} /></div>
             <RowTools i={i} n={list("stack").length} onMove={mv("stack")} onDel={del("stack")} />
           </div>
         ))}
-        {!list("stack").length && <Empty text="Vide : tes compétences du site sont utilisées." />}
+        {!sync("stack") && !list("stack").length && <Empty text="Vide : tes compétences du site sont utilisées." />}
       </Card>
 
       <div className="acv-2">
-        <Card title="Langues" right={<button className="abtn sm" onClick={() => s("languages", [...list("languages"), { label: "", percent: 50, desc: "" }])}><Plus size={13} /></button>}>
-          {list("languages").map((x, i) => (
+        <Card title="Langues" sub="Version CV utilisée si le site n'a pas de langues" right={<div className="acv-r"><SyncT k="languages" />{!sync("languages") && <button className="abtn sm" onClick={() => s("languages", [...list("languages"), { label: "", percent: 50, desc: "" }])}><Plus size={13} /></button>}</div>}>
+          {sync("languages") ? <Note src="À propos (langues)" /> : list("languages").map((x, i) => (
             <div className="arow" key={i}>
               <div className="af3b grow"><Field label="Langue" value={x.label} onChange={(val) => upd("languages", i, "label", val)} /><Field label="Niveau" value={x.desc} onChange={(val) => upd("languages", i, "desc", val)} /><Field label="Barre %" value={String(x.percent ?? "")} onChange={(val) => upd("languages", i, "percent", Math.max(0, Math.min(100, parseInt(val) || 0)))} mono /></div>
               <RowTools i={i} n={list("languages").length} onDel={del("languages")} />
