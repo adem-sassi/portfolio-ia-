@@ -17,11 +17,19 @@ async function buildSystemPrompt() {
   // Articles blog
   let blogArticles = "";
   try {
-    const articles = await Article.find({ published: true });
+    const articles = await Article.find({ published: true }).sort({ createdAt: -1 }).lean();
     if (articles.length > 0) {
-      blogArticles = "\n\nARTICLES DU BLOG D'ADEM:\n" + articles.map(a =>
-        `- "${a.title}": ${a.excerpt} [Tags: ${(a.tags||[]).join(", ")}]`
-      ).join("\n");
+      const plain = (md = "") => md.replace(/```[\s\S]*?```/g, " ").replace(/!\[[^\]]*\]\([^)]*\)/g, " ").replace(/\[([^\]]*)\]\([^)]*\)/g, "$1").replace(/[#>*_`|]+/g, " ").replace(/\s+/g, " ").trim();
+      const fmt = (d) => new Date(d).toLocaleDateString("fr-FR", { month: "long", year: "numeric" });
+      blogArticles = "\n\n=== BLOG D'ADEM (articles publiés) ===\n" + articles.map(a =>
+        `- Titre : "${a.title}"\n  Lien : https://ademsassi.com/blog/${encodeURIComponent(a.slug)}\n  Publié : ${fmt(a.createdAt)} · Tags : ${(a.tags || []).join(", ")}\n  Résumé : ${a.excerpt}\n  Contenu (extrait) : ${plain(a.content).slice(0, 1400)}`
+      ).join("\n\n") + `
+
+Utilisation du blog :
+- Si la question touche un sujet traité dans un article (parcours, alternance, refus, entretien, préparation, projets, technos...), réponds en 1 à 3 phrases avec l'essentiel, puis ajoute : "Adem a écrit un article là-dessus : [titre de l'article](lien)".
+- Utilise UNIQUEMENT les liens listés ci-dessus, recopiés exactement. N'invente jamais d'article ni de lien.
+- Si on demande ses articles ou son blog : liste-les (une puce par article, au format [titre](lien)) avec une phrase de résumé.
+- Ne cite un article que s'il est vraiment pertinent, pas à chaque réponse.`;
     }
   } catch(e) {}
 
