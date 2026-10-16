@@ -272,3 +272,4 @@
 .adm .awarn{display:flex;align-items:center;gap:8px;margin:0;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,181,71,.35);background:rgba(255,181,71,.07);color:#ffcf85;font-size:13px}
 .adm .awarn code{font-family:var(--mono)}
 @media(max-width:640px){.adm .af3b,.adm .abk{grid-template-columns:1fr}}
+.adm .areco-r{margin-left:8px;font-style:normal;font-family:var(--mono);font-size:10.5px;padding:1px 7px;border-radius:99px;border:1px solid rgba(255,181,71,.4);color:#ffcf85}

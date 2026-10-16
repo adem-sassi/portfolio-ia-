@@ -99,3 +99,4 @@
   .cv-it,.cv-feat,.cv-st{break-inside:avoid}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
+.cv-spin.sm{width:14px;height:14px;border-width:2px;border-color:rgba(3,5,10,.25);border-top-color:#03050A}

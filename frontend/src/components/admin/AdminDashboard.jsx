@@ -453,9 +453,9 @@ function RecoInbox({ token, onApproved }) {
   const count = (s) => (list || []).filter((x) => x.status === s).length;
   return (
     <div className="aeditor">
-      <Card title="Recommandations reçues" sub="Envoyées depuis le formulaire du site. Rien n'est publié sans ta validation. Tu reçois aussi un email à chaque dépôt.">
+      <Card title="Recommandations reçues" sub="Envoyées depuis le formulaire du site. Rien n'est publié sans ta validation. Tu reçois un email à chaque dépôt. Les envois douteux (trop courts, avec un lien, en double…) arrivent dans « Spam ».">
         <div className="atabs">
-          {[["pending", "À valider"], ["approved", "Publiées"], ["rejected", "Refusées"]].map(([k, l]) => (
+          {[["pending", "À valider"], ["approved", "Publiées"], ["rejected", "Refusées"], ["spam", "Spam"]].map(([k, l]) => (
             <button key={k} className={tab === k ? "on" : ""} onClick={() => setTab(k)}>{l}<em>{count(k)}</em></button>
           ))}
         </div>
@@ -465,13 +465,13 @@ function RecoInbox({ token, onApproved }) {
             <div className="areco" key={x._id}>
               <div className="areco-h">
                 <div><b>{x.name}</b><span>{[x.role, x.company].filter(Boolean).join(", ")} · {REL[x.relation] || x.relation}</span></div>
-                <small>{fmtDate(x.createdAt)}</small>
+                <small>{fmtDate(x.createdAt)}{x.reason && <em className="areco-r">{x.reason}</em>}</small>
               </div>
               <blockquote>{x.text}</blockquote>
               <div className="areco-m"><span>{x.email}</span>{x.linkedin && <a href={x.linkedin} target="_blank" rel="noreferrer">LinkedIn ↗</a>}</div>
               <div className="areco-a">
                 {x.status !== "approved" && <button className="abtn sm" disabled={!!busy} onClick={() => act(x._id, "approve")}>{busy === x._id + "approve" ? <Loader2 size={13} className="spin" /> : <CheckCircle size={13} />}Publier sur le site</button>}
-                {x.status === "pending" && <button className="abtn sm ghost" disabled={!!busy} onClick={() => act(x._id, "reject")}><Ban size={13} />Refuser</button>}
+                {(x.status === "pending" || x.status === "spam") && <button className="abtn sm ghost" disabled={!!busy} onClick={() => act(x._id, "reject")}><Ban size={13} />Refuser</button>}
                 <button className="abtn sm ghost" disabled={!!busy} onClick={() => act(x._id, "delete")}><Trash2 size={13} />Supprimer</button>
               </div>
             </div>

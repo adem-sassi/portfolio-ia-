@@ -8,8 +8,8 @@ const BIRTH = "2003-06-01";
 const ageOf = () => { const b = new Date(BIRTH), n = new Date(); let a = n.getFullYear() - b.getFullYear(); if (n.getMonth() < b.getMonth() || (n.getMonth() === b.getMonth() && n.getDate() < b.getDate())) a--; return a; };
 const EDU = /master|bachelor|licence|bac\b|baccalaur|bts|but\b|dut|école|ecole|school|université|university|formation|degree/i;
 const L = {
-  fr: { back: "Retour au site", pdf: "Télécharger en PDF", hint: "Dans la fenêtre d'impression, choisis « Enregistrer en PDF ».", contact: "Contact", stack: "Stack", tech: "tech", langs: "Langues", quals: "Qualités", exp: "Expériences", expS: "parcours pro", proj: "Projets", projS: "réalisations", edu: "Formation", eduS: "diplômes", feat: "Projet phare", age: "ans", updated: "Mis à jour le" },
-  en: { back: "Back to site", pdf: "Download as PDF", hint: "In the print window, choose “Save as PDF”.", contact: "Contact", stack: "Tech", tech: "stack", langs: "Languages", quals: "Qualities", exp: "Experience", expS: "career", proj: "Projects", projS: "work", edu: "Education", eduS: "degrees", feat: "Flagship project", age: "years old", updated: "Updated on" },
+  fr: { back: "Retour au site", pdf: "Télécharger en PDF", gen: "Création du PDF…", hint: "PDF d'une page, toujours à jour.", locale: "fr-FR", contact: "Contact", stack: "Stack", tech: "tech", langs: "Langues", quals: "Qualités", exp: "Expériences", expS: "parcours pro", proj: "Projets", projS: "réalisations", edu: "Formation", eduS: "diplômes", feat: "Projet phare", age: "ans", updated: "Mis à jour le" },
+  en: { back: "Back to site", pdf: "Download as PDF", gen: "Building PDF…", hint: "One-page PDF, always up to date.", locale: "en-GB", contact: "Contact", stack: "Tech", tech: "stack", langs: "Languages", quals: "Qualities", exp: "Experience", expS: "career", proj: "Projects", projS: "work", edu: "Education", eduS: "degrees", feat: "Flagship project", age: "years old", updated: "Updated on" },
 };
 const arr = (x) => (Array.isArray(x) ? x : []);
 const txt = (x) => (typeof x === "string" ? x : x?.text || x?.label || "");
@@ -33,6 +33,7 @@ export default function CvPage() {
   const t = L[lang] || L.fr;
   const [C, setC] = useState(null);
   const [err, setErr] = useState(false);
+  const [busy, setBusy] = useState(false);
   const sheet = useRef(null);
 
   useEffect(() => {
@@ -70,6 +71,18 @@ export default function CvPage() {
     };
   }, [C, lang]);
 
+  const makePdf = async () => {
+    if (!d || busy) return;
+    setBusy(true);
+    try {
+      const { downloadCvPdf } = await import("./cvPdf.jsx");
+      const name = (d.name || "CV").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/gi, "_");
+      await downloadCvPdf({ d: { ...d, feat: d.feat ? { ...d.feat, linkUrl: link(d.feat.link) } : null }, t, age: ageOf(), short, filename: `CV_${name}${lang === "en" ? "_EN" : ""}.pdf` });
+      try { fetch("/api/pulse/e", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "cv" }), keepalive: true }); } catch { /* */ }
+    } catch (e) { console.error(e); fit(); window.print(); }
+    setBusy(false);
+  };
+
   return (
     <div className="cvw">
       <div className="cv-bar">
@@ -79,8 +92,8 @@ export default function CvPage() {
             <button className={lang === "fr" ? "on" : ""} onClick={() => setLang("fr")}>FR</button>
             <button className={lang === "en" ? "on" : ""} onClick={() => setLang("en")}>EN</button>
           </div>
-          <button className="cv-b primary" onClick={() => { fit(); window.print(); }} disabled={!d}>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m-4-4 4 4 4-4M5 20h14" /></svg>{t.pdf}
+          <button className="cv-b primary" onClick={makePdf} disabled={!d || busy}>
+            {busy ? <span className="cv-spin sm" /> : <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m-4-4 4 4 4-4M5 20h14" /></svg>}{busy ? t.gen : t.pdf}
           </button>
         </div>
       </div>

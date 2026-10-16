@@ -9,8 +9,9 @@ const RecommendationSchema = new mongoose.Schema({
   email: { type: String, required: true, maxlength: 120 },
   linkedin: { type: String, maxlength: 200, default: "" },
   text: { type: String, required: true, maxlength: 1200 },
-  status: { type: String, enum: ["pending", "approved", "rejected"], default: "pending", index: true },
+  status: { type: String, enum: ["pending", "approved", "rejected", "spam"], default: "pending", index: true },
   ipHash: { type: String, default: "" },
+  reason: { type: String, default: "" },
   createdAt: { type: Date, default: Date.now },
 });
 

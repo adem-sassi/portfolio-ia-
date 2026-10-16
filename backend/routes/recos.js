@@ -63,14 +63,19 @@ router.post("/", postLimiter, async (req, res) => {
       if (!/^https?:\/\//i.test(linkedin)) linkedin = "https://" + linkedin;
       if (!/^https:\/\/([a-z]{2,3}\.)?linkedin\.com\/in\/[\w\-%.]+\/?$/i.test(linkedin)) return res.status(400).json({ error: "Lien LinkedIn invalide (format linkedin.com/in/...)." });
     }
-    if (looksSpammy({ name, text })) return ok();
     if (!(await mxOk(email))) return res.status(400).json({ error: "Ce domaine email n'existe pas." });
 
     const ip = (req.headers["x-forwarded-for"] || "").split(",")[0] || req.socket.remoteAddress || "";
     const ipHash = crypto.createHash("sha256").update(ip + (process.env.JWT_SECRET || "salt")).digest("hex").slice(0, 24);
-    // pas de doublon, et une file d'attente plafonnée
-    if (await Recommendation.findOne({ $or: [{ email }, { ipHash }], status: "pending" })) return ok();
-    if ((await Recommendation.countDocuments({ status: "pending" })) >= 30) return ok();
+
+    // les envois douteux ne sont pas jetés : ils vont dans l'onglet « Spam » de l'admin, sans email
+    let reason = looksSpammy({ name, text });
+    if (!reason && (await Recommendation.findOne({ $or: [{ email }, { ipHash }], status: "pending" }))) reason = "doublon";
+    if (!reason && (await Recommendation.countDocuments({ status: "pending" })) >= 30) reason = "file pleine";
+    if (reason) {
+      if ((await Recommendation.countDocuments({ status: "spam" })) < 100) await Recommendation.create({ name, role, company, relation, email, linkedin, text, ipHash, status: "spam", reason });
+      return ok();
+    }
 
     const doc = await Recommendation.create({ name, role, company, relation, email, linkedin, text, ipHash });
 
@@ -98,8 +103,10 @@ router.post("/", postLimiter, async (req, res) => {
 
 // ── Admin ──────────────────────────────────────────────────────────────────────
 router.get("/admin", authMiddleware, async (req, res) => {
-  const list = await Recommendation.find({}, "-ipHash").sort({ createdAt: -1 }).limit(200).lean();
-  res.json(list);
+  try {
+    const list = await Recommendation.find({}, "-ipHash").sort({ createdAt: -1 }).limit(300).lean();
+    res.json(list);
+  } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
 router.post("/admin/:id/approve", authMiddleware, async (req, res) => {
