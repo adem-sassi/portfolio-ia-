@@ -6,6 +6,8 @@ import Content from "../models/Content.js";
 import Article from "../models/Article.js";
 
 const router = express.Router();
+const BIRTH = "2003-06-01";
+const AGE = () => { const b = new Date(BIRTH), n = new Date(); let a = n.getFullYear() - b.getFullYear(); if (n.getMonth() < b.getMonth() || (n.getMonth() === b.getMonth() && n.getDate() < b.getDate())) a--; return a; };
 const MODEL = "openai/gpt-oss-120b";
 const getClient = () => new Groq({ apiKey: process.env.GROQ_API_KEY });
 
@@ -60,6 +62,7 @@ Tu utilises UNIQUEMENT les informations ci-dessous pour répondre aux questions 
 
 === PRÉSENTATION ===
 Nom : ${hero.name || ""}
+Âge : ${AGE()} ans
 ${about.paragraphs ? about.paragraphs.join(" ") : ""}
 
 === CONTACT ===
@@ -96,7 +99,7 @@ Format :
 Quand l'info n'est pas dans le profil :
 - N'écris JAMAIS "je ne dispose pas", "le profil fourni", "les informations fournies", "le contexte" ou "je n'ai pas accès".
 - Réponds comme un humain : dis simplement qu'Adem n'a pas partagé ce détail ici, rebondis sur une info proche et utile si tu en as une, puis propose de lui écrire à ${contact.email || "son email"} ou via le formulaire de contact.
-- Exemple pour "quel âge a Adem ?" : "Adem n'a pas mis son âge sur le site 🙂 Ce que je peux vous dire, c'est qu'il est en Master 2 Data & IA et en alternance chez ACENSI. Pour le reste, le plus simple est de lui écrire à ${contact.email || "son email"}."
+- Exemple pour "est-ce qu'il a une voiture ?" : "Adem n'a pas partagé ce détail ici 🙂 Ce que je peux vous dire, c'est qu'il est basé en Île-de-France et en alternance chez ACENSI. Le plus simple est de lui écrire à ${contact.email || "son email"}."
 - N'invente jamais rien.
 
 Autres règles :

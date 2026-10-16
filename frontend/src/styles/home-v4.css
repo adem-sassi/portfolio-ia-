@@ -687,3 +687,10 @@ html{scroll-behavior:smooth}
 
 /* liens mobile compact */
 @media(max-width:480px){.v4 .ftop>.fcol:nth-child(3){grid-template-columns:1fr 1fr;column-gap:16px}.v4 .ftop>.fcol:nth-child(3) .fh,.v4 .ftop>.fcol:nth-child(3) a[href^="mailto:"]{grid-column:1/-1}.v4 .ftop>.fcol:nth-child(3) a[href^="mailto:"]{order:9}}
+
+/* age */
+.v4 .hage{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px 12px;margin:12px 0 10px;font-family:"JetBrains Mono";font-size:12.5px;letter-spacing:.06em;color:var(--dim)}
+.v4 .hage span{color:var(--white)}
+.v4 .hage i{width:4px;height:4px;border-radius:50%;background:var(--blue);box-shadow:0 0 8px var(--blue)}
+.v4 .c2-meta{grid-template-columns:repeat(4,1fr);gap:12px 8px}
+@media(max-width:520px){.v4 .c2-meta{grid-template-columns:repeat(2,1fr)}}

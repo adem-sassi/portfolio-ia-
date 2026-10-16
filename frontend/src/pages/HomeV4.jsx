@@ -156,6 +156,9 @@ const EN = {
  "Basé à": "Based in",
  "Île-de-France": "Paris area",
  "Langues": "Languages",
+ "Âge": "Age",
+ "ans": "years old",
+ "Master 2 IA": "AI Master",
  "email direct": "direct email",
  "Projet IA": "AI project",
  "Question technique": "Technical question",
@@ -206,6 +209,10 @@ function track(type, value = "") {
     fetch("/api/pulse/e", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type, value: String(value).slice(0, 200), lang: LANG }), keepalive: true }).catch(() => {});
   } catch { /* */ }
 }
+
+// Âge calculé automatiquement, se met à jour chaque année
+const BIRTH = "2003-06-01";
+const AGE = (() => { const b = new Date(BIRTH), n = new Date(); let a = n.getFullYear() - b.getFullYear(); if (n.getMonth() < b.getMonth() || (n.getMonth() === b.getMonth() && n.getDate() < b.getDate())) a--; return a; })();
 
 function LangSwitch() {
   const { lang, setLang } = useLang();
@@ -1292,6 +1299,7 @@ export default function HomeV4() {
               <span className="on" />
             </div>
             <h1><span className="hi">{T("Bonjour, je suis")}</span><span className="grad">{name}</span></h1>
+            <p className="hage"><span>{AGE} {T("ans")}</span><i />{T("Île-de-France")}<i />{T("Master 2 IA")}</p>
             <Typing />
             <p className="lede">{hero.description || T("Ingénieur IA en alternance chez ACENSI. Je conçois des agents LLM, des architectures RAG et les plateformes qui les font tourner. Étudiant en Master 2 à l'École Hexagone.")}</p>
             <div className="cta">
@@ -1396,6 +1404,7 @@ export default function HomeV4() {
                 {contact.availabilityText && <p className="c2-av-t">{contact.availabilityText}</p>}
                 <div className="c2-meta">
                   <div><small>{T("Réponse")}</small><b>&lt; 24 h</b></div>
+                  <div><small>{T("Âge")}</small><b>{AGE} {T("ans")}</b></div>
                   <div><small>{T("Basé à")}</small><b>{T("Île-de-France")}</b></div>
                   <div><small>{T("Langues")}</small><b>FR · EN · AR</b></div>
                 </div>
